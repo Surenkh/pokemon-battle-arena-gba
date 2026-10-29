@@ -1,9 +1,11 @@
 {
-  "name": "pokemon-battle-arena-gba-assets",
-  "version": "0.1.0",
+  "name": "pokemon-battle-arena-gba",
+  "version": "0.3.0",
   "private": true,
   "scripts": {
-    "assets": "node tools/convert_assets.cjs"
+    "assets": "node tools/convert_assets.cjs",
+    "assets:prepare": "node tools/prepare_animations.cjs",
+    "test:assets": "node tests/assets_test.cjs && node tests/effects_assets_test.cjs"
   },
   "devDependencies": {
     "sharp": "0.35.5",

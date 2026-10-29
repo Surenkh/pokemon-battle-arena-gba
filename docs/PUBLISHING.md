@@ -1,9 +1,7 @@
 # Distribution
 
-The verified v0.2.0 ROM is stored in `downloads/PokemonBattleArena.gba`; its SHA-256 digest is in the same folder. It is the previously validated build, uploaded without modification. No rebuild or new gameplay tests were performed for publication.
+The repository contains the editable native project, required source assets, engine sources/notices, tools, tests, and playable ROM. Build with tools/build.py as described in BUILDING.md. Compiler binaries are not bundled. Historical browser-preview exports and unused optional artwork are omitted; they are not native build inputs.
 
-The repository contains the ROM, documentation, and promotional artwork. Editable game source and build dependencies are not included. Do not describe this repository as a complete source release or claim reproducible builds until those files are restored.
+The elemental-attack candidate is developed in feat/elemental-attack-identity and reviewed in PR #1. Update the ROM and downloads/SHA256SUMS.txt together. A dedicated GitHub Release has not been created. The connected tools support Git content updates, not release-asset publication.
 
-The cover is promotional art. `.github/social-preview.jpg` is prepared for manual upload under repository Settings → Social preview; committing that file does not configure the setting.
-
-A dedicated GitHub Release can later attach the same ROM and checksum using tag `v0.2.0` and the notes in `docs/releases/v0.2.0.md`. The connected tools used for this upload do not create GitHub Releases. Source, engine notices, and licensing documentation should accompany any complete project release.
+The cover is promotional art. .github/social-preview.jpg must be uploaded separately in repository Settings to configure the social preview.

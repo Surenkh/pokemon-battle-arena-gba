@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build through the pinned GBA Studio CLI and project-scoped native bootstrap."""
 from pathlib import Path
-import argparse,json,os,platform,shutil,subprocess,sys,tarfile
+import argparse,atexit,json,os,platform,shutil,subprocess,sys,tarfile
 r=Path(__file__).resolve().parents[1]
 ap=argparse.ArgumentParser(description=__doc__)
 ap.add_argument('--devkitpro',type=Path,help='Existing devkitPro directory containing devkitARM and tools')
@@ -33,7 +33,8 @@ devkit=devkit.resolve()
 compiler=devkit/'devkitARM/bin'/('arm-none-eabi-g++.exe' if os.name=='nt' else 'arm-none-eabi-g++')
 if not compiler.is_file():ap.error(f'Compiler not found: {compiler}')
 if not shutil.which('node') or not shutil.which('make'):ap.error('Install Node.js 22+ and GNU Make and ensure both are on PATH.')
-project=r/'PokemonBattleArena.gbasproj';data=json.loads(project.read_text());data['settings']['pythonPath']=sys.executable.replace('\\','/');data['settings']['devkitProPath']=str(devkit).replace('\\','/');project.write_text(json.dumps(data,indent=2)+'\n')
+project=r/'PokemonBattleArena.gbasproj';original_project=project.read_bytes();atexit.register(project.write_bytes,original_project)
+data=json.loads(original_project);data['settings']['pythonPath']=sys.executable.replace('\\','/');data['settings']['devkitProPath']=str(devkit).replace('\\','/');project.write_text(json.dumps(data,indent=2)+'\n')
 subprocess.run([sys.executable,str(r/'tools/generate_config.py')],check=True,cwd=r)
 if args.clean and (r/'.gbastudio').exists():shutil.rmtree(r/'.gbastudio')
 env=dict(os.environ,GBA_STUDIO_RESOURCES=str(r/'engine/studio_resources'))

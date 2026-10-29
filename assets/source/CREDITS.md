@@ -22,3 +22,7 @@ The six-Pokémon title ensemble is newly generated artwork. Its original PNG is 
 ## Movement update
 
 Runtime animation credits and original source records: [animations/CREDITS.md](animations/CREDITS.md).
+
+## Elemental attack update
+
+The new projectiles, supers, muzzle flashes, hit effects and guard effects are pixel-authored by project code in tools/elemental_fx.cjs. No additional external character artwork is introduced.

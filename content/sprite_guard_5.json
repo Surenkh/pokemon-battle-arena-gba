@@ -1,0 +1,8 @@
+{
+  "id": "guard_5",
+  "type": "sprite",
+  "name": "guard_5",
+  "path": "graphics/guard_5.bmp",
+  "width": 32,
+  "height": 32
+}

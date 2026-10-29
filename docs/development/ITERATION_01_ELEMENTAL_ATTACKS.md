@@ -1,6 +1,8 @@
 # Iteration 01: elemental attack identity
 
-Status: **design prepared; game integration blocked on editable source**.
+Status: **implemented and tested in the v0.3.0 candidate**.
+
+The original design targets below are retained for reference. The restored renderer uses 32×32 normal/impact/guard sheets, 32×16 super sheets and 16×16 muzzle sheets, each with four frames. Five sheets share a palette per fighter. This pass does not add a separate trail system or elemental sound set. See [actual test results](../ELEMENTAL_ATTACKS_TEST_REPORT.md).
 Working branch: `feat/elemental-attack-identity`.
 Playable baseline: v0.2.0. Candidate next release: v0.3.0, only after a rebuilt ROM passes validation.
 
@@ -94,4 +96,4 @@ Engine references: [asset imports](https://gvaliente.github.io/butano/import.htm
 5. Run acceptance checks, record native footage, and open the playable candidate for review.
 6. Merge only after integration works; create a new tagged release and checksum for the new ROM.
 
-Only the design and version-control setup are complete in this branch. No effect sprite sheets, runtime changes, performance measurements, or rebuilt ROM are claimed. The existing downloadable v0.2.0 remains the playable baseline.
+The source is restored and implementation is complete: 30 effect sheets / 120 frames, per-character impacts and muzzle/guard effects, a bounded decorative pool, and a rebuilt ROM. See ../ELEMENTAL_ATTACKS_TEST_REPORT.md for validation and limitations.

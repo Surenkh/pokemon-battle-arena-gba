@@ -1,6 +1,7 @@
 #include "pkmn_app.h"
 #include "pkmn_combat_core.h"
 #include "pkmn_animation.h"
+#include "pkmn_effect_animation.h"
 #include "bn_core.h"
 #include "bn_keypad.h"
 #include "bn_string.h"
@@ -30,6 +31,24 @@
 #include "bn_sprite_items_wave_3.h"
 #include "bn_sprite_items_wave_4.h"
 #include "bn_sprite_items_wave_5.h"
+#include "bn_sprite_items_hit_0.h"
+#include "bn_sprite_items_hit_1.h"
+#include "bn_sprite_items_hit_2.h"
+#include "bn_sprite_items_hit_3.h"
+#include "bn_sprite_items_hit_4.h"
+#include "bn_sprite_items_hit_5.h"
+#include "bn_sprite_items_cast_0.h"
+#include "bn_sprite_items_cast_1.h"
+#include "bn_sprite_items_cast_2.h"
+#include "bn_sprite_items_cast_3.h"
+#include "bn_sprite_items_cast_4.h"
+#include "bn_sprite_items_cast_5.h"
+#include "bn_sprite_items_guard_0.h"
+#include "bn_sprite_items_guard_1.h"
+#include "bn_sprite_items_guard_2.h"
+#include "bn_sprite_items_guard_3.h"
+#include "bn_sprite_items_guard_4.h"
+#include "bn_sprite_items_guard_5.h"
 #include "bn_sprite_items_focus.h"
 #include "bn_sprite_items_bars.h"
 #include "bn_sprite_items_shield.h"
@@ -53,19 +72,33 @@ enum Screen { TITLE, SELECTOR, COUNTDOWN, FIGHTING, PAUSED, ROUND_END, RESULT, H
 static const bn::sprite_item* const bodies[]={&bn::sprite_items::pk_pikachu,&bn::sprite_items::pk_charmander,&bn::sprite_items::pk_squirtle,&bn::sprite_items::pk_bulbasaur,&bn::sprite_items::pk_eevee,&bn::sprite_items::pk_meowth};
 static const bn::sprite_item* const shots[]={&bn::sprite_items::shot_0,&bn::sprite_items::shot_1,&bn::sprite_items::shot_2,&bn::sprite_items::shot_3,&bn::sprite_items::shot_4,&bn::sprite_items::shot_5};
 static const bn::sprite_item* const waves[]={&bn::sprite_items::wave_0,&bn::sprite_items::wave_1,&bn::sprite_items::wave_2,&bn::sprite_items::wave_3,&bn::sprite_items::wave_4,&bn::sprite_items::wave_5};
+static const bn::sprite_item* const hits[]={&bn::sprite_items::hit_0,&bn::sprite_items::hit_1,&bn::sprite_items::hit_2,&bn::sprite_items::hit_3,&bn::sprite_items::hit_4,&bn::sprite_items::hit_5};
+static const bn::sprite_item* const casts[]={&bn::sprite_items::cast_0,&bn::sprite_items::cast_1,&bn::sprite_items::cast_2,&bn::sprite_items::cast_3,&bn::sprite_items::cast_4,&bn::sprite_items::cast_5};
+static const bn::sprite_item* const guards[]={&bn::sprite_items::guard_0,&bn::sprite_items::guard_1,&bn::sprite_items::guard_2,&bn::sprite_items::guard_3,&bn::sprite_items::guard_4,&bn::sprite_items::guard_5};
 static Input input(){Input i;const bool held[]={bn::keypad::a_held(),bn::keypad::b_held(),bn::keypad::select_held(),bn::keypad::start_held(),bn::keypad::right_held(),bn::keypad::left_held(),bn::keypad::up_held(),bn::keypad::down_held(),bn::keypad::r_held(),bn::keypad::l_held()};const bool press[]={bn::keypad::a_pressed(),bn::keypad::b_pressed(),bn::keypad::select_pressed(),bn::keypad::start_pressed(),bn::keypad::right_pressed(),bn::keypad::left_pressed(),bn::keypad::up_pressed(),bn::keypad::down_pressed(),bn::keypad::r_pressed(),bn::keypad::l_pressed()};for(int n=0;n<10;n++){if(held[n])i.held|=1<<n;if(press[n])i.pressed|=1<<n;}return i;}
 static CombatCore core;static CpuController ai;static constexpr bn::sprite_font font(bn::sprite_items::pkfont);
 class Renderer {
  int group=-1,key=-1;bn::optional<bn::regular_bg_ptr> bg,ensemble;
  bn::optional<bn::sprite_ptr> fighters[2],shield[2],bullet[4],bars[6],focus,sparks[5];
  bn::optional<bn::sprite_ptr> shadows[2],portraits[6];
- struct Particle{bn::optional<bn::sprite_ptr> sprite;int x=0,y=0,born=0,kind=0;};Particle particles[6];
+ enum Effect { DUST, IMPACT, CAST, GUARD };
+ struct Particle{bn::optional<bn::sprite_ptr> sprite;int x=0,y=0,born=0,kind=0,character=0,frame=-1;};Particle particles[12];
+ int bullet_tile[4]={-1,-1,-1,-1},bullet_key[4]={-1,-1,-1,-1};
  int tile[2]={-1,-1},portrait_tile[6]={-1,-1,-1,-1,-1,-1},last_fx_tick=-1,result_started=0,ko_age=0;
  void pose(int i,int ch,Pose p){if(tile[i]!=p.frame){fighters[i]->set_tiles(bodies[ch]->tiles_item(),p.frame);tile[i]=p.frame;}pkmn_debug[25+i]=p.frame;pkmn_debug[27+i]=p.clip;}
- void particle(int x,int y,int kind){for(auto&p:particles)if(!p.sprite){p.x=x;p.y=y;p.kind=kind;p.born=core.tick;p.sprite=(kind?bn::sprite_items::impact:bn::sprite_items::dust).create_sprite(0,0);p.sprite->set_z_order(-2);break;}}
+ const bn::sprite_item& effect_item(int kind,int character)const{return kind==DUST?bn::sprite_items::dust:*(kind==IMPACT?hits[character]:kind==CAST?casts[character]:guards[character]);}
+ void particle(int x,int y,int kind,int character=0,bool flip=false){
+  Particle* slot=nullptr;
+  for(auto&p:particles)if(!p.sprite||core.tick-p.born>=effect_lifetime_ticks){p.sprite.reset();slot=&p;break;}
+  if(!slot&&kind!=DUST)for(auto&p:particles)if(p.kind==DUST){p.sprite.reset();slot=&p;break;}
+  if(!slot)return;
+  auto&p=*slot;p.x=x;p.y=y;p.kind=kind;p.character=character;p.born=core.tick;p.frame=0;
+  p.sprite=effect_item(kind,character).create_sprite(0,0);p.sprite->set_z_order(-2);p.sprite->set_horizontal_flip(flip);
+  if(kind!=DUST)pkmn_debug[31]|=1<<(character+(kind==CAST?8:kind==GUARD?16:0));
+ }
  bn::sprite_text_generator text{font};bn::vector<bn::sprite_ptr,96> labels;
  void line(int x,int y,bn::string_view value,bool center=false,int scale=1){int first=labels.size();if(center)text.set_center_alignment();else text.set_left_alignment();text.generate(x-120,y-80,value,labels);if(scale>1){if(scale>2)scale=2;for(int i=first;i<labels.size();i++){auto&sp=labels[i];sp.set_position(x-120+(sp.x()-(x-120))*scale,y-80);sp.set_scale(scale);}}}
- void clear(){labels.clear();bg.reset();ensemble.reset();focus.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;last_fx_tick=-1;ko_age=0;key=-1;}
+ void clear(){labels.clear();bg.reset();ensemble.reset();focus.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
  void backdrop(const bn::regular_bg_item&item){bg=item.create_bg(8,48);bg->set_priority(3);}
 public:
  void draw(Screen screen,int selected,int cpu,int difficulty,int choice,bool level,int count,int frame){
@@ -97,10 +130,21 @@ public:
     int height=world_floor_y-v.y/256;if(height<0)height=0;bn::fixed shadow_scale=bn::fixed(1)-bn::fixed(height)/80;if(shadow_scale<bn::fixed(.45))shadow_scale=bn::fixed(.45);
     shadows[i]->set_scale(shadow_scale);shadows[i]->set_position(bn::fixed(v.x)/256-120,world_floor_y-80);
     bool charge=v.action==SUPER&&age<super_startup_ticks;shield[i]->set_visible(v.action==BLOCK||v.action==BLOCKSTUN||charge);shield[i]->set_scale(charge?bn::fixed(1)+bn::fixed((core.tick/3)%3)/8:bn::fixed(1));shield[i]->set_position(bn::fixed(v.x)/256+v.face*11-120,bn::fixed(v.y)/256-17-80);shield[i]->set_horizontal_flip(v.face<0);
-    if(new_tick){if(v.landed_at==core.tick-1||v.took_off_at==core.tick-1)particle(v.x/256,world_floor_y-4,0);else if(v.action==NONE&&core.grounded(v)&&v.vx&&core.tick%12==0)particle(v.x/256-v.face*8,world_floor_y-3,0);if(v.began==core.tick&&(v.action==HITSTUN||v.action==BLOCKSTUN||v.action==GUARD_BREAK))particle(v.x/256-v.face*6,v.y/256-18,1);}
-    int values[]={v.hp,v.sta,v.sp},maxes[]={characters[v.character].hp,characters[v.character].sta*60,100};for(int j=0;j<3;j++){auto&bar=*bars[i*3+j];bn::fixed width=bn::fixed(71)*values[j]/maxes[j];bar.set_visible(values[j]>0);if(values[j]>0){bar.set_scale(width/64,bn::fixed(.125));bar.set_position((i?163:25)+width/2-120,18+j*9-80);}}}
-   int live=0;for(auto&p:particles)if(p.sprite){int age=core.tick-p.born;if(age>=12){p.sprite.reset();continue;}++live;p.sprite->set_tiles((p.kind?bn::sprite_items::impact:bn::sprite_items::dust).tiles_item(),age/3);p.sprite->set_position(p.x-120,p.y-80-(p.kind?0:age/4));}pkmn_debug[29]=live;
-   for(int i=0;i<4;i++){const auto&b=core.p[i];if(b.active){if(!bullet[i])bullet[i]=(b.super?waves[core.f[b.owner].character]:shots[core.f[b.owner].character])->create_sprite(0,0);bullet[i]->set_position(bn::fixed(b.x)/256-120,bn::fixed(b.y)/256-80);bullet[i]->set_horizontal_flip(b.vx<0);}else bullet[i].reset();}}
+    if(new_tick){if(v.landed_at==core.tick-1||v.took_off_at==core.tick-1)particle(v.x/256,world_floor_y-4,DUST);else if(v.action==NONE&&core.grounded(v)&&v.vx&&core.tick%12==0)particle(v.x/256-v.face*8,world_floor_y-3,DUST);if(v.began==core.tick&&(v.action==HITSTUN||v.action==BLOCKSTUN||v.action==GUARD_BREAK))particle(v.x/256-v.face*6,v.y/256-18,v.action==BLOCKSTUN?GUARD:IMPACT,core.f[1-i].character,v.face>0);}
+    int values[]={v.hp,v.sta,v.sp},maxes[]={characters[v.character].hp,characters[v.character].sta*60,100};for(int j=0;j<3;j++){auto&bar=*bars[i*3+j];bn::fixed width=bn::fixed(71)*values[j]/maxes[j];bar.set_visible(values[j]>0);if(values[j]>0){if(width<1)width=1;bar.set_scale(width/64,bn::fixed(.125));bar.set_position((i?163:25)+width/2-120,18+j*9-80);}}}
+   for(int i=0;i<4;i++){
+    const auto&b=core.p[i];
+    if(!b.active){bullet[i].reset();bullet_tile[i]=bullet_key[i]=-1;continue;}
+    const int character=core.f[b.owner].character,asset_key=character+(b.super?6:0),phase=projectile_effect_frame(core.tick,b.born);
+    const auto&item=*(b.super?waves[character]:shots[character]);
+    if(!bullet[i]||bullet_key[i]!=asset_key){bullet[i].reset();bullet[i]=item.create_sprite(0,0,phase);bullet_key[i]=asset_key;bullet_tile[i]=phase;bullet[i]->set_z_order(-3);}
+    else if(bullet_tile[i]!=phase){bullet[i]->set_tiles(item.tiles_item(),phase);bullet_tile[i]=phase;}
+    bullet[i]->set_position(bn::fixed(b.x)/256-120,bn::fixed(b.y)/256-80);bullet[i]->set_horizontal_flip(b.vx<0);
+    pkmn_debug[30]|=1<<(phase+(b.super?4:0));
+    if(new_tick&&b.born==core.tick-1)particle(b.x/256,b.y/256,CAST,character,b.vx<0);
+   }
+   int live=0;for(auto&p:particles)if(p.sprite){int age=core.tick-p.born;if(age>=effect_lifetime_ticks){p.sprite.reset();continue;}++live;int phase=age/effect_frame_ticks;if(p.frame!=phase){p.sprite->set_tiles(effect_item(p.kind,p.character).tiles_item(),phase);p.frame=phase;}p.sprite->set_position(p.x-120,p.y-80-(p.kind==DUST?age/4:0));}pkmn_debug[29]=live;
+  }
   if(group==3)focus->set_position(-83,-22+choice*20);
   if(group==4){auto&sp=*fighters[0];int age=frame-result_started;Pose current=loop_pose(selected,core.outcome==1?CLIP_VICTORY:core.outcome==2?(age<24?CLIP_FAINT:CLIP_DOWN):CLIP_IDLE,age,core.outcome!=2);pose(0,selected,current);bn::fixed scale=core.outcome==2?bn::fixed(1):bn::fixed(1.25);sp.set_scale(scale);sp.set_rotation_angle(0);sp.set_position(0,120-26*scale-80);focus->set_scale(bn::fixed(104)/64,bn::fixed(18)/64);focus->set_position((choice?180:60)-120,145-80);}
 

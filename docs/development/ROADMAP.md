@@ -12,4 +12,4 @@ This is the current implementation order. Each direction should end in a playabl
 
 Avoid introducing all five at once. Visual identity comes first because it makes later timing, balance, and opponent changes easier for the player to understand.
 
-For priority 1, see [the iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md). Runtime integration is blocked until editable source and build dependencies are restored. No new ROM is published by this roadmap.
+For priority 1, see [the iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md). Priority 1 is implemented in the v0.3.0 candidate. See ../ELEMENTAL_ATTACKS_TEST_REPORT.md. Priorities 2–5 remain future work.

@@ -4,40 +4,53 @@
 
 ![Promotional cover](docs/media/cover.jpg)
 
-A native Game Boy Advance fan-made fighting game by **Surenkh**, featuring Pikachu, Charmander, Squirtle, Bulbasaur, Eevee, and Meowth.
+A native Game Boy Advance fan-made fighter by **Surenkh**.
 
-## Download and play
+[**Download the GBA game**](downloads/PokemonBattleArena.gba?raw=true) · [Checksum](downloads/SHA256SUMS.txt)
 
-[**Download the GBA game**](downloads/PokemonBattleArena.gba?raw=true) · [SHA-256 checksum](downloads/SHA256SUMS.txt)
+Version **0.3.0 — Elemental Attacks**. Open the ROM in a GBA emulator such as mGBA. On GitHub's file page, use **Download raw file** if needed. No commercial ROM or BIOS is included. A dedicated GitHub Release has not been created.
 
-Download `PokemonBattleArena.gba` and open it in a GBA emulator such as mGBA. On GitHub’s file page, use **Download raw file** if the download does not begin automatically. Use the in-game help screen for exact controls.
+## Six fighters, six attack identities
 
-Version **0.2.0 — Movement Update**. The playable ROM is available directly in this repository. A separate GitHub Release has not been created yet.
+| Fighter | Attack visuals |
+| --- | --- |
+| Pikachu | Crackling lightning |
+| Charmander | Flames and embers |
+| Squirtle | Water pulses and splashes |
+| Bulbasaur | Spinning leaves and vines |
+| Eevee | Glowing stars |
+| Meowth | Claw waves and scratches |
 
-## Combat
+Normal projectiles and supers have four-frame animations. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
 
-Move, jump, squeeze, block, and fire while managing stamina. Land hits to charge a super. Supers bypass blocking, but can be evaded by jumping or squeezing. Animated states, momentum, impact reactions, and CPU opponents bring timing and spacing into each fight.
+![Native gameplay capture](docs/media/elemental-attacks-native.gif)
 
-## Version 0.2.0
+## Controls
 
-This repository currently distributes the playable ROM and its documentation. Editable game source is not included in this package. A source/build release must be added separately; the ROM cannot substitute for the editable project. Physical hardware and non-Linux builds have not been confirmed. The cover is promotional artwork, not a gameplay screenshot.
+| GBA button | Action |
+| --- | --- |
+| Left / Right | Move |
+| Up | Jump |
+| Down | Timed squeeze dodge |
+| A | Melee |
+| B | Fire |
+| L held | Block |
+| R | Super: 100 SP and 25 stamina |
+| Start | Pause |
+| Select on title/selector | Controls |
 
-## Verify your download
+Emulator key bindings depend on your setup. Clean hits earn super power; blocks and misses do not.
 
-Download `downloads/SHA256SUMS.txt` from this repository and compare it with the ROM’s SHA-256 checksum.
+## Build and development
 
-```text
-d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845  PokemonBattleArena.gba
-```
+The editable GBA Studio project, C++ runtime, engine sources/notices, required source assets, tools, and tests are included. See [BUILDING.md](docs/BUILDING.md), [test evidence](docs/ELEMENTAL_ATTACKS_TEST_REPORT.md), [roadmap](docs/development/ROADMAP.md), and [Git workflow](CONTRIBUTING.md).
 
-## Development
+The v0.3.0 work is reviewed in PR #1 on `feat/elemental-attack-identity`. Keep changes in feature branches and update the ROM and checksum together after validation. Compiler binaries are not bundled. Historical browser-preview exports and unused optional artwork from the original pack are omitted; native build inputs and their provenance are retained.
 
-The next iteration focuses on [elemental attack identities](docs/development/ITERATION_01_ELEMENTAL_ATTACKS.md), with [five improvement directions](docs/development/ROADMAP.md) and a [Git workflow](CONTRIBUTING.md). Its design is in preparation; the downloadable ROM remains v0.2.0. Editable source must be restored before building the gameplay update.
+## Limits and feedback
 
-## Feedback
-
-For bugs, include the game version, emulator/version or device, selected fighters, steps to reproduce, and expected versus actual result.
+Physical GBA hardware and non-Linux rebuilding have not been tested. There is one arena, no multiplayer, campaign, save system, or background music. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
 
 ## Credits
 
-Unofficial fan project. Not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company. Pokémon names and characters belong to their respective owners. No commercial game ROM or BIOS is included. No new license is granted to underlying characters, engine components, or third-party art by this repository. Preserve the original engine notices and corresponding source when preparing wider distribution.
+Unofficial fan project, not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company. Pokémon belongs to its respective owners. Preserve the artwork credits in assets/source/ and the engine and third-party license notices in engine/.

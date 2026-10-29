@@ -2,7 +2,7 @@
 
 Use this Git repository as the project history. `main` is the playable, reviewed baseline. Work on named feature branches, keep commits focused, and merge through a pull request with validation evidence.
 
-Current branch: `feat/elemental-attack-identity`. This branch prepares the design; editable game source is still needed for implementation.
+Current branch: `feat/elemental-attack-identity`. This branch contains the restored native source and elemental-attack implementation.
 
 ```bash
 git clone https://github.com/Surenkh/pokemon-battle-arena-gba.git
@@ -10,7 +10,7 @@ cd pokemon-battle-arena-gba
 git switch feat/elemental-attack-identity
 ```
 
-Restore the original source and preserve engine licenses, build tools, patches, and required generated inputs. First commit that restoration separately from gameplay changes. Record the actual toolchain and a clean-checkout build command. Do not invent a new build system from the ROM or commit credentials, machine-specific tools, or dependency caches.
+Preserve engine licenses, build tools, patches and required generated inputs. Source restoration is recorded separately from gameplay changes. See docs/BUILDING.md for build and validation commands. Do not commit credentials, machine-specific tools or dependency caches.
 
 For each playable change, record what changed, why, validation results, and remaining limitations in the PR. Run checks relevant to the change. Host tests cannot prove native frame time or palette/VRAM capacity. Keep performance evidence and short native-resolution captures with changes to the renderer.
 

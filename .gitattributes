@@ -1,0 +1,7 @@
+*.gba -text
+*.bmp -text
+*.png -text
+*.gif -text
+engine/** -text linguist-vendored=true
+assets/source/** linguist-vendored=true
+docs/verification/** linguist-generated=true

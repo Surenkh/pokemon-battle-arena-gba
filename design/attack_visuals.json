@@ -1,36 +1,48 @@
 {
   "format": "pokemon-battle-arena.attack-visual-design",
   "version": 1,
-  "status": "design_only_not_consumed_by_runtime",
+  "status": "implemented_reference_not_runtime_config",
   "gameplay_baseline": "0.2.0",
   "candidate_release": "0.3.0",
   "simulation_changes": false,
-  "integration_requires": "Restore editable source and resolve IDs, anchors, and renderer mapping before use",
+  "integration_requires": "Runtime uses compiled assets; tools/elemental_fx.cjs is the authoritative generator.",
   "asset_plan": {
     "format": "indexed 4bpp",
     "palette_entries": 16,
     "transparent_index": 0,
     "clips": {
       "normal_travel": {
-        "frame_width": 16,
-        "frame_height": 16,
+        "frame_width": 32,
+        "frame_height": 32,
         "frames": 4,
         "loop": true
       },
       "impact": {
-        "frame_width": 16,
-        "frame_height": 16,
+        "frame_width": 32,
+        "frame_height": 32,
         "frames": 4,
         "loop": false
       },
       "super_travel": {
         "frame_width": 32,
-        "frame_height": 32,
+        "frame_height": 16,
         "frames": 4,
         "loop": true
+      },
+      "muzzle": {
+        "frame_width": 16,
+        "frame_height": 16,
+        "frames": 4,
+        "loop": false
+      },
+      "blocked_hit": {
+        "frame_width": 32,
+        "frame_height": 32,
+        "frames": 4,
+        "loop": false
       }
     },
-    "all_fighters_raw_tile_bytes": 18432,
+    "all_fighters_raw_tile_bytes": 46080,
     "includes_palettes_or_import_overhead": false
   },
   "effect_policy": {
@@ -49,13 +61,15 @@
         "name": "Spark Bolt",
         "silhouette": "angular_zigzag",
         "motion": "branch alternation around a stable zigzag core",
-        "clip": "normal_travel"
+        "clip": "normal_travel",
+        "asset": "graphics/shot_0.bmp"
       },
       "super": {
         "name": "Thunder Lance",
         "clip": "super_travel",
         "silhouette": "larger brighter angular_zigzag",
-        "collision_rule": "use existing super collision, not decorative bounds"
+        "collision_rule": "use existing super collision, not decorative bounds",
+        "asset": "graphics/wave_0.bmp"
       },
       "impact": {
         "shape": "branched star",
@@ -78,9 +92,9 @@
         ],
         "max_opaque_colors": 15
       },
-      "runtime_fighter_id": null,
-      "muzzle_anchor_pixels": null,
-      "source_mapping_status": "requires source inspection"
+      "runtime_fighter_id": 0,
+      "muzzle_anchor_pixels": "CombatCore projectile spawn position",
+      "source_mapping_status": "Mapped to indexed shots, waves, hits, casts and guards in src/pkmn_app.cpp"
     },
     {
       "id": "charmander",
@@ -90,13 +104,15 @@
         "name": "Ember Shot",
         "silhouette": "tapered_flame",
         "motion": "tail flicker behind a tapered flame core",
-        "clip": "normal_travel"
+        "clip": "normal_travel",
+        "asset": "graphics/shot_1.bmp"
       },
       "super": {
         "name": "Flame Burst",
         "clip": "super_travel",
         "silhouette": "larger brighter tapered_flame",
-        "collision_rule": "use existing super collision, not decorative bounds"
+        "collision_rule": "use existing super collision, not decorative bounds",
+        "asset": "graphics/wave_1.bmp"
       },
       "impact": {
         "shape": "flame bloom",
@@ -119,9 +135,9 @@
         ],
         "max_opaque_colors": 15
       },
-      "runtime_fighter_id": null,
-      "muzzle_anchor_pixels": null,
-      "source_mapping_status": "requires source inspection"
+      "runtime_fighter_id": 1,
+      "muzzle_anchor_pixels": "CombatCore projectile spawn position",
+      "source_mapping_status": "Mapped to indexed shots, waves, hits, casts and guards in src/pkmn_app.cpp"
     },
     {
       "id": "squirtle",
@@ -131,13 +147,15 @@
         "name": "Water Pulse",
         "silhouette": "rounded_ripple",
         "motion": "outline ripple around a rounded water core",
-        "clip": "normal_travel"
+        "clip": "normal_travel",
+        "asset": "graphics/shot_2.bmp"
       },
       "super": {
         "name": "Hydro Surge",
         "clip": "super_travel",
         "silhouette": "larger brighter rounded_ripple",
-        "collision_rule": "use existing super collision, not decorative bounds"
+        "collision_rule": "use existing super collision, not decorative bounds",
+        "asset": "graphics/wave_2.bmp"
       },
       "impact": {
         "shape": "crown splash",
@@ -160,9 +178,9 @@
         ],
         "max_opaque_colors": 15
       },
-      "runtime_fighter_id": null,
-      "muzzle_anchor_pixels": null,
-      "source_mapping_status": "requires source inspection"
+      "runtime_fighter_id": 2,
+      "muzzle_anchor_pixels": "CombatCore projectile spawn position",
+      "source_mapping_status": "Mapped to indexed shots, waves, hits, casts and guards in src/pkmn_app.cpp"
     },
     {
       "id": "bulbasaur",
@@ -172,13 +190,15 @@
         "name": "Razor Leaf",
         "silhouette": "paired_pointed_leaves",
         "motion": "four-angle leaf rotation around the travel axis",
-        "clip": "normal_travel"
+        "clip": "normal_travel",
+        "asset": "graphics/shot_3.bmp"
       },
       "super": {
         "name": "Verdant Lance",
         "clip": "super_travel",
         "silhouette": "larger brighter paired_pointed_leaves",
-        "collision_rule": "use existing super collision, not decorative bounds"
+        "collision_rule": "use existing super collision, not decorative bounds",
+        "asset": "graphics/wave_3.bmp"
       },
       "impact": {
         "shape": "split leaves",
@@ -201,9 +221,9 @@
         ],
         "max_opaque_colors": 15
       },
-      "runtime_fighter_id": null,
-      "muzzle_anchor_pixels": null,
-      "source_mapping_status": "requires source inspection"
+      "runtime_fighter_id": 3,
+      "muzzle_anchor_pixels": "CombatCore projectile spawn position",
+      "source_mapping_status": "Mapped to indexed shots, waves, hits, casts and guards in src/pkmn_app.cpp"
     },
     {
       "id": "eevee",
@@ -213,13 +233,15 @@
         "name": "Swift Star",
         "silhouette": "four_point_star",
         "motion": "alternating glints around a stable four-point core",
-        "clip": "normal_travel"
+        "clip": "normal_travel",
+        "asset": "graphics/shot_4.bmp"
       },
       "super": {
         "name": "Radiant Swift",
         "clip": "super_travel",
         "silhouette": "larger brighter four_point_star",
-        "collision_rule": "use existing super collision, not decorative bounds"
+        "collision_rule": "use existing super collision, not decorative bounds",
+        "asset": "graphics/wave_4.bmp"
       },
       "impact": {
         "shape": "star shimmer",
@@ -242,9 +264,9 @@
         ],
         "max_opaque_colors": 15
       },
-      "runtime_fighter_id": null,
-      "muzzle_anchor_pixels": null,
-      "source_mapping_status": "requires source inspection"
+      "runtime_fighter_id": 4,
+      "muzzle_anchor_pixels": "CombatCore projectile spawn position",
+      "source_mapping_status": "Mapped to indexed shots, waves, hits, casts and guards in src/pkmn_app.cpp"
     },
     {
       "id": "meowth",
@@ -254,13 +276,15 @@
         "name": "Claw Wave",
         "silhouette": "three_parallel_arcs",
         "motion": "three arcs sweep together with offset edge glints",
-        "clip": "normal_travel"
+        "clip": "normal_travel",
+        "asset": "graphics/shot_5.bmp"
       },
       "super": {
         "name": "Fury Claw",
         "clip": "super_travel",
         "silhouette": "larger brighter three_parallel_arcs",
-        "collision_rule": "use existing super collision, not decorative bounds"
+        "collision_rule": "use existing super collision, not decorative bounds",
+        "asset": "graphics/wave_5.bmp"
       },
       "impact": {
         "shape": "three diagonal scratches",
@@ -283,9 +307,9 @@
         ],
         "max_opaque_colors": 15
       },
-      "runtime_fighter_id": null,
-      "muzzle_anchor_pixels": null,
-      "source_mapping_status": "requires source inspection"
+      "runtime_fighter_id": 5,
+      "muzzle_anchor_pixels": "CombatCore projectile spawn position",
+      "source_mapping_status": "Mapped to indexed shots, waves, hits, casts and guards in src/pkmn_app.cpp"
     }
   ]
 }
