@@ -1,0 +1,32 @@
+[
+  {
+    "id": "pikachu",
+    "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/emerald/25.png",
+    "file": "sources/classic/pikachu.png"
+  },
+  {
+    "id": "charmander",
+    "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/emerald/4.png",
+    "file": "sources/classic/charmander.png"
+  },
+  {
+    "id": "squirtle",
+    "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/emerald/7.png",
+    "file": "sources/classic/squirtle.png"
+  },
+  {
+    "id": "bulbasaur",
+    "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/emerald/1.png",
+    "file": "sources/classic/bulbasaur.png"
+  },
+  {
+    "id": "eevee",
+    "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/emerald/133.png",
+    "file": "sources/classic/eevee.png"
+  },
+  {
+    "id": "meowth",
+    "url": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-iii/emerald/52.png",
+    "file": "sources/classic/meowth.png"
+  }
+]

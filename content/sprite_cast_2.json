@@ -1,0 +1,8 @@
+{
+  "id": "cast_2",
+  "type": "sprite",
+  "name": "cast_2",
+  "path": "graphics/cast_2.bmp",
+  "width": 16,
+  "height": 16
+}

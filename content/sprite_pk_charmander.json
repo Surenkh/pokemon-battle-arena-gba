@@ -1,0 +1,8 @@
+{
+  "id": "pk_charmander",
+  "type": "sprite",
+  "name": "pk_charmander",
+  "path": "graphics/pk_charmander.bmp",
+  "width": 64,
+  "height": 64
+}

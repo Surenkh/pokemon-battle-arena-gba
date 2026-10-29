@@ -1,0 +1,6 @@
+{
+  "id": "pause",
+  "type": "background",
+  "name": "pause",
+  "path": "graphics/pause.bmp"
+}

@@ -1,0 +1,8 @@
+{
+  "id": "ground_shadow",
+  "type": "sprite",
+  "name": "ground_shadow",
+  "path": "graphics/ground_shadow.bmp",
+  "width": 32,
+  "height": 8
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "condition.json",
+  "definitions": {
+    "ConditionOperator": {
+      "enum": [
+        "==",
+        "!=",
+        ">",
+        "<",
+        ">=",
+        "<=",
+        "&&",
+        "||"
+      ],
+      "type": "string"
+    },
+    "IfEventCondition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "left", "operator", "right"],
+      "properties": {
+        "type": {
+          "const": "condition",
+          "type": "string"
+        },
+        "left": {
+          "oneOf": [
+            { "$ref": "event.json#/definitions/EventValue" },
+            { "$ref": "#/definitions/IfEventCondition" }
+          ]
+        },
+        "operator": { "$ref": "#/definitions/ConditionOperator" },
+        "right": {
+          "oneOf": [
+            { "$ref": "event.json#/definitions/EventValue" },
+            { "$ref": "#/definitions/IfEventCondition" }
+          ]
+        }
+      }
+    }
+  },
+  "$ref": "#/definitions/IfEventCondition"
+}

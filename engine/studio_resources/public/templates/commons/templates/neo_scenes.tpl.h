@@ -1,0 +1,672 @@
+#ifndef NEO_SCENES_H
+#define NEO_SCENES_H
+
+#include <neo_logs.h>
+
+#include <bn_core.h>
+#include <bn_regular_bg_ptr.h>
+#include <bn_vector.h>
+#include <bn_unique_ptr.h>
+#include <bn_color.h>
+
+#include "neo_types.h"
+
+// Assets
+#include <bn_regular_bg_items_bg_default.h>
+#include <bn_sprite_items_sprite_default.h>
+{{#each sprites}}
+#include <bn_sprite_items_{{getSpriteName @root/sprites this.id}}.h>
+{{/each}}
+{{#each fonts}}
+#include <bn_sprite_items_{{getFontName @root/fonts this.id}}.h>
+{{/each}}
+{{#each scenes}}
+#include <bn_regular_bg_items_{{getBackgroundName @root/backgrounds (valuedef this.background "bg_default")}}.h>
+{{#if this.player.sprite}}
+#include <bn_sprite_items_{{getSpriteName @root/sprites (valuedef this.player.sprite "sprite_default")}}.h>
+{{else}}
+#include <bn_sprite_items_sprite_default.h>
+{{/if}}
+{{#each this.actors}}
+#include <bn_sprite_items_{{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}}.h>
+{{/each}}
+{{#each this.sprites}}
+#include <bn_sprite_items_{{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}}.h>
+{{/each}}
+{{/each}}
+
+namespace neo::scenes
+{
+  constexpr bn::string_view STARTING_SCENE = "{{valuedef project.startingScene scenes.[0].id}}";
+
+  bn::vector<bn::string_view, 10> make_button_vector()
+  {
+    return bn::vector<bn::string_view, 10>();
+  }
+
+  template<typename... Args>
+  bn::vector<bn::string_view, 10> make_button_vector(Args... buttons)
+  {
+    bn::vector<bn::string_view, 10> vec;
+    ((vec.push_back(buttons)), ...);
+    return vec;
+  }
+
+  bn::vector<bn::string_view, 5> make_dialog_vector()
+  {
+    return bn::vector<bn::string_view, 5>();
+  }
+
+  template<typename... Args>
+  bn::vector<bn::string_view, 5> make_dialog_vector(Args... lines)
+  {
+    bn::vector<bn::string_view, 5> vec;
+    ((vec.push_back(lines)), ...);
+    return vec;
+  }
+
+  bn::vector<neo::types::menu_choice, 5> make_menu_vector()
+  {
+    return bn::vector<neo::types::menu_choice, 5>();
+  }
+
+  template<typename... Args>
+  bn::vector<neo::types::menu_choice, 5> make_menu_vector(Args... choices)
+  {
+    bn::vector<neo::types::menu_choice, 5> vec;
+    ((vec.push_back(choices)), ...);
+    return vec;
+  }
+
+  {{#each sprites}}
+  //////////////////////////
+  // Sprite: {{this.name}} //
+  //////////////////////////
+  {{#if (hasItems this._animations)}}
+  {{>animationsPartial prefix=(concat (getSpriteName @root/sprites (valuedef this.name "sprite_default")) "_animation") animations=this._animations}}
+  constexpr int {{getSpriteName @root/sprites (valuedef this.name "sprite_default")}}_animations_count = {{this._animations.length}};
+  constexpr neo::types::sprite_animation* {{getSpriteName @root/sprites (valuedef this.name "sprite_default")}}_animations[] = {
+    {{#each this._animations}}
+    &{{getSpriteName @root/sprites (valuedef ../this.name "sprite_default")}}_animation_{{@index}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+  {{/each}}
+
+  {{#each huds}}
+  //////////////////////////
+  // HUD: {{this.name}} //
+  //////////////////////////
+  {{#each this.sprites}}
+  constexpr bn::string_view hud_{{@../index}}_sprite_{{@index}}_id = "{{this.id}}";
+  constexpr bn::string_view hud_{{@../index}}_sprite_{{@index}}_name = "{{escapeCpp this.name}}";
+  constexpr neo::types::hud_sprite hud_{{@../index}}_sprite_{{@index}} = {
+    hud_{{@../index}}_sprite_{{@index}}_id,
+    hud_{{@../index}}_sprite_{{@index}}_name,
+    {{valuedef this.x 0}},
+    {{valuedef this.y 0}},
+    {{valuedef this.z 0}},
+    bn::sprite_items::{{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}}
+  };
+  {{/each}}
+  {{#if (hasItems this.sprites)}}
+  constexpr const neo::types::hud_sprite* hud_{{@index}}_sprites[] = {
+    {{#each this.sprites}}
+    &hud_{{@../index}}_sprite_{{@index}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+  {{#each this.texts}}
+  {{>valuePartial prefix=(concat "hud_" @../index "_text_" @index "_content") value=this.text}}
+  constexpr bn::string_view hud_{{@../index}}_text_{{@index}}_id = "{{this.id}}";
+  constexpr bn::string_view hud_{{@../index}}_text_{{@index}}_name = "{{escapeCpp this.name}}";
+  constexpr bn::color hud_{{@../index}}_text_{{@index}}_color = { {{colorRGB this.color 31}} };
+  constexpr neo::types::hud_text hud_{{@../index}}_text_{{@index}} = {
+    hud_{{@../index}}_text_{{@index}}_id,
+    hud_{{@../index}}_text_{{@index}}_name,
+    &hud_{{@../index}}_text_{{@index}}_content_value,
+    {{valuedef this.x 0}},
+    {{valuedef this.y 0}},
+    {{valuedef this.z 0}},
+    hud_{{@../index}}_text_{{@index}}_color,
+    {{#if (hasFont @root/fonts this.font)}}
+    &bn::sprite_items::{{getFontName @root/fonts this.font}}
+    {{else}}
+    nullptr
+    {{/if}}
+  };
+  {{/each}}
+  {{#if (hasItems this.texts)}}
+  constexpr const neo::types::hud_text* hud_{{@index}}_texts[] = {
+    {{#each this.texts}}
+    &hud_{{@../index}}_text_{{@index}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.init)}}
+  {{>eventsPartial prefix=(concat "hud_" @index "_init_event") events=this.events.init}}
+  constexpr neo::types::event* hud_{{@index}}_init_events[] = {
+    {{#each this.events.init}}
+    &hud_{{@../index}}_init_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.update)}}
+  {{>eventsPartial prefix=(concat "hud_" @index "_update_event") events=this.events.update}}
+  constexpr neo::types::event* hud_{{@index}}_update_events[] = {
+    {{#each this.events.update}}
+    &hud_{{@../index}}_update_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  constexpr bn::string_view hud_{{@index}}_id = "{{this.id}}";
+  constexpr bn::string_view hud_{{@index}}_name = "{{escapeCpp this.name}}";
+  constexpr neo::types::hud hud_{{@index}} = {
+    hud_{{@index}}_id,
+    hud_{{@index}}_name,
+    {{#if (hasItems this.sprites)}}
+    {{this.sprites.length}},
+    hud_{{@index}}_sprites,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.texts)}}
+    {{this.texts.length}},
+    hud_{{@index}}_texts,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.init)}}
+    {{this.events.init.length}},
+    hud_{{@index}}_init_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.update)}}
+    {{this.events.update.length}},
+    hud_{{@index}}_update_events
+    {{else}}
+    0,
+    nullptr
+    {{/if}}
+  };
+  {{/each}}
+
+  {{#each scenes}}
+  //////////////////////////
+  // Scene: {{this.name}} //
+  //////////////////////////
+
+  // Scene Events
+  {{#if (hasItems this.events)}}
+  {{>eventsPartial prefix=(concat (slug this.name) "_event") events=this.events}}
+  constexpr neo::types::event* {{slug this.name}}_events[] = {
+    {{#each this.events}}
+    &{{slug ../this.name}}_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+
+  // Map collisions
+  {{#if (and (isset this.map) (neq this.sceneType 'logos'))}}
+  {{#if (hasItems this.map.collisions)}}
+  const int {{slug this.name}}_map_collisions[{{multiply (valuedef this.map.width 0) (valuedef this.map.height 0)}}] = {
+    {{#each this.map.collisions}}
+    {{this}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+
+  // Map sensors
+  {{#if (hasItems this.map.sensors)}}
+  {{#each this.map.sensors}}
+  // -- Sensor events
+  {{#if (hasItems this.events.enter)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_sensor_" @index "_enter_event") events=this.events.enter}}
+  constexpr neo::types::event* {{slug ../this.name}}_sensor_{{@index}}_enter_events[] = {
+    {{#each this.events.enter}}
+    &{{slug ../../this.name}}_sensor_{{@../index}}_enter_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.leave)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_sensor_" @index "_leave_event") events=this.events.leave}}
+  constexpr neo::types::event* {{slug ../this.name}}_sensor_{{@index}}_leave_events[] = {
+    {{#each this.events.leave}}
+    &{{slug ../../this.name}}_sensor_{{@../index}}_leave_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.interact)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_sensor_" @index "_interact_event") events=this.events.interact}}
+  constexpr neo::types::event* {{slug ../this.name}}_sensor_{{@index}}_interact_events[] = {
+    {{#each this.events.interact}}
+    &{{slug ../../this.name}}_sensor_{{@../index}}_interact_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+
+  // -- Sensor
+  constexpr bn::string_view {{slug ../this.name}}_sensor_{{@index}}_id = "{{this.id}}";
+  constexpr neo::types::sensor {{slug ../this.name}}_sensor_{{@index}} = {
+    {{slug ../this.name}}_sensor_{{@index}}_id,
+    {{this.x}},
+    {{this.y}},
+    {{valuedef this.width 1}},
+    {{valuedef this.height 1}},
+    {{valuedef this.events.enter.length 0}},
+    {{#if (hasItems this.events.enter)}}
+    {{slug ../this.name}}_sensor_{{@index}}_enter_events,
+    {{else}}
+    nullptr,
+    {{/if}}
+    {{valuedef this.events.leave.length 0}},
+    {{#if (hasItems this.events.leave)}}
+    {{slug ../this.name}}_sensor_{{@index}}_leave_events,
+    {{else}}
+    nullptr,
+    {{/if}}
+    {{valuedef this.events.interact.length 0}},
+    {{#if (hasItems this.events.interact)}}
+    {{slug ../this.name}}_sensor_{{@index}}_interact_events
+    {{else}}
+    nullptr
+    {{/if}}
+  };
+  {{/each}}
+
+  constexpr const neo::types::sensor* {{slug this.name}}_map_sensors[] = {
+    {{#each this.map.sensors}}
+    &{{slug ../this.name}}_sensor_{{@index}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+
+  // Map
+  {{>valuePartial prefix=(concat (slug this.name) "_map_grid_size") value=(valuedef this.map.gridSize 16)}}
+  constexpr neo::types::map {{slug this.name}}_map_data = {
+    {{#if this.map}}
+    {{valuedef this.map.width 0}},
+    {{valuedef this.map.height 0}},
+    &{{slug this.name}}_map_grid_size_value,
+    {{#if (hasItems this.map.collisions)}}
+    {{slug this.name}}_map_collisions,
+    {{else}}
+    nullptr,
+    {{/if}}
+    {{else}}
+    0, 0, 0, nullptr,
+    {{/if}}
+    {{#if (hasItems this.map.sensors)}}
+    {{this.map.sensors.length}},
+    {{slug this.name}}_map_sensors
+    {{else}}
+    0, nullptr
+    {{/if}}
+  };
+  {{/if}}
+
+  {{#if (hasItems this.actors)}}
+  // Actors
+  {{#each this.actors}}
+  // -- Actor events
+  {{#if (hasItems this.events.init)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_actor_" @index "_init_event") events=this.events.init}}
+  constexpr neo::types::event* {{slug ../this.name}}_actor_{{@index}}_init_events[] = {
+    {{#each this.events.init}}
+    &{{slug ../../this.name}}_actor_{{@../index}}_init_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.interact)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_actor_" @index "_interact_event") events=this.events.interact}}
+  constexpr neo::types::event* {{slug ../this.name}}_actor_{{@index}}_interact_events[] = {
+    {{#each this.events.interact}}
+    &{{slug ../../this.name}}_actor_{{@../index}}_interact_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.collide)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_actor_" @index "_collide_event") events=this.events.collide}}
+  constexpr neo::types::event* {{slug ../this.name}}_actor_{{@index}}_collide_events[] = {
+    {{#each this.events.collide}}
+    &{{slug ../../this.name}}_actor_{{@../index}}_collide_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.update)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_actor_" @index "_update_event") events=this.events.update}}
+  constexpr neo::types::event* {{slug ../this.name}}_actor_{{@index}}_update_events[] = {
+    {{#each this.events.update}}
+    &{{slug ../../this.name}}_actor_{{@../index}}_update_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+
+  {{>valuePartial prefix=(concat (slug ../this.name) "_actor_" @index "_x") value=(valuedef this.x 0)}}
+  {{>valuePartial prefix=(concat (slug ../this.name) "_actor_" @index "_y") value=(valuedef this.y 0)}}
+  {{>valuePartial prefix=(concat (slug ../this.name) "_actor_" @index "_z") value=(valuedef this.z 2)}}
+  constexpr bn::string_view {{slug ../this.name}}_actor_{{@index}}_id = "{{this.id}}";
+  constexpr bn::string_view {{slug ../this.name}}_actor_{{@index}}_name = "{{escapeCpp this.name}}";
+  constexpr neo::types::actor {{slug ../this.name}}_actor_{{@index}} = {
+    {{slug ../this.name}}_actor_{{@index}}_id,
+    {{slug ../this.name}}_actor_{{@index}}_name,
+    &{{slug ../this.name}}_actor_{{@index}}_x_value,
+    &{{slug ../this.name}}_actor_{{@index}}_y_value,
+    &{{slug ../this.name}}_actor_{{@index}}_z_value,
+    neo::types::direction::{{uppercase (valuedef this.direction "down")}},
+    bn::sprite_items::{{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}},
+    {{valuedef this.disableDirectionOnInteract false}},
+    {{valuedef this.collisionGroup 0}},
+    // Events
+    {{#if (hasItems this.events.init)}}
+    {{this.events.init.length}},
+    {{slug ../this.name}}_actor_{{@index}}_init_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.interact)}}
+    {{this.events.interact.length}},
+    {{slug ../this.name}}_actor_{{@index}}_interact_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.collide)}}
+    {{this.events.collide.length}},
+    {{slug ../this.name}}_actor_{{@index}}_collide_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.update)}}
+    {{this.events.update.length}},
+    {{slug ../this.name}}_actor_{{@index}}_update_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    // Animations
+    {{#if this._spriteHasAnimations}}
+    {{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}}_animations_count,
+    {{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}}_animations,
+    {{else}}
+    0,
+    nullptr
+    {{/if}}
+  };
+  {{/each}}
+  constexpr const neo::types::actor* {{slug this.name}}_actors[] = {
+    {{#each this.actors}}
+    &{{slug ../this.name}}_actor_{{@index}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+
+  {{#if (hasItems this.sprites)}}
+  // Sprites
+  {{#each this.sprites}}
+  // -- Sprite events
+  {{#if (hasItems this.events.init)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_sprite_" @index "_init_event") events=this.events.init}}
+  constexpr neo::types::event* {{slug ../this.name}}_sprite_{{@index}}_init_events[] = {
+    {{#each this.events.init}}
+    &{{slug ../../this.name}}_sprite_{{@../index}}_init_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.interact)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_sprite_" @index "_interact_event") events=this.events.interact}}
+  constexpr neo::types::event* {{slug ../this.name}}_sprite_{{@index}}_interact_events[] = {
+    {{#each this.events.interact}}
+    &{{slug ../../this.name}}_sprite_{{@../index}}_interact_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{#if (hasItems this.events.collide)}}
+  {{>eventsPartial prefix=(concat (slug ../this.name) "_sprite_" @index "_collide_event") events=this.events.collide}}
+  constexpr neo::types::event* {{slug ../this.name}}_sprite_{{@index}}_collide_events[] = {
+    {{#each this.events.collide}}
+    &{{slug ../../this.name}}_sprite_{{@../index}}_collide_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  {{>valuePartial prefix=(concat (slug ../this.name) "_sprite_" @index "_x") value=(valuedef this.x 0)}}
+  {{>valuePartial prefix=(concat (slug ../this.name) "_sprite_" @index "_y") value=(valuedef this.y 0)}}
+  {{>valuePartial prefix=(concat (slug ../this.name) "_sprite_" @index "_z") value=(valuedef this.z 2)}}
+  constexpr bn::string_view {{slug ../this.name}}_sprite_{{@index}}_id = "{{this.id}}";
+  constexpr bn::string_view {{slug ../this.name}}_sprite_{{@index}}_name = "{{escapeCpp this.name}}";
+  constexpr neo::types::sprite {{slug ../this.name}}_sprite_{{@index}} = {
+    {{slug ../this.name}}_sprite_{{@index}}_id,
+    {{slug ../this.name}}_sprite_{{@index}}_name,
+    &{{slug ../this.name}}_sprite_{{@index}}_x_value,
+    &{{slug ../this.name}}_sprite_{{@index}}_y_value,
+    &{{slug ../this.name}}_sprite_{{@index}}_z_value,
+    bn::sprite_items::{{getSpriteName @root/sprites (valuedef this.sprite "sprite_default")}},
+    {{valuedef this.collisionGroup 0}},
+    // Events
+    {{#if (hasItems this.events.init)}}
+    {{this.events.init.length}},
+    {{slug ../this.name}}_sprite_{{@index}}_init_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.interact)}}
+    {{this.events.interact.length}},
+    {{slug ../this.name}}_sprite_{{@index}}_interact_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.events.collide)}}
+    {{this.events.collide.length}},
+    {{slug ../this.name}}_sprite_{{@index}}_collide_events
+    {{else}}
+    0,
+    nullptr
+    {{/if}}
+  };
+  {{/each}}
+  constexpr const neo::types::sprite* {{slug this.name}}_sprites[] = {
+    {{#each this.sprites}}
+    &{{slug ../this.name}}_sprite_{{@index}}{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+
+  // Scene
+  {{#if this.player}}
+  {{>valuePartial prefix=(concat (slug this.name) "_player_x") value=(valuedef this.player.x 0)}}
+  {{>valuePartial prefix=(concat (slug this.name) "_player_y") value=(valuedef this.player.y 0)}}
+  {{>valuePartial prefix=(concat (slug this.name) "_player_z") value=(valuedef this.player.z 1)}}
+
+  // Player
+  {{#if (and (isset this.player) (neq this.sceneType 'logos'))}}
+  constexpr bn::string_view {{slug this.name}}_player_id = "player";
+  constexpr bn::string_view {{slug this.name}}_player_name = "player";
+  constexpr neo::types::actor {{slug this.name}}_player_actor = {
+    {{slug this.name}}_player_id,
+    {{slug this.name}}_player_name,
+    &{{slug this.name}}_player_x_value,
+    &{{slug this.name}}_player_y_value,
+    &{{slug this.name}}_player_z_value,
+    neo::types::direction::{{uppercase (valuedef this.player.direction 'down')}},
+    bn::sprite_items::{{getSpriteName @root/sprites (valuedef this.player.sprite "sprite_default")}},
+    false,
+    {{valuedef this.player.collisionGroup 0}},
+    // Events: the player has no event arrays (its interactions live on the
+    // other actors/sprites/sensors)
+    0,
+    nullptr,
+    0,
+    nullptr,
+    0,
+    nullptr,
+    0,
+    nullptr,
+    {{#if this.player._spriteHasAnimations}}
+    {{getSpriteName @root/sprites (valuedef this.player.sprite "sprite_default")}}_animations_count,
+    {{getSpriteName @root/sprites (valuedef this.player.sprite "sprite_default")}}_animations
+    {{else}}
+    0,
+    nullptr
+    {{/if}}
+  };
+  {{/if}}
+  {{/if}}
+
+  constexpr bn::string_view {{slug this.name}}_scene_id = "{{this.id}}";
+  constexpr bn::string_view {{slug this.name}}_scene_name = "{{escapeCpp this.name}}";
+  BN_DATA_EWRAM neo::types::scene scene_{{slug this.name}} = {
+    {{slug this.name}}_scene_id,
+    {{slug this.name}}_scene_name,
+    {{#if (eq this.sceneType 'side-scroller')}}
+    neo::types::scene_type::SIDE_SCROLLER,
+    {{else if (eq this.sceneType '2d-top-down')}}
+    neo::types::scene_type::TOP_DOWN,
+    {{else}}
+    neo::types::scene_type::LOGOS,
+    {{/if}}
+    {{#if this.background}}
+    bn::regular_bg_items::{{getBackgroundName @root/backgrounds (valuedef this.background "bg_default")}},
+    {{else}}
+    bn::regular_bg_items::bg_default,
+    {{/if}}
+    {{#if (hasItems this.events)}}
+    {{this.events.length}},
+    {{slug this.name}}_events,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (and (isset this.player) (neq this.sceneType 'logos')) }}
+    true,
+    &{{slug this.name}}_player_actor,
+    {{else}}
+    false,
+    nullptr,
+    {{/if}}
+    {{#if (and (isset this.map) (neq this.sceneType 'logos'))}}
+    &{{slug this.name}}_map_data,
+    {{else}}
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.actors)}}
+    {{this.actors.length}},
+    {{slug this.name}}_actors,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (hasItems this.sprites)}}
+    {{this.sprites.length}},
+    {{slug this.name}}_sprites,
+    {{else}}
+    0,
+    nullptr,
+    {{/if}}
+    {{#if (gte (getHudIndex @root/huds this.hud) 0)}}
+    &hud_{{getHudIndex @root/huds this.hud}}
+    {{else}}
+    nullptr
+    {{/if}}
+  };
+  //////////////////////////
+  {{/each}}
+
+  // Default scene
+  constexpr bn::string_view default_scene_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+  constexpr bn::string_view default_scene_name = "default";
+  BN_DATA_EWRAM neo::types::scene scene_default = {
+    default_scene_id,
+    default_scene_name,
+    neo::types::scene_type::LOGOS,
+    bn::regular_bg_items::bg_default,
+    0,
+    nullptr,
+    false,
+    nullptr,
+    nullptr,
+    0,
+    nullptr,
+    0,
+    nullptr,
+    nullptr
+  };
+
+  neo::types::scene get_scene(bn::string_view name)
+  {
+    if (name == "") return scene_default;
+    {{#each scenes}}
+    if (name == "{{this.name}}" || name == "{{this.id}}") return scene_{{slug this.name}};
+    {{/each}}
+    return scene_default;
+  }
+
+  // Scripts
+  {{#each scripts}}
+  {{#if (hasItems this.events)}}
+  {{>eventsPartial prefix=(concat (slug this.name) "_script_event") events=this.events}}
+  constexpr neo::types::event* {{slug this.name}}_script_events[] = {
+    {{#each this.events}}
+    &{{slug ../this.name}}_script_event_{{@index}},
+    {{/each}}
+  };
+  {{/if}}
+  constexpr bn::string_view {{slug this.name}}_script_id = "{{this.id}}";
+  constexpr bn::string_view {{slug this.name}}_script_name = "{{escapeCpp this.name}}";
+  {{#if this.parameters.length}}
+  constexpr bn::string_view {{slug this.name}}_script_parameters[] = {
+    {{#each this.parameters}}
+    "{{scriptParamKey this.id}}"{{#unless @last}},{{/unless}}
+    {{/each}}
+  };
+  {{/if}}
+  BN_DATA_EWRAM neo::types::script script_{{slug this.name}} = {
+    {{slug this.name}}_script_id,
+    {{slug this.name}}_script_name,
+    {{#if (hasItems this.events)}}
+    {{this.events.length}},
+    {{slug this.name}}_script_events
+    {{else}}
+    0,
+    nullptr
+    {{/if}},
+    {{valuedef this.parameters.length 0}},
+    {{#if this.parameters.length}}
+    {{slug this.name}}_script_parameters
+    {{else}}
+    nullptr
+    {{/if}}
+  };
+  {{/each}}
+
+  // Default script
+  constexpr bn::string_view script_default_id = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx";
+  constexpr bn::string_view script_default_name = "default";
+  BN_DATA_EWRAM neo::types::script script_default = {
+    script_default_id,
+    script_default_name,
+    0,
+    nullptr,
+    0,
+    nullptr
+  };
+
+  neo::types::script get_script(bn::string_view name)
+  {
+    if (name == "") return script_default;
+    {{#each scripts}}
+    if (name == "{{this.name}}" || name == "{{this.id}}") return script_{{slug this.name}};
+    {{/each}}
+
+    return script_default;
+  }
+}
+
+#endif

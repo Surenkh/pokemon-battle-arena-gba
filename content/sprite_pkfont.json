@@ -1,0 +1,8 @@
+{
+  "id": "pkfont",
+  "type": "sprite",
+  "name": "pkfont",
+  "path": "graphics/pkfont.bmp",
+  "width": 8,
+  "height": 8
+}

@@ -1,0 +1,49 @@
+#ifndef NEO_CAMERA_H
+#define NEO_CAMERA_H
+
+#include <bn_camera_ptr.h>
+
+#include <neo_types.h>
+
+#include "game.h"
+
+namespace neo::camera
+{
+  void move_to(
+    neo::game* game,
+    neo::types::scene& active_scene,
+    int x,
+    int y,
+    int duration,
+    bool allow_diagonal,
+    bn::string_view direction_priority
+  );
+
+  void follow(
+    neo::game* game,
+    neo::types::scene& active_scene,
+    neo::actor* target,
+    int duration,
+    bool allow_diagonal,
+    bn::string_view direction_priority
+  );
+
+ // Just like follow, but instant
+  void track(
+    neo::game* game,
+    neo::types::scene& active_scene,
+    neo::actor* target
+  );
+
+  // Computes the clamped target position for a move-camera-to command
+  // (used by neo::types::move_camera_to_event::start()).
+  void get_move_to_target(
+    neo::game* game,
+    int x,
+    int y,
+    int& end_x,
+    int& end_y
+  );
+}
+
+#endif

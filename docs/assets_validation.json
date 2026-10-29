@@ -1,0 +1,36 @@
+{
+  "status": "passed",
+  "validated_frames": 408,
+  "characters": [
+    {
+      "name": "pikachu",
+      "frames": 68,
+      "unique_walk_poses": 3
+    },
+    {
+      "name": "charmander",
+      "frames": 66,
+      "unique_walk_poses": 3
+    },
+    {
+      "name": "squirtle",
+      "frames": 75,
+      "unique_walk_poses": 3
+    },
+    {
+      "name": "bulbasaur",
+      "frames": 65,
+      "unique_walk_poses": 3
+    },
+    {
+      "name": "eevee",
+      "frames": 67,
+      "unique_walk_poses": 3
+    },
+    {
+      "name": "meowth",
+      "frames": 67,
+      "unique_walk_poses": 3
+    }
+  ]
+}

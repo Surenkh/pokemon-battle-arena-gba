@@ -1,0 +1,1123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "event.json",
+  "definitions": {
+    "ActorDirection": {
+      "enum": ["up", "down", "left", "right", "from_player", "towards_player"],
+      "type": "string"
+    },
+    "CharacterDirection": {
+      "enum": ["up", "down", "left", "right"],
+      "type": "string"
+    },
+    "Direction": {
+      "enum": [
+        "up", "down", "left", "right",
+        "up_left", "up_right", "down_left", "down_right"
+      ],
+      "type": "string"
+    },
+    "ProjectileDirection": {
+      "enum": [
+        "up", "down", "left", "right",
+        "up_left", "up_right", "down_left", "down_right",
+        "from_player", "towards_player"
+      ],
+      "type": "string"
+    },
+    "DirectionPriority": {
+      "enum": ["horizontal", "vertical"],
+      "type": "string"
+    },
+    "DynamicVariableValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "variable"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "DynamicSavedGameValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "saved-game"
+        }
+      }
+    },
+    "PlayerAttribute": {
+      "enum": ["x", "y", "direction", "scene"],
+      "type": "string"
+    },
+    "DynamicPlayerAttributeValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "player-attribute"
+        },
+        "name": {
+          "$ref": "#/definitions/PlayerAttribute"
+        }
+      }
+    },
+    "DynamicDirectionValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "direction"
+        },
+        "name": {
+          "$ref": "#/definitions/Direction"
+        }
+      }
+    },
+    "DynamicCollisionSideValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "collision-side"
+        }
+      }
+    },
+    "DynamicSceneValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "scene"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "DynamicActorValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "const": "actor"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "DynamicValue": {
+      "oneOf": [
+        { "$ref": "#/definitions/DynamicVariableValue" },
+        { "$ref": "#/definitions/DynamicSavedGameValue" },
+        { "$ref": "#/definitions/DynamicPlayerAttributeValue" },
+        { "$ref": "#/definitions/DynamicDirectionValue" },
+        { "$ref": "#/definitions/DynamicCollisionSideValue" },
+        { "$ref": "#/definitions/DynamicSceneValue" },
+        { "$ref": "#/definitions/DynamicActorValue" }
+      ]
+    },
+    "EventValue": {
+      "oneOf": [
+        { "type": "string" },
+        { "type": "number" },
+        { "type": "boolean" },
+        { "$ref": "#/definitions/DynamicValue" }
+      ]
+    },
+    "GameMenuChoice": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/definitions/Event"
+          },
+          "type": "array"
+        },
+        "conditions": {
+          "items": {
+            "$ref": "condition.json#/definitions/IfEventCondition"
+          },
+          "type": "array"
+        },
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "events"
+      ]
+    },
+    "WaitEvent": {
+      "properties": {
+        "duration": { "$ref": "#/definitions/EventValue" },
+        "type": {
+          "const": "wait",
+          "type": "string"
+        }
+      },
+      "required": [
+        "duration",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FadeEvent": {
+      "properties": {
+        "duration": { "$ref": "#/definitions/EventValue" },
+        "type": {
+          "enum": [
+            "fade-in",
+            "fade-out"
+          ],
+          "type": "string"
+        }
+      },
+      "required": [
+        "duration",
+        "type"
+      ],
+      "type": "object"
+    },
+    "GoToEvent": {
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "start": {
+          "type": "object",
+          "properties": {
+            "x": { "$ref": "#/definitions/EventValue" },
+            "y": { "$ref": "#/definitions/EventValue" },
+            "direction": { "$ref": "#/definitions/Direction" }
+          }
+        },
+        "type": {
+          "const": "go-to-scene",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target",
+        "type"
+      ],
+      "type": "object"
+    },
+    "PlayMusicEvent": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "volume": {
+          "type": "number"
+        },
+        "loop": {
+          "type": "boolean"
+        },
+        "type": {
+          "const": "play-music",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "StopMusicEvent": {
+      "properties": {
+        "type": {
+          "const": "stop-music",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "PlaySoundEvent": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "volume": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "speed": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 64
+        },
+        "pan": {
+          "type": "number",
+          "minimum": -100,
+          "maximum": 100
+        },
+        "priority": {
+          "type": "number",
+          "minimum": -32767,
+          "maximum": 32767
+        },
+        "type": {
+          "const": "play-sound",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "type"
+      ],
+      "type": "object"
+    },
+    "WaitForButtonEvent": {
+      "properties": {
+        "every": {
+          "type": "boolean"
+        },
+        "buttons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": {
+          "const": "wait-for-button",
+          "type": "string"
+        }
+      },
+      "required": [
+        "buttons",
+        "type"
+      ],
+      "type": "object"
+    },
+    "OnButtonPressEvent": {
+      "properties": {
+        "buttons": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": {
+          "const": "on-button-press",
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/definitions/Event"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "buttons",
+        "type"
+      ],
+      "type": "object"
+    },
+    "OnVariableChangeEvent": {
+      "properties": {
+        "variable": {
+          "type": "string"
+        },
+        "type": {
+          "const": "on-variable-change",
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/definitions/Event"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "variable",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DisableInputEvent": {
+      "properties": {
+        "type": {
+          "const": "disable-input",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "EnableInputEvent": {
+      "properties": {
+        "type": {
+          "const": "enable-input",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetVariableEvent": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "value": { "$ref": "#/definitions/EventValue" },
+        "operation": {
+          "enum": ["set", "increment", "decrement"],
+          "type": "string"
+        },
+        "type": {
+          "const": "set-variable",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "value",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetHudTextEvent": {
+      "properties": {
+        "hud": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "value": { "$ref": "#/definitions/EventValue" },
+        "type": {
+          "const": "set-hud-text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hud",
+        "text",
+        "value",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ShowDialogEvent": {
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "direction": { "$ref": "#/definitions/Direction" },
+        "z": {
+          "type": "number"
+        },
+        "speed": {
+          "enum": [
+            "slow",
+            "normal",
+            "fast"
+          ],
+          "type": "string"
+        },
+        "portrait": {
+          "type": "string"
+        },
+        "portraitPosition": {
+          "enum": [
+            "left",
+            "right"
+          ],
+          "type": "string"
+        },
+        "font": {
+          "type": "string"
+        },
+        "textColor": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "type": {
+          "const": "show-dialog",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DisableActorEvent": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "type": {
+          "const": "disable-actor",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor",
+        "type"
+      ],
+      "type": "object"
+    },
+    "EnableActorEvent": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "type": {
+          "const": "enable-actor",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor",
+        "type"
+      ],
+      "type": "object"
+    },
+    "DisableSpriteEvent": {
+      "properties": {
+        "sprite": {
+          "type": "string"
+        },
+        "type": {
+          "const": "disable-sprite",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sprite",
+        "type"
+      ],
+      "type": "object"
+    },
+    "EnableSpriteEvent": {
+      "properties": {
+        "sprite": {
+          "type": "string"
+        },
+        "type": {
+          "const": "enable-sprite",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sprite",
+        "type"
+      ],
+      "type": "object"
+    },
+    "MoveCameraToEvent": {
+      "properties": {
+        "x": { "$ref": "#/definitions/EventValue" },
+        "y": { "$ref": "#/definitions/EventValue" },
+        "duration": { "$ref": "#/definitions/EventValue" },
+        "allowDiagonal": {
+          "type": "boolean"
+        },
+        "directionPriority": { "$ref": "#/definitions/DirectionPriority" },
+        "type": {
+          "const": "move-camera-to",
+          "type": "string"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FollowActorEvent": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "duration": { "$ref": "#/definitions/EventValue" },
+        "allowDiagonal": {
+          "type": "boolean"
+        },
+        "directionPriority": { "$ref": "#/definitions/DirectionPriority" },
+        "type": {
+          "const": "follow-actor",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor",
+        "type"
+      ],
+      "type": "object"
+    },
+    "FollowPlayerEvent": {
+      "properties": {
+        "duration": { "$ref": "#/definitions/EventValue" },
+        "allowDiagonal": {
+          "type": "boolean"
+        },
+        "directionPriority": { "$ref": "#/definitions/DirectionPriority" },
+        "type": {
+          "const": "follow-player",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "FreezeCameraEvent": {
+      "properties": {
+        "type": {
+          "const": "freeze-camera",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "DisablePlayerEvent": {
+      "properties": {
+        "type": {
+          "const": "disable-player",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "EnablePlayerEvent": {
+      "properties": {
+        "type": {
+          "const": "enable-player",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "MoveActorToEvent": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "x": { "$ref": "#/definitions/EventValue" },
+        "y": { "$ref": "#/definitions/EventValue" },
+        "speed": { "$ref": "#/definitions/EventValue" },
+        "directionPriority": { "$ref": "#/definitions/DirectionPriority" },
+        "animation": {
+          "type": "string"
+        },
+        "backwards": {
+          "type": "boolean"
+        },
+        "type": {
+          "const": "move-actor-to",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor",
+        "x",
+        "y",
+        "type"
+      ],
+      "type": "object"
+    },
+    "MovePlayerToEvent": {
+      "properties": {
+        "x": { "$ref": "#/definitions/EventValue" },
+        "y": { "$ref": "#/definitions/EventValue" },
+        "speed": { "$ref": "#/definitions/EventValue" },
+        "directionPriority": { "$ref": "#/definitions/DirectionPriority" },
+        "animation": {
+          "type": "string"
+        },
+        "backwards": {
+          "type": "boolean"
+        },
+        "type": {
+          "const": "move-player-to",
+          "type": "string"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetActorPositionEvent": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "x": { "$ref": "#/definitions/EventValue" },
+        "y": { "$ref": "#/definitions/EventValue" },
+        "type": {
+          "const": "set-actor-position",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor",
+        "x",
+        "y",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetPlayerPositionEvent": {
+      "properties": {
+        "x": { "$ref": "#/definitions/EventValue" },
+        "y": { "$ref": "#/definitions/EventValue" },
+        "type": {
+          "const": "set-player-position",
+          "type": "string"
+        }
+      },
+      "required": [
+        "x",
+        "y",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ShowMenuEvent": {
+      "properties": {
+        "choices": {
+          "items": {
+            "$ref": "#/definitions/GameMenuChoice"
+          },
+          "type": "array"
+        },
+        "direction": { "$ref": "#/definitions/Direction" },
+        "z": {
+          "type": "number"
+        },
+        "font": {
+          "type": "string"
+        },
+        "textColor": {
+          "type": "string"
+        },
+        "background": {
+          "type": "string"
+        },
+        "type": {
+          "const": "show-menu",
+          "type": "string"
+        }
+      },
+      "required": [
+        "choices",
+        "type"
+      ],
+      "type": "object"
+    },
+    "IfEvent": {
+      "properties": {
+        "then": {
+          "items": {
+            "$ref": "#/definitions/Event"
+          },
+          "type": "array"
+        },
+        "else": {
+          "items": {
+            "$ref": "#/definitions/Event"
+          },
+          "type": "array"
+        },
+        "conditions": {
+          "items": {
+            "$ref": "condition.json#/definitions/IfEventCondition"
+          },
+          "type": "array"
+        },
+        "type": {
+          "const": "if",
+          "type": "string"
+        }
+      },
+      "required": [
+        "conditions",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ExecuteScriptEvent": {
+      "properties": {
+        "script": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "maxItems": 10,
+          "items": { "$ref": "#/definitions/EventValue" }
+        },
+        "type": {
+          "const": "execute-script",
+          "type": "string"
+        }
+      },
+      "required": [
+        "script",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetActorDirectionEvent": {
+      "properties": {
+        "actor": {
+          "type": "string"
+        },
+        "direction": { "$ref": "#/definitions/ActorDirection" },
+        "type": {
+          "const": "set-actor-direction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "actor",
+        "direction",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetPlayerDirectionEvent": {
+      "properties": {
+        "direction": { "$ref": "#/definitions/CharacterDirection" },
+        "type": {
+          "const": "set-player-direction",
+          "type": "string"
+        }
+      },
+      "required": [
+        "direction",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetBackgroundEvent": {
+      "properties": {
+        "background": {
+          "type": "string"
+        },
+        "type": {
+          "const": "set-background",
+          "type": "string"
+        }
+      },
+      "required": [
+        "background",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetSpriteEvent": {
+      "properties": {
+        "sprite": {
+          "type": "string"
+        },
+        "asset": {
+          "type": "string"
+        },
+        "type": {
+          "const": "set-sprite",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sprite",
+        "asset",
+        "type"
+      ],
+      "type": "object"
+    },
+    "SaveGameEvent": {
+      "properties": {
+        "type": {
+          "const": "save-game",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "LoadGameEvent": {
+      "properties": {
+        "type": {
+          "const": "load-game",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "SaveStateEvent": {
+      "properties": {
+        "type": {
+          "const": "save-state",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "LoadStateEvent": {
+      "properties": {
+        "type": {
+          "const": "load-state",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "ResetGameEvent": {
+      "properties": {
+        "type": {
+          "const": "reset-game",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
+    },
+    "SetPaletteEffectEvent": {
+      "properties": {
+        "effect": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "target": {
+          "type": "string",
+          "enum": ["background", "sprite", "both"]
+        },
+        "type": {
+          "const": "set-palette-effect",
+          "type": "string"
+        }
+      },
+      "required": [
+        "effect",
+        "value",
+        "duration",
+        "type"
+      ],
+      "type": "object"
+    },
+    "WaveEffectEvent": {
+      "properties": {
+        "amplitude": {
+          "type": "number"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "frequency": {
+          "type": "number"
+        },
+        "duration": {
+          "type": "number"
+        },
+        "type": {
+          "const": "wave-effect",
+          "type": "string"
+        }
+      },
+      "required": [
+        "amplitude",
+        "speed",
+        "frequency",
+        "duration",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ParallelEventsEvent": {
+      "properties": {
+        "events": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Event" }
+        },
+        "type": {
+          "const": "parallel-events",
+          "type": "string"
+        }
+      },
+      "required": [
+        "events",
+        "type"
+      ],
+      "type": "object"
+    },
+    "ShootProjectileEvent": {
+      "properties": {
+        "sourceType": {
+          "type": "string",
+          "enum": ["player", "actor"]
+        },
+        "sprite": {
+          "type": "string"
+        },
+        "actor": {
+          "type": "string"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "hasGravity": {
+          "type": "boolean"
+        },
+        "gravity": {
+          "type": "number"
+        },
+        "gravityStyle": {
+          "type": "string",
+          "enum": ["normal", "arc", "sinus", "custom"]
+        },
+        "gravityAngle": {
+          "type": "number"
+        },
+        "terminalVelocity": {
+          "type": "number"
+        },
+        "lifetime": {
+          "type": "number"
+        },
+        "collisionGroup": {
+          "type": "number"
+        },
+        "destroyOnCollision": {
+          "type": "boolean"
+        },
+        "animation": {
+          "type": "string"
+        },
+        "direction": {
+          "$ref": "#/definitions/ProjectileDirection"
+        },
+        "type": {
+          "const": "shoot-projectile",
+          "type": "string"
+        }
+      },
+      "required": [
+        "sourceType",
+        "sprite",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Event": {
+      "anyOf": [
+        { "$ref": "#/definitions/WaitEvent" },
+        { "$ref": "#/definitions/FadeEvent" },
+        { "$ref": "#/definitions/GoToEvent" },
+        { "$ref": "#/definitions/PlayMusicEvent" },
+        { "$ref": "#/definitions/StopMusicEvent" },
+        { "$ref": "#/definitions/PlaySoundEvent" },
+        { "$ref": "#/definitions/WaitForButtonEvent" },
+        { "$ref": "#/definitions/OnButtonPressEvent" },
+        { "$ref": "#/definitions/OnVariableChangeEvent" },
+        { "$ref": "#/definitions/DisableInputEvent" },
+        { "$ref": "#/definitions/EnableInputEvent" },
+        { "$ref": "#/definitions/SetVariableEvent" },
+        { "$ref": "#/definitions/SetHudTextEvent" },
+        { "$ref": "#/definitions/ShowDialogEvent" },
+        { "$ref": "#/definitions/DisableActorEvent" },
+        { "$ref": "#/definitions/EnableActorEvent" },
+        { "$ref": "#/definitions/DisableSpriteEvent" },
+        { "$ref": "#/definitions/EnableSpriteEvent" },
+        { "$ref": "#/definitions/DisablePlayerEvent" },
+        { "$ref": "#/definitions/EnablePlayerEvent" },
+        { "$ref": "#/definitions/MoveCameraToEvent" },
+        { "$ref": "#/definitions/FollowActorEvent" },
+        { "$ref": "#/definitions/FollowPlayerEvent" },
+        { "$ref": "#/definitions/FreezeCameraEvent" },
+        { "$ref": "#/definitions/MoveActorToEvent" },
+        { "$ref": "#/definitions/MovePlayerToEvent" },
+        { "$ref": "#/definitions/SetActorPositionEvent" },
+        { "$ref": "#/definitions/SetPlayerPositionEvent" },
+        { "$ref": "#/definitions/ShowMenuEvent" },
+        { "$ref": "#/definitions/IfEvent" },
+        { "$ref": "#/definitions/ExecuteScriptEvent" },
+        { "$ref": "#/definitions/SetActorDirectionEvent" },
+        { "$ref": "#/definitions/SetPlayerDirectionEvent" },
+        { "$ref": "#/definitions/SetBackgroundEvent" },
+        { "$ref": "#/definitions/SetSpriteEvent" },
+        { "$ref": "#/definitions/SaveGameEvent" },
+        { "$ref": "#/definitions/LoadGameEvent" },
+        { "$ref": "#/definitions/SaveStateEvent" },
+        { "$ref": "#/definitions/LoadStateEvent" },
+        { "$ref": "#/definitions/ResetGameEvent" },
+        { "$ref": "#/definitions/SetPaletteEffectEvent" },
+        { "$ref": "#/definitions/WaveEffectEvent" },
+        { "$ref": "#/definitions/ParallelEventsEvent" },
+        { "$ref": "#/definitions/ShootProjectileEvent" }
+      ]
+    }
+  },
+  "$ref": "#/definitions/Event"
+}

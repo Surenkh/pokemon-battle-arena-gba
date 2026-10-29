@@ -1,0 +1,8 @@
+{
+  "id": "shot_1",
+  "type": "sprite",
+  "name": "shot_1",
+  "path": "graphics/shot_1.bmp",
+  "width": 32,
+  "height": 32
+}

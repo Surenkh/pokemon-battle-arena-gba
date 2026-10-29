@@ -1,0 +1,8 @@
+{
+  "id": "pk_pikachu",
+  "type": "sprite",
+  "name": "pk_pikachu",
+  "path": "graphics/pk_pikachu.bmp",
+  "width": 64,
+  "height": 64
+}

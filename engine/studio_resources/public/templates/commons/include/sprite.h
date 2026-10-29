@@ -1,0 +1,46 @@
+#ifndef NEO_SPRITE_H
+#define NEO_SPRITE_H
+
+#include <bn_core.h>
+#include <bn_sprite_ptr.h>
+#include <bn_sprite_item.h>
+
+#include <neo_types.h>
+
+namespace neo
+{
+  class game;
+
+  class sprite
+  {
+    public:
+      sprite(neo::game* game, const neo::types::sprite* sprite_definition);
+      ~sprite(); // Destructor - called automatically when delete is used
+
+      void set_position(int tile_x, int tile_y);
+      void set_item(const bn::sprite_item& item);
+      void disable();
+      void enable();
+      void init();
+      bool collides(int tile_x, int tile_y);
+
+      // Executes this sprite's collide events (fired when the player,
+      // being in a different collision group, touches this sprite).
+      void trigger_collide();
+
+      neo::game* game;
+      const neo::types::sprite* definition;
+      bn::sprite_ptr inner_sprite;
+      bn::fixed_point position;
+      // Wave-effect x offset currently baked into inner_sprite's rendered
+      // position (see game::update_wave_effect()), so it can be removed
+      // without drift regardless of how position is set.
+      bn::fixed wave_offset = 0;
+      // Whether the player is currently touching this sprite (different
+      // collision group), so collide events fire once per touch instead
+      // of on every frame of contact.
+      bool player_touching = false;
+  };
+}
+
+#endif

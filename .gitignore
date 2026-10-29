@@ -1,0 +1,22 @@
+.gbastudio/
+.toolchain/
+.tooling/
+node_modules/
+out/
+combat_tests
+movement_tests
+tests/mgba_driver
+tests/native_artifacts/
+__pycache__/
+
+# Retain native source inputs, not historical web-preview exports.
+/assets/source/*
+!/assets/source/README.md
+!/assets/source/CREDITS.md
+!/assets/source/SOURCES.json
+!/assets/source/PROMPTS.json
+!/assets/source/animations/
+!/assets/source/screens/
+/assets/source/screens/*
+!/assets/source/screens/layers/
+!/assets/source/screens/ui_renderer.js

@@ -1,0 +1,97 @@
+#include <neo_logs.h>
+
+#include <bn_core.h>
+#include <bn_sprite_ptr.h>
+#include <bn_log.h>
+
+#include <neo_types.h>
+
+#include "sprite.h"
+#include "game.h"
+
+namespace neo
+{
+  sprite::sprite(
+    neo::game* game_,
+    const neo::types::sprite* sprite_definition_
+  ): game(game_),
+      definition(sprite_definition_),
+      inner_sprite(definition->sprite.create_sprite(0, 0))
+  {
+    inner_sprite.set_camera(game->camera);
+    inner_sprite.set_visible(true);
+    inner_sprite.set_bg_priority(1);
+
+    int x = definition->x->as_int(game->variables);
+    int y = definition->y->as_int(game->variables);
+    int z = definition->z->as_int(game->variables);
+
+    inner_sprite.set_z_order(z);
+    set_position(x, y);
+  }
+
+  sprite::~sprite()
+  {
+    inner_sprite.set_visible(false);
+  }
+
+  void sprite::set_position (int tile_x, int tile_y)
+  {
+    position = bn::fixed_point(tile_x, tile_y);
+
+    int x = game->active_scene->map_data->to_pixel_x(game->variables, tile_x)
+        - game->active_scene->map_data->pixel_width(game->variables) / 2
+        + inner_sprite.dimensions().width() / 2;
+    int y = game->active_scene->map_data->to_pixel_y(game->variables, tile_y)
+        - game->active_scene->map_data->pixel_height(game->variables) / 2
+        + inner_sprite.dimensions().height() / 2;
+
+    inner_sprite.set_x(x);
+    inner_sprite.set_y(y);
+    wave_offset = 0;
+  }
+
+  void sprite::set_item(const bn::sprite_item& item)
+  {
+    inner_sprite.set_item(item);
+    // Dimensions may differ, so re-anchor on the same tile.
+    set_position(position.x().right_shift_integer(), position.y().right_shift_integer());
+  }
+
+  void sprite::disable()
+  {
+    inner_sprite.set_visible(false);
+  }
+
+  void sprite::enable()
+  {
+    inner_sprite.set_visible(true);
+  }
+
+  void sprite::init()
+  {
+    for (int i = 0; i < definition->init_events_count; ++i)
+    {
+      game->exec_event(definition->init_events[i], false);
+    }
+  }
+
+  bool sprite::collides(int tile_x, int tile_y)
+  {
+    if (!inner_sprite.visible())
+    {
+      return false;
+    }
+
+    return (tile_x == position.x().right_shift_integer())
+      && (tile_y == position.y().right_shift_integer());
+  }
+
+  void sprite::trigger_collide()
+  {
+    for (int i = 0; i < definition->collide_events_count; ++i)
+    {
+      game->exec_event(definition->collide_events[i], true);
+    }
+  }
+}
