@@ -1,6 +1,6 @@
 # Game improvement roadmap
 
-This is the current implementation order. Each direction should end in a playable, independently reviewable change. The original five-priority document is not present in this repository; reconcile this working roadmap with it when the editable project is restored.
+This is the current implementation order. Each direction should end in a playable, independently reviewable change. The editable native source and required assets are restored in Git.
 
 | Priority | Direction | First deliverable | Evidence that it works |
 | --- | --- | --- | --- |
@@ -12,4 +12,6 @@ This is the current implementation order. Each direction should end in a playabl
 
 Avoid introducing all five at once. Visual identity comes first because it makes later timing, balance, and opponent changes easier for the player to understand.
 
-For priority 1, see [the iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md). Priority 1 is implemented in the v0.3.0 candidate. See ../ELEMENTAL_ATTACKS_TEST_REPORT.md. Priorities 2–5 remain future work.
+Priority 1 shipped in v0.3.0; see [the iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md) and [its evidence](../ELEMENTAL_ATTACKS_TEST_REPORT.md). Priority 2 is implemented in v0.4.0: themed sounds, hit flash, a fixed-HUD camera shake, guard/stamina feedback, super warnings, and landing input buffering. See [the implementation contract](../COMBAT_FEEL.md) and [test evidence](../COMBAT_FEEL_TEST_REPORT.md).
+
+Priority 3 is next. Begin with human playtesting of spacing, stamina recovery, interrupted supers and each fighter's risk/reward. Collect matchup evidence before adding mechanics or changing the canonical character values. Priorities 4–5 remain future work. Physical hardware profiling is still outstanding.

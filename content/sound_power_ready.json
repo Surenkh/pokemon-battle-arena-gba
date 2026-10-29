@@ -1,0 +1,7 @@
+{
+  "id": "power_ready",
+  "type": "sound",
+  "name": "power_ready",
+  "path": "audio/power_ready.wav",
+  "format": "wav"
+}

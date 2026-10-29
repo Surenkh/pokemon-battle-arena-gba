@@ -4,11 +4,14 @@
   "compiler": "arm-none-eabi-g++ (devkitARM) 16.1.0",
   "host": "Linux x86_64",
   "studio_deb_sha256": "5df46494f63d4cf9697ff27c78d35b661026d17ff4e92ea7942548635288a371",
-  "rom_sha256": "1f5091ee0f6959731c609f7d4decda7ac5867d56365229df732c67bdff4db817",
+  "rom_sha256": "cd01214a2b2eab27f9bbc1795d6cb0f7276854fa3756490b69bd5e4d75c45ede",
   "build_engine": "project-scoped vendored GBA Studio CLI and Butano",
-  "game_release": "0.3.0",
-  "ruleset": "0.3.0",
+  "game_release": "0.4.0",
+  "ruleset": "0.4.0",
   "animation_source_revision": "18c8a218537b984839803b95d588382624a8301a",
   "compiler_package_note": "GBA Studio 0.5.0 bundled linux.tar.gz; compiler binaries verified as x86-64.",
-  "baseline_rebuild_sha256": "d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845"
+  "baseline_rebuild_sha256": "d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845",
+  "rom_bytes": 1430492,
+  "audio_assets": 27,
+  "combat_voice_limit": 2
 }

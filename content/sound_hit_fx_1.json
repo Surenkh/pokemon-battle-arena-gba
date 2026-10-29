@@ -1,0 +1,7 @@
+{
+  "id": "hit_fx_1",
+  "type": "sound",
+  "name": "hit_fx_1",
+  "path": "audio/hit_fx_1.wav",
+  "format": "wav"
+}

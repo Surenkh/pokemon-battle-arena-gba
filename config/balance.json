@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "0.3.0",
+  "ruleset_version": "0.4.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -146,9 +146,9 @@
     "normal_projectiles": 2,
     "super_projectiles": 2,
     "contact_candidates": 16,
-    "combat_events": 64,
+    "combat_events": 32,
     "cpu_observation_history": 32,
-    "cosmetic_effects": 8
+    "cosmetic_effects": 12
   },
   "characters": [
     {
