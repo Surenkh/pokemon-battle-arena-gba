@@ -1,0 +1,7 @@
+{
+  "id": "no_stamina",
+  "type": "sound",
+  "name": "no_stamina",
+  "path": "audio/no_stamina.wav",
+  "format": "wav"
+}

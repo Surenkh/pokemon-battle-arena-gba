@@ -1,0 +1,195 @@
+{
+  "generator": "tools/generate_combat_audio.py",
+  "provenance": "Original deterministic synthesis; no external recordings",
+  "assets": [
+    {
+      "name": "shot_fx_0",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "ed8e6b0683768e18e41b93c8016edf72f27533fc8f7c9f1a694769fc4e49be3f"
+    },
+    {
+      "name": "hit_fx_0",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "809fa00ba6f119b47581117d524fdff0530b6f55607dc0bd7bb4351cf20b4161"
+    },
+    {
+      "name": "charge_fx_0",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "010895a50c5e9ca1ef7c262fe13447afa1748f517a4e342a6242cbfd48d8c576"
+    },
+    {
+      "name": "release_fx_0",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 22770,
+      "sha256": "a5e78f42d8edc0e6b7e9f90a3daef8306e1789febd10ae8036e1865aa310fe9a"
+    },
+    {
+      "name": "shot_fx_1",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "232e31ac72c1d80e9636111583e0125bd02f4996c811b514c97571d6e3dc0b06"
+    },
+    {
+      "name": "hit_fx_1",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "36f9a6cfedee15bdf1ccb22504a5e23c208b930d2c29b4eba9b8c2bec97eaca5"
+    },
+    {
+      "name": "charge_fx_1",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "9cb0772caeafcad6709f43d1d21b504489dbc3673559979c5bdbbb1efa0e1afa"
+    },
+    {
+      "name": "release_fx_1",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "2594cb344c0886449511758cfae67d361844ff62fcefccf640bf9714b3fe4cfb"
+    },
+    {
+      "name": "shot_fx_2",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 20888,
+      "sha256": "fbbf7f9686ab3863f2111cb30fa623e7a085614650da7c3addffd6c67f762907"
+    },
+    {
+      "name": "hit_fx_2",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 18708,
+      "sha256": "d89e8769d00045c1e1a88dd70ad10c895fc55450f05d62498b7f2613d0740b1d"
+    },
+    {
+      "name": "charge_fx_2",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 20320,
+      "sha256": "a2beb34901ac566dfc0befb0d71f5371d0bff9e2865d2b95429ead7b03f1691f"
+    },
+    {
+      "name": "release_fx_2",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 18925,
+      "sha256": "e5121115a10d096d4bdee8468f7b530674870394594f06bea543f329853d0c87"
+    },
+    {
+      "name": "shot_fx_3",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 19230,
+      "sha256": "53efdf610679e86aeccfff762bbdea478a98e97933a5febd7b14d69a7f23b751"
+    },
+    {
+      "name": "hit_fx_3",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 17636,
+      "sha256": "4b6a3aaa10515d8ebbdbddf180e2ff4b3d08b00462fd4f4fe1b21657a0e4be64"
+    },
+    {
+      "name": "charge_fx_3",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 19117,
+      "sha256": "3e57b7c2d94508f5f91df6a890757a9e0d9e5f00a3a3ce0f21de8ecc935fb152"
+    },
+    {
+      "name": "release_fx_3",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 18883,
+      "sha256": "1d77f4684a90cf2960ec7bf3ea74b612a4fcbbf956042eb7e73c554244f93898"
+    },
+    {
+      "name": "shot_fx_4",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 17263,
+      "sha256": "988871785a67dda465ddc30471d2227e3aa3a17a284613f72c1eaf6f007049cf"
+    },
+    {
+      "name": "hit_fx_4",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 16975,
+      "sha256": "1b800d9b6d297ea96f277b6663c61d4ecb37362a6d420e79953735c6cf64f25d"
+    },
+    {
+      "name": "charge_fx_4",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 17753,
+      "sha256": "3ea13a8b601a72b55d0b44ca0bd84dcb8102df5cd3534ef110514801a99eefaa"
+    },
+    {
+      "name": "release_fx_4",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 17952,
+      "sha256": "687762e611a46d8e78da7854a3ab26eeb6d888b1096bb229be29a070d5f7acb3"
+    },
+    {
+      "name": "shot_fx_5",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 18118,
+      "sha256": "11ea3ac89b1ad722360f54cd67839b8708ad8ec712985abe768ebb829cd1ca65"
+    },
+    {
+      "name": "hit_fx_5",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 15747,
+      "sha256": "eb5e3f4f0e5ae071b90b42be09434df6e0877391f8b2d9150cc53f5d786a46ed"
+    },
+    {
+      "name": "charge_fx_5",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "cec3a78c6433fbfe87a85af4cfc21a1e3707f2e9d798e320cfd309ff62d7dfd9"
+    },
+    {
+      "name": "release_fx_5",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 20067,
+      "sha256": "2a7959ab5dc68ed2d0abfcb9b1e877ef38bb3dfe4fd57e6617a3e27f2624bf12"
+    },
+    {
+      "name": "guard_break",
+      "samples": 2949,
+      "rate": 16384,
+      "peak": 19752,
+      "sha256": "21186eea6502a07770a8fa637604bdd0054e8e7811a901741820558ba506ccdc"
+    },
+    {
+      "name": "no_stamina",
+      "samples": 1311,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "fded5cbbb8639beb6907c5642c6fa2a2a35f8358d7893eb9ec7b4fe52f96398f"
+    },
+    {
+      "name": "power_ready",
+      "samples": 1966,
+      "rate": 16384,
+      "peak": 17276,
+      "sha256": "dab5fe454ad4b126f45bd801a98aecb2e85ed6d0b2bad09190d646fd4621e877"
+    }
+  ]
+}

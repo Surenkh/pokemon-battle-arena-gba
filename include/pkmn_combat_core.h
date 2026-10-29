@@ -15,9 +15,14 @@ struct Fighter {
 };
 struct Projectile { bool active=false,reserved=false,super=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0; };
 struct Observation { Fighter f[2];Projectile p[4]; };
+// Read-only presentation events; never consulted by combat resolution or AI.
+enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EVENT_COUNT };
+struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack; };
 class CombatCore {
 public:
  Fighter f[2];Projectile p[4];int tick=0,remaining=3600,hitstop=0,outcome=0,feedback=0;uint32_t next_id=1,seed=1;
+ static constexpr int max_events=32;
+ CombatEvent events[max_events]{};int event_count=0;uint32_t event_frame=0;
  void reset(int player,int cpu,uint32_t match_seed=1);
  void frame(Input player,Input cpu);
  void step(Input player,Input cpu);
@@ -27,6 +32,9 @@ public:
  bool grounded(const Fighter& v) const {return v.y>=world_floor_y*256;}
  uint32_t checksum() const;
 private:
+ void begin_events(){event_count=0;++event_frame;}
+ void emit(EventKind kind,int owner,int target,bool super=false);
+ bool jump_buffer_eligible(const Fighter& v)const;
  void action(int who,Input input);void physics();void spawn();void collide(const Fighter previous[2]);void resources();
  void enter(int who,Action a,int duration,int cost);void cancel(int who);
 };

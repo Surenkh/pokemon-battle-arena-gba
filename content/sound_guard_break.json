@@ -1,0 +1,7 @@
+{
+  "id": "guard_break",
+  "type": "sound",
+  "name": "guard_break",
+  "path": "audio/guard_break.wav",
+  "format": "wav"
+}

@@ -14,3 +14,25 @@ The driver now reads 32 telemetry words. Slots 25–26 are fighter frame indices
 ## Elemental effects
 
 Run `python3 tests/native_effects_flow.py` with the same driver/environment. It uses real inputs to earn and fire supers for each fighter and validates normal travel phases, themed muzzle/hit effects, bounded live effects and frame timing. Word 30 is a seen-phase mask (normal bits 0–3, super bits 4–7). Word 31 records per-character hit, muzzle and guard effects at bit offsets 0, 8 and 16. Close supers may hit before displaying a full loop. All four super artwork frames are validated by tests/effects_assets_test.cjs.
+
+## Combat feedback and audio
+
+Run `python3 tests/native_feel_flow.py` with the same driver/environment and Pillow installed. It records stereo WAVs from mGBA's actual audio channels, tests the two-voice cap, exercises every fighter's shot/charge/release bank through real play, and checks pause, guard break, exhaustion and fixed HUD pixels. A translation check confirms frozen actors and scenery move together. Generated WAVs/PPMs are temporary test artifacts, not source assets.
+
+The driver explicitly enables audio at 32,768 Hz, drains both emulator audio buffers every display frame, and finalizes WAV headers on close/exit. Its `b` replay policy creates distance before a full-SP super to exercise completed release sounds; the original `a` regression policy is preserved. No runner writes gameplay memory. General flow results must report zero missed display frames as well as passing functional checks.
+
+A separate 16-word `pkmn_feel_debug` array leaves the original 32-word telemetry layout intact:
+
+| Word | Value |
+| --- | --- |
+| 0 | Magic 0x4645454c |
+| 1 | Seen combat-event mask |
+| 2–3 | Signed screen-space camera displacement |
+| 4 | Active combat voices (0–2) |
+| 5–7 | Played character, charge and release bank masks |
+| 8–11 | Guard breaks, rejected stamina inputs, landing-buffer jumps, shake frames |
+| 12 | Active charge-owned voices |
+| 13 | Last native CPU fraction in Q12; volatile even while paused |
+| 14–15 | Per-fighter HUD status codes |
+
+Status codes are 0 none, 1 low stamina, 2 block, 3 rejected stamina input, 4 guard break, 5 super ready. Reports are committed under docs/verification/v0.4.0/. These tests exercise the native ROM; host tests additionally cover input-buffer boundary cases that are difficult to arrange with external button timing.
