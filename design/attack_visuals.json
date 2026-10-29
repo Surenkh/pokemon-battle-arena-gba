@@ -1,0 +1,291 @@
+{
+  "format": "pokemon-battle-arena.attack-visual-design",
+  "version": 1,
+  "status": "design_only_not_consumed_by_runtime",
+  "gameplay_baseline": "0.2.0",
+  "candidate_release": "0.3.0",
+  "simulation_changes": false,
+  "integration_requires": "Restore editable source and resolve IDs, anchors, and renderer mapping before use",
+  "asset_plan": {
+    "format": "indexed 4bpp",
+    "palette_entries": 16,
+    "transparent_index": 0,
+    "clips": {
+      "normal_travel": {
+        "frame_width": 16,
+        "frame_height": 16,
+        "frames": 4,
+        "loop": true
+      },
+      "impact": {
+        "frame_width": 16,
+        "frame_height": 16,
+        "frames": 4,
+        "loop": false
+      },
+      "super_travel": {
+        "frame_width": 32,
+        "frame_height": 32,
+        "frames": 4,
+        "loop": true
+      }
+    },
+    "all_fighters_raw_tile_bytes": 18432,
+    "includes_palettes_or_import_overhead": false
+  },
+  "effect_policy": {
+    "decorative_transient_sprite_pool_target": 12,
+    "overflow": "drop old decorative trails and impacts before core projectiles or warnings",
+    "timing_source": "resolve from existing game clocks; no simulation RNG for decoration",
+    "damage_source": "existing combat simulation only",
+    "super_evasion": "preserve baseline jump and squeeze windows and collision geometry"
+  },
+  "fighters": [
+    {
+      "id": "pikachu",
+      "name": "Pikachu",
+      "theme": "electric",
+      "normal": {
+        "name": "Spark Bolt",
+        "silhouette": "angular_zigzag",
+        "motion": "branch alternation around a stable zigzag core",
+        "clip": "normal_travel"
+      },
+      "super": {
+        "name": "Thunder Lance",
+        "clip": "super_travel",
+        "silhouette": "larger brighter angular_zigzag",
+        "collision_rule": "use existing super collision, not decorative bounds"
+      },
+      "impact": {
+        "shape": "branched star",
+        "clip": "impact"
+      },
+      "trail": {
+        "shape": "electric motes",
+        "decorative_only": true
+      },
+      "palette": {
+        "transparent_hex": "#FF00FF",
+        "opaque_hex": [
+          "#17152F",
+          "#765000",
+          "#B87B00",
+          "#F3B818",
+          "#FFE14F",
+          "#FFF2A0",
+          "#FFFFFF"
+        ],
+        "max_opaque_colors": 15
+      },
+      "runtime_fighter_id": null,
+      "muzzle_anchor_pixels": null,
+      "source_mapping_status": "requires source inspection"
+    },
+    {
+      "id": "charmander",
+      "name": "Charmander",
+      "theme": "fire",
+      "normal": {
+        "name": "Ember Shot",
+        "silhouette": "tapered_flame",
+        "motion": "tail flicker behind a tapered flame core",
+        "clip": "normal_travel"
+      },
+      "super": {
+        "name": "Flame Burst",
+        "clip": "super_travel",
+        "silhouette": "larger brighter tapered_flame",
+        "collision_rule": "use existing super collision, not decorative bounds"
+      },
+      "impact": {
+        "shape": "flame bloom",
+        "clip": "impact"
+      },
+      "trail": {
+        "shape": "embers",
+        "decorative_only": true
+      },
+      "palette": {
+        "transparent_hex": "#FF00FF",
+        "opaque_hex": [
+          "#25142B",
+          "#7A211B",
+          "#BC341C",
+          "#F46D20",
+          "#FFB43F",
+          "#FFE58F",
+          "#FFFFFF"
+        ],
+        "max_opaque_colors": 15
+      },
+      "runtime_fighter_id": null,
+      "muzzle_anchor_pixels": null,
+      "source_mapping_status": "requires source inspection"
+    },
+    {
+      "id": "squirtle",
+      "name": "Squirtle",
+      "theme": "water",
+      "normal": {
+        "name": "Water Pulse",
+        "silhouette": "rounded_ripple",
+        "motion": "outline ripple around a rounded water core",
+        "clip": "normal_travel"
+      },
+      "super": {
+        "name": "Hydro Surge",
+        "clip": "super_travel",
+        "silhouette": "larger brighter rounded_ripple",
+        "collision_rule": "use existing super collision, not decorative bounds"
+      },
+      "impact": {
+        "shape": "crown splash",
+        "clip": "impact"
+      },
+      "trail": {
+        "shape": "droplets",
+        "decorative_only": true
+      },
+      "palette": {
+        "transparent_hex": "#FF00FF",
+        "opaque_hex": [
+          "#122643",
+          "#173F8B",
+          "#256BBC",
+          "#3DABDE",
+          "#77DFEB",
+          "#C7F5FF",
+          "#FFFFFF"
+        ],
+        "max_opaque_colors": 15
+      },
+      "runtime_fighter_id": null,
+      "muzzle_anchor_pixels": null,
+      "source_mapping_status": "requires source inspection"
+    },
+    {
+      "id": "bulbasaur",
+      "name": "Bulbasaur",
+      "theme": "grass",
+      "normal": {
+        "name": "Razor Leaf",
+        "silhouette": "paired_pointed_leaves",
+        "motion": "four-angle leaf rotation around the travel axis",
+        "clip": "normal_travel"
+      },
+      "super": {
+        "name": "Verdant Lance",
+        "clip": "super_travel",
+        "silhouette": "larger brighter paired_pointed_leaves",
+        "collision_rule": "use existing super collision, not decorative bounds"
+      },
+      "impact": {
+        "shape": "split leaves",
+        "clip": "impact"
+      },
+      "trail": {
+        "shape": "leaf fragments",
+        "decorative_only": true
+      },
+      "palette": {
+        "transparent_hex": "#FF00FF",
+        "opaque_hex": [
+          "#182D30",
+          "#1F5634",
+          "#398943",
+          "#73B74C",
+          "#ADE364",
+          "#E1F7A2",
+          "#FFFFFF"
+        ],
+        "max_opaque_colors": 15
+      },
+      "runtime_fighter_id": null,
+      "muzzle_anchor_pixels": null,
+      "source_mapping_status": "requires source inspection"
+    },
+    {
+      "id": "eevee",
+      "name": "Eevee",
+      "theme": "normal_energy",
+      "normal": {
+        "name": "Swift Star",
+        "silhouette": "four_point_star",
+        "motion": "alternating glints around a stable four-point core",
+        "clip": "normal_travel"
+      },
+      "super": {
+        "name": "Radiant Swift",
+        "clip": "super_travel",
+        "silhouette": "larger brighter four_point_star",
+        "collision_rule": "use existing super collision, not decorative bounds"
+      },
+      "impact": {
+        "shape": "star shimmer",
+        "clip": "impact"
+      },
+      "trail": {
+        "shape": "small stars",
+        "decorative_only": true
+      },
+      "palette": {
+        "transparent_hex": "#FF00FF",
+        "opaque_hex": [
+          "#30213C",
+          "#684667",
+          "#AD7498",
+          "#E4A7C0",
+          "#F1D681",
+          "#FFF1C6",
+          "#FFFFFF"
+        ],
+        "max_opaque_colors": 15
+      },
+      "runtime_fighter_id": null,
+      "muzzle_anchor_pixels": null,
+      "source_mapping_status": "requires source inspection"
+    },
+    {
+      "id": "meowth",
+      "name": "Meowth",
+      "theme": "claw",
+      "normal": {
+        "name": "Claw Wave",
+        "silhouette": "three_parallel_arcs",
+        "motion": "three arcs sweep together with offset edge glints",
+        "clip": "normal_travel"
+      },
+      "super": {
+        "name": "Fury Claw",
+        "clip": "super_travel",
+        "silhouette": "larger brighter three_parallel_arcs",
+        "collision_rule": "use existing super collision, not decorative bounds"
+      },
+      "impact": {
+        "shape": "three diagonal scratches",
+        "clip": "impact"
+      },
+      "trail": {
+        "shape": "short scratch glints",
+        "decorative_only": true
+      },
+      "palette": {
+        "transparent_hex": "#FF00FF",
+        "opaque_hex": [
+          "#251E38",
+          "#5C466C",
+          "#9B658E",
+          "#D690B8",
+          "#B9C8DF",
+          "#EAF2FF",
+          "#FFFFFF"
+        ],
+        "max_opaque_colors": 15
+      },
+      "runtime_fighter_id": null,
+      "muzzle_anchor_pixels": null,
+      "source_mapping_status": "requires source inspection"
+    }
+  ]
+}

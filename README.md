@@ -30,6 +30,10 @@ Download `downloads/SHA256SUMS.txt` from this repository and compare it with the
 d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845  PokemonBattleArena.gba
 ```
 
+## Development
+
+The next iteration focuses on [elemental attack identities](docs/development/ITERATION_01_ELEMENTAL_ATTACKS.md), with [five improvement directions](docs/development/ROADMAP.md) and a [Git workflow](CONTRIBUTING.md). Its design is in preparation; the downloadable ROM remains v0.2.0. Editable source must be restored before building the gameplay update.
+
 ## Feedback
 
 For bugs, include the game version, emulator/version or device, selected fighters, steps to reproduce, and expected versus actual result.
