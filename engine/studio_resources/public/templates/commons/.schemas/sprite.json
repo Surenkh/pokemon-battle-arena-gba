@@ -1,0 +1,143 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "sprite.json",
+  "definitions": {
+    "AnimationFrame": {
+      "type": "object",
+      "required": ["type", "index"],
+      "additionalProperties": false,
+      "properties": {
+        "duration": { "$ref": "event.json#/definitions/EventValue" },
+        "reverse": {
+          "type": "boolean"
+        },
+        "index": {
+          "oneOf": [
+            { "type": "number" },
+            { "type": "string" }
+          ]
+        },
+        "type": {
+          "const": "frame",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "AnimationState": {
+      "type": "object",
+      "required": ["type", "frames"],
+      "additionalProperties": false,
+      "properties": {
+        "frames": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/AnimationFrame" }
+        },
+        "type": {
+          "const": "state",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "Animation": {
+      "type": "object",
+      "required": ["type", "name", "animationType"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "const": "animation",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "animationType": {
+          "enum": [
+            "fixed",
+            "movements",
+            "directions"
+          ],
+          "type": "string"
+        },
+        "states": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "fixed": {
+              "$ref": "#/definitions/AnimationState"
+            },
+            "moving": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "up": { "$ref": "#/definitions/AnimationState" },
+                "down": { "$ref": "#/definitions/AnimationState" },
+                "left": { "$ref": "#/definitions/AnimationState" },
+                "right": { "$ref": "#/definitions/AnimationState" }
+              }
+            },
+            "idle": {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "up": { "$ref": "#/definitions/AnimationState" },
+                "down": { "$ref": "#/definitions/AnimationState" },
+                "left": { "$ref": "#/definitions/AnimationState" },
+                "right": { "$ref": "#/definitions/AnimationState" }
+              }
+            }
+          }
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "Sprite": {
+      "type": "object",
+      "required": ["type", "width", "height", "name", "format", "path"],
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "type": {
+          "const": "sprite",
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        },
+        "name": {
+          "type": "string"
+        },
+        "transparentColor": {
+          "type": "string"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["bmp"]
+        },
+        "path": {
+          "type": "string"
+        },
+        "animations": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Animation" }
+        }
+      }
+    }
+  },
+  "$ref": "#/definitions/Sprite"
+}

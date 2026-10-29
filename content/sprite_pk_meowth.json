@@ -1,0 +1,8 @@
+{
+  "id": "pk_meowth",
+  "type": "sprite",
+  "name": "pk_meowth",
+  "path": "graphics/pk_meowth.bmp",
+  "width": 64,
+  "height": 64
+}

@@ -1,0 +1,10 @@
+{
+  "id": "pokemon-battle-arena",
+  "name": "Pokemon Battle Arena",
+  "romName": "PKMN ARENA",
+  "romCode": "PKFA",
+  "startingScene": "arena",
+  "settings": {
+    "emulatorType": "internal"
+  }
+}

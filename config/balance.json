@@ -1,0 +1,323 @@
+{
+  "ruleset_version": "0.3.0",
+  "nominal_tick_hz": 60,
+  "match": {
+    "round_ticks": 3600,
+    "countdown_display_ticks": 180,
+    "resume_countdown_display_ticks": 60,
+    "result_delay_display_ticks": 60,
+    "cpu_mirror_matches": false
+  },
+  "world": {
+    "width": 240,
+    "height": 160,
+    "floor_y": 120,
+    "min_fighter_x": 32,
+    "max_fighter_x": 208,
+    "player_spawn_x": 64,
+    "cpu_spawn_x": 176
+  },
+  "resources": {
+    "stamina_subunits_per_point": 60,
+    "stamina_regen_delay_ticks": 30,
+    "block_drain_subunits_per_tick": 12,
+    "block_enter_min_stamina": 8,
+    "super_power_max": 100,
+    "super_power_start": 0,
+    "melee_clean_hit_power": 18,
+    "fire_clean_hit_power": 22,
+    "guard_cost_numerator": 5,
+    "guard_cost_denominator": 4
+  },
+  "motion": {
+    "gravity_q8": 64,
+    "jump_velocity_q8": -1088,
+    "max_fall_velocity_q8": 1280,
+    "air_speed_numerator": 3,
+    "air_speed_denominator": 4,
+    "normal_knockback_q8": 512,
+    "super_knockback_q8": 768,
+    "knockback_decay_q8": 64,
+    "ground_acceleration_q8": 96,
+    "ground_braking_q8": 96,
+    "ground_turn_acceleration_q8": 144,
+    "air_acceleration_q8": 32,
+    "air_drag_q8": 8,
+    "normal_hit_lift_q8": -320,
+    "super_hit_lift_q8": -640,
+    "landing_pose_ticks": 5,
+    "walk_stride_q8": 3072
+  },
+  "input": {
+    "buffer_ticks": 3,
+    "press_actions_repeat_while_held": false
+  },
+  "collision": {
+    "standing_hurtbox": [
+      -7,
+      -28,
+      7,
+      0
+    ],
+    "squeezed_hurtbox": [
+      -8,
+      -10,
+      8,
+      0
+    ],
+    "standing_pushbox": [
+      -8,
+      -24,
+      8,
+      0
+    ],
+    "squeezed_pushbox": [
+      -8,
+      -10,
+      8,
+      0
+    ],
+    "right_melee_hitbox": [
+      5,
+      -24,
+      21,
+      0
+    ],
+    "fire_hitbox": [
+      -3,
+      -3,
+      3,
+      3
+    ],
+    "super_hitbox": [
+      -6,
+      -6,
+      6,
+      6
+    ],
+    "fire_spawn_forward_px": 12,
+    "super_spawn_forward_px": 14,
+    "projectile_spawn_above_feet_px": 18
+  },
+  "actions": {
+    "jump": {
+      "stamina_cost": 18
+    },
+    "melee": {
+      "stamina_cost": 8
+    },
+    "fire": {
+      "stamina_cost": 20,
+      "lifetime_ticks": 60
+    },
+    "squeeze": {
+      "stamina_cost": 12,
+      "startup_ticks": 3,
+      "active_ticks": 24,
+      "recovery_ticks": 9,
+      "cooldown_after_end_ticks": 24
+    },
+    "super": {
+      "stamina_cost": 25,
+      "power_cost": 100,
+      "startup_ticks": 30,
+      "active_ticks": 1,
+      "recovery_ticks": 24,
+      "projectile_speed_q8": 1280,
+      "lifetime_ticks": 60,
+      "blockable": false,
+      "tracking": false,
+      "power_gain": 0
+    }
+  },
+  "reactions": {
+    "normal_hitstun_ticks": 12,
+    "super_hitstun_ticks": 24,
+    "blockstun_ticks": 6,
+    "guard_break_ticks": 45,
+    "post_hit_invulnerability_ticks": 12,
+    "normal_hitstop_display_ticks": 4,
+    "super_hitstop_display_ticks": 8,
+    "block_hitstop_display_ticks": 2
+  },
+  "capacities": {
+    "fighters": 2,
+    "melee_instances": 2,
+    "normal_projectiles": 2,
+    "super_projectiles": 2,
+    "contact_candidates": 16,
+    "combat_events": 64,
+    "cpu_observation_history": 32,
+    "cosmetic_effects": 8
+  },
+  "characters": [
+    {
+      "id": "pikachu",
+      "name": "Pikachu",
+      "type": "Electric",
+      "max_hp": 95,
+      "max_stamina": 105,
+      "stamina_regen_per_second": 26,
+      "walk_speed_q8": 384,
+      "melee": {
+        "name": "Quick Jab",
+        "damage": 8,
+        "startup_ticks": 4,
+        "active_ticks": 3,
+        "recovery_ticks": 11
+      },
+      "fire": {
+        "name": "Spark Shot",
+        "damage": 12,
+        "startup_ticks": 8,
+        "active_ticks": 1,
+        "recovery_ticks": 17,
+        "speed_q8": 896
+      },
+      "super": {
+        "name": "Volt Burst",
+        "damage": 32
+      }
+    },
+    {
+      "id": "charmander",
+      "name": "Charmander",
+      "type": "Fire",
+      "max_hp": 100,
+      "max_stamina": 90,
+      "stamina_regen_per_second": 24,
+      "walk_speed_q8": 307,
+      "melee": {
+        "name": "Claw Swipe",
+        "damage": 10,
+        "startup_ticks": 6,
+        "active_ticks": 3,
+        "recovery_ticks": 14
+      },
+      "fire": {
+        "name": "Ember Shot",
+        "damage": 14,
+        "startup_ticks": 10,
+        "active_ticks": 1,
+        "recovery_ticks": 21,
+        "speed_q8": 768
+      },
+      "super": {
+        "name": "Inferno Wave",
+        "damage": 36
+      }
+    },
+    {
+      "id": "squirtle",
+      "name": "Squirtle",
+      "type": "Water",
+      "max_hp": 115,
+      "max_stamina": 110,
+      "stamina_regen_per_second": 22,
+      "walk_speed_q8": 269,
+      "melee": {
+        "name": "Shell Bump",
+        "damage": 7,
+        "startup_ticks": 6,
+        "active_ticks": 3,
+        "recovery_ticks": 13
+      },
+      "fire": {
+        "name": "Water Shot",
+        "damage": 11,
+        "startup_ticks": 10,
+        "active_ticks": 1,
+        "recovery_ticks": 19,
+        "speed_q8": 704
+      },
+      "super": {
+        "name": "Hydro Wave",
+        "damage": 30
+      }
+    },
+    {
+      "id": "bulbasaur",
+      "name": "Bulbasaur",
+      "type": "Grass/Poison",
+      "max_hp": 120,
+      "max_stamina": 100,
+      "stamina_regen_per_second": 20,
+      "walk_speed_q8": 243,
+      "melee": {
+        "name": "Vine Jab",
+        "damage": 9,
+        "startup_ticks": 7,
+        "active_ticks": 3,
+        "recovery_ticks": 15
+      },
+      "fire": {
+        "name": "Leaf Shot",
+        "damage": 12,
+        "startup_ticks": 11,
+        "active_ticks": 1,
+        "recovery_ticks": 20,
+        "speed_q8": 832
+      },
+      "super": {
+        "name": "Solar Pulse",
+        "damage": 34
+      }
+    },
+    {
+      "id": "eevee",
+      "name": "Eevee",
+      "type": "Normal",
+      "max_hp": 100,
+      "max_stamina": 115,
+      "stamina_regen_per_second": 28,
+      "walk_speed_q8": 358,
+      "melee": {
+        "name": "Tackle",
+        "damage": 7,
+        "startup_ticks": 4,
+        "active_ticks": 3,
+        "recovery_ticks": 10
+      },
+      "fire": {
+        "name": "Swift Star",
+        "damage": 10,
+        "startup_ticks": 8,
+        "active_ticks": 1,
+        "recovery_ticks": 17,
+        "speed_q8": 832
+      },
+      "super": {
+        "name": "Swift Nova",
+        "damage": 31
+      }
+    },
+    {
+      "id": "meowth",
+      "name": "Meowth",
+      "type": "Normal",
+      "max_hp": 90,
+      "max_stamina": 100,
+      "stamina_regen_per_second": 25,
+      "walk_speed_q8": 397,
+      "melee": {
+        "name": "Scratch",
+        "damage": 8,
+        "startup_ticks": 3,
+        "active_ticks": 3,
+        "recovery_ticks": 10
+      },
+      "fire": {
+        "name": "Coin Shot",
+        "damage": 11,
+        "startup_ticks": 8,
+        "active_ticks": 1,
+        "recovery_ticks": 18,
+        "speed_q8": 768
+      },
+      "super": {
+        "name": "Gold Rush",
+        "damage": 33
+      }
+    }
+  ]
+}

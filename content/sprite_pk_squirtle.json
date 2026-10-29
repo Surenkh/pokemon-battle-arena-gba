@@ -1,0 +1,8 @@
+{
+  "id": "pk_squirtle",
+  "type": "sprite",
+  "name": "pk_squirtle",
+  "path": "graphics/pk_squirtle.bmp",
+  "width": 64,
+  "height": 64
+}

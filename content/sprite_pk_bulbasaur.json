@@ -1,0 +1,8 @@
+{
+  "id": "pk_bulbasaur",
+  "type": "sprite",
+  "name": "pk_bulbasaur",
+  "path": "graphics/pk_bulbasaur.bmp",
+  "width": 64,
+  "height": 64
+}

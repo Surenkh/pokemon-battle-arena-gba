@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "variable.json",
+  "definitions": {
+    "GameVariable": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "variable",
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "defaultValue": { "$ref": "event.json#/definitions/EventValue" },
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "defaultValue"
+      ]
+    },
+    "VariablesRegistry": {
+      "additionalProperties": false,
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "const": "variables",
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/GameVariable" }
+        }
+      },
+      "required": [
+        "$schema",
+        "type",
+        "values"
+      ]
+    }
+  },
+  "$ref": "#/definitions/VariablesRegistry"
+}

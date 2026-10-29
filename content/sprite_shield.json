@@ -1,0 +1,8 @@
+{
+  "id": "shield",
+  "type": "sprite",
+  "name": "shield",
+  "path": "graphics/shield.bmp",
+  "width": 32,
+  "height": 32
+}

@@ -1,0 +1,11 @@
+.gbastudio/
+.toolchain/
+node_modules/
+combat_tests
+tests/native_artifacts/
+
+movement_tests
+
+out/
+.tooling/
+__pycache__/

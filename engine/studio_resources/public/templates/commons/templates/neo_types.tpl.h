@@ -1,0 +1,1262 @@
+#ifndef NEO_TYPES_H
+#define NEO_TYPES_H
+
+#include <neo_logs.h>
+
+#include <bn_core.h>
+#include <bn_log.h>
+#include <bn_blending.h>
+#include <bn_blending_actions.h>
+#include <bn_optional.h>
+#include <bn_regular_bg_ptr.h>
+#include <bn_regular_bg_item.h>
+#include <bn_sprite_item.h>
+#include <bn_sprite_ptr.h>
+#include <bn_sprite_tiles_ptr.h>
+#include <bn_vector.h>
+
+#include <neo_utils.h>
+#include <neo_variables.h>
+
+namespace neo
+{
+  class game;
+  class actor;
+}
+
+namespace neo::types
+{
+  static constexpr int SCREEN_WIDTH = 240;
+  static constexpr int SCREEN_HEIGHT = 160;
+
+  struct sprite_animation;
+
+  enum class direction
+  {
+    LEFT,
+    RIGHT,
+    UP,
+    DOWN,
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    PLAYER, // Compat, same as TOWARDS_PLAYER
+    TOWARDS_PLAYER,
+    FROM_PLAYER
+  };
+
+  enum class text_speed
+  {
+    SLOW,
+    NORMAL,
+    FAST
+  };
+
+  enum class dialog_portrait_position
+  {
+    LEFT,
+    RIGHT
+  };
+
+  enum class scene_type
+  {
+    LOGOS,
+    TOP_DOWN,
+    SIDE_SCROLLER
+  };
+
+  enum class variable_operation
+  {
+    SET,
+    INCREMENT,
+    DECREMENT
+  };
+
+  enum class gravity_style
+  {
+    NORMAL,
+    ARC,
+    SINUS,
+    CUSTOM
+  };
+
+  struct event_value
+  {
+    bn::string_view type;
+    const neo::variables::value* value;
+
+    constexpr event_value(bn::string_view type_, const neo::variables::value* value_):
+      type(type_), value(value_) {}
+
+    inline int as_int(neo::variables::registry& variables) const
+    {
+      if (type == "variable")
+      {
+        if (!variables.has(value->as_string()))
+        {
+          BN_LOG("Variable not found: ", value->as_string());
+          return 0;
+        }
+
+        neo::variables::variable& var_value = variables.get(value->as_string());
+        return var_value.as_int();
+      }
+      else
+      {
+        return value->as_int();
+      }
+    }
+
+    inline bool as_bool(neo::variables::registry& variables) const
+    {
+      if (type == "variable")
+      {
+        if (!variables.has(value->as_string()))
+        {
+          BN_LOG("Variable not found: ", value->as_string());
+          return false;
+        }
+
+        neo::variables::variable& var_value = variables.get(value->as_string());
+        return var_value.as_bool();
+      }
+      else
+      {
+        return value->as_bool();
+      }
+    }
+
+    inline bn::string_view as_string(neo::variables::registry& variables) const
+    {
+      if (type == "variable")
+      {
+        if (!variables.has(value->as_string()))
+        {
+          BN_LOG("Variable not found: ", value->as_string());
+          return "";
+        }
+
+        neo::variables::variable& var_value = variables.get(value->as_string());
+        return var_value.as_string();
+      }
+      else
+      {
+        return value->as_string();
+      }
+    }
+
+    inline bn::fixed as_fixed(neo::variables::registry& variables) const
+    {
+      if (type == "variable")
+      {
+        if (!variables.has(value->as_string()))
+        {
+          BN_LOG("Variable not found: ", value->as_string());
+          return 0;
+        }
+
+        neo::variables::variable& var_value = variables.get(value->as_string());
+        return var_value.as_fixed();
+      }
+      else
+      {
+        return value->as_fixed();
+      }
+    }
+  };
+
+  struct event
+  {
+    bn::string_view type;
+
+    event(bn::string_view type_): type(type_) {}
+    virtual ~event() = default;
+
+    // Advances a resumable event by one frame, like bn::core::update().
+    // Instant events don't override this: they're already done immediately.
+    virtual bool update()
+    {
+      return true;
+    }
+  };
+
+  struct wait_event: event
+  {
+    const event_value* duration;
+    wait_event(bn::string_view type_, const event_value* duration_):
+      event(type_), duration(duration_) {}
+  };
+
+  struct fade_event: event
+  {
+    const event_value* duration;
+
+    neo::game* game_ref = nullptr;
+    bn::optional<bn::regular_bg_ptr> bg;
+    bn::optional<bn::blending_fade_alpha_to_action> action;
+
+    fade_event(bn::string_view type_, const event_value* duration_):
+      event(type_), duration(duration_) {}
+
+    void start(neo::game* game_, bn::regular_bg_ptr& bg_, int duration_ms);
+    bool update() override;
+  };
+
+  struct scene_event: event
+  {
+    bn::string_view target;
+    const event_value* start_x;
+    const event_value* start_y;
+    neo::types::direction start_direction;
+    scene_event(bn::string_view type_, bn::string_view target_, const event_value* start_x_, const event_value* start_y_, neo::types::direction start_direction_):
+      event(type_), target(target_), start_x(start_x_), start_y(start_y_), start_direction(start_direction_) {}
+  };
+
+  struct button_event: event
+  {
+    bool every;
+    bn::vector<bn::string_view, 10> buttons;
+    int events_count;
+    event* const* events;
+
+    button_event(
+      bn::string_view type_,
+      bool every_,
+      bn::vector<bn::string_view, 10> buttons_,
+      int events_count_,
+      event* const* events_
+    ): event(type_), every(every_), buttons(buttons_), events_count(events_count_), events(events_) {}
+
+    // Helper constructor for single button
+    button_event(bn::string_view type_, bn::string_view single_button, int events_count_, event* const* events_):
+      event(type_), every(false), buttons(), events_count(events_count_), events(events_)
+    {
+      buttons.push_back(single_button);
+    }
+  };
+
+  // Only instant, self-contained events are allowed here (enforced by the
+  // editor) except for a handful that are resumable (fade-in/fade-out,
+  // move-camera-to, move-actor-to, move-player-to, set-palette-effect,
+  // wave-effect): exec() starts them and tracks the still-running ones in
+  // pending, and update() advances pending until it's empty.
+  struct parallel_event: event
+  {
+    int events_count;
+    event* const* events;
+    bn::vector<event*, 8> pending;
+
+    parallel_event(bn::string_view type_, int events_count_, event* const* events_):
+      event(type_), events_count(events_count_), events(events_) {}
+
+    // Runs instant sub-events immediately (delegated to game::exec_event)
+    // and starts resumable ones, collecting them into pending. Defined in
+    // events.cpp: needs the full neo::game definition.
+    void exec(neo::game* game, bool is_loop);
+
+    // Advances every pending sub-event by one frame. Returns true once
+    // they've all finished.
+    bool update() override
+    {
+      for (int i = pending.size() - 1; i >= 0; --i)
+      {
+        if (pending[i]->update())
+        {
+          pending.erase(pending.begin() + i);
+        }
+      }
+
+      return pending.empty();
+    }
+  };
+
+  struct input_event: event
+  {
+    input_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct freeze_camera_event: event
+  {
+    freeze_camera_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct player_event: event
+  {
+    player_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct save_game_event: event
+  {
+    save_game_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct load_game_event: event
+  {
+    load_game_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct save_state_event: event
+  {
+    save_state_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct load_state_event: event
+  {
+    load_state_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct reset_game_event: event
+  {
+    reset_game_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct dialog_event: event
+  {
+    neo::types::direction direction;
+    int z;
+    neo::types::text_speed speed;
+    const bn::sprite_item* portrait;
+    neo::types::dialog_portrait_position portrait_position;
+    const bn::sprite_item* font;
+    const bn::color* text_color;
+    const bn::sprite_item* background;
+    bn::vector<bn::string_view, 5> lines;
+    dialog_event(bn::string_view type_, neo::types::direction direction_, int z_, neo::types::text_speed speed_, const bn::sprite_item* portrait_, neo::types::dialog_portrait_position portrait_position_, const bn::sprite_item* font_, const bn::color* text_color_, const bn::sprite_item* background_, const bn::vector<bn::string_view, 5>& lines_):
+      event(type_), direction(direction_), z(z_), speed(speed_), portrait(portrait_), portrait_position(portrait_position_), font(font_), text_color(text_color_), background(background_), lines(lines_) {}
+  };
+
+  struct if_condition;
+
+  struct menu_choice
+  {
+    bn::string_view text;
+    int events_count;
+    event* const* events;
+    int conditions_count;
+    if_condition* const* conditions;
+
+    menu_choice(bn::string_view text_, int events_count_, event* const* events_, int conditions_count_, if_condition* const* conditions_):
+      text(text_), events_count(events_count_), events(events_), conditions_count(conditions_count_), conditions(conditions_) {}
+  };
+
+  struct menu_event: event
+  {
+    int longest_text_length;
+    int choices_count;
+    neo::types::direction direction;
+    int z;
+    const bn::sprite_item* font;
+    const bn::color* text_color;
+    const bn::sprite_item* background;
+    bn::vector<menu_choice, 5> choices;
+    menu_event(bn::string_view type_, int longest_text_length_, int choices_count_, neo::types::direction direction_, int z_, const bn::sprite_item* font_, const bn::color* text_color_, const bn::sprite_item* background_, const bn::vector<menu_choice, 5>& choices_):
+      event(type_), longest_text_length(longest_text_length_), choices_count(choices_count_), direction(direction_), z(z_), font(font_), text_color(text_color_), background(background_), choices(choices_) {}
+  };
+
+  struct variable_change_event: event
+  {
+    bn::string_view key;
+    int events_count;
+    event* const* events;
+    variable_change_event(bn::string_view type_, bn::string_view key_, int events_count_, event* const* events_):
+      event(type_), key(key_), events_count(events_count_), events(events_) {}
+  };
+
+  struct set_hud_text_event: event
+  {
+    bn::string_view hud;
+    bn::string_view text;
+    const event_value* value;
+    set_hud_text_event(bn::string_view type_, bn::string_view hud_, bn::string_view text_, const event_value* value_):
+      event(type_), hud(hud_), text(text_), value(value_) {}
+  };
+
+  struct set_variable_event: event
+  {
+    bn::string_view key;
+    const neo::variables::value* value;
+    neo::types::variable_operation operation;
+    set_variable_event(bn::string_view type_, bn::string_view key_, const neo::variables::value* value_, neo::types::variable_operation operation_):
+      event(type_), key(key_), value(value_), operation(operation_) {}
+  };
+
+  struct if_expression
+  {
+    bn::string_view type;
+  };
+
+  struct if_expression_variable: if_expression
+  {
+    bn::string_view name;
+
+    if_expression_variable(bn::string_view type_, bn::string_view name_):
+      if_expression(type_), name(name_) {}
+  };
+
+  struct if_expression_value: if_expression
+  {
+    bn::string_view value;
+
+    if_expression_value(bn::string_view type_, bn::string_view value_):
+      if_expression(type_), value(value_) {}
+  };
+
+  struct if_expression_saved_game: if_expression
+  {
+    if_expression_saved_game(bn::string_view type_):
+      if_expression(type_) {}
+  };
+
+  struct if_expression_player_attribute: if_expression
+  {
+    bn::string_view attribute;
+
+    if_expression_player_attribute(bn::string_view type_, bn::string_view attribute_):
+      if_expression(type_), attribute(attribute_) {}
+  };
+
+  struct if_expression_direction: if_expression
+  {
+    neo::types::direction value;
+
+    if_expression_direction(bn::string_view type_, neo::types::direction value_):
+      if_expression(type_), value(value_) {}
+  };
+
+  struct if_expression_collision_side: if_expression
+  {
+    if_expression_collision_side(bn::string_view type_):
+      if_expression(type_) {}
+  };
+
+  struct if_expression_scene: if_expression
+  {
+    bn::string_view id;
+
+    if_expression_scene(bn::string_view type_, bn::string_view id_):
+      if_expression(type_), id(id_) {}
+  };
+
+  struct if_condition: if_expression
+  {
+    bn::string_view op;
+    neo::types::if_expression* left;
+    neo::types::if_expression* right;
+
+    if_condition(
+      bn::string_view type_,
+      bn::string_view op_,
+      neo::types::if_expression* left_,
+      neo::types::if_expression* right_
+    ): if_expression(type_),
+       op(op_),
+       left(left_),
+       right(right_) {}
+  };
+
+  struct if_event: event
+  {
+    int conditions_count;
+    if_condition* const* conditions;
+    int then_events_count;
+    event* const* then_events;
+    int else_events_count;
+    event* const* else_events;
+
+    if_event(
+      bn::string_view type_,
+      int conditions_count_,
+      if_condition* const* conditions_,
+      int then_events_count_,
+      event* const* then_events_,
+      int else_events_count_,
+      event* const* else_events_
+    ): event(type_),
+       conditions_count(conditions_count_),
+       conditions(conditions_),
+       then_events_count(then_events_count_),
+       then_events(then_events_),
+       else_events_count(else_events_count_),
+       else_events(else_events_) {}
+  };
+
+  struct disable_actor_event: event
+  {
+    bn::string_view actor;
+    disable_actor_event(bn::string_view type_, bn::string_view actor_):
+      event(type_), actor(actor_) {}
+  };
+
+  struct enable_actor_event: event
+  {
+    bn::string_view actor;
+    enable_actor_event(bn::string_view type_, bn::string_view actor_):
+      event(type_), actor(actor_) {}
+  };
+
+  struct disable_sprite_event: event
+  {
+    bn::string_view sprite;
+    disable_sprite_event(bn::string_view type_, bn::string_view sprite_):
+      event(type_), sprite(sprite_) {}
+  };
+
+  struct enable_sprite_event: event
+  {
+    bn::string_view sprite;
+    enable_sprite_event(bn::string_view type_, bn::string_view sprite_):
+      event(type_), sprite(sprite_) {}
+  };
+
+  struct play_music_event: event
+  {
+    bn::string_view music_name;
+    bn::fixed volume;
+    bool loop;
+    play_music_event(bn::string_view type_, bn::string_view music_name_, bn::fixed volume_, bool loop_):
+      event(type_), music_name(music_name_), volume(volume_), loop(loop_) {}
+  };
+
+  struct stop_music_event: event
+  {
+    stop_music_event(bn::string_view type_):
+      event(type_) {}
+  };
+
+  struct play_sound_event: event
+  {
+    bn::string_view sound_name;
+    bn::fixed volume;
+    bn::fixed speed;
+    bn::fixed panning;
+    int priority;
+    play_sound_event(
+      bn::string_view type_,
+      bn::string_view sound_name_,
+      bn::fixed volume_,
+      bn::fixed speed_,
+      bn::fixed panning_,
+      int priority_
+    ):
+      event(type_),
+      sound_name(sound_name_),
+      volume(volume_),
+      speed(speed_),
+      panning(panning_),
+      priority(priority_) {}
+  };
+
+  struct execute_script_event: event
+  {
+    bn::string_view name;
+    int arguments_count;
+    const event_value* const* arguments;
+    execute_script_event(bn::string_view type_, bn::string_view name_, int arguments_count_, const event_value* const* arguments_):
+      event(type_), name(name_), arguments_count(arguments_count_), arguments(arguments_) {}
+  };
+
+  struct move_camera_to_event: event
+  {
+    const event_value* x;
+    const event_value* y;
+    const event_value* duration;
+    bool allow_diagonal;
+    bn::string_view direction_priority;
+
+    // Runtime-only resumable pan state, set by start()/advanced by update()
+    // when this move runs inside a parallel-events branch instead of
+    // blocking.
+    neo::game* game_ref = nullptr;
+    int start_x = 0;
+    int start_y = 0;
+    int end_x = 0;
+    int end_y = 0;
+    int delta_x = 0;
+    int delta_y = 0;
+    int frames = 0;
+    int horizontal_frames = 0;
+    int vertical_frames = 0;
+    int frame = 0;
+    int phase = 0; // 0: diagonal (or first sequential axis), 1: second sequential axis
+
+    move_camera_to_event(
+      bn::string_view type_,
+      const event_value* x_,
+      const event_value* y_,
+      const event_value* duration_,
+      bool allow_diagonal_,
+      bn::string_view direction_priority_
+    ):
+      event(type_),
+      x(x_),
+      y(y_),
+      duration(duration_),
+      allow_diagonal(allow_diagonal_),
+      direction_priority(direction_priority_) {}
+
+    void start(neo::game* game_);
+    bool update() override;
+  };
+
+  struct follow_actor_event: event
+  {
+    bn::string_view actor;
+    const event_value* duration;
+    bool allow_diagonal;
+    bn::string_view direction_priority;
+    follow_actor_event(
+      bn::string_view type_,
+      bn::string_view actor_,
+      const event_value* duration_,
+      bool allow_diagonal_,
+      bn::string_view direction_priority_
+    ):
+      event(type_),
+      actor(actor_),
+      duration(duration_),
+      allow_diagonal(allow_diagonal_),
+      direction_priority(direction_priority_) {}
+  };
+
+  struct follow_player_event: event
+  {
+    const event_value* duration;
+    bool allow_diagonal;
+    bn::string_view direction_priority;
+    follow_player_event(
+      bn::string_view type_,
+      const event_value* duration_,
+      bool allow_diagonal_,
+      bn::string_view direction_priority_
+    ):
+      event(type_),
+      duration(duration_),
+      allow_diagonal(allow_diagonal_),
+      direction_priority(direction_priority_) {}
+  };
+
+  // Shared resumable state and frame-by-frame stepping for the
+  // move-actor-to and move-player-to events: both are just
+  // actor::move_to() split into start()/update() slices so they can run
+  // inside a parallel-events branch. The concrete events only resolve
+  // which actor to move in their start(); everything after that
+  // (validation, axis-by-axis movement, facing/animation, camera
+  // tracking, finalization) lives here.
+  struct actor_move_event: event
+  {
+    const event_value* x;
+    const event_value* y;
+    const event_value* speed;
+    bn::string_view direction_priority;
+    bn::string_view animation;
+    bool backwards;
+
+    // Runtime-only resumable move state, set by start()/advanced by update()
+    // when this move runs inside a parallel-events branch instead of
+    // blocking. Mirrors the axis-by-axis stepping of actor::move_to():
+    // pass 0 moves the first axis (per direction_priority), pass 1 the
+    // other one, px_per_frame pixels per update() call.
+    neo::game* game_ref = nullptr;
+    neo::actor* target = nullptr;
+    int target_tile_x = 0;
+    int target_tile_y = 0;
+    int px_per_frame = 1;
+    int origin_x = 0;
+    int origin_y = 0;
+    int target_px_x = 0;
+    int target_px_y = 0;
+    int pass = 2; // 0: first axis (per direction_priority), 1: second axis, 2: done
+    bool armed = false; // Whether the current pass had its direction/animation set up
+    bool horizontal_pass = false; // Whether the current pass moves along the x axis
+    int moved = 0;
+    int step = 0; // Signed px_per_frame for the current pass
+    neo::types::sprite_animation* anim = nullptr;
+
+    actor_move_event(
+      bn::string_view type_,
+      const event_value* x_,
+      const event_value* y_,
+      const event_value* speed_,
+      bn::string_view direction_priority_,
+      bn::string_view animation_,
+      bool backwards_
+    ):
+      event(type_),
+      x(x_),
+      y(y_),
+      speed(speed_),
+      direction_priority(direction_priority_),
+      animation(animation_),
+      backwards(backwards_) {}
+
+    // Resolves the actor to move (by name for move-actor-to, the player
+    // for move-player-to), then delegates to begin_move(). Virtual so
+    // parallel_event::exec can start either event through the base type.
+    virtual void start(neo::game* game_) = 0;
+
+    // Validates the actor resolved by start() (missing or disabled actors
+    // skip the move, like actor::move_to() does) and prepares the resumable
+    // state, arming the first axis.
+    void begin_move(neo::game* game_);
+    bool update() override;
+
+    // Per-pass setup shared by begin_move() and update(): turns the actor
+    // towards the axis being moved (unless moving backwards), then looks
+    // up and resets the animation for the new direction, skipping axes
+    // with nothing to move. Finalizes the event when no axis is left.
+    void arm_pass();
+    // End-of-move cleanup, like the tail of actor::move_to().
+    void finish();
+  };
+
+  struct move_actor_to_event: actor_move_event
+  {
+    bn::string_view actor;
+
+    move_actor_to_event(
+      bn::string_view type_,
+      bn::string_view actor_,
+      const event_value* x_,
+      const event_value* y_,
+      const event_value* speed_,
+      bn::string_view direction_priority_,
+      bn::string_view animation_,
+      bool backwards_
+    ):
+      actor_move_event(type_, x_, y_, speed_, direction_priority_, animation_, backwards_),
+      actor(actor_) {}
+
+    // Resolves the target from the actor name, then delegates to begin_move().
+    void start(neo::game* game_) override;
+  };
+
+  struct move_player_to_event: actor_move_event
+  {
+    move_player_to_event(
+      bn::string_view type_,
+      const event_value* x_,
+      const event_value* y_,
+      const event_value* speed_,
+      bn::string_view direction_priority_,
+      bn::string_view animation_,
+      bool backwards_
+    ):
+      actor_move_event(type_, x_, y_, speed_, direction_priority_, animation_, backwards_) {}
+
+    // Resolves the target from the player, then delegates to begin_move().
+    void start(neo::game* game_) override;
+  };
+
+  struct set_actor_position_event: event
+  {
+    bn::string_view actor;
+    const event_value* x;
+    const event_value* y;
+    set_actor_position_event(
+      bn::string_view type_,
+      bn::string_view actor_,
+      const event_value* x_,
+      const event_value* y_
+    ):
+      event(type_),
+      actor(actor_),
+      x(x_),
+      y(y_) {}
+  };
+
+  struct set_player_position_event: event
+  {
+    const event_value* x;
+    const event_value* y;
+    set_player_position_event(
+      bn::string_view type_,
+      const event_value* x_,
+      const event_value* y_
+    ):
+      event(type_),
+      x(x_),
+      y(y_) {}
+  };
+
+  struct set_actor_direction_event: event
+  {
+    bn::string_view actor;
+    neo::types::direction direction;
+    set_actor_direction_event(
+      bn::string_view type_,
+      bn::string_view actor_,
+      neo::types::direction direction_
+    ):
+      event(type_),
+      actor(actor_),
+      direction(direction_) {}
+  };
+
+  struct set_player_direction_event: event
+  {
+    neo::types::direction direction;
+    set_player_direction_event(
+      bn::string_view type_,
+      neo::types::direction direction_
+    ):
+      event(type_),
+      direction(direction_) {}
+  };
+
+  struct set_background_event: event
+  {
+    bn::regular_bg_item background;
+    set_background_event(
+      bn::string_view type_,
+      bn::regular_bg_item background_
+    ):
+      event(type_),
+      background(background_) {}
+  };
+
+  struct set_sprite_event: event
+  {
+    bn::string_view sprite;
+    bn::sprite_item item;
+    set_sprite_event(
+      bn::string_view type_,
+      bn::string_view sprite_,
+      bn::sprite_item item_
+    ):
+      event(type_),
+      sprite(sprite_),
+      item(item_) {}
+  };
+
+  struct set_palette_effect_event: event
+  {
+    bn::string_view target; // "background" | "sprite" | "both"
+    bn::string_view effect; // "brightness" | "contrast" | "intensity" | "grayscale" | "hue-shift"
+    bn::fixed value; // Target value, in percent (0-100).
+    const event_value* duration;
+
+    // Runtime-only resumable interpolation state, set by start()/advanced by
+    // update() when this effect runs inside a parallel-events branch instead
+    // of applying instantly.
+    bn::fixed start_value;
+    bn::fixed end_value;
+    int frames = 0;
+    int frame = 0;
+
+    set_palette_effect_event(
+      bn::string_view type_,
+      bn::string_view target_,
+      bn::string_view effect_,
+      bn::fixed value_,
+      const event_value* duration_
+    ):
+      event(type_),
+      target(target_),
+      effect(effect_),
+      value(value_),
+      duration(duration_) {}
+
+    void start(neo::game* game);
+    bool update() override;
+  };
+
+  // (Re)starts a wave distortion of the scene background and/or
+  // actors/sprites. The animation itself, and the duration countdown, are
+  // driven every frame by game::update_wave_effect(), not by this event
+  // (see game.h/game.cpp). Only resumable (tracked by a parallel-events
+  // node until it completes) when it has a finite duration: a duration of
+  // 0 runs as an ambient effect until the scene changes, so it's treated
+  // as already-done to avoid blocking the parallel group forever.
+  struct wave_effect_event: event
+  {
+    bn::string_view target; // "background" | "sprite" | "both"
+    bn::fixed amplitude; // pixels
+    bn::fixed speed; // degrees of phase advanced per frame
+    int frequency; // number of full sine cycles across the 160 screen lines
+    const event_value* duration; // milliseconds (0 = runs until the scene changes)
+    bn::string_view envelope; // "in" (0%->100%) | "in-out" (0%->100%->0%)
+
+    // Runtime-only resumable state, set by start()/advanced by update()
+    // when this effect runs inside a parallel-events branch.
+    neo::game* game_ref = nullptr;
+    int frames = 0;
+
+    wave_effect_event(
+      bn::string_view type_,
+      bn::string_view target_,
+      bn::fixed amplitude_,
+      bn::fixed speed_,
+      int frequency_,
+      const event_value* duration_,
+      bn::string_view envelope_
+    ):
+      event(type_),
+      target(target_),
+      amplitude(amplitude_),
+      speed(speed_),
+      frequency(frequency_),
+      duration(duration_),
+      envelope(envelope_) {}
+
+    void start(neo::game* game_);
+    bool update() override;
+  };
+
+  struct shoot_projectile_event: event
+  {
+    bn::sprite_item sprite;
+    bn::string_view source_type;
+    bn::string_view actor;
+    bn::string_view animation;
+    neo::types::direction direction;
+
+    const event_value* speed; // pixels per frame
+    const event_value* lifetime; // frames until the projectile disappears
+    bool destroy_on_collision;
+    int collision_group;
+
+    bool has_gravity;
+    neo::types::gravity_style gravity_style;
+    const event_value* gravity; // pixels per frame squared
+    const event_value* gravity_angle; // degrees
+    const event_value* terminal_velocity; // pixels per frame
+
+    shoot_projectile_event(
+      bn::string_view type_,
+      bn::sprite_item sprite_,
+      bn::string_view source_type_,
+      bn::string_view actor_,
+      bn::string_view animation_,
+      neo::types::direction direction_,
+      const event_value* speed_,
+      const event_value* lifetime_,
+      bool destroy_on_collision_,
+      int collision_group_,
+      bool has_gravity_,
+      neo::types::gravity_style gravity_style_,
+      const event_value* gravity_,
+      const event_value* gravity_angle_,
+      const event_value* terminal_velocity_
+    ):
+      event(type_),
+      sprite(sprite_),
+      source_type(source_type_),
+      actor(actor_),
+      animation(animation_),
+      direction(direction_),
+      speed(speed_),
+      lifetime(lifetime_),
+      destroy_on_collision(destroy_on_collision_),
+      collision_group(collision_group_),
+      has_gravity(has_gravity_),
+      gravity_style(gravity_style_),
+      gravity(gravity_),
+      gravity_angle(gravity_angle_),
+      terminal_velocity(terminal_velocity_) {}
+  };
+
+  struct sensor
+  {
+    bn::string_view _id;
+    int x;
+    int y;
+    int width;
+    int height;
+    int enter_events_count;
+    event* const* enter_events;
+    int leave_events_count;
+    event* const* leave_events;
+    int interact_events_count;
+    event* const* interact_events;
+
+    inline bool is_inside (int tile_x, int tile_y) const {
+      return tile_x >= x && tile_x < (x + width) && tile_y >= y && tile_y < (y + height);
+    }
+  };
+
+  struct map
+  {
+    int width;
+    int height;
+    const event_value* grid_size;
+    const int* collisions;
+    int sensors_count;
+    const sensor* const* sensors;
+
+    inline int to_pixel_x (neo::variables::registry& variables, int tile_x) const
+    {
+      return tile_x * grid_size->as_int(variables);
+    }
+
+    inline int to_tile_x (neo::variables::registry& variables, int pixel_x) const
+    {
+      return pixel_x / grid_size->as_int(variables);
+    }
+
+    inline int to_pixel_y (neo::variables::registry& variables, int tile_y) const
+    {
+      return tile_y * grid_size->as_int(variables);
+    }
+
+    inline int to_tile_y (neo::variables::registry& variables, int pixel_y) const
+    {
+      return pixel_y / grid_size->as_int(variables);
+    }
+
+    inline int pixel_width (neo::variables::registry& variables) const
+    {
+      return width * grid_size->as_int(variables);
+    }
+
+    inline int pixel_height (neo::variables::registry& variables) const
+    {
+      return height * grid_size->as_int(variables);
+    }
+
+    inline int tile_index (int tile_x, int tile_y) const
+    {
+      return tile_y * width + tile_x;
+    }
+
+    inline bool has_collision (int tile_x, int tile_y) const
+    {
+      if (tile_x < 0 || tile_x >= width || tile_y < 0 || tile_y >= height)
+      {
+        return true;
+      }
+
+      return collisions[tile_index(tile_x, tile_y)] == 1;
+    }
+  };
+
+  struct sprite_animation_frame
+  {
+    int frame_index;
+    const event_value* duration;
+    bool reversed;
+  };
+
+  struct sprite_animation
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    bn::string_view type;
+    neo::types::direction direction;
+    bool moving;
+    bool loop;
+    int frames_count;
+    const sprite_animation_frame* const* frames;
+    bool _playing = false;
+    int _current_index = 0;
+    int _elapsed_frames = 0;
+
+    sprite_animation(
+      bn::string_view _id_,
+      bn::string_view name_,
+      bn::string_view type_,
+      neo::types::direction direction_,
+      bool moving_,
+      bool loop_,
+      int frames_count_,
+      const sprite_animation_frame* const* frames_
+    ):
+      _id(_id_),
+      name(name_),
+      type(type_),
+      direction(direction_),
+      moving(moving_),
+      loop(loop_),
+      frames_count(frames_count_),
+      frames(frames_) {}
+
+    // Shows the first frame and arms the animation; call once before the per-frame play() loop starts
+    inline void reset (bn::sprite_ptr sprite, bn::sprite_tiles_item* tiles)
+    {
+      _playing = true;
+      _current_index = 0;
+      _elapsed_frames = 0;
+
+      if (frames_count > 0)
+      {
+        sprite.set_tiles(tiles->create_tiles(frames[0]->frame_index));
+      }
+    }
+
+    // Non-blocking: advances the animation by a single frame, call once per bn::core::update()
+    inline void play (bn::sprite_ptr sprite, bn::sprite_tiles_item* tiles, neo::variables::registry& variables)
+    {
+      if (!_playing || frames_count <= 0)
+      {
+        return;
+      }
+
+      int wait_frames = frames[_current_index]->duration->as_int(variables) / 16;
+
+      if (wait_frames < 1)
+      {
+        wait_frames = 1;
+      }
+
+      if (++_elapsed_frames < wait_frames)
+      {
+        return;
+      }
+
+      _elapsed_frames = 0;
+
+      if (_current_index + 1 >= frames_count)
+      {
+        if (!loop)
+        {
+          _playing = false;
+          return;
+        }
+
+        _current_index = 0;
+      }
+      else
+      {
+        ++_current_index;
+      }
+
+      sprite.set_tiles(tiles->create_tiles(frames[_current_index]->frame_index));
+    }
+
+    inline void stop (bn::sprite_ptr sprite, bn::sprite_tiles_item* tiles)
+    {
+      _playing = false;
+      _current_index = 0;
+      _elapsed_frames = 0;
+      sprite.set_tiles(tiles->create_tiles(frames[0]->frame_index));
+    }
+  };
+
+  struct actor
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    const event_value* x;
+    const event_value* y;
+    const event_value* z;
+    neo::types::direction direction;
+    bn::sprite_item sprite;
+    bool disable_direction_on_interact;
+    int collision_group;
+    int init_events_count;
+    event* const* init_events;
+    int interact_events_count;
+    event* const* interact_events;
+    int collide_events_count;
+    event* const* collide_events;
+    int update_events_count;
+    event* const* update_events;
+    int animations_count;
+    sprite_animation* const* animations;
+  };
+
+  struct sprite
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    const event_value* x;
+    const event_value* y;
+    const event_value* z;
+    bn::sprite_item sprite;
+    int collision_group;
+    int init_events_count;
+    event* const* init_events;
+    int interact_events_count;
+    event* const* interact_events;
+    int collide_events_count;
+    event* const* collide_events;
+  };
+
+  // Screen-fixed sprite of a HUD: x/y are pixels from the top-left corner
+  // of the screen, z is a 0-99 layer among the HUD sprites.
+  struct hud_sprite
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    int x;
+    int y;
+    int z;
+    bn::sprite_item sprite;
+  };
+
+  // Single line drawn with the dialogs font, one sprite per character. The
+  // content (value or variable) is re-resolved every frame.
+  struct hud_text
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    const event_value* content;
+    int x;
+    int y;
+    int z;
+    bn::color color;
+    const bn::sprite_item* font;
+  };
+
+  struct hud
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    int sprites_count;
+    const hud_sprite* const* sprites;
+    int texts_count;
+    const hud_text* const* texts;
+    int init_events_count;
+    event* const* init_events;
+    int update_events_count;
+    event* const* update_events;
+  };
+
+  struct script
+  {
+    bn::string_view _id;
+    bn::string_view name;
+    int events_count;
+    event* const* events;
+    int parameters_count;
+    const bn::string_view* parameters;
+  };
+
+  struct scene
+  {
+    // Scene
+    bn::string_view _id;
+    bn::string_view name;
+    neo::types::scene_type scene_type;
+    bn::regular_bg_item background;
+    int event_count;
+    event* const* events;
+    // Player
+    bool has_player;
+    const actor* player;
+    // Map data
+    const map* map_data;
+    // Actors
+    int actors_count;
+    const actor* const* actors;
+    // Sprites
+    int sprites_count;
+    const sprite* const* sprites;
+    const hud* hud_data;
+
+    inline bool is (bn::string_view name_) const
+    {
+      return _id == name_ || name == name_;
+    }
+  };
+}
+
+#endif

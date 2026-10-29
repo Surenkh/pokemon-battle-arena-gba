@@ -1,0 +1,8 @@
+{
+  "id": "impact",
+  "type": "sprite",
+  "name": "impact",
+  "path": "graphics/impact.bmp",
+  "width": 32,
+  "height": 32
+}

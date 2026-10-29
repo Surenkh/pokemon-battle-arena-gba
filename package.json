@@ -1,0 +1,12 @@
+{
+  "name": "pokemon-battle-arena-gba-assets",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "assets": "node tools/convert_assets.cjs"
+  },
+  "devDependencies": {
+    "sharp": "0.35.5",
+    "@napi-rs/canvas": "0.1.100"
+  }
+}
