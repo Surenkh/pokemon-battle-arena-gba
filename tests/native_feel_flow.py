@@ -50,6 +50,11 @@ def audio_stats(path):
 
 try:
     frames(90);press(8)
+    # Audio-bank coverage needs a repeatable opportunity to earn and release
+    # every super. CPU tactics/difficulty are stressed separately by native_cpu_flow.
+    # Choose Easy through the real selector, without altering combat resources.
+    press(128);press(128);press(32);press(64)
+    check(state()[4]==0,'Audio coverage uses the actual Easy setting')
     all_events=all_audio=all_charge=all_release=0
     for ch,name in enumerate(['pikachu','charmander','squirtle','bulbasaur','eevee','meowth']):
         while state()[2]!=ch:press(16)
@@ -138,7 +143,8 @@ try:
         frames(1,2 if n%3==0 else 0)
         if feedback()[9]:tired=True;dump('low_stamina');break
     check(tired,'Insufficient stamina produces feedback')
-    result=dict(status='passed',checks=checks,characters=reports,events=all_events,audio_theme_mask=all_audio,charge_theme_mask=all_charge,release_theme_mask=all_release,hud_fixed=True,charge_pause=True,guard_break=True,exhaustion=True,wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2, physical inputs, read-only telemetry and actual native audio capture; no gameplay-memory writes')
+    check(state()[22]==0,'No missed frames through final guard/exhaustion checks')
+    result=dict(status='passed',checks=checks,difficulty='Easy (audio opportunity coverage); all levels covered by native_cpu_flow',characters=reports,events=all_events,audio_theme_mask=all_audio,charge_theme_mask=all_charge,release_theme_mask=all_release,hud_fixed=True,charge_pause=True,guard_break=True,exhaustion=True,peak_cpu_fraction=state()[21]/4096,missed_display_frames=state()[22],wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2, physical inputs, read-only telemetry and actual native audio capture; no gameplay-memory writes')
     (out/'report.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k!='characters'},indent=2))
 finally:

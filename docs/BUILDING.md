@@ -34,11 +34,16 @@ g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/feel_tests.cpp -o /t
 /tmp/pkmn_feel_tests
 g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/depth_tests.cpp -o /tmp/pkmn_depth_tests
 /tmp/pkmn_depth_tests
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/cpu_tests.cpp -o /tmp/pkmn_cpu_tests
+/tmp/pkmn_cpu_tests
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tools/cpu_probe.cpp -o /tmp/pkmn_cpu_probe
+/tmp/pkmn_cpu_probe > /tmp/pkmn_cpu_fixed.json
+/tmp/pkmn_cpu_probe 31 > /tmp/pkmn_cpu_holdout.json
 g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tools/balance_probe.cpp -o /tmp/pkmn_balance_probe
 /tmp/pkmn_balance_probe candidate > /tmp/pkmn_balance.json
 ```
 
-For native tests install mGBA 0.10.2 development headers/library, compile tests/mgba_driver.c, and run tests/native_flow.py, tests/native_animation_flow.py, tests/native_effects_flow.py, tests/native_feel_flow.py and tests/native_depth_flow.py. The feedback runner also needs Pillow (`python3 -m pip install Pillow`). See [NATIVE_TESTING.md](NATIVE_TESTING.md). These scripts use physical inputs and read-only telemetry, not gameplay-memory writes.
+For native tests install mGBA 0.10.2 development headers/library, compile tests/mgba_driver.c, and run tests/native_flow.py, tests/native_animation_flow.py, tests/native_effects_flow.py, tests/native_feel_flow.py tests/native_depth_flow.py and tests/native_cpu_flow.py. The feedback runner also needs Pillow (`python3 -m pip install Pillow`). See [NATIVE_TESTING.md](NATIVE_TESTING.md). These scripts use physical inputs and read-only telemetry, not gameplay-memory writes.
 
 ## Prepare release downloads
 
@@ -49,6 +54,6 @@ python3 -m unittest discover -s tests -p release_tests.py -v
 python3 tools/package_release.py
 ```
 
-The packager verifies ROM/header/checksum/version consistency, matching passed native evidence, zero reported missed frames and an identical clean build. It creates the ROM, deterministic player ZIP, checksums and publishing metadata under dist/release/. The player ZIP contains controls, release notes and credits. No account token is needed for local packaging.
+The packager verifies ROM/header/checksum/version consistency, matching passed native evidence (including CPU coverage), zero reported missed frames and an identical clean build. It creates the ROM, deterministic player ZIP, checksums and publishing metadata under dist/release/. The player ZIP contains controls, release notes and credits. No account token is needed for local packaging.
 
 The GitHub release workflow runs packaging tests, canonical-data checks and host combat regressions. On validated main pushes it publishes with the repository's built-in token; pull requests only validate. It publishes the existing tested ROM rather than recompiling or claiming a new emulator run. See [PUBLISHING.md](PUBLISHING.md).

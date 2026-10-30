@@ -28,3 +28,29 @@ for name,v in j['collision'].items():
 out.append('}')
 (r/'include/pkmn_character_defs.h').write_text('\n'.join(out)+'\n')
 print('Generated six character definitions and shared rules.')
+
+# CPU tuning is separate from the combat rules: no difficulty stat modifiers.
+cpu=json.loads((r/'config/cpu.json').read_text())
+assert cpu['version']==j['ruleset_version']
+assert cpu['history_ticks']==32 and cpu['memory_actions']==6
+assert len(cpu['difficulties'])==3 and len(cpu['styles'])==6
+fields=['reaction_ticks','think_ticks','defense_percent','super_evade_percent','punish_percent','followup_percent','mistake_percent','hesitate_ticks','plan_ticks','adapt_percent']
+style=['distance_px','melee_percent','fire_percent','guard_bonus','punish_bonus','recover_below','resume_at']
+lines=['#pragma once','namespace pkmn {']
+for k in ['history_ticks','memory_actions','memory_expire_ticks']:lines.append(f'inline constexpr int cpu_{k} = {cpu[k]};')
+lines+=['struct CpuDifficulty { int '+','.join(fields)+'; };','inline constexpr CpuDifficulty cpu_difficulties[3] = {']
+for d in cpu['difficulties']:
+ assert 0<d['reaction_ticks']<cpu['history_ticks'] and 1<=d['think_ticks']<=12
+ assert 1<=d['hesitate_ticks']<=30 and 30<=d['plan_ticks']<=180
+ for k in fields:
+  if k.endswith('_percent'):assert 0<=d[k]<=100
+ lines.append('{'+','.join(str(d[k]) for k in fields)+'},')
+lines+=['};','struct CpuStyle { int '+','.join(style)+'; };','inline constexpr CpuStyle cpu_styles[6] = {']
+for c,s in zip(chars,cpu['styles']):
+ assert s['character']==c['id'] and 16<=s['distance_px']<=100
+ assert 12<=s['recover_below']<s['resume_at']<=60
+ for k in ['melee_percent','fire_percent','guard_bonus','punish_bonus']:assert 0<=s[k]<=100
+ lines.append('{'+','.join(str(s[k]) for k in style)+'},')
+lines+=['};','}']
+(r/'include/pkmn_cpu_defs.h').write_text('\n'.join(lines)+'\n')
+print('Generated three difficulty profiles and six CPU styles.')

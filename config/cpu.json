@@ -1,0 +1,109 @@
+{
+  "version": "0.6.0",
+  "history_ticks": 32,
+  "memory_actions": 6,
+  "memory_expire_ticks": 240,
+  "difficulties": [
+    {
+      "name": "Easy",
+      "reaction_ticks": 20,
+      "think_ticks": 9,
+      "defense_percent": 40,
+      "super_evade_percent": 45,
+      "punish_percent": 25,
+      "followup_percent": 25,
+      "mistake_percent": 22,
+      "hesitate_ticks": 12,
+      "plan_ticks": 90,
+      "adapt_percent": 0
+    },
+    {
+      "name": "Normal",
+      "reaction_ticks": 12,
+      "think_ticks": 6,
+      "defense_percent": 72,
+      "super_evade_percent": 72,
+      "punish_percent": 65,
+      "followup_percent": 72,
+      "mistake_percent": 10,
+      "hesitate_ticks": 6,
+      "plan_ticks": 72,
+      "adapt_percent": 6
+    },
+    {
+      "name": "Hard",
+      "reaction_ticks": 8,
+      "think_ticks": 4,
+      "defense_percent": 90,
+      "super_evade_percent": 88,
+      "punish_percent": 90,
+      "followup_percent": 90,
+      "mistake_percent": 4,
+      "hesitate_ticks": 4,
+      "plan_ticks": 60,
+      "adapt_percent": 12
+    }
+  ],
+  "styles": [
+    {
+      "character": "pikachu",
+      "distance_px": 24,
+      "melee_percent": 88,
+      "fire_percent": 28,
+      "guard_bonus": 0,
+      "punish_bonus": 4,
+      "recover_below": 18,
+      "resume_at": 38
+    },
+    {
+      "character": "charmander",
+      "distance_px": 72,
+      "melee_percent": 65,
+      "fire_percent": 82,
+      "guard_bonus": 0,
+      "punish_bonus": 0,
+      "recover_below": 22,
+      "resume_at": 44
+    },
+    {
+      "character": "squirtle",
+      "distance_px": 60,
+      "melee_percent": 65,
+      "fire_percent": 70,
+      "guard_bonus": 12,
+      "punish_bonus": 10,
+      "recover_below": 24,
+      "resume_at": 44
+    },
+    {
+      "character": "bulbasaur",
+      "distance_px": 34,
+      "melee_percent": 85,
+      "fire_percent": 42,
+      "guard_bonus": 4,
+      "punish_bonus": 8,
+      "recover_below": 22,
+      "resume_at": 42
+    },
+    {
+      "character": "eevee",
+      "distance_px": 25,
+      "melee_percent": 85,
+      "fire_percent": 42,
+      "guard_bonus": 0,
+      "punish_bonus": 8,
+      "recover_below": 18,
+      "resume_at": 38
+    },
+    {
+      "character": "meowth",
+      "distance_px": 32,
+      "melee_percent": 78,
+      "fire_percent": 30,
+      "guard_bonus": 3,
+      "punish_bonus": 15,
+      "recover_below": 18,
+      "resume_at": 38
+    }
+  ]
+}

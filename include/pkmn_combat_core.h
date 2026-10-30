@@ -1,6 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include "pkmn_character_defs.h"
+#include "pkmn_cpu_defs.h"
 namespace pkmn {
 enum Buttons { A=1,B=2,SELECT=4,START=8,RIGHT=16,LEFT=32,UP=64,DOWN=128,R=256,L=512 };
 enum Action { NONE,BLOCK,MELEE,FIRE,SQUEEZE,SUPER,HITSTUN,BLOCKSTUN,GUARD_BREAK };
@@ -15,7 +16,6 @@ struct Fighter {
  int confirmed_at=-100,chain_depth=0;
 };
 struct Projectile { bool active=false,reserved=false,super=false,followup=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0; };
-struct Observation { Fighter f[2];Projectile p[4]; };
 // Read-only presentation events; never consulted by combat resolution or AI.
 enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EVENT_COUNT };
 struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack;int damage;bool followup; };
@@ -43,10 +43,26 @@ private:
  void enter(int who,Action a,int duration,int cost,bool followup=false);void cancel(int who);
 };
 class CpuController {
- Observation history[32]{};int stored=-1;uint16_t held=0;uint32_t rng=1,threat=0;bool evade=false;int dodge=0;
- bool resting=false;
+ // This type cannot hold buffered inputs, invulnerability, resource values,
+ // projectile reservations or any other hidden opponent state.
+ struct VisibleFighter { int character=0,x=0,y=0,vx=0,vy=0,face=1;Action action=NONE;int began=0;uint32_t attack=0; };
+ struct VisibleShot { bool active=false,super=false;int owner=0,x=0,y=0,vx=0;uint32_t id=0; };
+ struct Observation { VisibleFighter enemy;VisibleShot shots[4]; };
+ Observation history[cpu_history_ticks]{};
+ int stored=-1,next_plan=0,plan=0,jitter=0,hesitate_until=0,next_shot=0,rest_began=0;
+ int last_hp=-1,last_power=-1,last_progress=0;
+ uint16_t held=0;Input cached{};uint32_t rng=1,seen_attack=0,combo_attack=0;
+ // One live normal shot, super and melee per opponent. Keep their choices
+ // independently so changing which is nearest never re-rolls an old threat.
+ uint32_t threat[3]{};bool respond[3]{};int dodge[3]{};
+ bool resting=false,combo_allowed=false;int memory_at=0,last_seen=-1000;
+ Action memory[cpu_memory_actions]{};
  uint32_t random();
+ bool roll(int percent){return int(random()%100)<(percent>95?95:percent);}
 public:
+ enum Intent { APPROACH,SPACE,PRESSURE,RECOVER,DEFEND,PUNISH,FOLLOW,SUPER_ATTACK,HESITATE };
+ struct Diagnostics { int intent=APPROACH,target=0,observed_tick=0,melee_memory=0,fire_memory=0,super_memory=0,decisions=0,defenses=0,punishes=0,followups=0,hesitations=0,plan=0,response_choices=0;bool resting=false,closing=false; };
+ Diagnostics diagnostics{};
  int difficulty=1;
  void reset(int level,uint32_t seed);
  Input input(const CombatCore& core,int who=1);

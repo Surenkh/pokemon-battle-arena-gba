@@ -59,3 +59,22 @@ The separate 32-word `pkmn_depth_debug` array preserves both earlier telemetry l
 | 29–31 | Current event count, player HUD status, practice round count |
 
 HUD statuses add 6 PUNISH, 7 FOLLOW B and 8 FOLLOW A/B. Signed values appear as unsigned words in the driver output. New screens append IDs 9 practice setup and 10 fighter guide; original screen IDs are preserved. Reports and balance evidence for this update are under verification/v0.5.0/.
+
+## v0.6 CPU tactics
+
+Run `python3 tests/native_cpu_flow.py` with the same native driver/environment. It observes all six opponent styles at each of the three actual selector difficulty settings, checks the public-observation delay, bounded memory/spacing, plan variation, sustained resource recovery, pause and completed rounds. No gameplay memory is written. Audio opportunity coverage in `native_feel_flow.py` now selects Easy through physical buttons; stronger AI can interrupt its external replay's supers. Difficulty behavior is covered independently by the CPU runner and controlled host comparisons.
+
+A separate 32-word `pkmn_cpu_debug` array preserves all prior layouts:
+
+| Word | Value |
+| --- | --- |
+| 0 | Magic 0x43505536 |
+| 1 | Intent: 0 approach, 1 space, 2 pressure, 3 recover, 4 defend, 5 punish, 6 follow, 7 super, 8 hesitate |
+| 2–3 | Target spacing in pixels; delayed observation tick |
+| 4–6 | Last-six memory counts for melee, fire and super starts |
+| 7–11 | Think decisions, defense requests, punish requests, follow-up requests, deliberate hesitations |
+| 12–13 | Plan (0 pressure, 1 balanced, 2 space); resting flag |
+| 14–16 | Reaction delay, think interval, stale/late-round closing flag |
+| 17–31 | Reserved zeros |
+
+Request counters record policy choices rather than guaranteed resolved actions. Combat events remain the source for actual hits, blocks and follow-up entries. ROM-bound reports are in verification/v0.6.0/.

@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "0.5.0",
+  "ruleset_version": "0.6.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -27,9 +27,7 @@
     "melee_clean_hit_power": 18,
     "fire_clean_hit_power": 22,
     "guard_cost_numerator": 5,
-    "guard_cost_denominator": 4,
-    "cpu_recover_below_stamina": 12,
-    "cpu_resume_stamina": 32
+    "guard_cost_denominator": 4
   },
   "motion": {
     "gravity_q8": 64,
