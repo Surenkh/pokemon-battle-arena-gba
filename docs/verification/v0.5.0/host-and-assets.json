@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "combat_assertions": 7113919,
+  "seeded_matches": 720,
+  "ordered_matchups": 36,
+  "movement_checks": 18904,
+  "feedback_checks": 159479,
+  "depth_checks": 22995,
+  "character_frames": 408,
+  "effect_sheets": 30,
+  "effect_frames": 120,
+  "original_pcm_assets": 27
+}

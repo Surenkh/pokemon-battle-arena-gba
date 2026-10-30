@@ -1,0 +1,551 @@
+{
+  "status": "passed",
+  "checks": 339,
+  "emulator": "mGBA 0.10.2 libmgba software renderer",
+  "native_roster": [
+    {
+      "id": 0,
+      "cpu": 2,
+      "controls": "passed"
+    },
+    {
+      "id": 1,
+      "cpu": 2,
+      "controls": "passed"
+    },
+    {
+      "id": 2,
+      "cpu": 5,
+      "controls": "passed"
+    },
+    {
+      "id": 3,
+      "cpu": 4,
+      "controls": "passed"
+    },
+    {
+      "id": 4,
+      "cpu": 5,
+      "controls": "passed"
+    },
+    {
+      "id": 5,
+      "cpu": 1,
+      "controls": "passed"
+    }
+  ],
+  "native_rounds": [
+    {
+      "round": 1,
+      "outcome": 1,
+      "hp": [
+        14,
+        0
+      ],
+      "supers": 1,
+      "frames": 1018,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 2,
+      "outcome": 2,
+      "hp": [
+        0,
+        7
+      ],
+      "supers": 1,
+      "frames": 953,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 3,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 0,
+      "frames": 849,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 4,
+      "outcome": 2,
+      "hp": [
+        0,
+        7
+      ],
+      "supers": 1,
+      "frames": 953,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 5,
+      "outcome": 2,
+      "hp": [
+        0,
+        9
+      ],
+      "supers": 1,
+      "frames": 935,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 6,
+      "outcome": 2,
+      "hp": [
+        0,
+        1
+      ],
+      "supers": 1,
+      "frames": 917,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 7,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 978,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 8,
+      "outcome": 1,
+      "hp": [
+        22,
+        0
+      ],
+      "supers": 1,
+      "frames": 850,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 9,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 931,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 10,
+      "outcome": 2,
+      "hp": [
+        0,
+        31
+      ],
+      "supers": 1,
+      "frames": 893,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 11,
+      "outcome": 2,
+      "hp": [
+        0,
+        4
+      ],
+      "supers": 1,
+      "frames": 994,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 12,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 931,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 13,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 883,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 14,
+      "outcome": 2,
+      "hp": [
+        0,
+        31
+      ],
+      "supers": 1,
+      "frames": 893,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 15,
+      "outcome": 2,
+      "hp": [
+        0,
+        6
+      ],
+      "supers": 1,
+      "frames": 766,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 16,
+      "outcome": 2,
+      "hp": [
+        0,
+        12
+      ],
+      "supers": 1,
+      "frames": 900,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 17,
+      "outcome": 1,
+      "hp": [
+        10,
+        0
+      ],
+      "supers": 1,
+      "frames": 1018,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 18,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 883,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 19,
+      "outcome": 1,
+      "hp": [
+        18,
+        0
+      ],
+      "supers": 1,
+      "frames": 850,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 20,
+      "outcome": 2,
+      "hp": [
+        0,
+        20
+      ],
+      "supers": 1,
+      "frames": 887,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 21,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 0,
+      "frames": 849,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 22,
+      "outcome": 2,
+      "hp": [
+        0,
+        31
+      ],
+      "supers": 1,
+      "frames": 893,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 23,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 883,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 24,
+      "outcome": 1,
+      "hp": [
+        2,
+        0
+      ],
+      "supers": 1,
+      "frames": 880,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 25,
+      "outcome": 2,
+      "hp": [
+        0,
+        31
+      ],
+      "supers": 1,
+      "frames": 893,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 26,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 694,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 27,
+      "outcome": 1,
+      "hp": [
+        2,
+        0
+      ],
+      "supers": 1,
+      "frames": 880,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 28,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 796,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 29,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 796,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 30,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 700,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 31,
+      "outcome": 2,
+      "hp": [
+        0,
+        1
+      ],
+      "supers": 1,
+      "frames": 852,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 32,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 694,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 33,
+      "outcome": 2,
+      "hp": [
+        0,
+        7
+      ],
+      "supers": 1,
+      "frames": 822,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 34,
+      "outcome": 2,
+      "hp": [
+        0,
+        15
+      ],
+      "supers": 1,
+      "frames": 985,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 35,
+      "outcome": 1,
+      "hp": [
+        38,
+        0
+      ],
+      "supers": 1,
+      "frames": 592,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 36,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 796,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 37,
+      "outcome": 2,
+      "hp": [
+        0,
+        7
+      ],
+      "supers": 1,
+      "frames": 958,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 38,
+      "outcome": 2,
+      "hp": [
+        0,
+        7
+      ],
+      "supers": 1,
+      "frames": 953,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 39,
+      "outcome": 1,
+      "hp": [
+        14,
+        0
+      ],
+      "supers": 1,
+      "frames": 1018,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 40,
+      "outcome": 1,
+      "hp": [
+        30,
+        0
+      ],
+      "supers": 1,
+      "frames": 796,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 41,
+      "outcome": 2,
+      "hp": [
+        0,
+        7
+      ],
+      "supers": 1,
+      "frames": 959,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    },
+    {
+      "round": 42,
+      "outcome": 1,
+      "hp": [
+        14,
+        0
+      ],
+      "supers": 1,
+      "frames": 1018,
+      "peak_q12": 3545,
+      "missed_frames": 0
+    }
+  ],
+  "battle_frames": 36989,
+  "nominal_battle_minutes": 10.27,
+  "observed_super_activations": 40,
+  "peak_cpu_fraction": 0.865478515625,
+  "missed_display_frames": 0,
+  "wall_seconds": 29.36,
+  "method": "Native ROM, physical button inputs and read-only telemetry; no gameplay memory writes.",
+  "rom_sha256": "534783d13f68d6ec4d9928391f94b5710027617d844577a1834414706a9b0a06"
+}

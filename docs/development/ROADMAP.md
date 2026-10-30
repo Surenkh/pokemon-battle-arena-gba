@@ -14,4 +14,6 @@ Avoid introducing all five at once. Visual identity comes first because it makes
 
 Priority 1 shipped in v0.3.0; see [the iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md) and [its evidence](../ELEMENTAL_ATTACKS_TEST_REPORT.md). Priority 2 is implemented in v0.4.0: themed sounds, hit flash, a fixed-HUD camera shake, guard/stamina feedback, super warnings, and landing input buffering. See [the implementation contract](../COMBAT_FEEL.md) and [test evidence](../COMBAT_FEEL_TEST_REPORT.md).
 
-Priority 3 is next. Begin with human playtesting of spacing, stamina recovery, interrupted supers and each fighter's risk/reward. Collect matchup evidence before adding mechanics or changing the canonical character values. Priorities 4–5 remain future work. Physical hardware profiling is still outstanding.
+Priority 3 is implemented in v0.5.0: six fighter traits, one hit-confirm follow-up, recovery punish feedback, a measured stamina delay adjustment and practice with three dummy behaviors. See [the implementation contract](../FIGHTER_DEPTH.md) and [validation evidence](../FIGHTER_DEPTH_TEST_REPORT.md). Automated baseline/candidate results guide tuning; human matchup playtesting remains outstanding.
+
+Priority 4 is next: more varied CPU spacing, style use and difficulty behavior, preserving delayed public observations and predictable counterplay. Priority 5 remains future work. Physical hardware profiling and human balance testing are still outstanding.
