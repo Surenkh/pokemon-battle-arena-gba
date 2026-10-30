@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "0.4.0",
+  "ruleset_version": "0.5.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -19,7 +19,7 @@
   },
   "resources": {
     "stamina_subunits_per_point": 60,
-    "stamina_regen_delay_ticks": 30,
+    "stamina_regen_delay_ticks": 24,
     "block_drain_subunits_per_tick": 12,
     "block_enter_min_stamina": 8,
     "super_power_max": 100,
@@ -27,7 +27,9 @@
     "melee_clean_hit_power": 18,
     "fire_clean_hit_power": 22,
     "guard_cost_numerator": 5,
-    "guard_cost_denominator": 4
+    "guard_cost_denominator": 4,
+    "cpu_recover_below_stamina": 12,
+    "cpu_resume_stamina": 32
   },
   "motion": {
     "gravity_q8": 64,
@@ -177,6 +179,19 @@
       "super": {
         "name": "Volt Burst",
         "damage": 32
+      },
+      "style": {
+        "role": "RUSH AND PRESSURE",
+        "trait_name": "QUICK STEP",
+        "tip_1": "MELEE STEPS FORWARD",
+        "tip_2": "FAST APPROACH. COMMIT TO A.",
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 128,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false
       }
     },
     {
@@ -205,6 +220,19 @@
       "super": {
         "name": "Inferno Wave",
         "damage": 36
+      },
+      "style": {
+        "role": "HEAVY FIRE",
+        "trait_name": "EMBER PRESSURE",
+        "tip_1": "FIRE DRAINS EXTRA GUARD",
+        "tip_2": "SLOW RECOVERY. KEEP SPACE.",
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 125,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false
       }
     },
     {
@@ -233,6 +261,19 @@
       "super": {
         "name": "Hydro Wave",
         "damage": 30
+      },
+      "style": {
+        "role": "DEFENSE AND SPACE",
+        "trait_name": "SHELL CONTROL",
+        "tip_1": "EFFICIENT BLOCK. WATER PUSH.",
+        "tip_2": "SUPERS STILL IGNORE BLOCK.",
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 80,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 768,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false
       }
     },
     {
@@ -261,6 +302,19 @@
       "super": {
         "name": "Solar Pulse",
         "damage": 34
+      },
+      "style": {
+        "role": "REACH AND CONTROL",
+        "trait_name": "VINE REACH",
+        "tip_1": "LONG MELEE REACH",
+        "tip_2": "SLOW START. HOLD DISTANCE.",
+        "melee_reach_px": 32,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false
       }
     },
     {
@@ -289,6 +343,19 @@
       "super": {
         "name": "Swift Nova",
         "damage": 31
+      },
+      "style": {
+        "role": "FLEXIBLE FOLLOW-UPS",
+        "trait_name": "ADAPTABLE",
+        "tip_1": "CLEAN A CAN FOLLOW WITH A/B",
+        "tip_2": "A TO A NEEDS CLOSE RANGE.",
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": true
       }
     },
     {
@@ -317,7 +384,29 @@
       "super": {
         "name": "Gold Rush",
         "damage": 33
+      },
+      "style": {
+        "role": "CLOSE COUNTERATTACK",
+        "trait_name": "PUNISH",
+        "tip_1": "EXTRA MELEE DAMAGE IN RECOVERY",
+        "tip_2": "CATCH A MISSED ENEMY ATTACK.",
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 3,
+        "melee_followup": false
       }
     }
-  ]
+  ],
+  "followup": {
+    "recovery_cut_ticks": 6,
+    "escape_ticks": 2
+  },
+  "practice": {
+    "dummy_think_ticks": 6,
+    "dummy_shot_interval_ticks": 90,
+    "dummy_super_interval_ticks": 180
+  }
 }

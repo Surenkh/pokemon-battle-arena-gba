@@ -8,12 +8,12 @@ class CombatFeel {
  int shake_left=0,shake_size=0,shake_age=0;
 public:
  int dx=0,dy=0,display_frame=0;
- int blocked[2]{},broken[2]{},tired[2]{},flash[2]{};
- uint32_t seen_events=0;int shake_frames=0,guard_breaks=0,rejected_actions=0,landing_jumps=0;
+ int blocked[2]{},broken[2]{},tired[2]{},flash[2]{},punish[2]{};
+ uint32_t seen_events=0;int shake_frames=0,guard_breaks=0,rejected_actions=0,landing_jumps=0,followups=0,punishes=0;
  void reset(){*this=CombatFeel{};}
  void update(const CombatCore& c,bool running){
   dx=dy=0;if(!running)return;++display_frame;
-  for(int i=0;i<2;i++){if(blocked[i])--blocked[i];if(broken[i])--broken[i];if(tired[i])--tired[i];if(flash[i])--flash[i];}
+  for(int i=0;i<2;i++){if(blocked[i])--blocked[i];if(broken[i])--broken[i];if(tired[i])--tired[i];if(flash[i])--flash[i];if(punish[i])--punish[i];}
   if(last_event_frame!=c.event_frame){last_event_frame=c.event_frame;
    for(int n=0;n<c.event_count;n++){
     const auto&e=c.events[n];seen_events|=1u<<e.kind;int size=0,duration=0;
@@ -22,6 +22,8 @@ public:
     if(e.kind==EV_BREAK){broken[e.target]=30;++guard_breaks;size=2;duration=10;}
     if(e.kind==EV_TIRED){tired[e.target]=18;++rejected_actions;}
     if(e.kind==EV_LANDING_JUMP)++landing_jumps;
+    if(e.kind==EV_FOLLOWUP)++followups;
+    if(e.kind==EV_PUNISH){punish[e.owner]=18;++punishes;}
     if(size&&(size>shake_size||!shake_left)){shake_size=size;shake_left=duration;shake_age=0;}
    }
   }
@@ -31,6 +33,8 @@ public:
  int status(const CombatCore& c,int who)const{
   if(broken[who]||c.f[who].action==GUARD_BREAK)return 4;
   if(tired[who])return 3;if(blocked[who])return 2;
+  if(punish[who])return 6;
+  if(c.can_followup(who,A))return 8;if(c.can_followup(who,B))return 7;
   if(c.f[who].sta<fire_stamina_cost*60)return 1;
   return c.f[who].sp==100?5:0;
  }

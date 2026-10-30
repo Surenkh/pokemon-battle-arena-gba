@@ -1,0 +1,19 @@
+{
+  "label":"v0.5.0",
+  "rounds":2160,
+  "seeds_per_ordered_matchup_and_level":20,
+  "difficulty_levels":3,
+  "timeouts":0,
+  "median_active_ticks":1002,
+  "mean_active_ticks":1021.31,
+  "replay_digest":3848061292,
+  "characters":[
+    {"character":"PIKACHU","appearances":720,"wins":482,"losses":221,"draws":17,"win_percent":66.94,"low_stamina_tick_percent":48.29,"neutral_wait_percent":41.80,"damage_dealt":70093,"damage_taken":56603,"melee_started":4193,"shots_released":6667,"clean_hits":6615,"blocked_hits":284,"super_starts":703,"super_releases":567},
+    {"character":"CHARMANDER","appearances":720,"wins":373,"losses":324,"draws":23,"win_percent":51.81,"low_stamina_tick_percent":50.53,"neutral_wait_percent":42.71,"damage_dealt":65539,"damage_taken":63748,"melee_started":3899,"shots_released":5616,"clean_hits":5311,"blocked_hits":143,"super_starts":558,"super_releases":424},
+    {"character":"SQUIRTLE","appearances":720,"wins":204,"losses":497,"draws":19,"win_percent":28.33,"low_stamina_tick_percent":49.36,"neutral_wait_percent":43.68,"damage_dealt":60874,"damage_taken":78520,"melee_started":4571,"shots_released":7312,"clean_hits":6325,"blocked_hits":394,"super_starts":678,"super_releases":448},
+    {"character":"BULBASAUR","appearances":720,"wins":301,"losses":411,"draws":8,"win_percent":41.81,"low_stamina_tick_percent":54.69,"neutral_wait_percent":49.30,"damage_dealt":64292,"damage_taken":78635,"melee_started":4783,"shots_released":6201,"clean_hits":5961,"blocked_hits":149,"super_starts":571,"super_releases":360},
+    {"character":"EEVEE","appearances":720,"wins":390,"losses":319,"draws":11,"win_percent":54.17,"low_stamina_tick_percent":45.74,"neutral_wait_percent":40.18,"damage_dealt":67390,"damage_taken":60472,"melee_started":8694,"shots_released":5688,"clean_hits":7796,"blocked_hits":374,"super_starts":849,"super_releases":704},
+    {"character":"MEOWTH","appearances":720,"wins":364,"losses":342,"draws":14,"win_percent":50.56,"low_stamina_tick_percent":49.51,"neutral_wait_percent":43.41,"damage_dealt":66988,"damage_taken":57198,"melee_started":3995,"shots_released":6441,"clean_hits":6629,"blocked_hits":288,"super_starts":703,"super_releases":525}
+  ],
+  "method":"2160 CPU-vs-CPU rounds across all ordered matchups and all difficulties. Mirrored roster order and fixed seeds; CPU policies may favor particular styles. Human balance remains unverified."
+}
