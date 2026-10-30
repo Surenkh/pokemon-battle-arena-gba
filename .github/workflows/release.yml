@@ -37,10 +37,10 @@ jobs:
       - name: Check canonical generated combat data
         run: |
           python3 tools/generate_config.py
-          git diff --exit-code -- include/pkmn_character_defs.h
+          git diff --exit-code -- include/pkmn_character_defs.h include/pkmn_cpu_defs.h
       - name: Run host combat regressions
         run: |
-          for suite in combat movement feel depth; do
+          for suite in combat movement feel depth cpu; do
             g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp "tests/${suite}_tests.cpp" -o "/tmp/pkmn-${suite}-tests"
             "/tmp/pkmn-${suite}-tests"
           done

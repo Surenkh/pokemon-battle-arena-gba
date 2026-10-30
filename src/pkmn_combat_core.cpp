@@ -113,26 +113,148 @@ void CombatCore::collide(const Fighter previous[2]){Contact contacts[16];int cou
 void CombatCore::resources(){for(auto&v:f)if(v.action==NONE&&tick-v.last_spend>=resources_stamina_regen_delay_ticks)v.sta=minv(characters[v.character].sta*60,v.sta+characters[v.character].regen);}
 void CombatCore::step(Input player,Input cpu){begin_events();if(outcome)return;feedback=0;Fighter previous[2]={f[0],f[1]};action(0,player);action(1,cpu);physics();spawn();collide(previous);resources();if(!training)--remaining;if(!f[0].hp||!f[1].hp)outcome=!f[0].hp&&!f[1].hp?3:!f[1].hp?1:2;else if(!training&&remaining<=0){int a=f[0].hp*characters[f[1].character].hp,b=f[1].hp*characters[f[0].character].hp;outcome=a>b?1:a<b?2:3;}if(outcome){for(auto&b:p)b=Projectile{};hitstop=0;for(auto&v:f)v.pending=0;}++tick;}
 uint32_t CombatCore::checksum()const{uint32_t h=2166136261u;auto mix=[&](uint32_t n){h=(h^n)*16777619u;};mix(seed);mix(training);mix(tick);mix(remaining);mix(hitstop);mix(outcome);mix(next_id);for(auto&v:f){mix(v.character);mix(v.x);mix(v.y);mix(v.vx);mix(v.vy);mix(v.hp);mix(v.sta);mix(v.sp);mix(v.kb);mix(v.face);mix(v.action);mix(v.began);mix(v.ends);mix(v.invuln_until);mix(v.squeeze_ready);mix(v.last_spend);mix(v.pending);mix(v.pending_until);mix(v.attack_id);mix(v.melee_contact);mix(v.spawned);mix(v.stride_q8);mix(v.landed_at);mix(v.took_off_at);mix(v.confirmed_at);mix(v.chain_depth);}for(auto&b:p){mix(b.active);mix(b.reserved);mix(b.super);mix(b.followup);mix(b.owner);mix(b.id);mix(b.x);mix(b.y);mix(b.px);mix(b.py);mix(b.vx);mix(b.born);mix(b.damage);}return h;}
+// CPU decisions only produce the same button requests available to a player.
 uint32_t CpuController::random(){rng^=rng<<13;rng^=rng>>17;rng^=rng<<5;return rng;}
-void CpuController::reset(int level,uint32_t value){difficulty=clamp(level,0,2);rng=value?value:1;stored=-1;held=0;threat=0;evade=false;dodge=0;resting=false;}
-Input CpuController::input(const CombatCore&core,int who){if(core.hitstop||core.outcome)return{held,0};if(stored!=core.tick){auto&o=history[core.tick%32];o.f[0]=core.f[0];o.f[1]=core.f[1];for(int i=0;i<4;i++)o.p[i]=core.p[i];if(stored<0)for(int i=0;i<32;i++)history[i]=o;stored=core.tick;}
- held&=uint16_t(LEFT|RIGHT|L);if(core.tick%6)return{held,0};const int delays[3]={18,12,8},rates[3]={45,70,85};int delay=delays[difficulty],at=maxv(0,core.tick-delay);const auto&o=history[at%32];const auto&me=core.f[who];const auto&enemy=o.f[1-who];int delta=enemy.x-me.x,dist=absv(delta)/256;uint16_t next=0;
- uint32_t threat_id=0;int eta=999;bool super_threat=false;for(const auto&b:o.p)if(b.active&&b.owner!=who&&((me.x-b.x)*int64_t(b.vx)>0)){int arrival=absv(me.x-b.x)/absv(b.vx)-delay;if(arrival<eta){eta=arrival;super_threat=b.super;threat_id=b.id;}}
- if(enemy.action==SUPER&&enemy.attack_id){int arrival=super_startup_ticks-(at-enemy.began)-delay+maxv(0,dist-collision_super_spawn_forward_px-13)/5;if(arrival<eta){eta=arrival;super_threat=true;threat_id=enemy.attack_id;}}
- if(super_threat&&threat_id!=threat){threat=threat_id;evade=int(random()%100)<rates[difficulty];dodge=random()%2;}
- bool neutral=me.action==NONE||me.action==BLOCK;bool ground=core.grounded(me);
- if(me.sta<resources_cpu_recover_below_stamina*60)resting=true;else if(me.sta>=resources_cpu_resume_stamina*60)resting=false;
- if(super_threat&&evade&&eta>=0&&eta<=(dodge?15:18)&&neutral&&ground&&me.sta>=18*60){if(dodge&&core.tick>=me.squeeze_ready)next=DOWN;else next=UP;}
- else if(!super_threat&&eta>=0&&eta<18&&neutral&&ground&&me.sta>=20*60)next=L;
- else if(!resting&&core.can_followup(who,A,input_buffer_ticks-1)&&dist<characters[me.character].melee_reach+6)next=A;
- else if(!resting&&core.can_followup(who,B,input_buffer_ticks-1)&&dist<140)next=B;
- else if(neutral){if(resting){next=0;}
- else if(me.sp==100&&me.sta<25*60){next=delta>0?LEFT:RIGHT;}
- else if(me.sp==100&&me.sta>=25*60&&ground&&dist>38&&dist<155&&enemy.y>=110*256)next=R;
- else if(dist<characters[me.character].melee_reach+6&&me.sta>=8*60)next=A;
- else if(dist>42&&dist<175&&me.sta>=25*60&&random()%100<65)next=B;
- else if(dist>23)next=delta>0?RIGHT:LEFT;
- else if(me.sta<18*60)next=delta>0?LEFT:RIGHT;
- if(!next&&ground&&random()%100<5&&me.sta>=40*60)next=UP;}
- uint16_t pressed=next&uint16_t(A|B|R|UP|DOWN);held=next&uint16_t(LEFT|RIGHT|L);return{uint16_t(next),pressed};}
+void CpuController::reset(int level,uint32_t value){
+ difficulty=clamp(level,0,2);rng=value?value:1;stored=-1;held=0;cached={};
+ seen_attack=combo_attack=0;resting=combo_allowed=false;
+ for(int i=0;i<3;++i){threat[i]=0;respond[i]=false;dodge[i]=0;}
+ next_plan=plan=jitter=hesitate_until=next_shot=rest_began=memory_at=0;last_seen=-1000;
+ last_hp=last_power=-1;last_progress=0;
+ for(auto&m:memory)m=NONE;
+ diagnostics={};
+}
+Input CpuController::input(const CombatCore&core,int who){
+ if(core.hitstop||core.outcome)return{held,0};
+ if(stored==core.tick)return cached; // Idempotent queries; no repeated random rolls.
+ const auto&me=core.f[who];
+ if(me.hp!=last_hp||me.sp!=last_power){last_progress=core.tick;last_hp=me.hp;last_power=me.sp;}
+ const auto&profile=cpu_difficulties[difficulty];const auto&style=cpu_styles[me.character];
+ const auto&def=characters[me.character];
+ auto&fresh=history[core.tick%cpu_history_ticks];const auto&visible=core.f[1-who];
+ fresh.enemy={visible.character,visible.x,visible.y,visible.vx,visible.vy,visible.face,visible.action,visible.began,visible.attack_id};
+ for(int i=0;i<4;++i){const auto&b=core.p[i];fresh.shots[i]={b.active,b.super,b.owner,b.x,b.y,b.vx,b.id};}
+ if(stored<0)for(auto&o:history)o=fresh;
+ stored=core.tick;
+ const int observed=maxv(0,core.tick-profile.reaction_ticks),elapsed=core.tick-observed;
+ const auto&o=history[observed%cpu_history_ticks];const auto&enemy=o.enemy;const auto&ed=characters[enemy.character];
+ // Short, bounded extrapolation of already visible movement. No current enemy query.
+ const int ex=clamp(enemy.x+enemy.vx*minv(elapsed,6),world_min_fighter_x*256,world_max_fighter_x*256);
+ const int delta=ex-me.x,dist=absv(delta)/256,toward=delta>=0?RIGHT:LEFT,away=delta>=0?LEFT:RIGHT;
+ const int enemy_age=core.tick-enemy.began;
+ const bool neutral=me.action==NONE||me.action==BLOCK,ground=core.grounded(me);
+ const bool low_enemy=enemy.action==SQUEEZE&&enemy_age>=squeeze_startup_ticks&&enemy_age<squeeze_startup_ticks+squeeze_active_ticks;
+ const bool target_low=enemy.y>=108*256; // Don't shoot across a visibly high jump.
+ if(core.tick-last_seen>cpu_memory_expire_ticks){for(auto&m:memory)m=NONE;}
+ if((enemy.action==MELEE||enemy.action==FIRE||enemy.action==SUPER)&&enemy.attack&&enemy.attack!=seen_attack){
+  seen_attack=enemy.attack;memory[memory_at]=enemy.action;memory_at=(memory_at+1)%cpu_memory_actions;last_seen=core.tick;
+ }
+ diagnostics.observed_tick=observed;diagnostics.melee_memory=diagnostics.fire_memory=diagnostics.super_memory=0;
+ for(auto m:memory){diagnostics.melee_memory+=m==MELEE;diagnostics.fire_memory+=m==FIRE;diagnostics.super_memory+=m==SUPER;}
+ auto finish=[&](int next,int intent)->Input{
+  diagnostics.intent=intent;held=uint16_t(next)&uint16_t(LEFT|RIGHT|L);
+  cached={uint16_t(next),uint16_t(next&int(A|B|R|UP|DOWN))};return cached;
+ };
+ if(!resting&&me.sta<style.recover_below*60){resting=true;rest_began=core.tick;}
+ else if(resting&&me.sta>=style.resume_at*60)resting=false;
+ diagnostics.resting=resting;
+ // Own hit confirms can be queued outside the perception cadence. They use the
+ // unchanged public combat API, full costs, startup, and one-follow-up limit.
+ if(core.can_followup(who,B,input_buffer_ticks-1)||core.can_followup(who,A,input_buffer_ticks-1)){
+  if(combo_attack!=me.attack_id){combo_attack=me.attack_id;combo_allowed=roll(profile.followup_percent);}
+  if(combo_allowed){
+   int button=0;
+   if(def.melee_followup&&dist<def.melee_reach+5&&target_low&&core.can_followup(who,A,input_buffer_ticks-1))button=A;
+   else if(dist<145&&target_low&&!low_enemy&&core.can_followup(who,B,input_buffer_ticks-1))button=B;
+   if(button){combo_allowed=false;++diagnostics.followups;return finish(button,FOLLOW);}
+  }
+ }
+ if(core.tick%profile.think_ticks)return finish(held,diagnostics.intent);
+ ++diagnostics.decisions;
+ if(core.tick>=next_plan){plan=int(random()%3);jitter=int(random()%11)-5;next_plan=core.tick+profile.plan_ticks;}
+ const bool closing=core.tick-last_progress>240||(!core.training&&core.remaining<600);
+ diagnostics.closing=closing;
+ diagnostics.plan=plan;diagnostics.target=closing?24:clamp(style.distance_px+(plan==0?-8:plan==2?8:0)+jitter,18,94);
+ const int reach=def.melee_reach+6,enemy_reach=ed.melee_reach+7;
+ const int recovery_start=enemy.action==MELEE?ed.melee_start+ed.melee_active:enemy.action==FIRE?ed.fire_start+1:enemy.action==SUPER?super_startup_ticks+super_active_ticks:999;
+ const int total=enemy.action==MELEE?ed.melee_total:enemy.action==FIRE?ed.fire_total:super_startup_ticks+super_active_ticks+super_recovery_ticks;
+ const int left=total-enemy_age;
+ const bool recovery=enemy_age>=recovery_start&&left>def.melee_start;
+ const bool startup=enemy.action==SUPER&&enemy_age>=0&&enemy_age+def.melee_start<super_startup_ticks;
+ // A visible whiff/recovery or interruptible super charge, not the opponent's
+ // private end tick, pending input, hit flags, invulnerability or stamina.
+ if(neutral&&ground&&target_low&&dist<reach&&me.sta>=melee_stamina_cost*60&&(recovery||startup)&&roll(profile.punish_percent+style.punish_bonus)){
+  ++diagnostics.punishes;return finish(A,PUNISH);
+ }
+ int eta=999;uint32_t threat_id=0;bool super_threat=false,melee_threat=false;
+ for(const auto&b:o.shots)if(b.active&&b.owner!=who&&b.vx&&((me.x-b.x)*int64_t(b.vx)>0)&&b.y>=92*256&&b.y<=world_floor_y*256){
+  const int margin=b.super?13:10;
+  const int arrival=maxv(0,absv(me.x-b.x)-margin*256)/absv(b.vx)-elapsed;
+  if(arrival>=-profile.think_ticks&&arrival<eta){eta=arrival;threat_id=b.id;super_threat=b.super;}
+ }
+ if(enemy.action==SUPER&&enemy.attack&&enemy_age<super_startup_ticks){
+  const int arrival=super_startup_ticks-enemy_age+maxv(0,dist-collision_super_spawn_forward_px-13)/5;
+  if(arrival<eta){eta=arrival;threat_id=enemy.attack;super_threat=true;}
+ }
+ if(enemy.action==MELEE&&enemy.attack&&dist<enemy_reach&&target_low&&enemy_age<ed.melee_start+ed.melee_active){
+  const int arrival=maxv(0,ed.melee_start-enemy_age);
+  if(arrival<eta){eta=arrival;threat_id=enemy.attack;super_threat=false;melee_threat=true;}
+ }
+ const int response_slot=super_threat?1:melee_threat?2:0;
+ if(threat_id&&threat_id!=threat[response_slot]){
+  threat[response_slot]=threat_id;++diagnostics.response_choices;
+  const int habit=diagnostics.fire_memory>=4?profile.adapt_percent:0;
+  respond[response_slot]=roll(super_threat?profile.super_evade_percent:profile.defense_percent+style.guard_bonus+habit);
+  // Squirtle favors its efficient guard. Repeated projectiles encourage a
+  // dodge on higher levels; one choice per visible attack, never per frame.
+  dodge[response_slot]=int(random()%2);
+  if(!super_threat&&(melee_threat||me.character==2||!roll(20+habit)))dodge[response_slot]=2;
+ }
+ const int choice=dodge[response_slot];
+ if(neutral&&ground&&respond[response_slot]&&eta>=0){
+  if(super_threat){
+   if(eta<=18&&eta>=5&&choice==0&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
+   if(eta<=20&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN,DEFEND);}
+   if(eta<=18&&eta>=5&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
+  }else if(eta<=18){
+   const int amount=melee_threat?ed.melee_damage:ed.fire_damage;
+   const int points=(amount*resources_guard_cost_numerator+resources_guard_cost_denominator-1)/resources_guard_cost_denominator;
+   const int impact=(points*(melee_threat?100:ed.fire_guard_percent)*def.guard_percent+9999)/10000;
+   if((choice==2||eta<5)&&me.sta>=(impact+4)*60){++diagnostics.defenses;return finish(L,DEFEND);}
+   if(!melee_threat&&eta>=5&&choice==0&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
+   if(!melee_threat&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN,DEFEND);}
+  }
+ }
+ if(!neutral)return finish(0,diagnostics.intent); // Never buffer speculative attacks through stun.
+ if(resting){
+  // A short disengage, then recover in place: avoid endless retreat loops.
+  const bool room=delta>=0?me.x>(world_min_fighter_x+6)*256:me.x<(world_max_fighter_x-6)*256;
+  return finish(ground&&room&&dist<enemy_reach+8&&core.tick-rest_began<24?away:0,RECOVER);
+ }
+ if(core.tick<hesitate_until)return finish(0,HESITATE);
+ if(roll(profile.mistake_percent)){hesitate_until=core.tick+profile.hesitate_ticks;++diagnostics.hesitations;return finish(0,HESITATE);}
+ if(!ground)return finish(dist>diagnostics.target?toward:0,SPACE);
+ // Brief, fallible prediction of a repeated visible melee habit. No prediction
+ // before four observations, no always-on guard and no read of the next input.
+ if(difficulty&&diagnostics.melee_memory>=4&&dist<enemy_reach+6&&plan==2&&core.tick%48<8&&me.sta>=40*60&&roll(profile.adapt_percent))return finish(L,DEFEND);
+ const bool own_shot=core.p[who].active||core.p[who].reserved;
+ if(me.sp==100&&me.sta>=(super_stamina_cost+8)*60&&dist>40&&dist<145&&target_low&&!low_enemy&&enemy.action!=SUPER&&!core.p[who+2].active&&!core.p[who+2].reserved&&roll(65+(plan==0?15:0))){
+  if(me.action==BLOCK)return finish(0,SUPER_ATTACK); // Release block before R, like a player.
+  return finish(R,SUPER_ATTACK);
+ }
+ if(target_low&&dist<reach&&me.sta>=melee_stamina_cost*60&&roll(style.melee_percent+(plan==0?10:0)))return finish(A,PRESSURE);
+ if(closing&&dist>=reach)return finish(toward,APPROACH);
+ int fire_chance=style.fire_percent+(plan==2?10:plan==0?-12:0);
+ if(enemy.action==BLOCK||enemy.action==BLOCKSTUN)fire_chance+=me.character==1?15:-12;
+ if(!own_shot&&core.tick>=next_shot&&dist>reach+12&&dist<150&&target_low&&!low_enemy&&enemy.action!=SUPER&&me.sta>=(fire_stamina_cost+style.recover_below/2)*60&&roll(fire_chance)){
+  next_shot=core.tick+def.fire_total+18+int(random()%19);return finish(B,PRESSURE);
+ }
+ if(dist>diagnostics.target+5)return finish(toward,APPROACH);
+ // Long-reach Bulbasaur holds its range. Other fighters can step out briefly;
+ // a corner removes retreat, so closing in remains a reliable counter.
+ const bool retreat_room=delta>=0?me.x>(world_min_fighter_x+6)*256:me.x<(world_max_fighter_x-6)*256;
+ if(!closing&&dist<diagnostics.target-5&&(plan==2||me.character==2)&&me.sta>=28*60&&retreat_room)return finish(away,SPACE);
+ if(dist>=reach&&core.tick%36<18)return finish(toward,APPROACH);
+ return finish(0,SPACE);
+}
 }
