@@ -26,8 +26,9 @@ int main(){
  {CombatCore c;c.reset(0,1);c.f[0].y=120*256;c.step({UP,UP},{});int apex=c.f[0].y;for(int i=0;i<40;i++){c.step({},{});if(c.f[0].y<apex)apex=c.f[0].y;}CHECK(apex==86*256);CHECK(c.f[0].y==120*256);}
  {CombatCore c;c.reset(0,1);c.f[0].x=100*256;c.f[1].x=116*256;c.f[0].hp=10;c.f[1].hp=8;c.f[0].action=MELEE;c.f[0].ends=100;c.f[0].began=-4;c.f[0].attack_id=1;c.f[1].action=MELEE;c.f[1].ends=100;c.f[1].began=-6;c.f[1].attack_id=2;c.step({},{});CHECK(c.outcome==3);}
  {CombatCore c;c.reset(0,1);c.remaining=1;c.f[0].hp=95;c.f[1].hp=100;c.step({},{});CHECK(c.outcome==3);}
- {CombatCore c;c.reset(0,1);c.f[0].action=BLOCKSTUN;c.f[0].ends=6;c.f[0].face=1;auto&b=c.p[1];b.active=true;b.owner=1;b.id=1;b.x=c.f[0].x;b.y=102*256;b.vx=-768;b.damage=8;b.born=0;int hp=c.f[0].hp;c.step({},{});CHECK(c.f[0].hp==hp);CHECK(c.f[0].sta==(105-10)*60);}
- {CombatCore c;c.reset(0,1);c.f[0].action=BLOCKSTUN;c.f[0].ends=6;c.f[0].face=1;c.f[0].sta=10*60;auto&b=c.p[1];b.active=true;b.owner=1;b.id=1;b.x=c.f[0].x;b.y=102*256;b.vx=-768;b.damage=8;b.born=0;int hp=c.f[0].hp;c.step({},{});CHECK(c.f[0].hp==hp);CHECK(c.f[0].sta==0);CHECK(c.f[0].action==GUARD_BREAK);}
+ // Charmander's projectile now costs 13 guard points for this 8-damage fixture.
+ {CombatCore c;c.reset(0,1);c.f[0].action=BLOCKSTUN;c.f[0].ends=6;c.f[0].face=1;auto&b=c.p[1];b.active=true;b.owner=1;b.id=1;b.x=c.f[0].x;b.y=102*256;b.vx=-768;b.damage=8;b.born=0;int hp=c.f[0].hp;c.step({},{});CHECK(c.f[0].hp==hp);CHECK(c.f[0].sta==(105-13)*60);}
+ {CombatCore c;c.reset(0,1);c.f[0].action=BLOCKSTUN;c.f[0].ends=6;c.f[0].face=1;c.f[0].sta=13*60;auto&b=c.p[1];b.active=true;b.owner=1;b.id=1;b.x=c.f[0].x;b.y=102*256;b.vx=-768;b.damage=8;b.born=0;int hp=c.f[0].hp;c.step({},{});CHECK(c.f[0].hp==hp);CHECK(c.f[0].sta==0);CHECK(c.f[0].action==GUARD_BREAK);}
  {CombatCore c;c.reset(0,1);c.f[0].action=BLOCK;c.step({A,A},{});CHECK(c.f[0].action==MELEE);}
  {CombatCore c;c.reset(0,1);c.hitstop=4;int old=c.tick;c.frame({UP,UP},{});for(int i=0;i<3;i++)c.frame({},{});CHECK(c.tick==old);c.frame({},{});CHECK(c.f[0].vy<0);}
  {CombatCore c;c.reset(0,1);c.f[0].sp=100;c.f[0].action=BLOCK;c.step({uint16_t(L|R|UP),uint16_t(R|UP)},{});CHECK(c.f[0].vy<0);CHECK(c.f[0].sp==100);}

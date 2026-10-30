@@ -36,3 +36,26 @@ A separate 16-word `pkmn_feel_debug` array leaves the original 32-word telemetry
 | 14–15 | Per-fighter HUD status codes |
 
 Status codes are 0 none, 1 low stamina, 2 block, 3 rejected stamina input, 4 guard break, 5 super ready. Reports are committed under docs/verification/v0.4.0/. These tests exercise the native ROM; host tests additionally cover input-buffer boundary cases that are difficult to arrange with external button timing.
+
+## Fighter depth and practice
+
+Run `python3 tests/native_depth_flow.py` with the same emulator driver. It enters practice through actual title/setup buttons, opens every fighter guide, lands A-to-B follow-ups for all six fighters, verifies Eevee's close-range A-to-A follow-up, observes native guard costs (23, 12 and 18 points in the tested pairings), evades an actual super, and performs Meowth's 11-damage recovery punish. It also verifies pause, reset, ordinary-mode restoration and a 12,000-display-frame practice replay with automatic KO restarts. No runner writes gameplay state.
+
+Set `PKMN_PROFILE_FRAMES=1` for per-frame diagnostics in the depth runner outside its batched stress section. It records the current screen, character, simulation tick and CPU usage when a frame exceeds budget or the missed-frame count grows. This located the initial practice HUD and Eevee guide allocation spikes.
+
+The separate 32-word `pkmn_depth_debug` array preserves both earlier telemetry layouts:
+
+| Word | Value |
+| --- | --- |
+| 0 | Magic 0x44455054 |
+| 1–4 | Practice flag, setup row, dummy mode, dummy character |
+| 5–7 | Last damage, linked damaging hit count, best sequence |
+| 8–11 | Per-fighter chain depth and clean-melee confirmation tick |
+| 12–13 | Configured per-fighter melee reach |
+| 14–18 | Player practice follow-up hits/punishes, presented follow-ups/punishes, practice hit count |
+| 19–20 | Authoritative training flag; last native CPU usage in Q12 |
+| 21–24 | Signed controlled velocity and knockback for each fighter |
+| 25–28 | Action end ticks and start ticks for each fighter |
+| 29–31 | Current event count, player HUD status, practice round count |
+
+HUD statuses add 6 PUNISH, 7 FOLLOW B and 8 FOLLOW A/B. Signed values appear as unsigned words in the driver output. New screens append IDs 9 practice setup and 10 fighter guide; original screen IDs are preserved. Reports and balance evidence for this update are under verification/v0.5.0/.

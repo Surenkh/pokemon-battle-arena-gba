@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "method": "Fresh tracked Git index snapshot; offline npm ci; regenerate character/elemental/UI assets and PCM; validate assets; clean native build with pinned compiler",
+  "generated_files_compared": 190,
+  "generated_inputs_match": true,
+  "rom_byte_identical": true,
+  "rom_sha256": "534783d13f68d6ec4d9928391f94b5710027617d844577a1834414706a9b0a06",
+  "rom_bytes": 1521252
+}

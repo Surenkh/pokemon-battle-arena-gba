@@ -12,15 +12,17 @@ struct Fighter {
  uint32_t attack_id=0;bool melee_contact=false,spawned=false;
  int pending=0,pending_until=0;
  int stride_q8=0,landed_at=-100,took_off_at=-100;
+ int confirmed_at=-100,chain_depth=0;
 };
-struct Projectile { bool active=false,reserved=false,super=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0; };
+struct Projectile { bool active=false,reserved=false,super=false,followup=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0; };
 struct Observation { Fighter f[2];Projectile p[4]; };
 // Read-only presentation events; never consulted by combat resolution or AI.
-enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EVENT_COUNT };
-struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack; };
+enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EVENT_COUNT };
+struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack;int damage;bool followup; };
 class CombatCore {
 public:
  Fighter f[2];Projectile p[4];int tick=0,remaining=3600,hitstop=0,outcome=0,feedback=0;uint32_t next_id=1,seed=1;
+ bool training=false;
  static constexpr int max_events=32;
  CombatEvent events[max_events]{};int event_count=0;uint32_t event_frame=0;
  void reset(int player,int cpu,uint32_t match_seed=1);
@@ -30,16 +32,19 @@ public:
  int age(const Fighter& v) const {return tick-v.began;}
  bool low(const Fighter& v) const {return v.action==SQUEEZE && age(v)>=squeeze_startup_ticks && age(v)<squeeze_startup_ticks+squeeze_active_ticks;}
  bool grounded(const Fighter& v) const {return v.y>=world_floor_y*256;}
+ bool can_followup(int who,int button,int ahead=0)const;
+ bool recovering(int who)const;
  uint32_t checksum() const;
 private:
  void begin_events(){event_count=0;++event_frame;}
- void emit(EventKind kind,int owner,int target,bool super=false);
+ void emit(EventKind kind,int owner,int target,bool super=false,int damage=0,bool followup=false,uint32_t attack=0);
  bool jump_buffer_eligible(const Fighter& v)const;
  void action(int who,Input input);void physics();void spawn();void collide(const Fighter previous[2]);void resources();
- void enter(int who,Action a,int duration,int cost);void cancel(int who);
+ void enter(int who,Action a,int duration,int cost,bool followup=false);void cancel(int who);
 };
 class CpuController {
  Observation history[32]{};int stored=-1;uint16_t held=0;uint32_t rng=1,threat=0;bool evade=false;int dodge=0;
+ bool resting=false;
  uint32_t random();
 public:
  int difficulty=1;

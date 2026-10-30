@@ -1,4 +1,4 @@
-> Historical v0.2.0 evidence. For the current release, see [COMBAT_FEEL_TEST_REPORT.md](COMBAT_FEEL_TEST_REPORT.md).
+> Historical v0.2.0 evidence. For the current release, see [FIGHTER_DEPTH_TEST_REPORT.md](FIGHTER_DEPTH_TEST_REPORT.md).
 
 # Movement update verification — 28 October 2026
 

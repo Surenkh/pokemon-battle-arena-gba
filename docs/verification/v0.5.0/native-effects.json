@@ -1,0 +1,69 @@
+{
+  "status": "passed",
+  "checks": 378,
+  "characters": [
+    {
+      "character": "pikachu",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 255,
+      "theme_mask": 8481,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.841796875,
+      "missed_frames": 0
+    },
+    {
+      "character": "charmander",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 255,
+      "theme_mask": 771,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.841796875,
+      "missed_frames": 0
+    },
+    {
+      "character": "squirtle",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 255,
+      "theme_mask": 263686,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.85302734375,
+      "missed_frames": 0
+    },
+    {
+      "character": "bulbasaur",
+      "rounds": 1,
+      "player_supers": 2,
+      "effect_frame_mask": 255,
+      "theme_mask": 3084,
+      "peak_particles": 5,
+      "peak_cpu_fraction": 0.85302734375,
+      "missed_frames": 0
+    },
+    {
+      "character": "eevee",
+      "rounds": 1,
+      "player_supers": 2,
+      "effect_frame_mask": 255,
+      "theme_mask": 4626,
+      "peak_particles": 3,
+      "peak_cpu_fraction": 0.85302734375,
+      "missed_frames": 0
+    },
+    {
+      "character": "meowth",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 15,
+      "theme_mask": 10280,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.85302734375,
+      "missed_frames": 0
+    }
+  ],
+  "wall_seconds": 5.13,
+  "method": "mGBA 0.10.2; physical button inputs; read-only telemetry; no game-memory writes",
+  "rom_sha256": "534783d13f68d6ec4d9928391f94b5710027617d844577a1834414706a9b0a06"
+}

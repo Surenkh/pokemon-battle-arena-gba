@@ -1,4 +1,4 @@
-> **Implemented contracts:** `ANIMATION_AND_PHYSICS.md` supersedes the original static-sprite and immediate-velocity proposal below. `COMBAT_FEEL.md` describes v0.4 presentation events, audio, camera and landing input buffering. `config/balance.json` is the implemented numerical source of truth. The runtime uses 32 presentation events and 12 decorative effects; older proposed capacities below are historical. Character stats and super evasion rules remain unchanged.
+> **Implemented contracts:** `ANIMATION_AND_PHYSICS.md` supersedes the original static-sprite and immediate-velocity proposal below. `COMBAT_FEEL.md` describes v0.4 presentation events, audio, camera and landing input buffering. `config/balance.json` is the implemented numerical source of truth. The runtime uses 32 presentation events and 12 decorative effects; older proposed capacities below are historical. Character stats and super evasion rules remain unchanged. `FIGHTER_DEPTH.md` specifies v0.5 traits, follow-ups, resource recovery and practice; its contracts supersede older conflicting proposals below.
 
 # Pokémon Battle Arena — GBA Architecture and Implementation Plan
 

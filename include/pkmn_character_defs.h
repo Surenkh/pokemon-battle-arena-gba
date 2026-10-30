@@ -1,14 +1,14 @@
 #pragma once
 #include <stdint.h>
 namespace pkmn {
-struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; };
+struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; bool melee_followup; const char* role; const char* trait; const char* tip1; const char* tip2; };
 inline constexpr CharacterDef characters[6] = {
-{"PIKACHU",95,105,26,384,8,12,32,4,3,18,8,26,896},
-{"CHARMANDER",100,90,24,307,10,14,36,6,3,23,10,32,768},
-{"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704},
-{"BULBASAUR",120,100,20,243,9,12,34,7,3,25,11,32,832},
-{"EEVEE",100,115,28,358,7,10,31,4,3,17,8,26,832},
-{"MEOWTH",90,100,25,397,8,11,33,3,3,16,8,27,768},
+{"PIKACHU",95,105,26,384,8,12,32,4,3,18,8,26,896,21,128,100,100,512,0,0,"RUSH AND PRESSURE","QUICK STEP","MELEE STEPS FORWARD","FAST APPROACH. COMMIT TO A."},
+{"CHARMANDER",100,90,24,307,10,14,36,6,3,23,10,32,768,21,0,100,125,512,0,0,"HEAVY FIRE","EMBER PRESSURE","FIRE DRAINS EXTRA GUARD","SLOW RECOVERY. KEEP SPACE."},
+{"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704,21,0,80,100,768,0,0,"DEFENSE AND SPACE","SHELL CONTROL","EFFICIENT BLOCK. WATER PUSH.","SUPERS STILL IGNORE BLOCK."},
+{"BULBASAUR",120,100,20,243,9,12,34,7,3,25,11,32,832,32,0,100,100,512,0,0,"REACH AND CONTROL","VINE REACH","LONG MELEE REACH","SLOW START. HOLD DISTANCE."},
+{"EEVEE",100,115,28,358,7,10,31,4,3,17,8,26,832,21,0,100,100,512,0,1,"FLEXIBLE FOLLOW-UPS","ADAPTABLE","CLEAN A CAN FOLLOW WITH A/B","A TO A NEEDS CLOSE RANGE."},
+{"MEOWTH",90,100,25,397,8,11,33,3,3,16,8,27,768,21,0,100,100,512,3,0,"CLOSE COUNTERATTACK","PUNISH","EXTRA MELEE DAMAGE IN RECOVERY","CATCH A MISSED ENEMY ATTACK."},
 };
 inline constexpr int world_width = 240;
 inline constexpr int world_height = 160;
@@ -18,7 +18,7 @@ inline constexpr int world_max_fighter_x = 208;
 inline constexpr int world_player_spawn_x = 64;
 inline constexpr int world_cpu_spawn_x = 176;
 inline constexpr int resources_stamina_subunits_per_point = 60;
-inline constexpr int resources_stamina_regen_delay_ticks = 30;
+inline constexpr int resources_stamina_regen_delay_ticks = 24;
 inline constexpr int resources_block_drain_subunits_per_tick = 12;
 inline constexpr int resources_block_enter_min_stamina = 8;
 inline constexpr int resources_super_power_max = 100;
@@ -27,6 +27,8 @@ inline constexpr int resources_melee_clean_hit_power = 18;
 inline constexpr int resources_fire_clean_hit_power = 22;
 inline constexpr int resources_guard_cost_numerator = 5;
 inline constexpr int resources_guard_cost_denominator = 4;
+inline constexpr int resources_cpu_recover_below_stamina = 12;
+inline constexpr int resources_cpu_resume_stamina = 32;
 inline constexpr int motion_gravity_q8 = 64;
 inline constexpr int motion_jump_velocity_q8 = -1088;
 inline constexpr int motion_max_fall_velocity_q8 = 1280;
@@ -59,6 +61,11 @@ inline constexpr int match_countdown_display_ticks = 180;
 inline constexpr int match_resume_countdown_display_ticks = 60;
 inline constexpr int match_result_delay_display_ticks = 60;
 inline constexpr int match_cpu_mirror_matches = 0;
+inline constexpr int followup_recovery_cut_ticks = 6;
+inline constexpr int followup_escape_ticks = 2;
+inline constexpr int practice_dummy_think_ticks = 6;
+inline constexpr int practice_dummy_shot_interval_ticks = 90;
+inline constexpr int practice_dummy_super_interval_ticks = 180;
 inline constexpr int jump_stamina_cost = 18;
 inline constexpr int melee_stamina_cost = 8;
 inline constexpr int fire_stamina_cost = 20;
