@@ -8,6 +8,7 @@ movement_tests
 tests/mgba_driver
 tests/native_artifacts/
 __pycache__/
+dist/release/
 
 # Retain native source inputs, not historical web-preview exports.
 /assets/source/*
