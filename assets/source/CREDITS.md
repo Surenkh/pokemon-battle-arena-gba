@@ -26,3 +26,9 @@ Runtime animation credits and original source records: [animations/CREDITS.md](a
 ## Elemental attack update
 
 The new projectiles, supers, muzzle flashes, hit effects and guard effects are pixel-authored by project code in tools/elemental_fx.cjs. No additional external character artwork is introduced.
+
+## v0.7 original presentation assets
+
+Leaflight Circuit (title/menu music), three tracker wavetables and fourteen new menu/round/recall/result cues are original deterministic compositions/synthesis authored for this project in tools/generate_presentation_audio.py. They use no sampled Pokémon recording or existing song. The module, source score and generation metadata are included.
+
+The new Poké Ball poses, recall beam and seal glints are original native pixel-art implementations in tools/round_fx.cjs. Pokémon and Poké Ball names/designs belong to their respective owners; the project remains an unofficial fan work. Existing character artwork and engine notices above still apply.

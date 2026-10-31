@@ -1,0 +1,8 @@
+{
+  "id": "recall_glint",
+  "type": "sprite",
+  "name": "recall_glint",
+  "path": "graphics/recall_glint.bmp",
+  "width": 64,
+  "height": 64
+}

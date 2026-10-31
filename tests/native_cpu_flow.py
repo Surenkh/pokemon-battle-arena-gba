@@ -22,7 +22,9 @@ def check(ok,message):
  checks+=1
  if not ok:raise AssertionError(message+' state='+str(state())+' cpu='+str(info()))
 def change():
- if state()[1]==5:frames(65)
+ for _ in range(24):
+  if state()[1]!=5:break
+  frames(10)
  if state()[1]==6:press(16);press(1);check(state()[1]==1,'Result returns to selector');return
  press(8);check(state()[1]==4,'Pause opens');before=info();frames(30);check(info()==before,'Pause freezes the complete CPU policy');press(128);press(128);press(1);check(state()[1]==1,'Return to selector')
 try:

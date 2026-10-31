@@ -78,3 +78,23 @@ A separate 32-word `pkmn_cpu_debug` array preserves all prior layouts:
 | 17–31 | Reserved zeros |
 
 Request counters record policy choices rather than guaranteed resolved actions. Combat events remain the source for actual hits, blocks and follow-up entries. ROM-bound reports are in verification/v0.6.0/.
+
+## v0.7 audio and recall
+
+Run `python3 tests/native_presentation_flow.py` with the same driver and environment. It captures over a complete title-music loop, observes all four music order positions, checks the measured level/no clipping, verifies actual digital silence for both muted menu and battle recordings, tests independent Music/Sound FX combinations and paused settings, and observes a real loss, win and recall skip. It checks frozen combat state, all seven visual phases and actual loser/winner sprite visibility. Sound effect mask coverage includes every new cue except the draw stinger; its asset is validated separately. No game-memory writes are used.
+
+A new 32-word `pkmn_presentation_debug` array leaves prior layouts intact:
+
+| Word | Value |
+| --- | --- |
+| 0 | Magic 0x50524537 |
+| 1–5 | Music/Sound FX settings, music-playing flag, Q8 music gain, active presentation effect voice |
+| 6–9 | Played cue mask/count, audio option row, return screen |
+| 10–13 | Recall age, phase (0 impact, 1 arrive, 2 open, 3 absorb, 4 close, 5 fall, 6 seal, 7 done), loser (-1 none), enabled flag |
+| 14–20 | Ball x/y Q8, fighter scale Q8, ball tile, model ball/beam/loser visibility |
+| 21–24 | Last CPU Q12, music sequence position (-1 stopped), total effect voices, round presentation duration |
+| 25 | Reserved |
+| 26–30 | Actual renderer player/CPU/ball/beam/glint visibility |
+| 31 | Reserved |
+
+Audio screen ID 11 is appended. L opens it from menus/pause; the existing Change Pokémon pause entry stays at index 2. `PKMN_PROFILE_THRESHOLD=0.94 PKMN_PROFILE_FRAMES=1` on the depth runner can identify expensive transitions below the full frame limit. Source-generated PCM/MOD/4bpp art checks are in `tests/presentation_assets_test.py`.

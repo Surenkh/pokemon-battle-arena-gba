@@ -1,0 +1,7 @@
+{
+  "id": "title_theme",
+  "type": "music",
+  "name": "title_theme",
+  "path": "audio/title_theme.mod",
+  "format": "mod"
+}

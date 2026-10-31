@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -74,6 +74,12 @@ B: Fire
 L held: Block ordinary attacks
 R: Super at 100 SP and 25 stamina
 Start: Pause
+L on title, selector, result or pause: Audio options
+
+AUDIO
+Music and sound effects have independent On/Off options.
+Settings apply throughout the current play session and reset at power-on.
+The default mix is moderate; emulator/device output volume is separate.
 
 PRACTICE
 B on the title: Practice setup
@@ -84,6 +90,9 @@ Select in practice: Reset arena, resources and statistics
 Clean melee hits can follow with B when the FOLLOW cue appears.
 Eevee may also follow with A at close range. One follow-up per sequence.
 Supers bypass block and can be evaded with a jump or timed squeeze.
+
+Normal round losses end with a Poke Ball recall. Tap A/Start after the ball
+has closed to move to results sooner. Practice retains its quick restart.
 
 Physical hardware and non-Linux rebuilding remain unverified.
 Unofficial fan project, not affiliated with Nintendo, Game Freak or The Pokemon Company.

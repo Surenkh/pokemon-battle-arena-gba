@@ -8,7 +8,11 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.6.0 — Smarter & More Varied Opponents**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **0.7.0 — Sound & Poké Ball Recall**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+
+The title and menus now play an original looping tune, with new navigation, countdown, pause, result and recall cues. Press **L** on the title or pause screen for independent **Music** and **Sound FX** controls. Both default to On with a moderate mix; choices last for the current run.
+
+Normal fights end with a Poké Ball recalling the defeated Pokémon through an animated beam. The winner stays visible, and the ball closes before results. Tap A/Start after closing to continue sooner; practice keeps its quick reset.
 
 CPU rivals now use fighter-specific spacing and attack preferences, varied tactical plans and stamina reserves. Easy leaves more openings; Normal mixes plans; Hard reacts and follows up more reliably. The AI reacts to delayed visible actions and remembers only a short history of repeated attacks.
 
@@ -27,7 +31,9 @@ Six fighter traits change movement, guard pressure, reach and counterattacks. A 
 
 Normal projectiles and supers have four-frame animations. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
 
-![Native gameplay capture](docs/media/cpu-tactics-native.gif)
+![Native Poké Ball recall capture](docs/media/pokeball-recall-native.gif)
+
+[Watch the native music and recall preview](docs/media/sound-and-recall-native.mp4)
 
 ## Controls
 
@@ -46,6 +52,8 @@ Normal projectiles and supers have four-frame animations. Muzzle flashes, hit ef
 | R in either selector | Fighter guide |
 | Select in practice setup | Cycle fighter / behavior / rival options |
 | Select during practice | Reset arena, resources and practice statistics |
+| L in menus/pause | Audio options |
+| A / Start after recall closes | Skip to results |
 
 Emulator key bindings depend on your setup. Clean hits earn super power; blocks and misses do not. For a follow-up, tap B when FOLLOW B appears after a clean A hit. Eevee may use A when FOLLOW A/B appears; stay close enough for the second melee hit. One follow-up is allowed per attack sequence, and the defender can block it.
 
@@ -53,9 +61,9 @@ Practice uses the same combat rules, starts with full SP and freezes the timeout
 
 ## Build and development
 
-The editable GBA Studio project, C++ runtime, engine sources/notices, required source assets, tools, and tests are included. See [BUILDING.md](docs/BUILDING.md), [test evidence](docs/CPU_TACTICS_TEST_REPORT.md), [CPU architecture and decisions](docs/CPU_TACTICS.md), [fighter mechanics](docs/FIGHTER_DEPTH.md), [roadmap](docs/development/ROADMAP.md), and [Git workflow](CONTRIBUTING.md).
+The editable GBA Studio project, C++ runtime, engine sources/notices, required source assets, tools, and tests are included. See [BUILDING.md](docs/BUILDING.md), [new audio/recall evidence](docs/AUDIO_AND_RECALL_TEST_REPORT.md), [audio and animation decisions](docs/AUDIO_AND_RECALL.md), [CPU architecture](docs/CPU_TACTICS.md), [fighter mechanics](docs/FIGHTER_DEPTH.md), [roadmap](docs/development/ROADMAP.md), and [Git workflow](CONTRIBUTING.md).
 
-Gameplay updates use feature branches and reviewed pull requests. Validated versions on `main` are published through the [release workflow](.github/workflows/release.yml). Keep changes in feature branches and update the ROM and checksum together after validation. Compiler binaries are not bundled. Historical browser-preview exports and unused optional artwork from the original pack are omitted; native build inputs and their provenance are retained.
+Gameplay updates use feature branches and pull requests. Validated versions on `main` are published through the [release workflow](.github/workflows/release.yml). Keep changes in feature branches and update the ROM and checksum together after validation. Compiler binaries are not bundled. Historical browser-preview exports and unused optional artwork from the original pack are omitted; native build inputs and their provenance are retained.
 
 ## Limits and feedback
 

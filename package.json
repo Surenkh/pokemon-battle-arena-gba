@@ -1,13 +1,13 @@
 {
   "name": "pokemon-battle-arena-gba",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "scripts": {
     "assets": "node tools/convert_assets.cjs",
     "assets:prepare": "node tools/prepare_animations.cjs",
     "test:assets": "node tests/assets_test.cjs && node tests/effects_assets_test.cjs",
-    "audio": "python3 tools/generate_combat_audio.py",
-    "test:audio": "python3 tests/combat_audio_assets_test.py"
+    "audio": "python3 tools/generate_combat_audio.py && python3 tools/generate_presentation_audio.py",
+    "test:audio": "python3 tests/combat_audio_assets_test.py && python3 tests/presentation_assets_test.py"
   },
   "devDependencies": {
     "sharp": "0.35.5",

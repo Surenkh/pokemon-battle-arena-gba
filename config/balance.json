@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "0.6.0",
+  "ruleset_version": "0.7.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,

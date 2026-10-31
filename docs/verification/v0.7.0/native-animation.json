@@ -1,0 +1,162 @@
+{
+  "status": "passed",
+  "checks": 1260,
+  "characters": [
+    {
+      "character": "pikachu",
+      "native_walk_frames": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "native_jump_frames": [
+        33,
+        35,
+        38
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3608,
+      "missed_frames": 0
+    },
+    {
+      "character": "charmander",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        31,
+        33,
+        36
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3608,
+      "missed_frames": 0
+    },
+    {
+      "character": "squirtle",
+      "native_walk_frames": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "native_jump_frames": [
+        35,
+        37,
+        40
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        9
+      ],
+      "peak_cpu_q12": 3608,
+      "missed_frames": 0
+    },
+    {
+      "character": "bulbasaur",
+      "native_walk_frames": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_jump_frames": [
+        28,
+        30,
+        33
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        4,
+        7,
+        9
+      ],
+      "peak_cpu_q12": 3608,
+      "missed_frames": 0
+    },
+    {
+      "character": "eevee",
+      "native_walk_frames": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_jump_frames": [
+        30,
+        32,
+        35
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3608,
+      "missed_frames": 0
+    },
+    {
+      "character": "meowth",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        32,
+        34,
+        37
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3608,
+      "missed_frames": 0
+    }
+  ],
+  "method": "Native ROM, physical button input and read-only telemetry; no game memory writes.",
+  "rom_sha256": "1f647ff90b98bba7a021ad4e02f5ae07fb847cb8cb71db9c0b52c1d1f19216fe"
+}

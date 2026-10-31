@@ -1,0 +1,7 @@
+{
+  "id": "ui_pause",
+  "type": "sound",
+  "name": "ui_pause",
+  "path": "audio/ui_pause.wav",
+  "format": "wav"
+}

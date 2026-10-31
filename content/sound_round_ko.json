@@ -1,0 +1,7 @@
+{
+  "id": "round_ko",
+  "type": "sound",
+  "name": "round_ko",
+  "path": "audio/round_ko.wav",
+  "format": "wav"
+}
