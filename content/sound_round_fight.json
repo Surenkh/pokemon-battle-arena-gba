@@ -1,0 +1,7 @@
+{
+  "id": "round_fight",
+  "type": "sound",
+  "name": "round_fight",
+  "path": "audio/round_fight.wav",
+  "format": "wav"
+}

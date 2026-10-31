@@ -1,0 +1,87 @@
+{
+  "status": "passed",
+  "checks": 2637,
+  "mix": {
+    "title_music": {
+      "peak": 3814,
+      "rms": 1293.47,
+      "rms_dbfs": -28.07,
+      "clipped_fraction": 0.0,
+      "frames": 1448368
+    },
+    "muted_menu": {
+      "peak": 0,
+      "rms": 0.0,
+      "rms_dbfs": -90.31,
+      "clipped_fraction": 0.0,
+      "frames": 49376
+    },
+    "muted_battle": {
+      "peak": 0,
+      "rms": 0.0,
+      "rms_dbfs": -90.31,
+      "clipped_fraction": 0.0,
+      "frames": 65832
+    },
+    "menu_cues": {
+      "peak": 1868,
+      "rms": 404.87,
+      "rms_dbfs": -38.16,
+      "clipped_fraction": 0.0,
+      "frames": 39500
+    },
+    "defeat_recall": {
+      "peak": 2448,
+      "rms": 575.64,
+      "rms_dbfs": -35.11,
+      "clipped_fraction": 0.0,
+      "frames": 118504
+    },
+    "victory_recall": {
+      "peak": 2467,
+      "rms": 617.36,
+      "rms_dbfs": -34.5,
+      "clipped_fraction": 0.0,
+      "frames": 118504
+    },
+    "skip_recall": {
+      "peak": 4798,
+      "rms": 618.63,
+      "rms_dbfs": -34.48,
+      "clipped_fraction": 0.0,
+      "frames": 63640
+    }
+  },
+  "music_positions": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "recall_rounds": [
+    {
+      "outcome": 2,
+      "loser": 0,
+      "phase_mask": 127,
+      "skipped": false
+    },
+    {
+      "outcome": 1,
+      "loser": 1,
+      "phase_mask": 127,
+      "skipped": false
+    },
+    {
+      "outcome": 2,
+      "loser": 0,
+      "phase_mask": 63,
+      "skipped": true
+    }
+  ],
+  "cue_mask": 8191,
+  "peak_cpu_fraction": 0.908447265625,
+  "missed_display_frames": 0,
+  "wall_seconds": 5.24,
+  "rom_sha256": "1f647ff90b98bba7a021ad4e02f5ae07fb847cb8cb71db9c0b52c1d1f19216fe",
+  "method": "mGBA 0.10.2; physical inputs, read-only telemetry, native framebuffer/audio capture; no game-memory writes"
+}

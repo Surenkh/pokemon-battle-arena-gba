@@ -1,0 +1,8 @@
+{
+  "id": "recall_ball",
+  "type": "sprite",
+  "name": "recall_ball",
+  "path": "graphics/recall_ball.bmp",
+  "width": 32,
+  "height": 32
+}

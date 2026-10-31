@@ -1,0 +1,7 @@
+{
+  "id": "ball_seal",
+  "type": "sound",
+  "name": "ball_seal",
+  "path": "audio/ball_seal.wav",
+  "format": "wav"
+}

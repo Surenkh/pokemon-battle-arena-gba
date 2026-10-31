@@ -13,13 +13,14 @@ def cmd(s):
  if not line:raise RuntimeError('Native emulator stopped')
  return line
 profile=os.environ.get('PKMN_PROFILE_FRAMES')=='1';profile_missed=0
+profile_threshold=int(float(os.environ.get('PKMN_PROFILE_THRESHOLD','1'))*4096)
 def frames(n,k=0):
  global profile_missed
  if not profile:cmd(f'f {n} {k}');return
  caller=sys._getframe(1).f_lineno
  for _ in range(n):
   cmd(f'f 1 {k}');v=state();d=info()
-  if d[20]>4096 or v[22]>profile_missed:
+  if d[20]>profile_threshold or v[22]>profile_missed:
    print('FRAME_PROFILE',dict(caller=caller,keys=k,screen=v[1],character=v[2],tick=v[5],cpu=d[20]/4096,missed=v[22],display=v[23]),flush=True)
   profile_missed=v[22]
 def press(k):frames(2,k);frames(2)

@@ -1,0 +1,7 @@
+{
+  "id": "ui_confirm",
+  "type": "sound",
+  "name": "ui_confirm",
+  "path": "audio/ui_confirm.wav",
+  "format": "wav"
+}

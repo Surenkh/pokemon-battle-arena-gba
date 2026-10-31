@@ -1,0 +1,7 @@
+{
+  "id": "ui_move",
+  "type": "sound",
+  "name": "ui_move",
+  "path": "audio/ui_move.wav",
+  "format": "wav"
+}

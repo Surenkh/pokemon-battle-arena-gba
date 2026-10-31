@@ -1,0 +1,7 @@
+{
+  "id": "result_win",
+  "type": "sound",
+  "name": "result_win",
+  "path": "audio/result_win.wav",
+  "format": "wav"
+}

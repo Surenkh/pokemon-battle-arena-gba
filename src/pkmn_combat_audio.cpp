@@ -32,7 +32,7 @@ void CombatAudio::play_event(const CombatCore&c,const CombatEvent&e){
  charge_owner[(cursor+1)%2]=-1;v=item->play(volume,1,bn::fixed(c.f[who].x/256-120)/240);++played;
 }
 void CombatAudio::update(const CombatCore&c,bool active){
- if(!active){if(running)for(auto&v:fx){if(v&&v->active())v->stop();v.reset();}running=false;charge_phase[0]=charge_phase[1]=-1;charge_owner[0]=charge_owner[1]=-1;return;}
+ if(!active){if(running)for(auto&v:fx){if(v&&v->active())v->stop();v.reset();}running=false;last_frame=c.event_frame;charge_phase[0]=charge_phase[1]=-1;charge_owner[0]=charge_owner[1]=-1;return;}
  running=true;++clock;
  for(int n=0;n<2;n++)if(charge_owner[n]>=0){const auto&v=c.f[charge_owner[n]];int age=c.tick-v.began-1;if(v.action!=SUPER||age>=super_startup_ticks){if(fx[n]&&fx[n]->active())fx[n]->stop();fx[n].reset();charge_owner[n]=-1;}}
  if(last_frame!=c.event_frame){last_frame=c.event_frame;int best[2]={-1,-1};

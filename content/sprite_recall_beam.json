@@ -1,0 +1,8 @@
+{
+  "id": "recall_beam",
+  "type": "sprite",
+  "name": "recall_beam",
+  "path": "graphics/recall_beam.bmp",
+  "width": 32,
+  "height": 64
+}

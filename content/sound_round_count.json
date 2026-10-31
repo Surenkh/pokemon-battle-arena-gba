@@ -1,0 +1,7 @@
+{
+  "id": "round_count",
+  "type": "sound",
+  "name": "round_count",
+  "path": "audio/round_count.wav",
+  "format": "wav"
+}

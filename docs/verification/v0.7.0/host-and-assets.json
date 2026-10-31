@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "rom_sha256": "1f647ff90b98bba7a021ad4e02f5ae07fb847cb8cb71db9c0b52c1d1f19216fe",
+  "combat_assertions": 5990944,
+  "seeded_matches": 720,
+  "ordered_matchups": 36,
+  "movement_checks": 18904,
+  "feedback_checks": 139443,
+  "depth_checks": 23621,
+  "cpu_checks": 1221407,
+  "cpu_seeded_matches": 144,
+  "presentation_checks": 362739,
+  "presentation_asset_checks": 2225,
+  "character_frames": 408,
+  "effect_sheets": 30,
+  "effect_frames": 120,
+  "original_combat_pcm_assets": 27,
+  "new_presentation_pcm_assets": 14,
+  "original_tracker_modules": 1,
+  "recall_sprite_sheets": 3,
+  "release_tests": 9
+}

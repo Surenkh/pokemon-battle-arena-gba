@@ -1,0 +1,7 @@
+{
+  "id": "result_draw",
+  "type": "sound",
+  "name": "result_draw",
+  "path": "audio/result_draw.wav",
+  "format": "wav"
+}

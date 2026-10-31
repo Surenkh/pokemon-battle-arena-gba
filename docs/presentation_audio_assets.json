@@ -1,0 +1,113 @@
+{
+  "generator": "tools/generate_presentation_audio.py",
+  "provenance": "Original composition, wavetables and deterministic PCM synthesis; no external recordings",
+  "music": {
+    "name": "Leaflight Circuit",
+    "file": "audio/title_theme.mod",
+    "patterns": 4,
+    "active_channels": 3,
+    "tempo_bpm": 112,
+    "nominal_loop_seconds": 34.285714285714285,
+    "sha256": "88cba786155261217b34ecd1d511d109957060bdae4e915350d364d7002d52c6"
+  },
+  "effects": [
+    {
+      "name": "ui_move",
+      "samples": 737,
+      "rate": 16384,
+      "peak": 11561,
+      "sha256": "89f7d2ec92a80069239e28b655aebe60d6e7fb52ba2a9ad31acbfaabb969cb1d"
+    },
+    {
+      "name": "ui_confirm",
+      "samples": 2130,
+      "rate": 16384,
+      "peak": 10665,
+      "sha256": "dd047ae1784e93d246572bb517074de3b4576fe66d0cb5f81f4fe1387059a561"
+    },
+    {
+      "name": "ui_back",
+      "samples": 1802,
+      "rate": 16384,
+      "peak": 8825,
+      "sha256": "94fa31dba5a946bc3f05b34e9f93f7ea0e0c1f89f50bde0ad6947da24a847036"
+    },
+    {
+      "name": "ui_pause",
+      "samples": 1966,
+      "rate": 16384,
+      "peak": 9420,
+      "sha256": "a92cc6ba569ce62ea7beb2980f384c609f68ea7760aa2a9abf573df0526e84f4"
+    },
+    {
+      "name": "ui_resume",
+      "samples": 2130,
+      "rate": 16384,
+      "peak": 9491,
+      "sha256": "912d70033ae0b7ee0dd4604fb1e93385236092dd18beae469b54f32f9f90a05d"
+    },
+    {
+      "name": "round_count",
+      "samples": 1393,
+      "rate": 16384,
+      "peak": 9590,
+      "sha256": "4a2269ee3dfbfb6f8b6c3798c6c7bcdee7b56645aea9bf763b116263ba978c33"
+    },
+    {
+      "name": "round_fight",
+      "samples": 3276,
+      "rate": 16384,
+      "peak": 13344,
+      "sha256": "30bcb9f1489605dd5c9a384b28fb22b9970a3e3bc3d10f26a5002e1f6a3555de"
+    },
+    {
+      "name": "round_ko",
+      "samples": 4260,
+      "rate": 16384,
+      "peak": 11524,
+      "sha256": "baedb5f9d727e81ee738a7bf67d3110bd6fdd1696858ab30f8af5a757ed22134"
+    },
+    {
+      "name": "ball_open",
+      "samples": 2621,
+      "rate": 16384,
+      "peak": 10090,
+      "sha256": "55aa1a96f1570bcc9a4577a595b26e15f4f0496fdc76c7547ffa247661689c4a"
+    },
+    {
+      "name": "ball_absorb",
+      "samples": 9503,
+      "rate": 16384,
+      "peak": 8749,
+      "sha256": "b205c5254fa9bb7b07b5f210d4f0c18723a35896228130623e47e9e546a64dac"
+    },
+    {
+      "name": "ball_seal",
+      "samples": 2786,
+      "rate": 16384,
+      "peak": 10767,
+      "sha256": "3f8241aa450f9b6b1ab60df08a0652f9a1a39669c1f19a4b4a21b1834ad10f3c"
+    },
+    {
+      "name": "result_win",
+      "samples": 14416,
+      "rate": 16384,
+      "peak": 14036,
+      "sha256": "4babf35cf1d702f7197f6e6a20681221373ef766ffc27135a9eb214505f1ae5d"
+    },
+    {
+      "name": "result_lose",
+      "samples": 14416,
+      "rate": 16384,
+      "peak": 10273,
+      "sha256": "03b78d0ca833c9bb1942398cd5b9e171b74682caff97c6960a14081f8a5a5ec8"
+    },
+    {
+      "name": "result_draw",
+      "samples": 9831,
+      "rate": 16384,
+      "peak": 9536,
+      "sha256": "32b0f06986ccefef6972722f2df176866eefdafc168c0e7d5e7913e77fee8448"
+    }
+  ]
+}

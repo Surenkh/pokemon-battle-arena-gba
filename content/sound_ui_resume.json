@@ -1,0 +1,7 @@
+{
+  "id": "ui_resume",
+  "type": "sound",
+  "name": "ui_resume",
+  "path": "audio/ui_resume.wav",
+  "format": "wav"
+}

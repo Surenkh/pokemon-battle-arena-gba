@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "method": "Clean staged Git snapshot; offline npm ci; regenerate character/elemental/UI/recall graphics, original PCM/MOD and configuration; clean native build with pinned GBA Studio 0.5.0 compiler",
+  "generated_files_compared": 229,
+  "generated_inputs_match": true,
+  "rom_byte_identical": true,
+  "rom_sha256": "1f647ff90b98bba7a021ad4e02f5ae07fb847cb8cb71db9c0b52c1d1f19216fe",
+  "rom_bytes": 1628716
+}
