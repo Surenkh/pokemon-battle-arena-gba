@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -83,12 +83,13 @@ Audio settings are available as a main-menu button; no shoulder shortcut is need
 AUDIO
 Music and sound effects have independent On/Off options.
 Settings save when you leave Audio options and survive power-off.
-Old six-fighter v0.8 SRAM records migrate without losing existing entries.
+Old six- and nine-fighter v0.8 SRAM records migrate without losing existing entries.
 The default mix is moderate; emulator/device output volume is separate.
 
 ARCADE
 Choose Arcade from the visible mode menu, then difficulty and Pokemon.
 Five unique rivals from the other eight fighters. Two continues.
+Woodland, Volcanic and Shoreline rotate between rivals; retries keep the same arena.
 Full HP/stamina between fights; draws retry for free.
 Pause Rematch costs a continue; changing Pokemon ends the run.
 Records saves clears, no-continue clears and fastest total battle time.
@@ -105,7 +106,21 @@ PRACTICE
 Choose Practice from the mode menu
 SELECT in Quick/Arcade selection: Fighter guide
 Select in practice setup: Cycle fighter / behavior / rival options
+The fourth practice option selects the arena.
 Select in practice: Reset arena, resources and statistics
+
+ARENAS AND FIGHTER MASTERY
+Quick Battle: Move below the fighter grid to Level, then Arena. Left/Right changes it.
+Return to the grid to choose any fighter; A/Start plays from any setup row.
+Practice: Select cycles Fighter, Dummy, Rival and Arena rows; Left/Right changes an option.
+All arenas share the same floor, hitboxes and combat rules.
+Fighter Mastery is a visible main-menu button. Left/Right changes the fighter.
+Earn three medals per fighter: 10 damaging follow-up hits, 5 successful super
+evasions, and a no-continue Arcade clear at any difficulty. Practice does not count.
+Progress saves at the end of a regular round, on Rematch, or when leaving a fight.
+Retain your emulator save file. Abrupt power-off during a fight can lose its
+unsaved mastery steps. Existing no-continue records already count toward the medal.
+Roster badges show the number of medals earned. Mastery/Records link with A.
 
 Clean melee hits can follow with B when the FOLLOW cue appears.
 Eevee may also follow with A at close range. One follow-up per sequence.

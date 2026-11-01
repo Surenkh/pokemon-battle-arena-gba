@@ -19,3 +19,18 @@ Priority 3 is implemented in v0.5.0: six fighter traits, one hit-confirm follow-
 Priority 4 is implemented in v0.6.0: fighter-specific spacing/attack preferences, public-only delayed observations, three distinct difficulty profiles, bounded visible-pattern memory and resource/stalemate policies. See [CPU tactics](../CPU_TACTICS.md) and [validation evidence](../CPU_TACTICS_TEST_REPORT.md). Priority 5 is implemented in v0.8.0: subtle forest motion, five-rival Arcade, two continues, champion/records screens and recoverable SRAM persistence. The revised v0.8.0 also adds a visible mode-first menu and three new fully playable fighters; see [nine-fighter details](../NINE_FIGHTERS.md). Physical hardware profiling and human balance testing are still outstanding.
 
 An additional update outside these five directions shipped in v0.7.0: original menu music and cues, separate audio controls, and an animated Poké Ball recall for normal defeats. See [audio/recall architecture](../AUDIO_AND_RECALL.md) and [evidence](../AUDIO_AND_RECALL_TEST_REPORT.md). Arcade progression and arena life are included in v0.8.0.
+
+
+## v0.9.0 — Arenas & Fighter Mastery
+
+The next independently reviewable direction after the original five is now
+implemented: two new arenas, Quick/Practice arena selection, seeded Arcade arena
+rotation, three cosmetic mastery medals per fighter, roster badges and recoverable
+schema-3 persistence. See [the implementation contract](../ARENAS_AND_MASTERY.md)
+and [native/host validation](../ARENAS_AND_MASTERY_TEST_REPORT.md).
+
+The nine-fighter combat ruleset remains unchanged. A release-readiness balance
+pass runs the existing ordered-matchup, deterministic CPU and difficulty checks;
+human matchup testing is still required before making balance claims or tuning
+from CPU results alone. Physical GBA profiling and non-Linux clean builds remain
+outstanding. Future priorities should be chosen after human playtest feedback.

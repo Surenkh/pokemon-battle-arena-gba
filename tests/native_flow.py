@@ -38,7 +38,7 @@ for ch in range(9):
  while selected!=ch:press(16);selected=(selected+1)%9
  check(state()[2]==ch,'Selector character');dump('select_'+str(ch));press(1);v=state();check(v[1]==2,'Countdown');check(v[6]==[95,100,115,120,100,90,105,125,115][ch],'Character life');check(v[8]==[105,90,110,100,115,100,105,100,95][ch]*60,'Character stamina');check(v[10]==0,'Meter reset');frames(185);check(state()[1]==3,'Battle starts');press(64);check(state()[14]<120*256,'Jump moves native fighter');frames(40);native_action(128,[4]);dump('squeeze_'+str(ch));frames(38);native_action(2,[3]);frames(10);dump('fire_'+str(ch));frames(30);native_action(512,[1,7]);frames(1);press(8);before=state();check(before[1]==4,'Pause state');frames(120);after=state();check(before[5:21]==after[5:21],'Pause freezes combat');dump('pause');press(8);check(state()[1]==8,'Resume countdown');frames(65);check(state()[1]==3,'Resume fight');dump('battle_'+str(ch));roster.append({'id':ch,'cpu':state()[3],'controls':'passed'});pause_select()
 # Difficulty row is reachable, changes the actual stored setting, and returns.
-press(128);press(128);press(16);check(state()[4]==2,'Difficulty Hard');press(32);check(state()[4]==1,'Difficulty Normal');press(32);check(state()[4]==0,'Difficulty Easy');press(16);check(state()[4]==1,'Difficulty restore');press(64)
+press(128);press(16);check(state()[4]==2,'Difficulty Hard');press(32);check(state()[4]==1,'Difficulty Normal');press(32);check(state()[4]==0,'Difficulty Easy');press(16);check(state()[4]==1,'Difficulty restore');press(64)
 # Complete real native rounds with an external input driver. No game state writes.
 press(1);frames(185);matches=[];total_auto_frames=0
 while len(matches)<20 or total_auto_frames<36000:
