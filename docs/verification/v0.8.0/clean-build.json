@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "rom_sha256": "9b6ccf583242de730a76f4d9cf40f50beed2e5bdf2e842704b14df7c9e70d60c",
+  "rom_byte_identical": true,
+  "generated_inputs_match": true,
+  "compiler": "devkitARM 16.1.0",
+  "method": "Regenerated all native graphics, animation, audio and config inputs, checked their hashes; removed .gbastudio, clean-rebuilt and compared ROM bytes with the tested build."
+}

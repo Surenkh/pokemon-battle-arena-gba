@@ -35,7 +35,8 @@ with (out / 'errors.log').open('w') as errors:
     try:
         frames(90)
         press(8)
-        for character, name in enumerate(['pikachu', 'charmander', 'squirtle', 'bulbasaur', 'eevee', 'meowth']):
+        press(1)
+        for character, name in enumerate(['pikachu', 'charmander', 'squirtle', 'bulbasaur', 'eevee', 'meowth', 'psyduck', 'jigglypuff', 'machop']):
             while state()[2] != character:
                 press(16)
             masks = themes = supers = peak = particles = missed = 0

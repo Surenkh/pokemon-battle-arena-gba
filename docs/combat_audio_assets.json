@@ -171,6 +171,90 @@
       "sha256": "2a7959ab5dc68ed2d0abfcb9b1e877ef38bb3dfe4fd57e6617a3e27f2624bf12"
     },
     {
+      "name": "shot_fx_6",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 17468,
+      "sha256": "a040cc86c98bcc277730b395200056419bc133a9c6a1b720b3d78f21034bce12"
+    },
+    {
+      "name": "hit_fx_6",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 17359,
+      "sha256": "21bb17fcf2a1488021c36bceaed47f927452b77df1b9f2081a1593627a40fd63"
+    },
+    {
+      "name": "charge_fx_6",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 18325,
+      "sha256": "16a3ce13a16812122800f84d9f08c0b7e1b35f14c6293e3c5e182dfbbe4a0630"
+    },
+    {
+      "name": "release_fx_6",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 19168,
+      "sha256": "64dea91f2ba8cca56cbe9310d2e87a400b5c3be9a64acdec06d3642e3e3fc168"
+    },
+    {
+      "name": "shot_fx_7",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 15914,
+      "sha256": "af67918f4252638ce2ee72fdd11d1cf337d22a87c1fae5cbedb255a40ba47ce5"
+    },
+    {
+      "name": "hit_fx_7",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 15733,
+      "sha256": "610bad29b026e61d2727f9865a5c41964779ee5700021bb5e1f72161862c537d"
+    },
+    {
+      "name": "charge_fx_7",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 16337,
+      "sha256": "c17ba0673b7913097614e1e12125917b2ed77e00fc4b13a615960a0d74f5d4e5"
+    },
+    {
+      "name": "release_fx_7",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 17128,
+      "sha256": "c59e1b3def148681270882b0e6d3d8f58996359bf5e4e80037a7f558f2d4efa2"
+    },
+    {
+      "name": "shot_fx_8",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "da20752cfaa46d69f70e9cfca7c4f8d7c209cc9654d65eb6b22c9a5fbf95dfb7"
+    },
+    {
+      "name": "hit_fx_8",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "f45f0fd1c5e634faca591d41cba33074de18e9b94e29b56ee89f1915f781e704"
+    },
+    {
+      "name": "charge_fx_8",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "83ae1074e1fdc56eddb3c3774a2ec43a458bb27a934af3bf9477186d1fa5f867"
+    },
+    {
+      "name": "release_fx_8",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "adc171baff7045d319de3768cfcdbe57e3cd5c283cb58926d2cd4d1330ab5f6e"
+    },
+    {
       "name": "guard_break",
       "samples": 2949,
       "rate": 16384,

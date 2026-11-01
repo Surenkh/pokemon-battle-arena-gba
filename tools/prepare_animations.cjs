@@ -2,7 +2,7 @@
 const fs=require('fs'),path=require('path'),sharp=require('sharp');
 const root=path.resolve(__dirname,'..'),dir=path.join(root,'assets/source/animations');
 const source=JSON.parse(fs.readFileSync(path.join(dir,'source_manifest.json')));
-const names=['pikachu','charmander','squirtle','bulbasaur','eevee','meowth'];
+const names=["pikachu", "charmander", "squirtle", "bulbasaur", "eevee", "meowth", "psyduck", "jigglypuff", "machop"];
 const clips=['Idle','Walk','Attack','Shoot','Hop','Charge','Guard','Hurt','Squeeze','Land','Victory','Faint','Down'];
 const mapping={Guard:'Cringe',Squeeze:'Sleep',Land:'Sit',Victory:'Pose',Down:'Laying'};
 const clear={r:0,g:0,b:0,alpha:0};
@@ -28,6 +28,6 @@ function bounds(data,w,h){let l=w,t=h,r=0,b=0;for(let y=0;y<h;y++)for(let x=0;x<
   await sharp({create:{width:64,height:64*frames.length,channels:4,background:clear}}).composite(frames.map((input,i)=>({input,left:0,top:i*64}))).png().toFile(path.join(dir,'packed_'+name+'.png'));
   header.push(`inline constexpr AnimationClip animation_${name}[CLIP_COUNT] = {${defs.join(',\n')}};`);for(let i=0;i<frames.length;i++)overview.push({input:frames[i],left:i*64,top:ch*64});console.log(name,frames.length,'frames');
  }
- header.push('inline constexpr const AnimationClip* animations[6] = {'+names.map(n=>'animation_'+n).join(',')+'};','}');fs.writeFileSync(path.join(root,'include/pkmn_animation_data.h'),header.join('\n')+'\n');fs.writeFileSync(path.join(dir,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
- const max=Math.max(...Object.values(manifest.characters).map(c=>c.frame_count));await sharp({create:{width:max*64,height:384,channels:4,background:'#203047'}}).composite(overview).png().toFile(path.join(root,'docs/animation_atlas.png'));
+ header.push('inline constexpr const AnimationClip* animations[9] = {'+names.map(n=>'animation_'+n).join(',')+'};','}');fs.writeFileSync(path.join(root,'include/pkmn_animation_data.h'),header.join('\n')+'\n');fs.writeFileSync(path.join(dir,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+ const max=Math.max(...Object.values(manifest.characters).map(c=>c.frame_count));await sharp({create:{width:max*64,height:names.length*64,channels:4,background:'#203047'}}).composite(overview).png().toFile(path.join(root,'docs/animation_atlas.png'));
 })().catch(e=>{console.error(e);process.exit(1);});

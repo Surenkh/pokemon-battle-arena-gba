@@ -2,10 +2,10 @@
 #include "bn_sound_items.h"
 #include "bn_sound_item.h"
 namespace pkmn {
-static const bn::sound_item* const shots[]={&bn::sound_items::shot_fx_0,&bn::sound_items::shot_fx_1,&bn::sound_items::shot_fx_2,&bn::sound_items::shot_fx_3,&bn::sound_items::shot_fx_4,&bn::sound_items::shot_fx_5};
-static const bn::sound_item* const hits[]={&bn::sound_items::hit_fx_0,&bn::sound_items::hit_fx_1,&bn::sound_items::hit_fx_2,&bn::sound_items::hit_fx_3,&bn::sound_items::hit_fx_4,&bn::sound_items::hit_fx_5};
-static const bn::sound_item* const charges[]={&bn::sound_items::charge_fx_0,&bn::sound_items::charge_fx_1,&bn::sound_items::charge_fx_2,&bn::sound_items::charge_fx_3,&bn::sound_items::charge_fx_4,&bn::sound_items::charge_fx_5};
-static const bn::sound_item* const releases[]={&bn::sound_items::release_fx_0,&bn::sound_items::release_fx_1,&bn::sound_items::release_fx_2,&bn::sound_items::release_fx_3,&bn::sound_items::release_fx_4,&bn::sound_items::release_fx_5};
+static const bn::sound_item* const shots[]={&bn::sound_items::shot_fx_0,&bn::sound_items::shot_fx_1,&bn::sound_items::shot_fx_2,&bn::sound_items::shot_fx_3,&bn::sound_items::shot_fx_4,&bn::sound_items::shot_fx_5,&bn::sound_items::shot_fx_6,&bn::sound_items::shot_fx_7,&bn::sound_items::shot_fx_8};
+static const bn::sound_item* const hits[]={&bn::sound_items::hit_fx_0,&bn::sound_items::hit_fx_1,&bn::sound_items::hit_fx_2,&bn::sound_items::hit_fx_3,&bn::sound_items::hit_fx_4,&bn::sound_items::hit_fx_5,&bn::sound_items::hit_fx_6,&bn::sound_items::hit_fx_7,&bn::sound_items::hit_fx_8};
+static const bn::sound_item* const charges[]={&bn::sound_items::charge_fx_0,&bn::sound_items::charge_fx_1,&bn::sound_items::charge_fx_2,&bn::sound_items::charge_fx_3,&bn::sound_items::charge_fx_4,&bn::sound_items::charge_fx_5,&bn::sound_items::charge_fx_6,&bn::sound_items::charge_fx_7,&bn::sound_items::charge_fx_8};
+static const bn::sound_item* const releases[]={&bn::sound_items::release_fx_0,&bn::sound_items::release_fx_1,&bn::sound_items::release_fx_2,&bn::sound_items::release_fx_3,&bn::sound_items::release_fx_4,&bn::sound_items::release_fx_5,&bn::sound_items::release_fx_6,&bn::sound_items::release_fx_7,&bn::sound_items::release_fx_8};
 static int priority(const CombatEvent&e){switch(e.kind){case EV_BREAK:return 11;case EV_RELEASE:return 10;case EV_HIT:return e.super?9:7;case EV_BLOCK:return 6;case EV_SHOT:return 5;case EV_READY:return 4;case EV_TIRED:return 3;case EV_MELEE:return 2;case EV_JUMP:return 1;default:return 0;}}
 void CombatAudio::reset(){
  for(auto&v:fx){if(v&&v->active())v->stop();v.reset();}

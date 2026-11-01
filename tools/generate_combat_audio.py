@@ -1,4 +1,4 @@
-"""Deterministic, original short PCM effects for the six combat identities."""
+"""Deterministic, original short PCM effects for the nine combat identities."""
 from pathlib import Path
 import json, math, random, struct, wave, hashlib
 
@@ -13,7 +13,7 @@ def synth(theme, kind, duration):
         t=n/RATE; x=t/duration; noise=rng.uniform(-1,1)
         low += .16*(noise-low)
         pitch=(.65 if kind=='hit' else .8 if kind=='release' else 1.)*(1+.7*x if kind=='charge' else 1.-.35*x)
-        phase += 2*math.pi*[1350,125,920,1800,740,1300][theme]*pitch/RATE
+        phase += 2*math.pi*[1350,125,920,1800,740,1300,560,880,95][theme]*pitch/RATE
         if theme==0:
             gate=[1,.3,.8,.5][int(t*180)%4]
             v=(.30*(1 if math.sin(phase)>0 else -1)+.55*(noise-low))*gate
@@ -25,6 +25,12 @@ def synth(theme, kind, duration):
             v=(noise-low)*(.35+.2*math.sin(2*math.pi*42*t))+.08*math.sin(phase)
         elif theme==4:
             v=.26*math.sin(phase)+.18*math.sin(phase*1.25)+.12*math.sin(phase*1.5)
+        elif theme==6:
+            v=.34*math.sin(phase+1.8*math.sin(2*math.pi*18*t))+.22*math.sin(phase*1.5)
+        elif theme==7:
+            v=.32*math.sin(phase)+.14*math.sin(phase*2)+.10*math.sin(phase*1.5)
+        elif theme==8:
+            v=low*1.7+.28*math.sin(phase)*math.exp(-t*18)
         else:
             burst=math.exp(-((t*29)%1)*6)
             v=((noise-low)*.7+.22*math.sin(phase))*burst
@@ -43,7 +49,7 @@ def save(name, values):
     return dict(name=name,samples=len(values),rate=RATE,peak=max(abs(v) for v in values),sha256=hashlib.sha256(target.read_bytes()).hexdigest())
 
 report=[]
-for character in range(6):
+for character in range(9):
     for kind, duration in KINDS.items():
         report.append(save(f'{kind}_fx_{character}',synth(character,kind,duration)))
 for name,theme,kind,duration in [('guard_break',5,'release',.18),('no_stamina',1,'hit',.08),('power_ready',4,'shot',.12)]:

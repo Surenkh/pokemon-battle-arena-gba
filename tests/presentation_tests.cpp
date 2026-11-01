@@ -4,7 +4,7 @@ using namespace pkmn;
 static int checks=0;
 #define CHECK(x) do{++checks;if(!(x)){std::fprintf(stderr,"FAIL presentation:%d %s\n",__LINE__,#x);return 1;}}while(0)
 int main(){
- for(int a=0;a<6;++a)for(int b=0;b<6;++b)for(int outcome=1;outcome<=3;++outcome)for(int practice=0;practice<2;++practice)
+ for(int a=0;a<character_count;++a)for(int b=0;b<character_count;++b)for(int outcome=1;outcome<=3;++outcome)for(int practice=0;practice<2;++practice)
  for(int side=0;side<2;++side){CombatCore c;c.reset(a,b,17);c.outcome=outcome;c.f[0].x=(side?208:32)*256;c.f[1].x=(side?32:208)*256;
   RoundPresentation p;p.begin(c,practice);auto before=c.checksum();bool expected=outcome<3&&!practice;CHECK(p.recall==expected);CHECK(p.duration()==(expected?156:60));
   int seen=0,previous_scale=256;

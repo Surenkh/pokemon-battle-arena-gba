@@ -1227,6 +1227,614 @@
         }
       },
       "frame_count": 67
+    },
+    "psyduck": {
+      "clips": {
+        "Idle": {
+          "first": 0,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            16,
+            20,
+            16,
+            20
+          ],
+          "source": "Idle",
+          "direction": 2
+        },
+        "Walk": {
+          "first": 4,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            8,
+            12,
+            8,
+            12
+          ],
+          "source": "Walk",
+          "direction": 2
+        },
+        "Attack": {
+          "first": 8,
+          "count": 11,
+          "hit": 5,
+          "back": 7,
+          "durations": [
+            4,
+            2,
+            4,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            4
+          ],
+          "source": "Attack",
+          "direction": 2
+        },
+        "Shoot": {
+          "first": 19,
+          "count": 10,
+          "hit": 2,
+          "back": 5,
+          "durations": [
+            2,
+            4,
+            5,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Shoot",
+          "direction": 2
+        },
+        "Hop": {
+          "first": 29,
+          "count": 10,
+          "hit": 9,
+          "back": 10,
+          "durations": [
+            2,
+            1,
+            2,
+            3,
+            4,
+            4,
+            3,
+            2,
+            1,
+            2
+          ],
+          "source": "Hop",
+          "direction": 2
+        },
+        "Charge": {
+          "first": 39,
+          "count": 10,
+          "hit": 5,
+          "back": 9,
+          "durations": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Charge",
+          "direction": 2
+        },
+        "Guard": {
+          "first": 49,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Hurt",
+          "direction": 2
+        },
+        "Hurt": {
+          "first": 51,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Hurt",
+          "direction": 2
+        },
+        "Squeeze": {
+          "first": 53,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            35,
+            35
+          ],
+          "source": "Sleep",
+          "direction": 0
+        },
+        "Land": {
+          "first": 55,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            16,
+            20,
+            16,
+            20
+          ],
+          "source": "Idle",
+          "direction": 2
+        },
+        "Victory": {
+          "first": 59,
+          "count": 3,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            12,
+            2,
+            8
+          ],
+          "source": "Pose",
+          "direction": 2
+        },
+        "Faint": {
+          "first": 62,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Hurt",
+          "direction": 2
+        },
+        "Down": {
+          "first": 64,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            35,
+            35
+          ],
+          "source": "Sleep",
+          "direction": 0
+        }
+      },
+      "frame_count": 66
+    },
+    "jigglypuff": {
+      "clips": {
+        "Idle": {
+          "first": 0,
+          "count": 5,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            25,
+            8,
+            15,
+            8,
+            15
+          ],
+          "source": "Idle",
+          "direction": 2
+        },
+        "Walk": {
+          "first": 5,
+          "count": 5,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            6,
+            4,
+            4,
+            4,
+            6
+          ],
+          "source": "Walk",
+          "direction": 2
+        },
+        "Attack": {
+          "first": 10,
+          "count": 13,
+          "hit": 3,
+          "back": 6,
+          "durations": [
+            2,
+            2,
+            6,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Attack",
+          "direction": 2
+        },
+        "Shoot": {
+          "first": 23,
+          "count": 12,
+          "hit": 2,
+          "back": 5,
+          "durations": [
+            2,
+            2,
+            6,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Shoot",
+          "direction": 2
+        },
+        "Hop": {
+          "first": 35,
+          "count": 10,
+          "hit": 9,
+          "back": 10,
+          "durations": [
+            2,
+            1,
+            2,
+            3,
+            4,
+            4,
+            3,
+            2,
+            1,
+            2
+          ],
+          "source": "Hop",
+          "direction": 2
+        },
+        "Charge": {
+          "first": 45,
+          "count": 10,
+          "hit": 5,
+          "back": 9,
+          "durations": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Charge",
+          "direction": 2
+        },
+        "Guard": {
+          "first": 55,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Cringe",
+          "direction": 0
+        },
+        "Hurt": {
+          "first": 57,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Hurt",
+          "direction": 2
+        },
+        "Squeeze": {
+          "first": 59,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            35,
+            35
+          ],
+          "source": "Sleep",
+          "direction": 0
+        },
+        "Land": {
+          "first": 61,
+          "count": 3,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            8,
+            8,
+            8
+          ],
+          "source": "Sit",
+          "direction": 0
+        },
+        "Victory": {
+          "first": 64,
+          "count": 3,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            12,
+            2,
+            8
+          ],
+          "source": "Pose",
+          "direction": 2
+        },
+        "Faint": {
+          "first": 67,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            8,
+            12,
+            4,
+            10
+          ],
+          "source": "Faint",
+          "direction": 2
+        },
+        "Down": {
+          "first": 71,
+          "count": 1,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            12
+          ],
+          "source": "Laying",
+          "direction": 2
+        }
+      },
+      "frame_count": 72
+    },
+    "machop": {
+      "clips": {
+        "Idle": {
+          "first": 0,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            40,
+            4,
+            4,
+            4
+          ],
+          "source": "Idle",
+          "direction": 2
+        },
+        "Walk": {
+          "first": 4,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            8,
+            8,
+            8,
+            8
+          ],
+          "source": "Walk",
+          "direction": 2
+        },
+        "Attack": {
+          "first": 8,
+          "count": 10,
+          "hit": 3,
+          "back": 6,
+          "durations": [
+            2,
+            4,
+            1,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            4
+          ],
+          "source": "Attack",
+          "direction": 2
+        },
+        "Shoot": {
+          "first": 18,
+          "count": 10,
+          "hit": 2,
+          "back": 4,
+          "durations": [
+            2,
+            3,
+            6,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Shoot",
+          "direction": 2
+        },
+        "Hop": {
+          "first": 28,
+          "count": 10,
+          "hit": 9,
+          "back": 10,
+          "durations": [
+            2,
+            1,
+            2,
+            3,
+            4,
+            4,
+            3,
+            2,
+            1,
+            2
+          ],
+          "source": "Hop",
+          "direction": 2
+        },
+        "Charge": {
+          "first": 38,
+          "count": 10,
+          "hit": 5,
+          "back": 9,
+          "durations": [
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2
+          ],
+          "source": "Charge",
+          "direction": 2
+        },
+        "Guard": {
+          "first": 48,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Cringe",
+          "direction": 0
+        },
+        "Hurt": {
+          "first": 50,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            2,
+            8
+          ],
+          "source": "Hurt",
+          "direction": 2
+        },
+        "Squeeze": {
+          "first": 52,
+          "count": 2,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            30,
+            35
+          ],
+          "source": "Sleep",
+          "direction": 0
+        },
+        "Land": {
+          "first": 54,
+          "count": 3,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            8,
+            8,
+            8
+          ],
+          "source": "Sit",
+          "direction": 0
+        },
+        "Victory": {
+          "first": 57,
+          "count": 3,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            12,
+            2,
+            8
+          ],
+          "source": "Pose",
+          "direction": 2
+        },
+        "Faint": {
+          "first": 60,
+          "count": 4,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            8,
+            12,
+            4,
+            10
+          ],
+          "source": "Faint",
+          "direction": 2
+        },
+        "Down": {
+          "first": 64,
+          "count": 1,
+          "hit": 0,
+          "back": 1,
+          "durations": [
+            12
+          ],
+          "source": "Laying",
+          "direction": 2
+        }
+      },
+      "frame_count": 65
     }
   }
 }

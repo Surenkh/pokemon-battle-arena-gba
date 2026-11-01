@@ -1,14 +1,18 @@
 #pragma once
 #include <stdint.h>
 namespace pkmn {
-struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; bool melee_followup; const char* role; const char* trait; const char* tip1; const char* tip2; };
-inline constexpr CharacterDef characters[6] = {
-{"PIKACHU",95,105,26,384,8,12,32,4,3,18,8,26,896,21,128,100,100,512,0,0,"RUSH AND PRESSURE","QUICK STEP","MELEE STEPS FORWARD","FAST APPROACH. COMMIT TO A."},
-{"CHARMANDER",100,90,24,307,10,14,36,6,3,23,10,32,768,21,0,100,125,512,0,0,"HEAVY FIRE","EMBER PRESSURE","FIRE DRAINS EXTRA GUARD","SLOW RECOVERY. KEEP SPACE."},
-{"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704,21,0,80,100,768,0,0,"DEFENSE AND SPACE","SHELL CONTROL","EFFICIENT BLOCK. WATER PUSH.","SUPERS STILL IGNORE BLOCK."},
-{"BULBASAUR",120,100,20,243,9,12,34,7,3,25,11,32,832,32,0,100,100,512,0,0,"REACH AND CONTROL","VINE REACH","LONG MELEE REACH","SLOW START. HOLD DISTANCE."},
-{"EEVEE",100,115,28,358,7,10,31,4,3,17,8,26,832,21,0,100,100,512,0,1,"FLEXIBLE FOLLOW-UPS","ADAPTABLE","CLEAN A CAN FOLLOW WITH A/B","A TO A NEEDS CLOSE RANGE."},
-{"MEOWTH",90,100,25,397,8,11,33,3,3,16,8,27,768,21,0,100,100,512,3,0,"CLOSE COUNTERATTACK","PUNISH","EXTRA MELEE DAMAGE IN RECOVERY","CATCH A MISSED ENEMY ATTACK."},
+struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; int melee_guard_percent,gravity_percent,jump_percent; bool melee_followup; const char* role; const char* trait; const char* tip1; const char* tip2; };
+inline constexpr int character_count = 9;
+inline constexpr CharacterDef characters[9] = {
+{"PIKACHU",95,105,26,384,8,12,32,4,3,18,8,26,896,21,128,100,100,512,0,100,100,100,0,"RUSH AND PRESSURE","QUICK STEP","MELEE STEPS FORWARD","FAST APPROACH. COMMIT TO A."},
+{"CHARMANDER",100,90,24,307,10,14,36,6,3,23,10,32,768,21,0,100,125,512,0,100,100,100,0,"HEAVY FIRE","EMBER PRESSURE","FIRE DRAINS EXTRA GUARD","SLOW RECOVERY. KEEP SPACE."},
+{"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704,21,0,80,100,768,0,100,100,100,0,"DEFENSE AND SPACE","SHELL CONTROL","EFFICIENT BLOCK. WATER PUSH.","SUPERS STILL IGNORE BLOCK."},
+{"BULBASAUR",120,100,20,243,9,12,34,7,3,25,11,32,832,32,0,100,100,512,0,100,100,100,0,"REACH AND CONTROL","VINE REACH","LONG MELEE REACH","SLOW START. HOLD DISTANCE."},
+{"EEVEE",100,115,28,358,7,10,31,4,3,17,8,26,832,21,0,100,100,512,0,100,100,100,1,"FLEXIBLE FOLLOW-UPS","ADAPTABLE","CLEAN A CAN FOLLOW WITH A/B","A TO A NEEDS CLOSE RANGE."},
+{"MEOWTH",90,100,25,397,8,11,33,3,3,16,8,27,768,21,0,100,100,512,3,100,100,100,0,"CLOSE COUNTERATTACK","PUNISH","EXTRA MELEE DAMAGE IN RECOVERY","CATCH A MISSED ENEMY ATTACK."},
+{"PSYDUCK",105,105,23,294,8,13,34,6,3,23,10,30,768,23,0,100,100,896,0,100,100,100,0,"RANGED CONTROL","MIND PUSH","PSY PULSE PUSHES RIVALS BACK","KEEP SPACE. SPEND FIRE WISELY."},
+{"JIGGLYPUFF",125,100,21,256,7,10,30,5,3,21,9,28,768,21,0,100,100,512,0,100,75,105,0,"AERIAL EVASION","FLOAT STEP","LIGHT GRAVITY. LONGER JUMPS.","LAND BEFORE COMMITTING A SUPER"},
+{"MACHOP",115,95,24,282,11,9,37,7,3,25,12,34,640,25,0,100,100,512,0,135,100,100,0,"CLOSE POWER","HEAVY HANDS","MELEE DRAINS EXTRA GUARD","CLOSE THE GAP. MIND RECOVERY."},
 };
 inline constexpr int world_width = 240;
 inline constexpr int world_height = 160;

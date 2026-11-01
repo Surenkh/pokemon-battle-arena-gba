@@ -11,9 +11,9 @@ struct Stats {
 
 // Deterministic CPU evidence, not a human balance score. No writes to gameplay.
 int main(int argc,char**argv) {
-    Stats stats[6];std::vector<int> lengths;int timeouts=0,rounds=0;
+    Stats stats[character_count];std::vector<int> lengths;int timeouts=0,rounds=0;
     uint32_t digest=2166136261u;
-    for(int level=0;level<3;++level)for(int a=0;a<6;++a)for(int b=0;b<6;++b)
+    for(int level=0;level<3;++level)for(int a=0;a<character_count;++a)for(int b=0;b<character_count;++b)
     for(int seed=1;seed<=20;++seed) {
         CombatCore c;c.reset(a,b,seed);CpuController left,right;
         left.reset(level,seed*23);right.reset(level,seed*37);
@@ -46,7 +46,7 @@ int main(int argc,char**argv) {
     std::sort(lengths.begin(),lengths.end());long long total=0;
     for(int n:lengths)total+=n;
     std::printf("{\n  \"label\":\"%s\",\n  \"rounds\":%d,\n  \"seeds_per_ordered_matchup_and_level\":20,\n  \"difficulty_levels\":3,\n  \"timeouts\":%d,\n  \"median_active_ticks\":%d,\n  \"mean_active_ticks\":%.2f,\n  \"replay_digest\":%u,\n  \"characters\":[\n",argc>1?argv[1]:"candidate",rounds,timeouts,lengths[lengths.size()/2],double(total)/rounds,digest);
-    for(int ch=0;ch<6;++ch) {
+    for(int ch=0;ch<character_count;++ch) {
         const auto&s=stats[ch];
         std::printf("    {\"character\":\"%s\",\"appearances\":%d,\"wins\":%d,\"losses\":%d,\"draws\":%d,\"win_percent\":%.2f,\"low_stamina_tick_percent\":%.2f,\"neutral_wait_percent\":%.2f,\"damage_dealt\":%d,\"damage_taken\":%d,\"melee_started\":%d,\"shots_released\":%d,\"clean_hits\":%d,\"blocked_hits\":%d,\"super_starts\":%d,\"super_releases\":%d}%s\n",characters[ch].name,s.matches,s.wins,s.losses,s.draws,100.0*s.wins/s.matches,100.0*s.low/s.ticks,s.neutral?100.0*s.waiting/s.neutral:0.,s.dealt,s.taken,s.melee,s.shots,s.hits,s.blocks,s.charges,s.releases,ch==5?"":",");
     }

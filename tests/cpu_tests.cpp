@@ -22,11 +22,11 @@ int main(){
  }
  // Hidden opponent state is deliberately absent from the stored observation.
  // Perturb it on every tick; both policies must still return identical inputs.
- for(int l=0;l<3;++l)for(int who=0;who<2;++who)for(int ch=0;ch<6;++ch){
-  CombatCore c,d;c.reset(ch,(ch+1)%6);d=c;CpuController a,b;a.reset(l,71+ch);b.reset(l,71+ch);
+ for(int l=0;l<3;++l)for(int who=0;who<2;++who)for(int ch=0;ch<character_count;++ch){
+  CombatCore c,d;c.reset(ch,(ch+1)%character_count);d=c;CpuController a,b;a.reset(l,71+ch);b.reset(l,71+ch);
   for(int t=0;t<600;++t){
    c.tick=d.tick=t;
-   auto&e=c.f[1-who];e.action=Action((t/40)%6);e.attack_id=unsigned(t/40+1);e.began=(t/40)*40;
+   auto&e=c.f[1-who];e.action=Action((t/40)%character_count);e.attack_id=unsigned(t/40+1);e.began=(t/40)*40;
    d.f[1-who]=e;auto&hidden=d.f[1-who];
    hidden.pending=R|UP;hidden.pending_until=t+40;hidden.invuln_until=t+90;
    hidden.ends=t+999;hidden.sta=0;hidden.sp=100;hidden.hp=1;hidden.squeeze_ready=t+1000;
@@ -65,7 +65,7 @@ int main(){
  }
  // A low-resource CPU cannot be baited into endless retreat. It reserves stamina,
  // takes at most 24 ticks to disengage, then stays put until its resume threshold.
- for(int l=0;l<3;++l)for(int ch=0;ch<6;++ch){
+ for(int l=0;l<3;++l)for(int ch=0;ch<character_count;++ch){
   CombatCore c;c.reset(ch,ch);c.f[1].sta=10*60;CpuController a;a.reset(l,51);
   for(int t=0;t<100;++t){c.tick=t;Input x=a.input(c);CHECK(!x.pressed);if(t>24)CHECK(!(x.held&(LEFT|RIGHT|L)));}
   CHECK(a.diagnostics.resting);c.tick=102;c.f[1].sta=cpu_styles[ch].resume_at*60;a.input(c);CHECK(!a.diagnostics.resting);
@@ -81,15 +81,15 @@ int main(){
  }
  // Stalled zoning and the last ten seconds cause an approach, rather than a
  // permanent projectile/block loop. These use own HP/SP and the visible timer.
- for(int ch=0;ch<6;++ch){CombatCore c;c.reset(0,ch);CpuController a;a.reset(2,18);
+ for(int ch=0;ch<character_count;++ch){CombatCore c;c.reset(0,ch);CpuController a;a.reset(2,18);
   for(int t=0;t<=320;++t){c.tick=t;a.input(c);}
   CHECK(a.diagnostics.closing&&a.diagnostics.target==24);
   a.reset(2,18);c.tick=0;c.remaining=599;a.input(c);CHECK(a.diagnostics.closing);
  }
  // Matched deterministic full games, every difficulty, both sides, all fighters.
  int requests[3]={},mistakes[3]={},decisions[3]={};unsigned rounds=0;
- for(int l=0;l<3;++l)for(int ch=0;ch<6;++ch)for(int seed=1;seed<=8;++seed){
-  CombatCore c,d;c.reset(ch,(ch+seed)%6,seed);d=c;CpuController a,b,u,v;
+ for(int l=0;l<3;++l)for(int ch=0;ch<character_count;++ch)for(int seed=1;seed<=8;++seed){
+  CombatCore c,d;c.reset(ch,(ch+seed)%character_count,seed);d=c;CpuController a,b,u,v;
   a.reset(l,seed*23);b.reset(l,seed*37);u.reset(l,seed*23);v.reset(l,seed*37);
   for(int n=0;n<7000&&!c.outcome;++n){Input x=a.input(c,0),y=b.input(c,1);CHECK(same(x,u.input(d,0)));CHECK(same(y,v.input(d,1)));c.frame(x,y);d.frame(x,y);CHECK(c.checksum()==d.checksum());
    CHECK(c.event_count<=CombatCore::max_events);for(int i=0;i<2;++i){CHECK(c.f[i].sta>=0);CHECK(c.f[i].sp>=0&&c.f[i].sp<=100);}
