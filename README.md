@@ -8,9 +8,9 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.8.0 — Modes & New Challengers**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **0.9.0 — Arenas & Fighter Mastery**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings and Controls**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.8.0** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.9.0** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
@@ -27,6 +27,27 @@ Normal fights end with a Poké Ball recalling the defeated Pokémon through an a
 CPU rivals now use fighter-specific spacing and attack preferences, varied tactical plans and stamina reserves. Easy leaves more openings; Normal mixes plans; Hard reacts and follows up more reliably. The AI reacts to delayed visible actions and remembers only a short history of repeated attacks.
 
 Nine fighter traits change movement, guard pressure, reach and counterattacks. A clean melee hit can lead into one projectile follow-up; Eevee can also follow with melee at close range. Follow-ups spend normal stamina and remain blockable. B on the title opens practice, with idle, blocking and attacking opponents, damage feedback and quick arena reset.
+
+## Three arenas and fighter mastery
+
+Choose **Woodland, Volcanic or Shoreline** in Quick Battle or Practice. Quick
+Battle has an Arena row below Level; Practice adds Arena as its fourth option.
+Configure the options, return to the grid to choose any fighter, then A/Start
+plays. Arcade rotates through all three arenas; retries preserve the current
+stage. The arenas share the same floor, hitboxes and combat rules.
+
+**Fighter Mastery** is a visible main-menu button. Each Pokémon has three cosmetic
+medals: **10 damaging follow-up hits**, **5 successful super evasions**, and a
+**no-continue Arcade clear** at any difficulty. Practice does not count. Roster
+badges show earned medals, and Mastery/Records link with A. Progress saves at round
+end, Rematch or leaving a fight. Both six- and nine-fighter v0.8 saves migrate;
+existing no-continue records already count toward their medal.
+
+![Native volcanic arena](docs/media/volcanic-arena-native.png)
+
+![Native shoreline arena](docs/media/shoreline-arena-native.png)
+
+![Native fighter mastery](docs/media/fighter-mastery-native.png)
 
 ## Nine fighters, nine playstyles
 
@@ -73,13 +94,13 @@ Practice uses the same combat rules, starts with full SP and freezes the timeout
 
 ## Build and development
 
-The editable GBA Studio project, C++ runtime, engine sources/notices, required source assets, tools, and tests are included. See [BUILDING.md](docs/BUILDING.md), [modes and persistence](docs/ARCADE_AND_RECORDS.md), [nine-fighter details](docs/NINE_FIGHTERS.md), [v0.8 validation](docs/ARCADE_TEST_REPORT.md), [new audio/recall evidence](docs/AUDIO_AND_RECALL_TEST_REPORT.md), [audio and animation decisions](docs/AUDIO_AND_RECALL.md), [CPU architecture](docs/CPU_TACTICS.md), [fighter mechanics](docs/FIGHTER_DEPTH.md), [roadmap](docs/development/ROADMAP.md), and [Git workflow](CONTRIBUTING.md).
+The editable GBA Studio project, C++ runtime, engine sources/notices, required source assets, tools, and tests are included. See [BUILDING.md](docs/BUILDING.md), [arenas and mastery](docs/ARENAS_AND_MASTERY.md), [modes and persistence](docs/ARCADE_AND_RECORDS.md), [nine-fighter details](docs/NINE_FIGHTERS.md), [v0.8 validation](docs/ARCADE_TEST_REPORT.md), [new audio/recall evidence](docs/AUDIO_AND_RECALL_TEST_REPORT.md), [audio and animation decisions](docs/AUDIO_AND_RECALL.md), [CPU architecture](docs/CPU_TACTICS.md), [fighter mechanics](docs/FIGHTER_DEPTH.md), [roadmap](docs/development/ROADMAP.md), and [Git workflow](CONTRIBUTING.md).
 
 Gameplay updates use feature branches and pull requests. Validated versions on `main` are published through the [release workflow](.github/workflows/release.yml). Keep changes in feature branches and update the ROM and checksum together after validation. Compiler binaries are not bundled. Historical browser-preview exports and unused optional artwork from the original pack are omitted; native build inputs and their provenance are retained.
 
 ## Limits and feedback
 
-Physical GBA hardware and non-Linux rebuilding have not been tested. There is one woodland arena and no multiplayer or mid-run resume. Completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
+Physical GBA hardware and non-Linux rebuilding have not been tested. There are three arenas and no multiplayer or mid-run resume. Mastery, completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
 
 ## Credits
 

@@ -1,15 +1,35 @@
-# Implementation status — 31 October 2026
+# Implementation status — 1 November 2026
 
-Playable release and input ruleset: **0.7.0 — Sound & Poké Ball Recall**, developed on `feat/audio-and-recall` from released v0.6.0.
+Playable candidate: **0.9.0 — Arenas & Fighter Mastery**, developed on
+`feat/arenas-and-mastery` from the released nine-fighter v0.8.0 baseline.
+The combat ruleset and fighter/CPU parameters remain v0.8.0.
 
-The game retains six animated fighters and traits, deterministic combat/physics, elemental attacks and sounds, stamina, hit-earned unblockable supers, one hit-confirm follow-up, fighter-aware CPU with three difficulties, practice/guides, complete title/selector/pause/result/rematch flow, an editable GBA Studio native build and automated GitHub Releases.
+The native game includes nine animated Pokémon, elemental attacks and sounds,
+stamina, hit-earned supers, follow-ups and fighter traits, three CPU difficulties,
+Practice, Quick Battle, five-rival Arcade, two continues, champion/records screens,
+original menu music, audio controls and an animated Poké Ball recall.
 
-The new update adds an original 34.29-second three-voice tracker title/menu loop and fourteen presentation cues. Music and Sound FX have independent On/Off options accessible through L in menus/pause and an Audio pause entry. Settings stay selected during the current run; power-on restores the moderate default mix. The sound toggle controls combat, UI, recall and result sounds together. No new save format is introduced.
+v0.9 adds Volcanic and Shoreline alongside Woodland. Quick Battle and Practice
+select an arena; Arcade rotates through all three with a consistent arena on
+retries. Arena motion stays above the combat plane and stops outside fighting.
+Floor, HUD geometry, hitboxes and combat randomness remain consistent.
 
-A 156-display-frame normal win/loss sequence recalls the defeated Pokémon into a Poké Ball through opening, beam, tint/shrink, close, fall and seal phases. The winner stays visible. Results show the winner or the closed ball on defeat. A/Start can skip from frame 112. Draws and practice retain their quick transition. The sequence never changes the resolved simulation state, outcome or CPU randomness.
+Fighter Mastery is a seventh visible mode button. Each fighter earns cosmetic
+medals for 10 damaging follow-ups, 5 successful super evasions and a no-continue
+Arcade clear at any difficulty. Roster badges and result feedback show progress.
+Practice cannot award mastery. The observer never mutates CombatCore.
 
-Six host suites pass. Seven native suites pass with zero missed display frames, including independent audio mute combinations with recorded digital silence, looping music, actual win/loss recall phases, sprite visibility, skip, CPU levels, animation, effects, combat sound, pause and practice. Selector portrait uploads are spread across three display frames to preserve music/frame headroom. Full clean-build proof and exact counts/hashes are in [AUDIO_AND_RECALL_TEST_REPORT.md](AUDIO_AND_RECALL_TEST_REPORT.md) and verification/v0.7.0/.
+Recoverable dual-copy SRAM schema 3 stores two bounded mastery counters per
+fighter in 420-byte copies at the existing offsets. Earlier schema-1 and schema-2
+records/audio settings migrate, and old no-continue clears count immediately.
+Steps save at round end, Rematch or leaving a fight; abrupt power-off can lose
+unsaved current-match steps. Mid-run resume remains outside scope.
 
-Architecture and tradeoffs are in [AUDIO_AND_RECALL.md](AUDIO_AND_RECALL.md), [CPU_TACTICS.md](CPU_TACTICS.md) and [FIGHTER_DEPTH.md](FIGHTER_DEPTH.md). Commands are in [BUILDING.md](BUILDING.md). The release workflow validates six host suites, source audio/art integrity and ROM-bound native evidence before publication.
+The source contract is [ARENAS_AND_MASTERY.md](ARENAS_AND_MASTERY.md). Validation is
+recorded in [ARENAS_AND_MASTERY_TEST_REPORT.md](ARENAS_AND_MASTERY_TEST_REPORT.md)
+and verification/v0.9.0/. See [BUILDING.md](BUILDING.md) for reproduction commands.
+Historical documents and ROM-bound reports remain under their original versions.
 
-Remaining work: human playtesting and matchup tuning, physical GBA hardware, non-Linux rebuilds. Arena life and arcade progression remain the next roadmap direction; this sound/recall iteration was an additional improvement outside that roadmap. Additional arenas, multiplayer, music during fighting and persistent settings remain later scope.
+Human matchup testing, physical GBA hardware, non-Linux builds and graphical
+editor open/save behavior remain unverified. No human balance claim is made.
+GitHub publication follows the existing feature-branch/PR workflow.

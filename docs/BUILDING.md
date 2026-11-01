@@ -45,7 +45,7 @@ g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tools/balance_probe.cpp -o
 /tmp/pkmn_balance_probe candidate > /tmp/pkmn_balance.json
 ```
 
-For native tests install mGBA 0.10.2 development headers/library, compile tests/mgba_driver.c, and run tests/native_flow.py, tests/native_animation_flow.py, tests/native_effects_flow.py, tests/native_feel_flow.py tests/native_depth_flow.py tests/native_cpu_flow.py tests/native_presentation_flow.py and tests/native_arcade_flow.py. The feedback runner also needs Pillow (`python3 -m pip install Pillow`). See [NATIVE_TESTING.md](NATIVE_TESTING.md). These scripts use physical inputs and read-only telemetry, not gameplay-memory writes.
+For native tests install mGBA 0.10.2 development headers/library, compile tests/mgba_driver.c, and run tests/native_flow.py, tests/native_animation_flow.py, tests/native_effects_flow.py, tests/native_feel_flow.py tests/native_depth_flow.py tests/native_cpu_flow.py tests/native_presentation_flow.py tests/native_arcade_flow.py and tests/native_mastery_flow.py. The feedback runner also needs Pillow (`python3 -m pip install Pillow`). See [NATIVE_TESTING.md](NATIVE_TESTING.md). These scripts use physical inputs and read-only telemetry, not gameplay-memory writes.
 
 ## Prepare release downloads
 
@@ -70,3 +70,16 @@ g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/roster_tests.cpp -o 
 ```
 
 The Arcade native suite also checks every visible main-menu entry with no L/R inputs, new-fighter guides and practice play, actual new attack/charge/release audio dispatch, schema-1 save migration, corruption recovery and a completed five-rival run. The original nine-fighter art inputs are pinned to the same credited PMDCollab revision. No compiler or commercial ROM/BIOS is bundled.
+
+
+v0.9 mastery/arena host checks:
+
+```sh
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/mastery_tests.cpp -o /tmp/pkmn_mastery_tests
+/tmp/pkmn_mastery_tests
+```
+
+The new native suite checks all three Quick/Practice arenas, menu paths, a mastery
+medal earned from zero in regular fights, actual CPU super evasion, practice
+exclusion, legacy nine-fighter migration, mixed-schema recovery and power cycles.
+Release packaging additionally requires ROM-bound native-mastery evidence.

@@ -1,0 +1,81 @@
+{
+  "status": "passed",
+  "checks": 241,
+  "roster": [
+    {
+      "character": "pikachu",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.885498046875
+    },
+    {
+      "character": "charmander",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.885498046875
+    },
+    {
+      "character": "squirtle",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.885498046875
+    },
+    {
+      "character": "bulbasaur",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.885498046875
+    },
+    {
+      "character": "eevee",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.92041015625
+    },
+    {
+      "character": "meowth",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.92041015625
+    }
+  ],
+  "guard": [
+    {
+      "player": 1,
+      "dummy": 0,
+      "guard_points": 23
+    },
+    {
+      "player": 0,
+      "dummy": 2,
+      "guard_points": 12
+    },
+    {
+      "player": 1,
+      "dummy": 2,
+      "guard_points": 18
+    }
+  ],
+  "practice_auto_rounds": 20,
+  "automatic_restarts": 19,
+  "practice_stress_display_frames": 12000,
+  "peak_cpu_fraction": 0.92041015625,
+  "missed_display_frames": 0,
+  "wall_seconds": 11.11,
+  "rom_sha256": "0ac4480de00ad3cdbed6df59e54195e46dd0d160ef1cd90e61ab0b449c7d29ff",
+  "method": "mGBA 0.10.2; physical buttons, read-only telemetry; no gameplay-memory writes",
+  "test_source": "tests/native_depth_flow.py",
+  "test_source_sha256": "25d167fbffe6489fc673926296c126543086be152ea004112c3d66d6bd564805"
+}

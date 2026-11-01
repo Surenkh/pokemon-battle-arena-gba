@@ -40,7 +40,7 @@ int main(int argc,char**argv){
   }
  }
  auto print=[](const char*name,const Stats&s){std::printf("{\"name\":\"%s\",\"rounds\":%d,\"wins\":%d,\"losses\":%d,\"draws\":%d,\"win_percent\":%.2f,\"timeouts\":%d,\"active_ticks\":%d,\"low_stamina_tick_percent\":%.2f,\"damage_dealt\":%d,\"damage_taken\":%d,\"melee_started\":%d,\"shots_released\":%d,\"blocked_hits\":%d,\"followups_started\":%d,\"punish_hits\":%d,\"defense_requests\":%d,\"hesitations\":%d}",name,s.rounds,s.wins,s.losses,s.draws,100.*s.wins/s.rounds,s.timeouts,s.ticks,100.*s.low/s.ticks,s.damage,s.taken,s.melee,s.shots,s.blocks,s.followups,s.punishes,s.defenses,s.hesitations);};
- std::printf("{\n\"first_seed\":%d,\n\"status\":\"passed\",\"rounds\":2160,\"replay_digest\":%u,\"method\":\"Candidate at each difficulty versus frozen v0.5 Normal on the v0.6 combat core; all 36 ordered matchups, 10 fixed seeds, both sides. No stat differences. CPU evidence does not establish human balance.\",\n\"difficulties\":[",first_seed,digest);
+ std::printf("{\n\"first_seed\":%d,\n\"status\":\"passed\",\"rounds\":%d,\"replay_digest\":%u,\"method\":\"Candidate at each difficulty versus frozen v0.5-style Normal on the current unchanged combat ruleset; all %d ordered matchups, 10 fixed seeds, both sides. No stat differences. CPU evidence does not establish human balance.\",\n\"difficulties\":[",first_seed,levels[0].rounds+levels[1].rounds+levels[2].rounds,digest,character_count*character_count);
  const char*names[3]={"Easy","Normal","Hard"};
  for(int l=0;l<3;++l){if(l)std::printf(",");print(names[l],levels[l]);}
  std::printf("],\n\"fighters_by_difficulty\":[");

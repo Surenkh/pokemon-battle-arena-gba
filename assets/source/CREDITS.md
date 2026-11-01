@@ -32,3 +32,11 @@ The new projectiles, supers, muzzle flashes, hit effects and guard effects are p
 Leaflight Circuit (title/menu music), three tracker wavetables and fourteen new menu/round/recall/result cues are original deterministic compositions/synthesis authored for this project in tools/generate_presentation_audio.py. They use no sampled Pokémon recording or existing song. The module, source score and generation metadata are included.
 
 The new Poké Ball poses, recall beam and seal glints are original native pixel-art implementations in tools/round_fx.cjs. Pokémon and Poké Ball names/designs belong to their respective owners; the project remains an unofficial fan work. Existing character artwork and engine notices above still apply.
+
+
+## v0.9 original stage and mastery artwork
+
+Volcanic/shoreline scenery and the mastery badge atlas are original deterministic
+pixel artwork authored in `tools/arena_art.cjs`. Native HUD and mastery/menu
+backgrounds are composed by `tools/convert_assets.cjs` using the existing project
+UI renderer. These additions introduce no third-party artwork or downloads.

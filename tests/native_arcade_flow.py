@@ -5,7 +5,7 @@ from PIL import Image
 r=Path(__file__).resolve().parents[1];out=r/'tests/native_artifacts/arcade';out.mkdir(parents=True,exist_ok=True)
 symbols=subprocess.check_output(['readelf','-sW',str(r/'.gbastudio/PokemonBattleArena.elf')],text=True)
 def symbol(name,size=128):return int(re.search(r'\b([0-9a-f]{8})\s+'+str(size)+r'\s+OBJECT\s+GLOBAL[^\n]+\b'+name+r'\b',symbols).group(1),16)
-main=symbol('pkmn_debug');detail=symbol('pkmn_arcade_debug');audio=symbol('pkmn_presentation_debug');depth=symbol('pkmn_depth_debug');feel=symbol('pkmn_feel_debug',64)
+main=symbol('pkmn_debug');detail=symbol('pkmn_arcade_debug');audio=symbol('pkmn_presentation_debug');depth=symbol('pkmn_depth_debug');feel=symbol('pkmn_feel_debug',64);mastery=symbol('pkmn_mastery_debug')
 chars=json.loads((r/'config/balance.json').read_text())['characters'];save=out/'arcade.sav';save.unlink(missing_ok=True)
 checks=0;started=time.time();p=None;rounds=[];peak=0;missed=0;menu_keys=0;native_new=[];pictures=[]
 def cmd(s):
@@ -68,7 +68,7 @@ def finish(auto=True):
  if auto:cmd(f'b 6500 {main:08x} {feel:08x}')
  else:frames(5000)
  if state()[1]==5:frames(180)
- check(state()[1] in (12,13),'Arcade result/champion reached');v=state();rounds.append(dict(outcome=v[20],stage=info()[3],continues=info()[4]));return v[20]
+ check(state()[1] in (12,13),'Arcade result/champion reached');v=state();rounds.append(dict(outcome=v[20],stage=info()[3],continues=info()[4],arena=read(mastery)[2]));return v[20]
 try:
  boot();capture('title');menu();capture('mode_menu')
  # Every mode is reachable using only directions and Start/A/B.
@@ -80,7 +80,7 @@ try:
  save.write_bytes((r/'tests/fixtures/six_fighter_v08.sav').read_bytes());boot();check(read(audio)[1:3]==[0,1],'Schema-1 audio preferences loaded')
  choose(3);press(64);check(state()[4]==0 and info()[8:11]==[2,1,3600],'Schema-1 Pikachu record retained')
  character(5);press(64);check(state()[4]==2 and info()[8:11]==[7,3,14400],'Schema-1 Meowth record retained');character(6);check(info()[8:11]==[0,0,0],'New fighter starts with empty records');press(2)
- choose(4);press(1);press(2);check(not info()[11],'Migrated save write verified');close();raw=bytearray(save.read_bytes());check(struct.unpack_from('<I',raw,4)[0]==2,'Next save writes schema 2')
+ choose(4);press(1);press(2);check(not info()[11],'Migrated save write verified');close();raw=bytearray(save.read_bytes());check(struct.unpack_from('<I',raw,4)[0]==3,'Next save writes schema 3')
  raw[40]^=1;save.write_bytes(raw);boot();check(read(audio)[1:3]==[0,1],'Corrupt newest copy falls back to schema-1 copy');choose(4);press(1);press(2)
  # Each new fighter has a guide and actual native movement/attack/charge VFX.
  for ch in (6,7,8):
@@ -95,7 +95,8 @@ try:
  setup_arcade();capture('arcade_battle');press(8);clock=info()[6];frames(90);check(info()[6]==clock,'Pause freezes Arcade clock');press(8);frames(65)
  for remaining in (2,1,0):
   check(finish(False)==2,'Idle player loses naturally');check(info()[4]==remaining and info()[3]==0,'Loss preserves opponent and waits for continue choice');capture('loss_'+str(remaining));clock=info()[6];frames(60);check(info()[6]==clock,'Result screen freezes run clock')
-  if remaining:press(8);check(state()[1]==2 and info()[4]==remaining-1,'Continue consumes exactly one');frames(185)
+  if remaining:
+   before_arena=read(mastery)[2];press(8);check(state()[1]==2 and info()[4]==remaining-1,'Continue consumes exactly one');check(read(mastery)[2]==before_arena,'Continue preserves current arena');frames(185)
   else:press(8);check(state()[1]==12,'No third continue')
  press(2);check(state()[1]==15 and not info()[2],'End run returns to mode menu')
  # Actual external play, never gameplay memory writes, earns a five-win clear.
@@ -107,7 +108,7 @@ try:
    if state()[1]==13:
     champion=True;check(info()[3]==5 and info()[8]==1 and info()[10]==info()[6],'Five wins grant one clear and exact run time');capture('champion');break
    if result==2 and info()[4]==0:press(2);break
-   stage=info()[3];press(8);check(state()[1]==2 and state()[4]==0 and state()[6]==120 and state()[8]==6000 and state()[10]==0,'Next rival restores resources and chosen difficulty');check(state()[3]==info()[12+stage],'Correct next rival');frames(185)
+   stage=info()[3];before_arena=read(mastery)[2];press(8);check(state()[1]==2 and state()[4]==0 and state()[6]==120 and state()[8]==6000 and state()[10]==0,'Next rival restores resources and chosen difficulty');check(state()[3]==info()[12+stage],'Correct next rival');check(read(mastery)[2]==((before_arena+1)%3 if result==1 else before_arena),'Winning rotates the arena; losing preserves it');frames(185)
   if champion:break
  check(champion,'Player clears five-rival Arcade');ticks=info()[10];perfect=info()[9];frames(90);check(info()[8]==1,'Champion screen does not double count');press(1);capture('records_clear');close()
  boot();choose(3);character(3)
