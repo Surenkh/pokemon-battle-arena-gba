@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -74,16 +74,36 @@ B: Fire
 L held: Block ordinary attacks
 R: Super at 100 SP and 25 stamina
 Start: Pause
-L on title, selector, result or pause: Audio options
+Start/A on title: Visible mode menu
+D-pad in menus: Choose a button or fighter
+Start/A: Confirm
+B: Back
+Audio settings are available as a main-menu button; no shoulder shortcut is needed.
 
 AUDIO
 Music and sound effects have independent On/Off options.
-Settings apply throughout the current play session and reset at power-on.
+Settings save when you leave Audio options and survive power-off.
+Old six-fighter v0.8 SRAM records migrate without losing existing entries.
 The default mix is moderate; emulator/device output volume is separate.
 
+ARCADE
+Choose Arcade from the visible mode menu, then difficulty and Pokemon.
+Five unique rivals from the other eight fighters. Two continues.
+Full HP/stamina between fights; draws retry for free.
+Pause Rematch costs a continue; changing Pokemon ends the run.
+Records saves clears, no-continue clears and fastest total battle time.
+Battle time includes active frames and failed attempts; menus/countdown/recall are excluded.
+Unfinished runs do not resume after power-off.
+
+NINE FIGHTERS
+Psyduck: Mind Push adds strong psychic projectile knockback.
+Jigglypuff: Float Step gives lighter gravity and longer jumps.
+Machop: Heavy Hands adds melee guard-stamina pressure.
+All nine fighters have animated movement/attacks, unique themed VFX and sounds.
+
 PRACTICE
-B on the title: Practice setup
-R in a selector: Fighter guide
+Choose Practice from the mode menu
+SELECT in Quick/Arcade selection: Fighter guide
 Select in practice setup: Cycle fighter / behavior / rival options
 Select in practice: Reset arena, resources and statistics
 

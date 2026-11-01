@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "0.7.0",
+  "ruleset_version": "0.8.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -189,7 +189,10 @@
         "fire_guard_percent": 100,
         "fire_knockback_q8": 512,
         "recovery_punish_bonus": 0,
-        "melee_followup": false
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100
       }
     },
     {
@@ -230,7 +233,10 @@
         "fire_guard_percent": 125,
         "fire_knockback_q8": 512,
         "recovery_punish_bonus": 0,
-        "melee_followup": false
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100
       }
     },
     {
@@ -271,7 +277,10 @@
         "fire_guard_percent": 100,
         "fire_knockback_q8": 768,
         "recovery_punish_bonus": 0,
-        "melee_followup": false
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100
       }
     },
     {
@@ -312,7 +321,10 @@
         "fire_guard_percent": 100,
         "fire_knockback_q8": 512,
         "recovery_punish_bonus": 0,
-        "melee_followup": false
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100
       }
     },
     {
@@ -353,7 +365,10 @@
         "fire_guard_percent": 100,
         "fire_knockback_q8": 512,
         "recovery_punish_bonus": 0,
-        "melee_followup": true
+        "melee_followup": true,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100
       }
     },
     {
@@ -394,7 +409,142 @@
         "fire_guard_percent": 100,
         "fire_knockback_q8": 512,
         "recovery_punish_bonus": 3,
-        "melee_followup": false
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100
+      }
+    },
+    {
+      "id": "psyduck",
+      "name": "Psyduck",
+      "type": "Water",
+      "max_hp": 105,
+      "max_stamina": 105,
+      "stamina_regen_per_second": 23,
+      "walk_speed_q8": 294,
+      "melee": {
+        "name": "Confusion Jab",
+        "damage": 8,
+        "startup_ticks": 6,
+        "active_ticks": 3,
+        "recovery_ticks": 14
+      },
+      "fire": {
+        "name": "Psy Pulse",
+        "damage": 13,
+        "startup_ticks": 10,
+        "active_ticks": 1,
+        "recovery_ticks": 19,
+        "speed_q8": 768
+      },
+      "super": {
+        "name": "Psychic Surge",
+        "damage": 34
+      },
+      "style": {
+        "melee_reach_px": 23,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 896,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100,
+        "role": "RANGED CONTROL",
+        "trait_name": "MIND PUSH",
+        "tip_1": "PSY PULSE PUSHES RIVALS BACK",
+        "tip_2": "KEEP SPACE. SPEND FIRE WISELY."
+      }
+    },
+    {
+      "id": "jigglypuff",
+      "name": "Jigglypuff",
+      "type": "Normal/Fairy",
+      "max_hp": 125,
+      "max_stamina": 100,
+      "stamina_regen_per_second": 21,
+      "walk_speed_q8": 256,
+      "melee": {
+        "name": "Pound",
+        "damage": 7,
+        "startup_ticks": 5,
+        "active_ticks": 3,
+        "recovery_ticks": 13
+      },
+      "fire": {
+        "name": "Melody Note",
+        "damage": 10,
+        "startup_ticks": 9,
+        "active_ticks": 1,
+        "recovery_ticks": 18,
+        "speed_q8": 768
+      },
+      "super": {
+        "name": "Crescendo",
+        "damage": 30
+      },
+      "style": {
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 75,
+        "jump_percent": 105,
+        "role": "AERIAL EVASION",
+        "trait_name": "FLOAT STEP",
+        "tip_1": "LIGHT GRAVITY. LONGER JUMPS.",
+        "tip_2": "LAND BEFORE COMMITTING A SUPER"
+      }
+    },
+    {
+      "id": "machop",
+      "name": "Machop",
+      "type": "Fighting",
+      "max_hp": 115,
+      "max_stamina": 95,
+      "stamina_regen_per_second": 24,
+      "walk_speed_q8": 282,
+      "melee": {
+        "name": "Karate Chop",
+        "damage": 11,
+        "startup_ticks": 7,
+        "active_ticks": 3,
+        "recovery_ticks": 15
+      },
+      "fire": {
+        "name": "Focus Fist",
+        "damage": 9,
+        "startup_ticks": 12,
+        "active_ticks": 1,
+        "recovery_ticks": 21,
+        "speed_q8": 640
+      },
+      "super": {
+        "name": "Seismic Rush",
+        "damage": 37
+      },
+      "style": {
+        "melee_reach_px": 25,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false,
+        "melee_guard_percent": 135,
+        "gravity_percent": 100,
+        "jump_percent": 100,
+        "role": "CLOSE POWER",
+        "trait_name": "HEAVY HANDS",
+        "tip_1": "MELEE DRAINS EXTRA GUARD",
+        "tip_2": "CLOSE THE GAP. MIND RECOVERY."
       }
     }
   ],

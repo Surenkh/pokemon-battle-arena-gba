@@ -1,5 +1,5 @@
 {
-  "version": "0.7.0",
+  "version": "0.8.0",
   "history_ticks": 32,
   "memory_actions": 6,
   "memory_expire_ticks": 240,
@@ -104,6 +104,36 @@
       "punish_bonus": 15,
       "recover_below": 18,
       "resume_at": 38
+    },
+    {
+      "character": "psyduck",
+      "distance_px": 78,
+      "melee_percent": 64,
+      "fire_percent": 88,
+      "guard_bonus": 4,
+      "punish_bonus": 6,
+      "recover_below": 24,
+      "resume_at": 44
+    },
+    {
+      "character": "jigglypuff",
+      "distance_px": 54,
+      "melee_percent": 72,
+      "fire_percent": 76,
+      "guard_bonus": 2,
+      "punish_bonus": 4,
+      "recover_below": 24,
+      "resume_at": 46
+    },
+    {
+      "character": "machop",
+      "distance_px": 27,
+      "melee_percent": 94,
+      "fire_percent": 35,
+      "guard_bonus": 8,
+      "punish_bonus": 12,
+      "recover_below": 20,
+      "resume_at": 42
     }
   ]
 }

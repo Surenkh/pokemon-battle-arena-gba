@@ -28,16 +28,16 @@ def change():
  if state()[1]==6:press(16);press(1);check(state()[1]==1,'Result returns to selector');return
  press(8);check(state()[1]==4,'Pause opens');before=info();frames(30);check(info()==before,'Pause freezes the complete CPU policy');press(128);press(128);press(1);check(state()[1]==1,'Return to selector')
 try:
- frames(90);press(8)
+ frames(90);press(8);press(1)
  for level in range(3):
-  if state()[2]<3:press(128)
+  while state()[2]<6:press(128)
   press(128)
   while state()[4]!=level:press(16)
   press(64)
   attempts=0
-  while seen[level]!=63 and attempts<50:
+  while seen[level]!=511 and attempts<50:
    attempts+=1
-   target=(attempts+level)%6
+   target=(attempts+level)%9
    while state()[2]!=target:press(16)
    press(1);frames(185);v=state();rival=v[3]
    if seen[level]&(1<<rival):change();continue
@@ -73,10 +73,10 @@ try:
    seen[level]|=1<<rival
    press(16);press(1);check(state()[1]==1,'Result change returns to selector')
    print('Native CPU coverage',level,bin(seen[level]),flush=True)
-  check(seen[level]==63,'All six native CPU styles exercised at this difficulty')
+  check(seen[level]==511,'All nine native CPU styles exercised at this difficulty')
  check(intent_mask&(1<<0) and intent_mask&(1<<2) and intent_mask&(1<<3),'Approach, pressure and recovery observed')
  check(plan_mask==7,'All three bounded plans observed')
- report=dict(status='passed',checks=checks,rounds=rounds,observed_cpu_masks=seen,intent_mask=intent_mask,plan_mask=plan_mask,peak_cpu_fraction=state()[21]/4096,missed_display_frames=state()[22],wall_seconds=round(time.time()-started,2),rom_sha256=hashlib.sha256((root/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),method='mGBA 0.10.2; all six CPU styles at all three levels through physical buttons and read-only telemetry. No game-memory writes.')
+ report=dict(status='passed',checks=checks,rounds=rounds,observed_cpu_masks=seen,intent_mask=intent_mask,plan_mask=plan_mask,peak_cpu_fraction=state()[21]/4096,missed_display_frames=state()[22],wall_seconds=round(time.time()-started,2),rom_sha256=hashlib.sha256((root/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),method='mGBA 0.10.2; all nine CPU styles at all three levels through physical buttons and read-only telemetry. No game-memory writes.')
  (out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps({k:v for k,v in report.items() if k!='rounds'},indent=2))
 finally:
  if p.poll() is None:p.stdin.write('q\n');p.stdin.flush();p.wait(timeout=10)

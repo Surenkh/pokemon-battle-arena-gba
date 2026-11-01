@@ -49,14 +49,14 @@ def audio_stats(path):
     return dict(samples=len(data)//2,rate=rate,rms=round(rms,2),peak=peak)
 
 try:
-    frames(90);press(8)
+    frames(90);press(8);press(1)
     # Audio-bank coverage needs a repeatable opportunity to earn and release
     # every super. CPU tactics/difficulty are stressed separately by native_cpu_flow.
     # Choose Easy through the real selector, without altering combat resources.
-    press(128);press(128);press(32);press(64)
+    press(128);press(128);press(128);press(32);press(64)
     check(state()[4]==0,'Audio coverage uses the actual Easy setting')
     all_events=all_audio=all_charge=all_release=0
-    for ch,name in enumerate(['pikachu','charmander','squirtle','bulbasaur','eevee','meowth']):
+    for ch,name in enumerate(['pikachu', 'charmander', 'squirtle', 'bulbasaur', 'eevee', 'meowth', 'psyduck', 'jigglypuff', 'machop']):
         while state()[2]!=ch:press(16)
         own_release=False
         for attempt in range(5):
@@ -87,7 +87,7 @@ try:
             press(16);press(1)
             if own_release:break
         check(own_release,'Player earned and released their own themed super')
-    check(all_audio==all_charge==all_release==63,'All six shot, charge and release banks played natively')
+    check(all_audio==all_charge==all_release==511,'All nine shot, charge and release banks played natively')
 
     # Read-only visual proof: during hitstop the world moves but the fixed HUD does not.
     hud_checked=False;charge_paused=False

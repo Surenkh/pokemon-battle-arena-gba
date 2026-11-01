@@ -45,7 +45,7 @@ g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tools/balance_probe.cpp -o
 /tmp/pkmn_balance_probe candidate > /tmp/pkmn_balance.json
 ```
 
-For native tests install mGBA 0.10.2 development headers/library, compile tests/mgba_driver.c, and run tests/native_flow.py, tests/native_animation_flow.py, tests/native_effects_flow.py, tests/native_feel_flow.py tests/native_depth_flow.py tests/native_cpu_flow.py and tests/native_presentation_flow.py. The feedback runner also needs Pillow (`python3 -m pip install Pillow`). See [NATIVE_TESTING.md](NATIVE_TESTING.md). These scripts use physical inputs and read-only telemetry, not gameplay-memory writes.
+For native tests install mGBA 0.10.2 development headers/library, compile tests/mgba_driver.c, and run tests/native_flow.py, tests/native_animation_flow.py, tests/native_effects_flow.py, tests/native_feel_flow.py tests/native_depth_flow.py tests/native_cpu_flow.py tests/native_presentation_flow.py and tests/native_arcade_flow.py. The feedback runner also needs Pillow (`python3 -m pip install Pillow`). See [NATIVE_TESTING.md](NATIVE_TESTING.md). These scripts use physical inputs and read-only telemetry, not gameplay-memory writes.
 
 ## Prepare release downloads
 
@@ -59,3 +59,14 @@ python3 tools/package_release.py
 The packager verifies ROM/header/checksum/version consistency, matching passed native evidence (including CPU and audio/recall coverage), zero reported missed frames and an identical clean build. It creates the ROM, deterministic player ZIP, checksums and publishing metadata under dist/release/. The player ZIP contains controls, release notes and credits. No account token is needed for local packaging.
 
 The GitHub release workflow runs packaging tests, canonical-data checks and host combat regressions. On validated main pushes it publishes with the repository's built-in token; pull requests only validate. It publishes the existing tested ROM rather than recompiling or claiming a new emulator run. See [PUBLISHING.md](PUBLISHING.md).
+
+Additional host checks for this update:
+
+```sh
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/arcade_tests.cpp -o /tmp/pkmn_arcade_tests
+/tmp/pkmn_arcade_tests
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/roster_tests.cpp -o /tmp/pkmn_roster_tests
+/tmp/pkmn_roster_tests
+```
+
+The Arcade native suite also checks every visible main-menu entry with no L/R inputs, new-fighter guides and practice play, actual new attack/charge/release audio dispatch, schema-1 save migration, corruption recovery and a completed five-rival run. The original nine-fighter art inputs are pinned to the same credited PMDCollab revision. No compiler or commercial ROM/BIOS is bundled.

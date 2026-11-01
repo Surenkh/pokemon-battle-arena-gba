@@ -6,7 +6,10 @@ const colors=[
  ['#142844','#204F93','#2C84CA','#49BADD','#83E5EF','#C9F7FF','#FFFFFF'],
  ['#18312C','#285D39','#43924C','#7BB94C','#B5E66D','#E5F9B6','#FFFFFF'],
  ['#30213C','#76516D','#B07D9F','#E5B3C9','#F2D888','#FFF1C5','#FFFFFF'],
- ['#29213C','#69506F','#A66B98','#DF9CC8','#BFCDDF','#EAF3FF','#FFFFFF']
+ ['#29213C','#69506F','#A66B98','#DF9CC8','#BFCDDF','#EAF3FF','#FFFFFF'],
+ ['#22193E','#533284','#8054BE','#B181EF','#D5B5FA','#EEE0FF','#FFFFFF'],
+ ['#3B203D','#924D83','#CF75AB','#EF9EC8','#FFD2E9','#FFF0FA','#FFFFFF'],
+ ['#192C36','#355865','#5D9195','#93BABB','#D0C58A','#FFF1BA','#FFFFFF']
 ];
 
 // Integer rasterization avoids antialiased fringe colors at GBA resolution.
@@ -30,7 +33,8 @@ function pen(ctx,palette){
  function disk(x,y,rx,ry,c){for(let yy=-ry;yy<=ry;yy++)for(let xx=-rx;xx<=rx;xx++)if(xx*xx*ry*ry+yy*yy*rx*rx<=rx*rx*ry*ry)dot(x+xx,y+yy,c);}
  function chain(points,c,w=1){for(let i=1;i<points.length;i++)line(...points[i-1],...points[i],c,w);}
  function star(x,y,r,c){poly([[x,y-r],[x+2,y-2],[x+r,y],[x+2,y+2],[x,y+r],[x-2,y+2],[x-r,y],[x-2,y-2]],c);}
- return{dot,line,poly,disk,chain,star};
+ function ring(x,y,rx,ry,c,w=1){const pts=[];for(let i=0;i<=20;i++){const a=i*Math.PI/10;pts.push([x+Math.cos(a)*rx,y+Math.sin(a)*ry]);}chain(pts,c,w);}
+ return{dot,line,poly,disk,chain,star,ring};
 }
 
 function travel(p,id,f,superAttack){
@@ -63,6 +67,18 @@ function travel(p,id,f,superAttack){
   if(superAttack){p.star(7,8,4,3);p.line(1,6,10,6,4);p.line(3,11,12,11,5);}
   p.star(x+3,y,superAttack?7:8,1);p.star(x+3,y,superAttack?6:7,5);p.star(x+3,y,f%2?4:3,7);
   p.dot(6+f,y-5,4);p.dot(8+(f%2)*2,y+5,6,2);
+ }else if(id===6){
+  p.ring(x+1,y,5+f,superAttack?3:5+(f%2),2,2);p.ring(x+1,y,3+f,superAttack?2:3,5);p.star(x+1,y,2,7);
+  p.line(3+f,y-2,9+f,y-2,4);p.line(4+f,y+3,10+f,y+3,6);if(superAttack)p.ring(25,y,3,5,4);
+ }else if(id===7){
+  const n=17+(f%2),stem=superAttack?5:9;
+  p.disk(n-2,y+3,3+(f>>1),2,2);p.disk(n-2,y+2,2,1,6);p.line(n+1,y+3,n+1,y-stem,5,2);p.line(n+1,y-stem,n+7,y-stem+2+f,6,2);
+  if(superAttack){p.ring(7,y,3+f,4,4);p.dot(27,y+f-2,7,2);}else p.star(6+f,y-3,2,5);
+ }else if(id===8){
+  p.poly([[11,y-4],[19,y-6],[26,y-3],[26,y+4],[18,y+6],[11,y+3]],1);
+  p.poly([[13,y-3],[20,y-4],[24,y-2],[24,y+3],[18,y+4],[13,y+2]],4);
+  for(let k=0;k<3;k++)p.line(16+k*3,y-4,16+k*3,y,6);p.line(20,y+1,24,y+1,7);
+  p.line(1+f,y-3,9+f,y-3,5);p.line(3+f,y+4,10+f,y+4,3);p.dot(8+f*2,y-6,6,2);
  }else{
   for(let i=0;i<3;i++){
    const yy=y+(i-1)*(superAttack?4:5),off=(f+i)%2;
@@ -84,11 +100,14 @@ function contact(p,id,f,blocked=false){
  else if(id===2){p.chain([[x-r,y+1],[x-r/2,y+3],[x,y+1],[x+r/2,y+3],[x+r,y+1]],4,2);for(let i=0;i<5;i++){const dx=(i-2)*(f+1);p.disk(x+dx,y-3-f-(i%2)*3,1,2,i%2?5:6);}if(f===0)p.disk(x,y,3,2,7);}
  else if(id===3){for(let i=0;i<4;i++){const a=i*Math.PI/2+f*.2,dx=Math.round(Math.cos(a)*r),dy=Math.round(Math.sin(a)*r);p.poly([[x+dx-2,y+dy],[x+dx,y+dy-3],[x+dx+3,y+dy],[x+dx,y+dy+2]],i%2?4:5);}if(f<2)p.star(x,y,3,6);}
  else if(id===4){for(let i=0;i<4;i++){const dx=(i%2?1:-1)*(3+f*2),dy=(i<2?-1:1)*(3+f*2);p.star(x+dx,y+dy,f<2?3:2,i%2?5:6);}if(f<2)p.star(x,y,4-f,7);}
+ else if(id===6){p.ring(x,y,r,Math.max(2,r-2),4,2);p.star(x,y,f<2?4:2,7);p.line(x-r,y+f,x+r,y-f,6);}
+ else if(id===7){for(let i=0;i<3;i++){const xx=x+(i-1)*(3+f*2);p.disk(xx,y+f,2,1,5);p.line(xx+2,y+f,xx+2,y-5-f,6);}if(f<2)p.star(x,y,3,7);}
+ else if(id===8){for(let i=0;i<6;i++){const a=i*Math.PI/3;p.line(x+Math.cos(a)*3,y+Math.sin(a)*3,x+Math.cos(a)*r,y+Math.sin(a)*r,i%2?5:6,2);}if(f<2)p.disk(x,y,4-f,3-f,7);}
  else{for(let i=0;i<3;i++)p.chain([[x-7+i*4,y+7-f],[x-3+i*4,y+1],[x+i*4,y-6-f]],f<2?7:4,2);}
 }
 
 function buildElementalEffects({canvas,save}){
- for(let id=0;id<6;id++){
+ for(let id=0;id<9;id++){
   const rgb=colors[id].map(c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)));
   const palette=[[255,0,255],...rgb];
   for(const[kind,w,h]of[['shot',32,32],['wave',32,16],['hit',32,32],['cast',16,16],['guard',32,32]]){

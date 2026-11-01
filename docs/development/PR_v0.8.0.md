@@ -1,0 +1,9 @@
+# Add v0.8.0 mode menu, Arcade progression and nine-fighter roster
+
+Arcade previously required a title-screen shoulder shortcut and the roster had six Pokémon. The title now opens visible buttons for Quick Battle, Arcade, Practice, Records, Audio Settings and Controls; users choose a mode before a fighter/difficulty or practice variation, using the D-pad and A/Start. A 3×3 grid adds Psyduck, Jigglypuff and Machop with stats, unique traits, 13 runtime animation states, themed attacks/impacts, original combat sounds and distinct CPU styles.
+
+Psyduck adds strong psychic-projectile knockback, Jigglypuff adds lower gravity/longer jumps, and Machop adds melee guard pressure. The original six retain their tuning. Five-rival Arcade samples the other eight fighters, offers two continues and saves clears/no-continue clears/best total battle times across 27 fighter/difficulty pairs. Dual-copy schema-2 SRAM migrates the earlier six-fighter save format and retains fallback recovery. Title music, Practice and Poké Ball recall remain included.
+
+Validation: all eight mGBA suites passed with zero missed display frames; native checks exercised the visible menu without L/R, all nine fighters/CPU styles at three levels, real new-fighter play/audio, a five-win Arcade clear, restart persistence and legacy/corrupt-save recovery. Host checks covered all 81 matchups, new traits, 7,516,800 corruption cases, assets/audio and nine packaging tests. Regenerating inputs and a clean rebuild reproduced the ROM exactly. See docs/ARCADE_TEST_REPORT.md and docs/verification/v0.8.0.
+
+ROM SHA-256: 9b6ccf583242de730a76f4d9cf40f50beed2e5bdf2e842704b14df7c9e70d60c. Size: 2,174,968 bytes. Credits and pinned raw sprite sources are retained. Hardware/non-Linux builds and human balance remain untested. Prepared locally; GitHub checks/publication await owner approval.

@@ -39,7 +39,7 @@ bool CombatCore::can_followup(int who,int button,int ahead)const{
 // in time to consume it before expiry. Jump height, cost and airborne motion stay unchanged.
 bool CombatCore::jump_buffer_eligible(const Fighter&v)const{
  if(grounded(v))return true;if(v.vy<=0)return false;
- int y=v.y,vy=v.vy;for(int n=0;n<input_buffer_ticks-1;n++){vy=minv(motion_max_fall_velocity_q8,vy+motion_gravity_q8);y+=vy;if(y>=world_floor_y*256)return true;}return false;
+ int y=v.y,vy=v.vy;for(int n=0;n<input_buffer_ticks-1;n++){vy=minv(motion_max_fall_velocity_q8,vy+motion_gravity_q8*characters[v.character].gravity_percent/100);y+=vy;if(y>=world_floor_y*256)return true;}return false;
 }
 void CombatCore::reset(int player,int cpu,uint32_t match_seed){training=false;event_count=0;event_frame=0;tick=0;remaining=match_round_ticks;hitstop=outcome=feedback=0;next_id=1;seed=match_seed?match_seed:1;for(auto&v:p)v=Projectile{};for(int i=0;i<2;i++){f[i]=Fighter{};auto&v=f[i];v.character=i?cpu:player;v.x=(i?world_cpu_spawn_x:world_player_spawn_x)*256;v.hp=characters[v.character].hp;v.sta=characters[v.character].sta*resources_stamina_subunits_per_point;v.face=i?-1:1;}}
 void CombatCore::buffer(int who,Input input){auto&v=f[who];const int keys[5]={R,UP,DOWN,B,A};for(int k:keys)if(input.pressed&k){int cost=k==R?super_stamina_cost:k==UP?jump_stamina_cost:k==DOWN?squeeze_stamina_cost:k==B?fire_stamina_cost:melee_stamina_cost;
@@ -58,7 +58,7 @@ void CombatCore::action(int who,Input input){auto&v=f[who];const auto&d=characte
  bool followup=can_followup(who,request);
  bool can=request==R?(neutral&&ground&&v.sp==100&&!p[who+2].active&&!p[who+2].reserved):request==UP?(defensive&&ground):request==DOWN?(defensive&&ground&&tick>=v.squeeze_ready):request==B?((neutral||followup)&&!p[who].active&&!p[who].reserved):request==A?(neutral||followup):false;
  if(can){int cost=request==R?super_stamina_cost:request==UP?jump_stamina_cost:request==DOWN?squeeze_stamina_cost:request==B?fire_stamina_cost:melee_stamina_cost;
- if(v.sta>=cost*60){v.pending=0;if(request==UP){v.action=NONE;v.vy=motion_jump_velocity_q8;v.took_off_at=tick;v.sta-=cost*60;v.last_spend=tick;feedback|=JUMPED;emit(EV_JUMP,who,who);if(v.landed_at==tick-1&&!(input.pressed&UP))emit(EV_LANDING_JUMP,who,who);}
+ if(v.sta>=cost*60){v.pending=0;if(request==UP){v.action=NONE;v.vy=motion_jump_velocity_q8*d.jump_percent/100;v.took_off_at=tick;v.sta-=cost*60;v.last_spend=tick;feedback|=JUMPED;emit(EV_JUMP,who,who);if(v.landed_at==tick-1&&!(input.pressed&UP))emit(EV_LANDING_JUMP,who,who);}
  else if(request==DOWN)enter(who,SQUEEZE,squeeze_startup_ticks+squeeze_active_ticks+squeeze_recovery_ticks,cost);
  else if(request==A){enter(who,MELEE,d.melee_total,cost,followup);feedback|=SWUNG;emit(EV_MELEE,who,who,false,0,followup);}
  else if(request==B){enter(who,FIRE,d.fire_total,cost,followup);p[who].reserved=true;p[who].owner=who;}
@@ -82,7 +82,7 @@ void CombatCore::physics(){int previous_order=f[0].x<=f[1].x?1:-1;
  if(v.x==world_max_fighter_x*256&&v.vx>0)v.vx=0;
  if(grounded(v)&&v.action==NONE&&v.vy>=0)v.stride_q8=(v.stride_q8+absv(v.x-old_x))%motion_walk_stride_q8;
  v.kb=approach(v.kb,0,motion_knockback_decay_q8);
- if(v.y<world_floor_y*256||v.vy<0){v.vy=minv(motion_max_fall_velocity_q8,v.vy+motion_gravity_q8);v.y+=v.vy;
+ if(v.y<world_floor_y*256||v.vy<0){v.vy=minv(motion_max_fall_velocity_q8,v.vy+motion_gravity_q8*characters[v.character].gravity_percent/100);v.y+=v.vy;
  if(v.y>=world_floor_y*256){v.y=world_floor_y*256;v.vy=0;v.landed_at=tick;}}
  }
  const int*b0=low(f[0])?collision_squeezed_pushbox:collision_standing_pushbox;const int*b1=low(f[1])?collision_squeezed_pushbox:collision_standing_pushbox;Rect a=box(f[0].x,f[0].y,b0),b=box(f[1].x,f[1].y,b1);
@@ -100,7 +100,7 @@ void CombatCore::collide(const Fighter previous[2]){Contact contacts[16];int cou
  for(int k=0;k<count;k++){auto c=contacts[k];if(c.kind==0){auto&a=p[c.source];auto&b=p[c.target];if(!a.active||!b.active)continue;if(!a.super)a.active=false;if(!b.super)b.active=false;continue;}
  int attacker,amount,dir;bool sup=false,followup=false;if(c.kind==1){auto&b=p[c.source];if(!b.active)continue;b.active=false;attacker=b.owner;amount=b.damage;dir=b.vx>0?1:-1;sup=b.super;followup=b.followup;}else{attacker=c.source;f[attacker].melee_contact=true;amount=characters[f[attacker].character].melee_damage;dir=f[attacker].face;followup=f[attacker].chain_depth>0;}
  int target=c.target;auto&v=f[target];if(invuln[target])continue;
- if(!sup&&guard[target]&&grounded(v)&&v.face==-dir){int points=(amount*resources_guard_cost_numerator+resources_guard_cost_denominator-1)/resources_guard_cost_denominator;int pressure=c.kind==1?characters[f[attacker].character].fire_guard_percent:100;int impact=(points*pressure*characters[v.character].guard_percent+9999)/10000*60;
+ if(!sup&&guard[target]&&grounded(v)&&v.face==-dir){int points=(amount*resources_guard_cost_numerator+resources_guard_cost_denominator-1)/resources_guard_cost_denominator;int pressure=c.kind==1?characters[f[attacker].character].fire_guard_percent:characters[f[attacker].character].melee_guard_percent;int impact=(points*pressure*characters[v.character].guard_percent+9999)/10000*60;
  if(v.sta>=impact){v.sta-=impact;v.last_spend=tick;feedback|=BLOCKED;emit(EV_BLOCK,attacker,target);hitstop=maxv(hitstop,reactions_block_hitstop_display_ticks);if(!v.sta){guard[target]=false;reaction[target]=GUARD_BREAK;stun[target]=reactions_guard_break_ticks;feedback|=BROKEN;emit(EV_BREAK,attacker,target);}else if(stun[target]<reactions_blockstun_ticks){stun[target]=reactions_blockstun_ticks;reaction[target]=BLOCKSTUN;}continue;}
  v.sta=0;v.last_spend=tick;reaction[target]=GUARD_BREAK;stun[target]=reactions_guard_break_ticks;feedback|=BROKEN;emit(EV_BREAK,attacker,target);}
  if(c.kind==2){if(recovering(target)){amount+=characters[f[attacker].character].punish_bonus;emit(EV_PUNISH,attacker,target,false,amount,followup,c.id);}if(!f[attacker].chain_depth)f[attacker].confirmed_at=tick;}
@@ -219,7 +219,7 @@ Input CpuController::input(const CombatCore&core,int who){
   }else if(eta<=18){
    const int amount=melee_threat?ed.melee_damage:ed.fire_damage;
    const int points=(amount*resources_guard_cost_numerator+resources_guard_cost_denominator-1)/resources_guard_cost_denominator;
-   const int impact=(points*(melee_threat?100:ed.fire_guard_percent)*def.guard_percent+9999)/10000;
+   const int impact=(points*(melee_threat?ed.melee_guard_percent:ed.fire_guard_percent)*def.guard_percent+9999)/10000;
    if((choice==2||eta<5)&&me.sta>=(impact+4)*60){++diagnostics.defenses;return finish(L,DEFEND);}
    if(!melee_threat&&eta>=5&&choice==0&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
    if(!melee_threat&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN,DEFEND);}

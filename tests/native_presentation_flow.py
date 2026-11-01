@@ -42,7 +42,7 @@ def change():
  elif state()[1]==3:press(8);press(128);press(128);press(1)
  check(state()[1]==1,'Return to selector')
 def level(value):
- if state()[2]<3:press(128)
+ while state()[2]<6:press(128)
  press(128)
  while state()[4]!=value:press(16)
  press(64)
@@ -105,7 +105,7 @@ try:
  press(1);frames(12);check(info()[1]==0 and info()[3]==0,'Music off stops the native music bus')
  press(128);press(1);frames(12);check(info()[1:3]==[0,0],'Independent sound mute');capture('audio_off')
  cmd('o '+str(out/'muted_menu.wav'));frames(90);cmd('c');mix['muted_menu']=audio_stats('muted_menu',True)
- press(2);press(8);press(1);frames(185);check(state()[1]==3 and info()[1:3]==[0,0],'Settings persist into a battle')
+ press(2);press(8);press(1);press(1);frames(185);check(state()[1]==3 and info()[1:3]==[0,0],'Settings persist into a battle')
  cmd('o '+str(out/'muted_battle.wav'))
  for n in range(120):frames(1,2 if n%24==0 else 512)
  cmd('c');mix['muted_battle']=audio_stats('muted_battle',True);check(read(feel,'v')[4]==0 and info()[5]==0,'Muted battle has no effect voices')

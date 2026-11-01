@@ -11,8 +11,8 @@ struct Stats {
 };
 int main(int argc,char**argv){
  const int first_seed=argc>1?std::atoi(argv[1]):1;
- Stats levels[3],fighters[3][6];uint32_t digest=2166136261u;
- for(int level=0;level<3;++level)for(int a=0;a<6;++a)for(int b=0;b<6;++b)
+ Stats levels[3],fighters[3][character_count];uint32_t digest=2166136261u;
+ for(int level=0;level<3;++level)for(int a=0;a<character_count;++a)for(int b=0;b<character_count;++b)
  for(int seed=first_seed;seed<first_seed+10;++seed)for(int side=0;side<2;++side){
   CombatCore c;c.reset(side?b:a,side?a:b,seed);CpuController candidate;V05CpuController frozen;
   candidate.reset(level,seed*23);frozen.reset(1,seed*37);
@@ -44,6 +44,6 @@ int main(int argc,char**argv){
  const char*names[3]={"Easy","Normal","Hard"};
  for(int l=0;l<3;++l){if(l)std::printf(",");print(names[l],levels[l]);}
  std::printf("],\n\"fighters_by_difficulty\":[");
- for(int l=0;l<3;++l){if(l)std::printf(",");std::printf("{\"difficulty\":\"%s\",\"fighters\":[",names[l]);for(int a=0;a<6;++a){if(a)std::printf(",");print(characters[a].name,fighters[l][a]);}std::printf("]}");}
+ for(int l=0;l<3;++l){if(l)std::printf(",");std::printf("{\"difficulty\":\"%s\",\"fighters\":[",names[l]);for(int a=0;a<character_count;++a){if(a)std::printf(",");print(characters[a].name,fighters[l][a]);}std::printf("]}");}
  std::puts("]\n}");
 }

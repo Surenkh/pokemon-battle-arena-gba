@@ -32,11 +32,11 @@ def native_action(button,expected):
  check(False,'Native action '+str(button))
 def pause_select():
  press(8);check(state()[1]==4,'Pause opens');press(128);press(128);press(1);check(state()[1]==1,'Change returns to selector')
-t=time.time();frames(90);check(state()[1]==0,'Title boot');dump('title_final');frames(24);dump('title_animated');press(4);check(state()[1]==7,'Controls');dump('controls');press(2);press(8);check(state()[1]==1,'Start opens selector')
+t=time.time();frames(90);check(state()[1]==0,'Title boot');dump('title_final');frames(24);dump('title_animated');press(4);check(state()[1]==7,'Controls');dump('controls');press(2);press(8);check(state()[1]==15,'Start opens mode menu');press(1);check(state()[1]==1,'Quick Battle opens selector')
 selected=0;roster=[]
-for ch in range(6):
- while selected!=ch:press(16);selected=(selected+1)%6
- check(state()[2]==ch,'Selector character');dump('select_'+str(ch));press(1);v=state();check(v[1]==2,'Countdown');check(v[6]==[95,100,115,120,100,90][ch],'Character life');check(v[8]==[105,90,110,100,115,100][ch]*60,'Character stamina');check(v[10]==0,'Meter reset');frames(185);check(state()[1]==3,'Battle starts');press(64);check(state()[14]<120*256,'Jump moves native fighter');frames(40);native_action(128,[4]);dump('squeeze_'+str(ch));frames(38);native_action(2,[3]);frames(10);dump('fire_'+str(ch));frames(30);native_action(512,[1,7]);frames(1);press(8);before=state();check(before[1]==4,'Pause state');frames(120);after=state();check(before[5:21]==after[5:21],'Pause freezes combat');dump('pause');press(8);check(state()[1]==8,'Resume countdown');frames(65);check(state()[1]==3,'Resume fight');dump('battle_'+str(ch));roster.append({'id':ch,'cpu':state()[3],'controls':'passed'});pause_select()
+for ch in range(9):
+ while selected!=ch:press(16);selected=(selected+1)%9
+ check(state()[2]==ch,'Selector character');dump('select_'+str(ch));press(1);v=state();check(v[1]==2,'Countdown');check(v[6]==[95,100,115,120,100,90,105,125,115][ch],'Character life');check(v[8]==[105,90,110,100,115,100,105,100,95][ch]*60,'Character stamina');check(v[10]==0,'Meter reset');frames(185);check(state()[1]==3,'Battle starts');press(64);check(state()[14]<120*256,'Jump moves native fighter');frames(40);native_action(128,[4]);dump('squeeze_'+str(ch));frames(38);native_action(2,[3]);frames(10);dump('fire_'+str(ch));frames(30);native_action(512,[1,7]);frames(1);press(8);before=state();check(before[1]==4,'Pause state');frames(120);after=state();check(before[5:21]==after[5:21],'Pause freezes combat');dump('pause');press(8);check(state()[1]==8,'Resume countdown');frames(65);check(state()[1]==3,'Resume fight');dump('battle_'+str(ch));roster.append({'id':ch,'cpu':state()[3],'controls':'passed'});pause_select()
 # Difficulty row is reachable, changes the actual stored setting, and returns.
 press(128);press(128);press(16);check(state()[4]==2,'Difficulty Hard');press(32);check(state()[4]==1,'Difficulty Normal');press(32);check(state()[4]==0,'Difficulty Easy');press(16);check(state()[4]==1,'Difficulty restore');press(64)
 # Complete real native rounds with an external input driver. No game state writes.
@@ -45,7 +45,7 @@ while len(matches)<20 or total_auto_frames<36000:
  output=cmd(f'a 6000 {address:08x}');n=int(re.search(r'frames=(\d+)',output).group(1));total_auto_frames+=n;v=state();check(v[1]==6,'A complete round reaches results');check(v[20] in (1,2,3),'Valid actual outcome');matches.append({'round':len(matches)+1,'outcome':v[20],'hp':[v[6],v[7]],'supers':int(re.search(r'supers=(\d+)',output).group(1)),'frames':n,'peak_q12':v[21],'missed_frames':v[22]})
  if len(matches)==1:dump('result_final')
  if len(matches)%5==0:print('Native matches',len(matches),'battle frames',total_auto_frames,flush=True)
- old=v[2:4];press(1);v=state();check(v[1]==2,'Rematch countdown');check(v[2:4]==old,'Rematch preserves characters');check(v[10]==v[11]==0,'Rematch clears both SP meters');check(v[8]==[105,90,110,100,115,100][v[2]]*60,'Rematch fills stamina');frames(185)
+ old=v[2:4];press(1);v=state();check(v[1]==2,'Rematch countdown');check(v[2:4]==old,'Rematch preserves characters');check(v[10]==v[11]==0,'Rematch clears both SP meters');check(v[8]==[105,90,110,100,115,100,105,100,95][v[2]]*60,'Rematch fills stamina');frames(185)
 # Force no inputs rather than cheating HP: CPU must be able to defeat idle human.
 frames(5000);v=state();check(v[1]==6 and v[20]==2,'Idle player naturally loses');dump('defeat_final');press(16);press(1);check(state()[1]==1,'Result Change returns selector')
 cmd('q') if False else None

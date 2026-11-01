@@ -2,7 +2,7 @@ const fs=require('fs'),path=require('path'),assert=require('assert'),crypto=requ
 const root=path.resolve(__dirname,'..');
 const sizes={shot:[32,32],wave:[32,16],hit:[32,32],cast:[16,16],guard:[32,32]};
 const silhouettes=new Set();let frames=0;
-for(let ch=0;ch<6;ch++){
+for(let ch=0;ch<9;ch++){
  let sharedPalette;
  for(const[kind,[w,h]]of Object.entries(sizes)){
   const name=kind+'_'+ch,b=fs.readFileSync(path.join(root,'graphics',name+'.bmp'));
@@ -26,5 +26,5 @@ for(let ch=0;ch<6;ch++){
   if(kind==='shot'||kind==='wave')assert.equal(new Set(hashes).size,4,name+' four distinct travel frames');
  }
 }
-assert.equal(silhouettes.size,6,'Normal attacks differ in silhouette, not just color');
-console.log(JSON.stringify({status:'passed',effects:30,frames,distinct_normal_silhouettes:silhouettes.size}));
+assert.equal(silhouettes.size,9,'Normal attacks differ in silhouette, not just color');
+console.log(JSON.stringify({status:'passed',effects:45,frames,distinct_normal_silhouettes:silhouettes.size}));

@@ -1,0 +1,8 @@
+{
+  "id": "pk_jigglypuff",
+  "type": "sprite",
+  "name": "pk_jigglypuff",
+  "path": "graphics/pk_jigglypuff.bmp",
+  "width": 64,
+  "height": 64
+}
