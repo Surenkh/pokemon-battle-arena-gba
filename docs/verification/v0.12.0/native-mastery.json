@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "checks": 132,
+  "arenas": [
+    {
+      "arena": 0,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    },
+    {
+      "arena": 1,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    },
+    {
+      "arena": 2,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    }
+  ],
+  "mastery_menu": true,
+  "regular_followup_hits": 10,
+  "regular_super_evades": 1,
+  "completed_medal": true,
+  "practice_excluded": true,
+  "schema2_migration": true,
+  "mixed_schema_corruption_recovery": true,
+  "mastery_power_cycle": true,
+  "save_schema": 3,
+  "save_copy_bytes": 420,
+  "menu_keys": 255,
+  "no_shoulder_required_in_menus": true,
+  "regular_matches_completed": 2,
+  "peak_cpu_fraction": 0.91796875,
+  "missed_display_frames": 0,
+  "rom_sha256": "cce5c5b04141538d82c36190c31e295582e9021bc600a226beff2911bd8b8ec9",
+  "wall_seconds": 4.28,
+  "method": "mGBA 0.10.2 real button inputs and read-only telemetry; native captures and SRAM power cycles; frozen legacy fixture for migration, new mastery earned from zero in regular matches; no gameplay-memory writes",
+  "test_source": "tests/native_mastery_flow.py",
+  "test_source_sha256": "de41a73db2101101b7f1585358722d9ed8f7a49110a17e8b02516f132dd0d8f7"
+}

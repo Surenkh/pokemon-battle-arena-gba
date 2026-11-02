@@ -1,24 +1,33 @@
 # Implementation status — 2 November 2026
 
-Playable candidate: **0.11.0 — Practice & Drills**, developed on
-`feat/practice-drills` over the validated v0.10.0 navigation branch.
+Playable candidate: **0.12.0 — Match Goals & Rival Scouting**, developed on
+`feat/post-match-goals` from merged/released v0.11.0.
 
-Practice offers Free, Block and Attack, plus optional Follow-up and Evade Super
-drills through its Training row. A damaging B follow-up completes the first.
-The second uses one normally charged rival super and verifies a nearby jump or
-squeeze through its full passage. Feedback comes from resolved events. The
-read-only super-evasion observer is shared with mastery, while Practice remains
-excluded from every mastery counter.
+Regular results show one relevant mastery increment from the selected fighter's
+actual per-match baseline. A new medal takes priority. With no increment, show
+the next unfinished goal or completion of all three. Results only read progress;
+Practice remains excluded, and save boundaries/schema 3 are unchanged.
 
-Manual reset accepts a fresh action on display frame 8. Practice KO restarts
-accept one on frame 14 and retain statistics. Both paths clear old inputs and
-projectiles, restore training resources and retain fighter/rival/arena choices.
-The normal match countdown is 180 frames and normal loss recall is 156.
+Arcade's existing result panel scouts the actual next or retry rival using its
+authored trait and a short counter cue. All nine have their own cue. Champion
+and exhausted runs have no impossible next rival. Confirmation counts,
+continues, clocks, arena rotation and normal combat rules are unchanged.
 
-All twelve native suites pass with 14,939 checks and zero missed display frames.
-Ten host suites pass, including 37,206 new Practice checks. The learner pilot and
-physical-device testing remain open. See
-[Practice validation](PRACTICE_DRILLS_TEST_REPORT.md).
+All thirteen native suites pass with 15,639 checks and zero missed display
+frames. Eleven host suites pass, including 373,567 new goal checks. Native tests
+earn real follow-up/evasion medals and a no-continue clear, render every rival
+cue and compare exact glyph masks. The new journey peaks at 0.8135 of a frame;
+the busiest Arcade frame is 0.99609375, below the recorded v0.9.0 baseline.
+
+The next-goal observation and replay-motivation pilot remain open; v0.12.0 is a
+playable prototype for that decision. See [goal/scouting validation and pilot](MATCH_GOALS_TEST_REPORT.md).
+The earlier uncoached navigation/Practice pilots, technique transfer into Quick
+Battle and physical-device testing also remain open.
+
+v0.11.0 retains Free, Block and Attack plus optional Follow-up/Evade Super drills.
+Manual Practice reset accepts a fresh action on display frame 8, and an automatic
+KO restart on frame 14. The full native regression verifies these timings and
+mastery exclusion again. See [Practice validation](PRACTICE_DRILLS_TEST_REPORT.md).
 
 The native game includes nine animated Pokémon, elemental attacks and sounds,
 stamina, hit-earned supers, follow-ups and fighter traits, three CPU difficulties,

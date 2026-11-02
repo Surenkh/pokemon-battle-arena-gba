@@ -115,3 +115,17 @@ python3 tests/native_practice_flow.py
 The native runner verifies all fighters, both drills, five training modes, retry
 latency, stale inputs, mastery exclusion and a real Practice KO. Release packaging
 requires all twelve ROM-bound native reports.
+
+For the v0.12 goal/scouting gate, also run:
+
+```sh
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/goals_tests.cpp -o /tmp/pkmn_goals_tests
+/tmp/pkmn_goals_tests
+python3 tests/native_goals_flow.py
+```
+
+The native runner validates actual earned increments, all nine scouting cues,
+exact rendered glyph masks, no-continue Champion, exhausted runs and unchanged
+confirm paths. It creates valid SRAM fixtures offline before boot; fights and
+new increments use actual buttons. Release packaging requires all thirteen
+ROM-bound native reports and the independent clean rebuild.

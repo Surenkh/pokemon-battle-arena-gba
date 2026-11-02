@@ -1,0 +1,469 @@
+{
+  "status": "passed",
+  "checks": 700,
+  "cases": [
+    {
+      "name": "quick-progress",
+      "fighter": 0,
+      "kind": 1,
+      "before": 0,
+      "after": 1,
+      "target": 10,
+      "advanced": true
+    },
+    {
+      "name": "quick-no-change",
+      "fighter": 0,
+      "kind": 1,
+      "before": 1,
+      "after": 1,
+      "target": 10,
+      "advanced": false
+    },
+    {
+      "name": "quick-medal",
+      "fighter": 0,
+      "kind": 1,
+      "before": 9,
+      "after": 10,
+      "target": 10,
+      "advanced": true
+    },
+    {
+      "name": "saved-medal-next-goal",
+      "fighter": 0,
+      "kind": 2,
+      "before": 0,
+      "after": 0,
+      "target": 5,
+      "advanced": false
+    },
+    {
+      "name": "evade-medal",
+      "fighter": 3,
+      "kind": 2,
+      "before": 4,
+      "after": 5,
+      "target": 5,
+      "advanced": true
+    },
+    {
+      "name": "remaining-arcade-pikachu",
+      "fighter": 0,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-charmander",
+      "fighter": 1,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-squirtle",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-bulbasaur",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-eevee",
+      "fighter": 4,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-meowth",
+      "fighter": 5,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-psyduck",
+      "fighter": 6,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-jigglypuff",
+      "fighter": 7,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "remaining-arcade-machop",
+      "fighter": 8,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "all-medals",
+      "fighter": 8,
+      "kind": 4,
+      "before": 0,
+      "after": 0,
+      "target": 0,
+      "advanced": false
+    },
+    {
+      "name": "exhausted-2",
+      "fighter": 0,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "exhausted-1",
+      "fighter": 0,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "exhausted-0",
+      "fighter": 0,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-0-1-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-0-2-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-0-3-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-0-4-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-0-5-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 1,
+      "target": 1,
+      "advanced": true
+    },
+    {
+      "name": "arcade-1-1-2",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-1-2-2",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-1-3-2",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-1-4-2",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-1-5-2",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 1,
+      "target": 1,
+      "advanced": true
+    },
+    {
+      "name": "arcade-2-0-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-2-0-1",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-2-1-0",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-2-2-0",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-2-3-0",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-2-4-0",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-2-5-0",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-0-2",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-1-1",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-1-1",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-2-0",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-3-0",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-4-0",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-3-5-0",
+      "fighter": 2,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-4-1-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-4-1-2",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-4-2-1",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-4-3-1",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-4-4-1",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    },
+    {
+      "name": "arcade-4-5-1",
+      "fighter": 3,
+      "kind": 3,
+      "before": 0,
+      "after": 0,
+      "target": 1,
+      "advanced": false
+    }
+  ],
+  "scouting_fighters": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "actual_arcade_advances": 25,
+  "arcade_runs": 5,
+  "champion": true,
+  "new_no_continue_medal": true,
+  "paid_loss": true,
+  "exhausted_run": true,
+  "actual_followup_delta": true,
+  "actual_new_followup_medal": true,
+  "actual_new_evade_medal": true,
+  "power_cycle": true,
+  "practice_excluded": true,
+  "native_glyph_masks": true,
+  "unchanged_confirm_paths": true,
+  "peak_cpu_fraction": 0.8134765625,
+  "missed_display_frames": 0,
+  "rom_sha256": "cce5c5b04141538d82c36190c31e295582e9021bc600a226beff2911bd8b8ec9",
+  "wall_seconds": 54.38,
+  "method": "mGBA 0.10.2 real GBA keys, read-only telemetry and exact native font masks; valid schema-3 SRAM fixtures prepared offline before boot, actual earned increments and five-rival clears; no gameplay-memory writes",
+  "test_source": "tests/native_goals_flow.py",
+  "test_source_sha256": "79e53cc564e72b27e1705a40a278d271727dd47d7a500c8c47a0ab227a76c7a4"
+}

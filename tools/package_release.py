@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -89,6 +89,9 @@ The default mix is moderate; emulator/device output volume is separate.
 ARCADE
 Choose Arcade from the visible mode menu, then difficulty and Pokemon.
 Five unique rivals from the other eight fighters. Two continues.
+Results show a mastery increment or the next unfinished goal.
+The upcoming/retry rival has one authored trait and counter cue.
+A/Start still continues directly; a finished/exhausted run has no next-rival cue.
 Woodland, Volcanic and Shoreline rotate between rivals; retries keep the same arena.
 Full HP/stamina between fights; draws retry for free.
 Pause Rematch costs a continue; changing Pokemon ends the run.

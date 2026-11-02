@@ -1,6 +1,7 @@
 #include "pkmn_app.h"
 #include "pkmn_progress_store.h"
 #include "pkmn_mastery.h"
+#include "pkmn_match_goals.h"
 #include "pkmn_combat_core.h"
 #include "pkmn_animation.h"
 #include "pkmn_effect_animation.h"
@@ -112,7 +113,7 @@
 #include "bn_sprite_items_recall_ball.h"
 #include "bn_sprite_items_recall_beam.h"
 #include "bn_sprite_items_recall_glint.h"
-extern "C" { volatile int pkmn_practice_debug[16] = {}; volatile int pkmn_mastery_debug[32] = {}; volatile int pkmn_arcade_debug[32] = {}; volatile int pkmn_debug[32] = {}; volatile int pkmn_feel_debug[16] = {}; volatile int pkmn_depth_debug[32] = {}; volatile int pkmn_cpu_debug[32] = {}; volatile int pkmn_presentation_debug[32] = {}; }
+extern "C" { volatile int pkmn_goals_debug[32] = {}; volatile int pkmn_practice_debug[16] = {}; volatile int pkmn_mastery_debug[32] = {}; volatile int pkmn_arcade_debug[32] = {}; volatile int pkmn_debug[32] = {}; volatile int pkmn_feel_debug[16] = {}; volatile int pkmn_depth_debug[32] = {}; volatile int pkmn_cpu_debug[32] = {}; volatile int pkmn_presentation_debug[32] = {}; }
 namespace pkmn {
 enum Screen { TITLE, SELECTOR, COUNTDOWN, FIGHTING, PAUSED, ROUND_END, RESULT, HELP, RESUME_COUNTDOWN, PRACTICE_SETUP, FIGHTER_GUIDE, AUDIO_OPTIONS, ARCADE_RESULT, CHAMPION, RECORDS, MODE_MENU, MASTERY };
 static constexpr int mode_row_y[]={41,56,71,96,108,120,132};
@@ -125,6 +126,7 @@ static const bn::sprite_item* const guards[]={&bn::sprite_items::guard_0,&bn::sp
 static Input input(){Input i;const bool held[]={bn::keypad::a_held(),bn::keypad::b_held(),bn::keypad::select_held(),bn::keypad::start_held(),bn::keypad::right_held(),bn::keypad::left_held(),bn::keypad::up_held(),bn::keypad::down_held(),bn::keypad::r_held(),bn::keypad::l_held()};const bool press[]={bn::keypad::a_pressed(),bn::keypad::b_pressed(),bn::keypad::select_pressed(),bn::keypad::start_pressed(),bn::keypad::right_pressed(),bn::keypad::left_pressed(),bn::keypad::up_pressed(),bn::keypad::down_pressed(),bn::keypad::r_pressed(),bn::keypad::l_pressed()};for(int n=0;n<10;n++){if(held[n])i.held|=1<<n;if(press[n])i.pressed|=1<<n;}return i;}
 static ArcadeRun arcade;static Progress progress;static ProgressStore storage;static bool arcade_mode=false;static int mode_row=0;
 static MasterySession mastery_tracker;static bool mastery_dirty=false,medal_earned=false;static int chosen_arena=WOODLAND,battle_arena=WOODLAND,match_medals=0;
+static MatchGoals match_goals;
 static RoundPresentation round;static AudioSettings sound_settings;static PresentationAudio ambience;
 static CombatCore core;static CpuController ai;static CombatFeel feel;static CombatAudio audio;static constexpr bn::sprite_font font(bn::sprite_items::pkfont);
 class Renderer {
@@ -136,6 +138,7 @@ class Renderer {
  bn::optional<bn::sprite_ptr> recall_ball,recall_beam,recall_glint;int recall_tile=-1,glint_tile=-1;
  int charge_tile[2]={-1,-1},flash_state[2]={-1,-1};uint32_t presented_events=0;
  int last_practice_damage=-1,last_practice_chain=-1,last_practice_best=-1,last_practice_feedback=-1,active_draw_frames=0,scene_frames=0;
+ int result_detail_phase=0,result_detail_bits=0;
  enum Effect { DUST, IMPACT, CAST, GUARD };
  struct Particle{bn::optional<bn::sprite_ptr> sprite;int x=0,y=0,born=0,kind=0,character=0,frame=-1;};Particle particles[12];
  int bullet_tile[4]={-1,-1,-1,-1},bullet_key[4]={-1,-1,-1,-1};
@@ -152,8 +155,9 @@ class Renderer {
   if(kind!=DUST)pkmn_debug[31]|=1<<(character+(kind==CAST?8:kind==GUARD?16:0));
  }
  bn::sprite_text_generator text{font};bn::vector<bn::sprite_ptr,64> labels;bn::vector<bn::sprite_ptr,8> hud_names;bn::vector<bn::sprite_ptr,16> practice_labels;
+ bn::vector<bn::sprite_ptr,24> result_labels;
  void line(int x,int y,bn::string_view value,bool center=false,int scale=1,bn::ivector<bn::sprite_ptr>* output=nullptr){auto& target=output?*output:static_cast<bn::ivector<bn::sprite_ptr>&>(labels);int first=target.size();if(center)text.set_center_alignment();else text.set_left_alignment();text.generate(x-120,y-80,value,target);for(int i=first;i<target.size();i++)target[i].set_bg_priority(0);if(scale>1){if(scale>2)scale=2;for(int i=first;i<target.size();i++){auto&sp=target[i];sp.set_position(x-120+(sp.x()-(x-120))*scale,y-80);sp.set_scale(scale);}}}
- void clear(){for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();active_draw_frames=scene_frames=0;last_practice_damage=last_practice_chain=last_practice_best=last_practice_feedback=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
+ void clear(){for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();result_labels.clear();result_detail_phase=result_detail_bits=0;active_draw_frames=scene_frames=0;last_practice_damage=last_practice_chain=last_practice_best=last_practice_feedback=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
  void focus_at(int x,int y,int width,int height){
   // A wide affine sprite clips at twice its source width. Join two halves.
   if(width>128){
@@ -169,6 +173,7 @@ class Renderer {
 public:
  void reset_scene(){group=-1;}
  void draw(Screen screen,int selected,int cpu,int difficulty,int choice,int selector_row,int count,int frame,bool practice,int practice_row,const PracticeSession& trainer,int audio_row){
+  pkmn_goals_debug[10]=0;
   bool level=selector_row==1;
   int next=screen==TITLE?0:screen==SELECTOR?1:(screen==COUNTDOWN||screen==FIGHTING||screen==ROUND_END||screen==RESUME_COUNTDOWN)?2:screen==PAUSED?3:screen==RESULT?4:screen==PRACTICE_SETUP?6:screen==FIGHTER_GUIDE?7:screen==AUDIO_OPTIONS?8:screen==ARCADE_RESULT?9:screen==CHAMPION?10:screen==RECORDS?11:screen==MODE_MENU?12:screen==MASTERY?13:5;
   if(next!=group){clear();group=next;
@@ -284,7 +289,7 @@ public:
   if(group==3){focus_at(120,52+choice*18,224,14);marker->set_position(-104,-28+choice*18);}
   if(group==12){focus_at(120,mode_row_y[mode_row],224,mode_row<3?13:11);marker->set_position(-104,mode_row_y[mode_row]-80);}
   if(group==8){focus_at(120,66+audio_row*24,224,18);marker->set_position(-96,-14+audio_row*24);}
-  if(group==4){int age=frame-result_started;if(core.outcome==2){recall_ball->set_scale(bn::fixed(1.5));recall_ball->set_position(0,24);}else{auto&sp=*fighters[0];Pose current=loop_pose(selected,core.outcome==1?CLIP_VICTORY:core.outcome==2?(age<24?CLIP_FAINT:CLIP_DOWN):CLIP_IDLE,age,core.outcome!=2);pose(0,selected,current);bn::fixed scale=core.outcome==2?bn::fixed(1):bn::fixed(1.25);sp.set_scale(scale);sp.set_rotation_angle(0);sp.set_position(0,120-26*scale-80);}focus_at(choice?180:60,145,104,18);marker->set_position((choice?140:20)-120,145-80);}
+  if(group==4){int age=frame-result_started;if(core.outcome==2){recall_ball->set_scale(bn::fixed(1.5));recall_ball->set_position(0,6);}else{auto&sp=*fighters[0];Pose current=loop_pose(selected,core.outcome==1?CLIP_VICTORY:CLIP_IDLE,age);pose(0,selected,current);sp.set_scale(1);sp.set_rotation_angle(0);sp.set_position(0,103-26-80);}focus_at(choice?180:60,145,104,18);marker->set_position((choice?140:20)-120,145-80);}
 
   for(int i=0;i<2;++i)pkmn_presentation_debug[26+i]=fighters[i]&&fighters[i]->visible();
   pkmn_presentation_debug[28]=recall_ball&&recall_ball->visible();pkmn_presentation_debug[29]=recall_beam&&recall_beam->visible();pkmn_presentation_debug[30]=recall_glint&&recall_glint->visible();
@@ -334,13 +339,13 @@ public:
      line(120,133,"< > FIGHTER  UP/DOWN LEVEL",true);line(120,145,"A MASTERY  B/START BACK",true);
     }else{
      line(120,22,group==10?"CHAMPION!":core.outcome==1?"RIVAL DEFEATED":core.outcome==3?"DRAW - TRY AGAIN":"DEFEATED",true,2);
-     line(120,46,characters[selected].name,true);line(120,60,diff,true);
-     bn::string<40> v="WINS ";v+=bn::to_string<4>(arcade.stage);v+=" / 5   CONTINUES ";v+=bn::to_string<4>(arcade.continues);line(120,79,v,true);
-     v="BATTLE TIME ";v+=bn::to_string<12>(arcade.ticks/60);v+=" SEC";line(120,94,v,true);
-     if(group==10){line(120,110,arcade.used?"ARCADE CLEAR!":"NO-CONTINUE CLEAR!",true);line(120,132,"A RECORDS  B MENU",true);}
-     else {if(core.outcome==1){v="NEXT: ";v+=characters[arcade.opponent()].name;line(120,110,v,true);}line(120,132,core.outcome==1?"A NEXT RIVAL":core.outcome==3?"A RETRY":arcade.continues?"A USE CONTINUE":"A FINISH RUN",true);line(120,145,"B END RUN",true);}
+     bn::string<40> v=characters[selected].name;v+=" / ";v+=diff;line(120,40,v,true);
+     v="WINS ";v+=bn::to_string<4>(arcade.stage);v+=" / 5   CONTINUES ";v+=bn::to_string<4>(arcade.continues);line(120,56,v,true);
+     v="BATTLE TIME ";v+=bn::to_string<12>(arcade.ticks/60);v+=" SEC";line(120,68,v,true);
+     if(group==10){line(120,110,arcade.used?"ARCADE CLEAR!":"NO-CONTINUE CLEAR!",true);line(120,134,"A RECORDS  B MENU",true);}
+     else {int rival=scouting_rival(arcade,core.outcome);if(rival>=0){v=core.outcome==1?"NEXT: ":"RETRY: ";v+=characters[rival].name;line(120,108,v,true);}line(120,134,core.outcome==1?"A NEXT RIVAL":core.outcome==3?"A RETRY":arcade.continues?"A USE CONTINUE":"A FINISH RUN",true);line(120,146,"B END RUN",true);}
     }
-    if(storage.failed)line(120,120,"SAVE FAILED: MEMORY ONLY",true);else if(medal_earned&&group!=11)line(120,120,"MASTERY MEDAL EARNED!",true);
+    if(storage.failed&&group==11)line(120,120,"SAVE FAILED: MEMORY ONLY",true);
    }
    if(group==13){
     line(120,41,characters[selected].name,true);
@@ -350,8 +355,32 @@ public:
     line(201,105,progress.no_continue(selected)?"1 / 1":"0 / 1",true);
     line(120,119,storage.failed?"SAVE FAILED: MEMORY ONLY":"QUICK BATTLE / ARCADE ONLY",true);
    }
-   if(group==4){bn::string<40> result=characters[selected].name;result+=core.outcome==1?" WINS!":core.outcome==2?" WILL RETURN!":" - DRAW";line(120,54,result,true);if(storage.failed)line(120,124,"SAVE FAILED: MEMORY ONLY",true);else if(medal_earned)line(120,124,"MASTERY MEDAL EARNED!",true);}
+   if(group==4){bn::string<40> result=characters[selected].name;result+=core.outcome==1?" WINS!":core.outcome==2?" WILL RETURN!":" - DRAW";line(120,54,result,true);}
 
+  }
+  // Result text arrives after the background and main labels, not during the
+  // busy Arcade transition. No new screen, confirm press or minimum wait.
+  if((group==4||group==9||group==10)&&match_goals.ready()){
+   if(scene_frames>=3&&result_detail_phase==0){
+    const auto& goal=match_goals.goal();bn::string<40> value;
+    if(goal.kind==GOAL_COMPLETE)value="ALL 3 MASTERY MEDALS!";
+    else{
+     if(!goal.advanced)value="NEXT: ";
+     value+=goal.label();value+=" ";
+     if(goal.advanced){value+=bn::to_string<4>(goal.before);value+=">";}
+     value+=bn::to_string<4>(goal.after);value+="/";value+=bn::to_string<4>(goal.target);
+    }
+    line(120,group==4?124:84,value,true,1,&result_labels);result_detail_bits|=1;result_detail_phase=1;
+   }else if(scene_frames>=4&&result_detail_phase==1){
+    if(storage.failed){line(120,group==4?112:96,"SAVE FAILED: MEMORY ONLY",true,1,&result_labels);result_detail_bits|=8;}
+    else if(medal_earned){line(120,group==4?112:96,"MASTERY MEDAL EARNED!",true,1,&result_labels);result_detail_bits|=4;}
+    result_detail_phase=2;
+   }else if(scene_frames>=5&&result_detail_phase==2){
+    int rival=group==9?scouting_rival(arcade,core.outcome):-1;
+    if(rival>=0){bn::string<40> cue=characters[rival].trait;cue+=": ";cue+=scouting_actions[rival];line(120,120,cue,true,1,&result_labels);result_detail_bits|=2;}
+    result_detail_phase=3;
+   }
+   pkmn_goals_debug[10]=result_detail_bits;
   }
   if(arcade.active&&group==2&&hbe_setup_frame>=6&&practice_labels.empty()){bn::string<48> stage;if(arcade.active){stage=bn::to_string<4>(arcade.stage+1);stage+="/5 ";}stage+=arena_names[battle_arena];if(arcade.active){stage+="  CONT ";stage+=bn::to_string<4>(arcade.continues);}line(120,137,stage,true,1,&practice_labels);}
   if(practice&&group==2&&active_draw_frames>=3&&(practice_labels.empty()||last_practice_damage!=trainer.stats.last_damage||last_practice_chain!=trainer.stats.chain||last_practice_best!=trainer.stats.best_chain||last_practice_feedback!=trainer.feedback)){
@@ -376,7 +405,7 @@ public:
   feel.reset();audio.reset();round.reset();renderer.reset_scene();seed=seed*1664525u+1013904223u;
   if(arcade.active){selected=arcade.fighter;difficulty=arcade.difficulty;cpu=arcade.opponent();}
   if(practice){avoid_mirror();cpu=trainer.opponent;trainer.begin_round(keep_stats);practice_rounds=keep_stats?practice_rounds+1:1;}
-  if(mastery_dirty)save_progress();mastery_tracker.reset();match_medals=progress.medals(selected);medal_earned=false;
+  if(mastery_dirty)save_progress();mastery_tracker.reset();match_medals=progress.medals(selected);medal_earned=false;match_goals.begin(progress,selected,practice);
   battle_arena=arcade.active?arcade.arena():chosen_arena;
   core.reset(selected,cpu,seed);core.training=practice;
   if(practice)trainer.prepare(core);
@@ -462,7 +491,7 @@ public:
     else if(choice==3){help_return=PAUSED;screen=HELP;}else{audio_return=PAUSED;audio_row=0;screen=AUDIO_OPTIONS;}
    }
   }
-  else if(screen==ROUND_END){round.advance();if(round.age==8&&mastery_dirty)save_progress();if(keys.pressed&(A|START))round.skip();count=round.duration()-round.age;if(round.done()){if(practice)start_match(true,true);else{screen=RESULT;choice=0;if(arcade.active){if(core.outcome==1)arcade.advance();if(arcade.finished){progress.complete(arcade);medal_earned=progress.medals(selected)>match_medals;save_progress();screen=CHAMPION;}else screen=ARCADE_RESULT;}}}}
+  else if(screen==ROUND_END){round.advance();if(round.age==8&&mastery_dirty)save_progress();if(keys.pressed&(A|START))round.skip();count=round.duration()-round.age;if(round.done()){if(practice)start_match(true,true);else{screen=RESULT;choice=0;if(arcade.active){if(core.outcome==1)arcade.advance();if(arcade.finished){progress.complete(arcade);medal_earned=progress.medals(selected)>match_medals;save_progress();screen=CHAMPION;}else screen=ARCADE_RESULT;}match_goals.finish(progress);}}}
   else if(screen==RECORDS){
    if(keys.pressed&(B|START)){arcade.active=false;screen=MODE_MENU;mode_row=3;}
    else if(keys.pressed&LEFT)selected=(selected+character_count-1)%character_count;
@@ -500,6 +529,11 @@ public:
   pkmn_arcade_debug[0]=0x41524338;pkmn_arcade_debug[1]=arcade_mode;pkmn_arcade_debug[2]=arcade.active;pkmn_arcade_debug[3]=arcade.stage;pkmn_arcade_debug[4]=arcade.continues;pkmn_arcade_debug[5]=arcade.used;pkmn_arcade_debug[6]=arcade.ticks;pkmn_arcade_debug[7]=arcade.finished;pkmn_arcade_debug[8]=progress.record(selected,difficulty).clears;pkmn_arcade_debug[9]=progress.record(selected,difficulty).perfect;pkmn_arcade_debug[10]=progress.record(selected,difficulty).best_ticks;pkmn_arcade_debug[11]=storage.failed;
   for(int i=0;i<arcade_rivals;++i)pkmn_arcade_debug[12+i]=arcade.roster[i];pkmn_arcade_debug[17]=mode_row;pkmn_arcade_debug[18]=character_count;pkmn_arcade_debug[19]=save_words;pkmn_arcade_debug[20]=choice;
   pkmn_mastery_debug[0]=0x4d415339;pkmn_mastery_debug[1]=chosen_arena;pkmn_mastery_debug[2]=battle_arena;pkmn_mastery_debug[3]=selector_row;pkmn_mastery_debug[4]=progress.mastery[selected].followups;pkmn_mastery_debug[5]=progress.mastery[selected].evades;pkmn_mastery_debug[6]=progress.no_continue(selected);pkmn_mastery_debug[7]=progress.medals(selected);pkmn_mastery_debug[8]=mastery_dirty;pkmn_mastery_debug[9]=medal_earned;pkmn_mastery_debug[10]=3;pkmn_mastery_debug[11]=sizeof(SaveSlot);pkmn_mastery_debug[12]=frame/24;pkmn_mastery_debug[13]=arena_sway(battle_arena,80,screen==FIGHTING?frame/24:-1);
+  bool goals_visible=match_goals.ready()&&(screen==RESULT||screen==ARCADE_RESULT||screen==CHAMPION);
+  const auto& goal=match_goals.goal();int scout=screen==ARCADE_RESULT?scouting_rival(arcade,core.outcome):-1;
+  pkmn_goals_debug[0]=0x474f414c;pkmn_goals_debug[1]=goals_visible;pkmn_goals_debug[2]=goals_visible?goal.kind:GOAL_NONE;
+  pkmn_goals_debug[3]=goal.before;pkmn_goals_debug[4]=goal.after;pkmn_goals_debug[5]=goal.target;pkmn_goals_debug[6]=goal.advanced;
+  pkmn_goals_debug[7]=match_goals.who();pkmn_goals_debug[8]=scout+1;pkmn_goals_debug[9]=scout>=0;
   renderer.draw(screen,selected,cpu,difficulty,choice,selector_row,count,frame,practice,practice_row,trainer,audio_row);
   pkmn_presentation_debug[0]=0x50524537;pkmn_presentation_debug[1]=sound_settings.music;pkmn_presentation_debug[2]=sound_settings.sound;pkmn_presentation_debug[3]=ambience.music_playing();pkmn_presentation_debug[4]=ambience.music_gain_q8();pkmn_presentation_debug[5]=ambience.active_voices();pkmn_presentation_debug[6]=ambience.played_mask;pkmn_presentation_debug[7]=ambience.played;
   pkmn_presentation_debug[8]=audio_row;pkmn_presentation_debug[9]=audio_return;pkmn_presentation_debug[10]=round.age;pkmn_presentation_debug[11]=round.phase();pkmn_presentation_debug[12]=round.loser;pkmn_presentation_debug[13]=round.recall;pkmn_presentation_debug[14]=round.ball_x_q8();pkmn_presentation_debug[15]=round.ball_y_q8();pkmn_presentation_debug[16]=round.body_scale_q8();pkmn_presentation_debug[17]=round.ball_frame();pkmn_presentation_debug[18]=round.ball_visible();pkmn_presentation_debug[19]=round.beam_visible();pkmn_presentation_debug[20]=round.loser<0||round.body_visible(round.loser);pkmn_presentation_debug[21]=bn::core::last_cpu_usage().data();pkmn_presentation_debug[22]=ambience.music_position();pkmn_presentation_debug[23]=audio.active_voices()+ambience.active_voices();pkmn_presentation_debug[24]=round.duration();

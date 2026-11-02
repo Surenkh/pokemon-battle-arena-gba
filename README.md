@@ -8,9 +8,9 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.11.0 — Practice & Drills**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **0.12.0 — Match Goals & Rival Scouting**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.11.0** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.12.0** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
@@ -50,6 +50,18 @@ medals: **10 damaging follow-up hits**, **5 successful super evasions**, and a
 badges show earned medals, and Mastery/Records link with A. Progress saves at round
 end, Rematch or leaving a fight. Both six- and nine-fighter v0.8 saves migrate;
 existing no-continue records already count toward their medal.
+
+Quick Battle and Arcade results now show one relevant mastery change from the
+fight, such as **FOLLOW-UP HITS 9>10/10**. A newly earned medal takes priority.
+If no counter advanced, the line names the next unfinished goal; a full set
+shows **ALL 3 MASTERY MEDALS!**. In Arcade, the upcoming or retry rival has one
+short trait/counter cue, for example **HEAVY HANDS: LEAVE SPACE**. A/Start still
+continues directly. These additions are a playable prototype; player motivation
+and the pilot retention gate remain unverified. See [goal/scouting validation](docs/MATCH_GOALS_TEST_REPORT.md).
+
+![Native post-match progress](docs/media/match-goal-medal-native.png)
+
+![Native Arcade scouting](docs/media/rival-scout-native.png)
 
 ![Native volcanic arena](docs/media/volcanic-arena-native.png)
 
