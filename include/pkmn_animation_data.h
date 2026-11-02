@@ -121,4 +121,5 @@ inline constexpr AnimationClip animation_machop[CLIP_COUNT] = {{0,4,0,1,{40,4,4,
 {60,4,0,1,{8,12,4,10}},
 {64,1,0,1,{12}}};
 inline constexpr const AnimationClip* animations[9] = {animation_pikachu,animation_charmander,animation_squirtle,animation_bulbasaur,animation_eevee,animation_meowth,animation_psyduck,animation_jigglypuff,animation_machop};
+inline constexpr bool fire_charge_windup[9] = {true,false,true,false,false,true,true,false,true};
 }

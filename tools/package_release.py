@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -105,8 +105,7 @@ All nine fighters have animated movement/attacks, unique themed VFX and sounds.
 PRACTICE
 Choose Practice from the mode menu
 SELECT in Quick/Arcade selection: Fighter guide
-Select in practice setup: Cycle fighter / behavior / rival options
-The fourth practice option selects the arena.
+Select in practice setup: Cycle fighter / behavior / rival / arena options
 Select in practice: Reset arena, resources and statistics
 
 ARENAS AND FIGHTER MASTERY

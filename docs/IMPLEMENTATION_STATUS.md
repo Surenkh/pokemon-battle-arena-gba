@@ -1,8 +1,14 @@
-# Implementation status — 1 November 2026
+# Implementation status — 2 November 2026
 
-Playable candidate: **0.9.0 — Arenas & Fighter Mastery**, developed on
-`feat/arenas-and-mastery` from the released nine-fighter v0.8.0 baseline.
+Playable candidate: **0.9.1 — Responsive Firing**, developed on
+`fix/firing-response` from the released v0.9.0 baseline and merged product roadmap.
 The combat ruleset and fighter/CPU parameters remain v0.8.0.
+
+The v0.9.1 candidate uses an existing charge pose to acknowledge accepted normal
+shots for five fighters whose Shoot clip began in an idle pose. All 90 sampled
+tap trials respond visibly on frame 2. The Mastery menu description fits within
+the viewport, and player controls list the Practice Arena row. See
+[response validation](RESPONSIVE_FIRING_TEST_REPORT.md).
 
 The native game includes nine animated Pokémon, elemental attacks and sounds,
 stamina, hit-earned supers, follow-ups and fighter traits, three CPU difficulties,

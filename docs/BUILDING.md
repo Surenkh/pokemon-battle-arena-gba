@@ -83,3 +83,13 @@ The new native suite checks all three Quick/Practice arenas, menu paths, a maste
 medal earned from zero in regular fights, actual CPU super evasion, practice
 exclusion, legacy nine-fighter migration, mixed-schema recovery and power cycles.
 Release packaging additionally requires ROM-bound native-mastery evidence.
+
+For the v0.9.1 response gate, also run:
+
+```sh
+python3 tests/native_response_flow.py
+```
+
+This uses actual one-frame taps, matched idle framebuffer replays, held/rejected
+shots and native menu text bounds. Release packaging requires its ROM-bound
+report alongside the other nine native suites.

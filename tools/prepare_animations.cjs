@@ -9,7 +9,7 @@ const clear={r:0,g:0,b:0,alpha:0};
 const header=['#pragma once','#include <stdint.h>','namespace pkmn {','enum Clip { '+clips.map(n=>'CLIP_'+n.toUpperCase()).join(', ')+', CLIP_COUNT };','struct AnimationClip { int first,count,hit,back; uint8_t duration[16]; };'];
 const manifest={version:1,cell:[64,64],anchor:[32,58],source_revision:fs.readFileSync(path.join(dir,'UPSTREAM_REVISION'),'utf8').trim(),characters:{}};
 function bounds(data,w,h){let l=w,t=h,r=0,b=0;for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(data[(y*w+x)*4+3]>127){l=Math.min(l,x);t=Math.min(t,y);r=Math.max(r,x+1);b=Math.max(b,y+1);}if(r<=l||b<=t)throw Error('Empty frame');return{left:l,top:t,width:r-l,height:b-t};}
-(async()=>{let overview=[];
+(async()=>{let overview=[],fireWindups=[];
  for(const [ch,name]of names.entries()){
   const frames=[],defs=[],info={clips:{},frame_count:0};
   for(const clip of clips){let src=mapping[clip]||clip;if(clip==='Squeeze'&&name==='squirtle')src='Withdraw';const a=source[name][src],file=path.join(dir,name,a.source+'-Anim.png');const meta=await sharp(file).metadata(),rows=meta.height/a.height,row=rows===8?2:0;if(rows!==1&&rows!==8)throw Error('Invalid direction count');const first=frames.length;
@@ -24,10 +24,15 @@ function bounds(data,w,h){let l=w,t=h,r=0,b=0;for(let y=0;y<h;y++)for(let x=0;x<
    }
    const hit=Math.min(a.hit,a.durations.length-1),back=Math.min(Math.max(a.return,hit+1),a.durations.length);defs.push(`{${first},${a.durations.length},${hit},${back},{${a.durations.join(',')}}}`);info.clips[clip]={first,count:a.durations.length,hit,back,durations:a.durations,source:a.source,direction:row};
   }
+  // Some Shoot clips repeat an idle cell through their startup. Use the
+  // fighter's existing charge poses to acknowledge an accepted normal shot.
+  const idle=info.clips.Idle,shoot=info.clips.Shoot;
+  const chargeWindup=frames.slice(idle.first,idle.first+idle.count).some(frame=>frame.equals(frames[shoot.first]));
+  fireWindups.push(chargeWindup);info.fire_windup=chargeWindup?'Charge':'Shoot';
   info.frame_count=frames.length;manifest.characters[name]=info;
   await sharp({create:{width:64,height:64*frames.length,channels:4,background:clear}}).composite(frames.map((input,i)=>({input,left:0,top:i*64}))).png().toFile(path.join(dir,'packed_'+name+'.png'));
   header.push(`inline constexpr AnimationClip animation_${name}[CLIP_COUNT] = {${defs.join(',\n')}};`);for(let i=0;i<frames.length;i++)overview.push({input:frames[i],left:i*64,top:ch*64});console.log(name,frames.length,'frames');
  }
- header.push('inline constexpr const AnimationClip* animations[9] = {'+names.map(n=>'animation_'+n).join(',')+'};','}');fs.writeFileSync(path.join(root,'include/pkmn_animation_data.h'),header.join('\n')+'\n');fs.writeFileSync(path.join(dir,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
+ header.push('inline constexpr const AnimationClip* animations[9] = {'+names.map(n=>'animation_'+n).join(',')+'};','inline constexpr bool fire_charge_windup[9] = {'+fireWindups.join(',')+'};','}');fs.writeFileSync(path.join(root,'include/pkmn_animation_data.h'),header.join('\n')+'\n');fs.writeFileSync(path.join(dir,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');
  const max=Math.max(...Object.values(manifest.characters).map(c=>c.frame_count));await sharp({create:{width:max*64,height:names.length*64,channels:4,background:'#203047'}}).composite(overview).png().toFile(path.join(root,'docs/animation_atlas.png'));
 })().catch(e=>{console.error(e);process.exit(1);});

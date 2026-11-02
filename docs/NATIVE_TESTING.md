@@ -98,3 +98,14 @@ A new 32-word `pkmn_presentation_debug` array leaves prior layouts intact:
 | 31 | Reserved |
 
 Audio screen ID 11 is appended. L opens it from menus/pause; the existing Change Pokémon pause entry stays at index 2. `PKMN_PROFILE_THRESHOLD=0.94 PKMN_PROFILE_FRAMES=1` on the depth runner can identify expensive transitions below the full frame limit. Source-generated PCM/MOD/4bpp art checks are in `tests/presentation_assets_test.py`.
+
+## v0.9.1 input response
+
+Run `python3 tests/native_response_flow.py` with the same driver and mGBA
+environment. It measures 90 one-frame inputs, compares the player region with a
+matched no-input framebuffer replay, and verifies accepted actions on F1 and
+visible cues on F2. It checks projectile/super release ticks, all nine fighters
+with held and rejected B, and side margins for all seven menu descriptions.
+The runner uses existing telemetry and never writes game memory. Its report is
+`tests/native_artifacts/response/report.json`. See
+[the validation report](RESPONSIVE_FIRING_TEST_REPORT.md) for frame definitions.
