@@ -1,36 +1,78 @@
-# Game improvement roadmap
+# Pokémon Battle Arena product roadmap
 
-This is the current implementation order. Each direction should end in a playable, independently reviewable change. The editable native source and required assets are restored in Git.
+**Design baseline · 2 November 2026 · Released game v0.9.0**
 
-| Priority | Direction | First deliverable | Evidence that it works |
+**Ship v0.9.1 first.** When a player taps B, their Pokémon should visibly start its move. When they change an arena, they should enter the fight with the Pokémon they picked. Improve those two moments before adding reasons to play longer. The player we are designing for can start a short fight immediately, then use Practice and Arcade to get better with a favorite fighter.
+
+## What the current game tells us
+
+| Player experience | Finding in v0.9.0 | Product decision |
+| --- | --- | --- |
+| Tapping an attack | All 63 neutral one-frame taps changed simulation state on the first emulator frame tested. A melee tap changed fighter-area pixels on frame 2 for all nine. For B, the first difference from an idle replay ranged from frame 2 to 14. Five fighters start their firing animation in a pose shared with idle. | Give those fighters a distinct first windup pose. Preserve the time an opponent has to read and defend against the shot. |
+| Choosing a fight | The seven modes and nine fighters are visible. From Pikachu, four Down taps reach Arena through Bulbasaur and Psyduck. Pressing Play there starts as Psyduck. Select means Info in Quick Battle and cycles options in Practice. | Give every fighter a direct route to settings, one navigation convention across modes and a visible marker for the fighter who will play. |
+| Learning a technique | Practice has three dummy behaviors, full starting super power, damage feedback and a fighter guide. Resetting it replayed the countdown. The first legal melee input in our reset trace came on frame 182. | Shorten the time between attempts and teach two useful skills in the arena where players perform them. |
+| Coming back after a match | Arcade already offers five rivals, two continues and three arenas. There are 27 fighter/difficulty records and three medals per fighter. The result announces a newly earned medal, but routine progress is on a separate screen. | Test whether one personal goal or one rival cue gives a player a reason to try again. |
+| Shipping on GBA | The release passed nine native suites with zero missed frames. The heaviest measured Arcade frame used 99.66% of its budget. Human matchup balance and physical-device response are still open. | Use existing tiles and short static labels. Profile busy transitions and start recruiting device testers during the first iteration. |
+
+The timings above come from the published ROM in mGBA. The audit includes frame definitions, all nine fighter results, recovery boundaries and the exact menu route. [Input and navigation audit](INPUT_AND_NAVIGATION_BASELINE.md) · [Released v0.9.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.9.0) · [Release validation](../ARENAS_AND_MASTERY_TEST_REPORT.md)
+
+## Release sequence
+
+Each row ends in a build someone can play. The effort ranges are provisional hands-on development days assuming one gameplay engineer with part-time pixel art and test support. Recruitment, device access and review add calendar time. Re-estimate after the first two-fighter build.
+
+| Order | Playable iteration | Why it comes here | Release decision |
 | --- | --- | --- | --- |
-| 1 | Character identity and readable attacks | Six elemental attack/impact/super identities; Pikachu and Squirtle first | Native-resolution footage; identical combat outcomes for the presentation-only pass |
-| 2 | Impact and responsive combat | Sound cues, restrained shake, clear guard feedback, carefully specified hitstop and input buffering | Attack feels responsive; clocks and evasion remain predictable; CPU and player obey the same rules |
-| 3 | Deeper fighter decisions | Distinct strengths, recovery/risk tradeoffs, counters, and a useful stamina economy | Matchup and seeded simulation evidence; each fighter supports a recognizable play style |
-| 4 | Smarter and more varied opponents | CPU spacing, reaction limits, difficulty profiles, and reduced repetition | No input-reading advantage; measurable difficulty differences; exploitable patterns without trivial loops |
-| 5 | A living arena and reasons to replay | Low-cost arena motion, round flow polish, short arcade sequence, rematch and progression targets | Faster return to battle; readable action; progression/save behavior tested if added |
+| 1 · v0.9.1 · 3–5 days | Immediate firing cues, starting with Machop and Pikachu. Repair the clipped Mastery description and list Arena in the Practice controls. | There is a measured, visible delay and a small visual repair that can ship independently. | Every fighter's eligible B tap visibly starts by frame 2 in all four replay phases. The projectile still spawns on its original tick. |
+| 2 · v0.10.0 · 4–7 days | Consistent focus, direct access to setup options, contextual button labels and predictable Back behavior. | Changing the stage currently changes the selected fighter along a natural route. This affects the choice made before combat. | From Pikachu, set Volcanic and fight as Pikachu with no roster traversal. At least 4 of 5 pilot players independently configure both requested setups. |
+| 3 · v0.11.0 · 5–8 days | Fast Practice retry and two optional drills inside Practice. | Once controls and navigation are readable, players can learn what earns a follow-up or evades a super. | Practice accepts a fresh action within 15 display frames of reset. At least 4 of 5 learners perform both techniques against the dummy without verbal coaching. |
+| 4 · v0.12.0 · 3–6 days, conditional | Show a relevant mastery increment after a fight and a short scouting cue for the next Arcade rival. | The existing records, traits and medals can make a return match purposeful with little new content. | Prototype only if post-match observation shows players lack a next goal. Keep the feature if 4 of 5 can name their next goal and at least 3 voluntarily start another fight in the pilot. |
+| 5 · v1.0 candidate · 3–5 days plus device sessions | Human matchup review, hardware checks, save migration and release regression. | The nine-fighter roster needs to hold up across devices and skill levels before a stable launch. | Reproduce the input and menu gates, complete representative real-device runs, and resolve reproducible control, progression or performance blockers. |
 
-Avoid introducing all five at once. Visual identity comes first because it makes later timing, balance, and opponent changes easier for the player to understand.
+## First iteration backlog
 
-Priority 1 shipped in v0.3.0; see [the iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md) and [its evidence](../ELEMENTAL_ATTACKS_TEST_REPORT.md). Priority 2 is implemented in v0.4.0: themed sounds, hit flash, a fixed-HUD camera shake, guard/stamina feedback, super warnings, and landing input buffering. See [the implementation contract](../COMBAT_FEEL.md) and [test evidence](../COMBAT_FEEL_TEST_REPORT.md).
+| In build order | Owner | Work and evidence |
+| --- | --- | --- |
+| 1. Establish the comparison | QA + gameplay | Replay a one-frame tap and a matched no-input run on the released ROM. Record the sampled button, first accepted action, first changed fighter pixels and shot release as separate events. Capture the player's device, emulator, controller and representative move when available. |
+| 2. Make two moves readable | Pixel art + gameplay | For Machop, plant the feet and draw the fist back. For Pikachu, lower the body and show the cheek charge. Try an existing distinct animation tile first. Show the cue on entering FIRE, so a rejected B never looks like a cast. Keep the muzzle effect for release. |
+| 3. Check what players see | Design + QA | Interleave muted baseline and candidate clips in counterbalanced order. Ask five players when the move begins and when it can hit. Advance if at least four identify the start before the projectile on both candidates. Rework the silhouette if the pixel test passes and players still miss the cue. |
+| 4. Extend and verify | Gameplay + QA | Fix the remaining affected starts for Squirtle, Meowth and Psyduck. Sweep all nine fighters, held and repeated taps, hitstop, low stamina, an occupied shot slot, landing, recovery and pause/resume. Compare the same seeded fights for projectile ticks, damage, meter and outcomes. Run the native suites and check missed frames. |
 
-Priority 3 is implemented in v0.5.0: six fighter traits, one hit-confirm follow-up, recovery punish feedback, a measured stamina delay adjustment and practice with three dummy behaviors. See [the implementation contract](../FIGHTER_DEPTH.md) and [validation evidence](../FIGHTER_DEPTH_TEST_REPORT.md). Automated baseline/candidate results guide tuning; human matchup playtesting remains outstanding.
+The current buffer gives an eligible press three simulation attempts. In a Pikachu whiff test, B two ticks before recovery ended fired on the first legal tick. Three ticks early expired. Keep that rule for the first build. If players still report lost taps, capture the exact state and test a **four-tick recovery window** against three in a separate rules prototype. Count saved intended inputs *and* unwanted late attacks. Adopt it only if recovery improves without extra attacks, guard escapes, double spends or input carried across pause. Device-only delay goes to a filmed button-to-display comparison on the reported setup. [Buffer contract](../COMBAT_FEEL.md) · [Combat core](../../src/pkmn_combat_core.cpp)
 
-Priority 4 is implemented in v0.6.0: fighter-specific spacing/attack preferences, public-only delayed observations, three distinct difficulty profiles, bounded visible-pattern memory and resource/stalemate policies. See [CPU tactics](../CPU_TACTICS.md) and [validation evidence](../CPU_TACTICS_TEST_REPORT.md). Priority 5 is implemented in v0.8.0: subtle forest motion, five-rival Arcade, two continues, champion/records screens and recoverable SRAM persistence. The revised v0.8.0 also adds a visible mode-first menu and three new fully playable fighters; see [nine-fighter details](../NINE_FIGHTERS.md). Physical hardware profiling and human balance testing are still outstanding.
+## Navigation design for v0.10.0
 
-An additional update outside these five directions shipped in v0.7.0: original menu music and cues, separate audio controls, and an animated Poké Ball recall for normal defeats. See [audio/recall architecture](../AUDIO_AND_RECALL.md) and [evidence](../AUDIO_AND_RECALL_TEST_REPORT.md). Arcade progression and arena life are included in v0.8.0.
+![Two 240 by 160 design mockups. The menu groups play and support choices. In Quick Battle a check stays on Pikachu while a bright caret points at the Volcanic arena setting.](../media/navigation-roadmap-concept.png)
 
+*Proposed screens at native size.* A check marks the fighter who will play. A full-width border and caret mark the row receiving the next input. Each screen has one contextual legend. Keep all seven destinations on one menu, with the three play modes together. Use the same focus treatment for Pause, audio and results. Give Change the sole active outline when it is selected on results. The released result artwork already has a highlighted Rematch button baked into the background. [Current mode menu](../media/mode-menu-native.png) · [Current selector](../media/nine-fighter-selector-native.png) · [UI source](../../tools/convert_assets.cjs)
 
-## v0.9.0 — Arenas & Fighter Mastery
+| Context | Proposed behavior |
+| --- | --- |
+| Fighter grid in Quick, Arcade or Practice | D-pad browses fighters. A/Start plays the highlighted fighter immediately. Select jumps directly to settings for that fighter. The footer says “Select Options.” |
+| Settings | Up/Down moves rows and Left/Right changes a value. A/Start plays from a value row. A on the visibly labeled Fighter Info row opens the guide. Start remains the fast path to play. Arcade's rotating arena appears as information and the cursor skips it. |
+| Returning | B from Info returns to the row that opened it. B from settings restores focus to the chosen fighter. B from the grid returns to the originating mode. Keep settings and fighter selection during the trip. |
+| Results and unavailable choices | Show one active choice, a verb on each button, and the remaining continue cost where relevant. With zero continues, give Arcade players a visible way to finish the run. One confirm tap produces one transition. |
 
-The next independently reviewable direction after the original five is now
-implemented: two new arenas, Quick/Practice arena selection, seeded Arcade arena
-rotation, three cosmetic mastery medals per fighter, roster badges and recoverable
-schema-3 persistence. See [the implementation contract](../ARENAS_AND_MASTERY.md)
-and [native/host validation](../ARENAS_AND_MASTERY_TEST_REPORT.md).
+Build Quick Battle first and compare it with the released grid at 240 × 160. Then apply the same components to Practice, Arcade, Pause and results. Bake static headings and icons into the background and move one dynamic focus marker. Update the in-game legend and README together. Check the longest label, Jigglypuff, all arena names, disabled rows and sound-off play. Target an eight-pixel side margin for labels. Test both new and returning players, including whether they find the relocated Fighter Info action. Add D-pad hold-repeat only if repeated navigation taps are a demonstrated problem.
 
-The nine-fighter combat ruleset remains unchanged. A release-readiness balance
-pass runs the existing ordered-matchup, deterministic CPU and difficulty checks;
-human matchup testing is still required before making balance claims or tuning
-from CPU results alone. Physical GBA profiling and non-Linux clean builds remain
-outstanding. Future priorities should be chosen after human playtest feedback.
+The two uncoached tasks are **“Start as Pikachu in Volcanic after reading its guide”** and **“Set up Machop against a blocking Squirtle in Shoreline Practice.”** Log elapsed time, wrong-fighter launches, backtracks and requests for help. The proposed gate includes zero wrong-fighter launches or double activations in the five-player pilot. A shortcut-only player should retain the current three-input path from title to Quick Battle countdown.
+
+## What to build after navigation
+
+**Practice.** Start with one repeatable clean melee into B against an idle rival. Then give the rival one visible super and let the player jump or squeeze through it. Show one short explanation per attempt, such as “Blocked” or “Pressed before the opening,” only when the combat events support it. Retry in place, clear stale presses and restore the drill position and resources. Free Practice stays available and medal progress belongs to regular fights. After the two drills, ask players to attempt one technique in Quick Battle. Record how many can transfer what they learned. [Practice implementation](../../include/pkmn_practice.h) · [Fighter depth](../FIGHTER_DEPTH.md)
+
+**Arcade and mastery.** Put one line on the existing results panel, for example “Pikachu follow-ups 6 → 7 / 10.” On the existing next-rival panel, try one actionable hint, for example “Machop drains guard stamina. Leave room to retreat.” Use the selected fighter's actual session delta and the next rival's authored trait. Give Rematch or Next Rival the same input count as today. Observe a fixed ten-minute free-play period on each build and record replays and players' reasons. A small pilot can select a design for further testing. [Existing progression rules](../ARENAS_AND_MASTERY.md) · [Nine fighter traits](../NINE_FIGHTERS.md)
+
+**Stable release.** Start with rushdown against guard pressure, ranged pushback and a floaty jump against long reach. Have human players swap sides and report whether they recognized what beat them and could try a counter. Use the 81 ordered CPU matchups to catch regressions. Test legacy SRAM, power-cycle records and mastery, and rehearse a five-rival run on a physical GBA. Require zero missed frames on the native suite and no increase over the v0.9.0 busiest Arcade transition. Profile new menu work toward 90% of a frame or less. Delay additional visuals if that budget slips. [Native testing](../NATIVE_TESTING.md) · [Save compatibility](../ARENAS_AND_MASTERY.md)
+
+**Scope decision.** Revisit a tenth fighter or fourth arena when returning players can use the current roster and ask for new matchups. Mid-run saving becomes a candidate if interrupted runs are a recurring reason people leave Arcade. Link multiplayer needs its own hardware feasibility study. The first two releases above address problems already visible in the shipped game.
+
+## Where the earlier roadmap landed
+
+| Original direction | Shipped evidence |
+| --- | --- |
+| Character identity and elemental attacks · v0.3 | [Iteration design](ITERATION_01_ELEMENTAL_ATTACKS.md) and [elemental attack validation](../ELEMENTAL_ATTACKS_TEST_REPORT.md) |
+| Impact and responsive combat · v0.4 | [Combat feel](../COMBAT_FEEL.md) and [validation](../COMBAT_FEEL_TEST_REPORT.md) |
+| Deeper fighter decisions and Practice · v0.5 | [Fighter depth](../FIGHTER_DEPTH.md) and [validation](../FIGHTER_DEPTH_TEST_REPORT.md) |
+| Smarter opponents · v0.6 | [CPU tactics](../CPU_TACTICS.md) and [validation](../CPU_TACTICS_TEST_REPORT.md) |
+| Audio, recall, arena life and replay · v0.7–v0.8 | [Audio and recall](../AUDIO_AND_RECALL.md), [Arcade and records](../ARCADE_AND_RECORDS.md) and [nine-fighter expansion](../NINE_FIGHTERS.md) |
+| Arenas and fighter mastery · v0.9 | [Implementation contract](../ARENAS_AND_MASTERY.md) and [release evidence](../ARENAS_AND_MASTERY_TEST_REPORT.md) |
