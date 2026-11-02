@@ -7,13 +7,13 @@ class RoundPresentation {
 public:
  enum Phase { IMPACT,ARRIVE,OPEN,ABSORB,CLOSE,FALL,SEAL,DONE };
  static constexpr int recall_frames=156,quick_frames=60;
- int age=0,loser=-1,target_x=120,from_x=120;bool recall=false;
- void reset(){age=0;loser=-1;target_x=from_x=120;recall=false;}
+ int age=0,loser=-1,target_x=120,from_x=120;bool recall=false,training=false;
+ void reset(){age=0;loser=-1;target_x=from_x=120;recall=training=false;}
  void begin(const CombatCore&c,bool practice){
-  reset();loser=c.outcome==1?1:c.outcome==2?0:-1;recall=!practice&&loser>=0;
+  reset();training=practice;loser=c.outcome==1?1:c.outcome==2?0:-1;recall=!practice&&loser>=0;
   if(loser>=0){target_x=clamp(c.f[loser].x/256,32,208);int winner=1-loser;from_x=clamp(target_x+(c.f[winner].x<c.f[loser].x?-40:40),16,224);}
  }
- int duration()const{return recall?recall_frames:quick_frames;}
+ int duration()const{return training?6:recall?recall_frames:quick_frames;}
  void advance(){if(age<duration())++age;}
  void skip(){if(recall&&age>=112)age=recall_frames;}
  bool done()const{return age>=duration();}

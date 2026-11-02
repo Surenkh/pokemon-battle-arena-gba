@@ -1,19 +1,24 @@
 # Implementation status — 2 November 2026
 
-Playable candidate: **0.10.0 — Clear Navigation**, developed on
-`feat/clear-navigation` from the merged v0.9.1 release.
+Playable candidate: **0.11.0 — Practice & Drills**, developed on
+`feat/practice-drills` over the validated v0.10.0 navigation branch.
 
-Quick Battle, Arcade and Practice use Select for direct settings access. A check
-keeps the chosen fighter visible, and a gold outline follows the focused row.
-B from settings restores the same card. Fighter Info is a visible A action;
-Start plays directly from every setup row. Menu, Pause, results and audio share
-the focus treatment. Unavailable Arcade rematches are dimmed and skipped, and
-A visibly finishes an exhausted run.
+Practice offers Free, Block and Attack, plus optional Follow-up and Evade Super
+drills through its Training row. A damaging B follow-up completes the first.
+The second uses one normally charged rival super and verifies a nearby jump or
+squeeze through its full passage. Feedback comes from resolved events. The
+read-only super-evasion observer is shared with mastery, while Practice remains
+excluded from every mastery counter.
 
-The native navigation suite completes both planned setup tasks, 27 guide round
-trips and rapid confirmations using real buttons. All 11 native suites pass
-with 14,275 checks and zero missed frames. The five-person menu pilot and physical
-hardware testing remain open. See [navigation validation](NAVIGATION_TEST_REPORT.md).
+Manual reset accepts a fresh action on display frame 8. Practice KO restarts
+accept one on frame 14 and retain statistics. Both paths clear old inputs and
+projectiles, restore training resources and retain fighter/rival/arena choices.
+The normal match countdown is 180 frames and normal loss recall is 156.
+
+All twelve native suites pass with 14,939 checks and zero missed display frames.
+Ten host suites pass, including 37,206 new Practice checks. The learner pilot and
+physical-device testing remain open. See
+[Practice validation](PRACTICE_DRILLS_TEST_REPORT.md).
 
 The native game includes nine animated Pokémon, elemental attacks and sounds,
 stamina, hit-earned supers, follow-ups and fighter traits, three CPU difficulties,

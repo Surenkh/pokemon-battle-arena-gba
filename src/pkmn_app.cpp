@@ -112,7 +112,7 @@
 #include "bn_sprite_items_recall_ball.h"
 #include "bn_sprite_items_recall_beam.h"
 #include "bn_sprite_items_recall_glint.h"
-extern "C" { volatile int pkmn_mastery_debug[32] = {}; volatile int pkmn_arcade_debug[32] = {}; volatile int pkmn_debug[32] = {}; volatile int pkmn_feel_debug[16] = {}; volatile int pkmn_depth_debug[32] = {}; volatile int pkmn_cpu_debug[32] = {}; volatile int pkmn_presentation_debug[32] = {}; }
+extern "C" { volatile int pkmn_practice_debug[16] = {}; volatile int pkmn_mastery_debug[32] = {}; volatile int pkmn_arcade_debug[32] = {}; volatile int pkmn_debug[32] = {}; volatile int pkmn_feel_debug[16] = {}; volatile int pkmn_depth_debug[32] = {}; volatile int pkmn_cpu_debug[32] = {}; volatile int pkmn_presentation_debug[32] = {}; }
 namespace pkmn {
 enum Screen { TITLE, SELECTOR, COUNTDOWN, FIGHTING, PAUSED, ROUND_END, RESULT, HELP, RESUME_COUNTDOWN, PRACTICE_SETUP, FIGHTER_GUIDE, AUDIO_OPTIONS, ARCADE_RESULT, CHAMPION, RECORDS, MODE_MENU, MASTERY };
 static constexpr int mode_row_y[]={41,56,71,96,108,120,132};
@@ -135,7 +135,7 @@ class Renderer {
  bn::optional<bn::sprite_ptr> shadows[2],portraits[character_count],badges[character_count],charging[2];
  bn::optional<bn::sprite_ptr> recall_ball,recall_beam,recall_glint;int recall_tile=-1,glint_tile=-1;
  int charge_tile[2]={-1,-1},flash_state[2]={-1,-1};uint32_t presented_events=0;
- int last_practice_damage=-1,last_practice_chain=-1,last_practice_best=-1,active_draw_frames=0,scene_frames=0;
+ int last_practice_damage=-1,last_practice_chain=-1,last_practice_best=-1,last_practice_feedback=-1,active_draw_frames=0,scene_frames=0;
  enum Effect { DUST, IMPACT, CAST, GUARD };
  struct Particle{bn::optional<bn::sprite_ptr> sprite;int x=0,y=0,born=0,kind=0,character=0,frame=-1;};Particle particles[12];
  int bullet_tile[4]={-1,-1,-1,-1},bullet_key[4]={-1,-1,-1,-1};
@@ -153,7 +153,7 @@ class Renderer {
  }
  bn::sprite_text_generator text{font};bn::vector<bn::sprite_ptr,64> labels;bn::vector<bn::sprite_ptr,8> hud_names;bn::vector<bn::sprite_ptr,16> practice_labels;
  void line(int x,int y,bn::string_view value,bool center=false,int scale=1,bn::ivector<bn::sprite_ptr>* output=nullptr){auto& target=output?*output:static_cast<bn::ivector<bn::sprite_ptr>&>(labels);int first=target.size();if(center)text.set_center_alignment();else text.set_left_alignment();text.generate(x-120,y-80,value,target);for(int i=first;i<target.size();i++)target[i].set_bg_priority(0);if(scale>1){if(scale>2)scale=2;for(int i=first;i<target.size();i++){auto&sp=target[i];sp.set_position(x-120+(sp.x()-(x-120))*scale,y-80);sp.set_scale(scale);}}}
- void clear(){for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();active_draw_frames=scene_frames=0;last_practice_damage=last_practice_chain=last_practice_best=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
+ void clear(){for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();active_draw_frames=scene_frames=0;last_practice_damage=last_practice_chain=last_practice_best=last_practice_feedback=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
  void focus_at(int x,int y,int width,int height){
   // A wide affine sprite clips at twice its source width. Join two halves.
   if(width>128){
@@ -306,8 +306,7 @@ public:
    }
    if(group==1){line(180,92,difficulty==0?"EASY":difficulty==1?"NORMAL":"HARD",true);line(180,105,arcade_mode?"ROTATES":arena_names[chosen_arena],true);}
    if(group==6){
-    static const char* modes[]={"IDLE","BLOCK","ATTACK"};
-    line(180,92,modes[trainer.mode],true);line(180,105,characters[trainer.opponent].name,true);line(180,118,arena_names[chosen_arena],true);
+    line(180,92,practice_mode_names[trainer.mode],true);line(180,105,characters[trainer.opponent].name,true);line(180,118,arena_names[chosen_arena],true);
    }
    if(group==12){static const char* hints[]={"1 FIGHT","5 RIVALS","TRAIN","SCORES","ON/OFF","MOVES","MEDALS"};line(190,mode_row_y[mode_row],hints[mode_row],true);}
    if(group==3&&arcade.active)line(120,139,arcade.continues?"REMATCH COSTS 1 CONTINUE":"NO CONTINUES LEFT",true);
@@ -355,9 +354,13 @@ public:
 
   }
   if(arcade.active&&group==2&&hbe_setup_frame>=6&&practice_labels.empty()){bn::string<48> stage;if(arcade.active){stage=bn::to_string<4>(arcade.stage+1);stage+="/5 ";}stage+=arena_names[battle_arena];if(arcade.active){stage+="  CONT ";stage+=bn::to_string<4>(arcade.continues);}line(120,137,stage,true,1,&practice_labels);}
-  if(practice&&group==2&&active_draw_frames>=3&&(practice_labels.empty()||last_practice_damage!=trainer.stats.last_damage||last_practice_chain!=trainer.stats.chain||last_practice_best!=trainer.stats.best_chain)){
-   practice_labels.clear();bn::string<48> score="LAST ";score+=bn::to_string<8>(trainer.stats.last_damage);score+=" CHAIN ";score+=bn::to_string<8>(trainer.stats.chain);score+=" BEST ";score+=bn::to_string<8>(trainer.stats.best_chain);line(120,129,score,true,1,&practice_labels);line(120,138,"SELECT: RESET PRACTICE",true,1,&practice_labels);
+  if(practice&&group==2&&active_draw_frames>=3&&(practice_labels.empty()||last_practice_damage!=trainer.stats.last_damage||last_practice_chain!=trainer.stats.chain||last_practice_best!=trainer.stats.best_chain||last_practice_feedback!=trainer.feedback)){
+   practice_labels.clear();
+   if(trainer.drill())line(120,129,trainer.message(),true,1,&practice_labels);
+   else{bn::string<48> score="LAST ";score+=bn::to_string<8>(trainer.stats.last_damage);score+=" CHAIN ";score+=bn::to_string<8>(trainer.stats.chain);score+=" BEST ";score+=bn::to_string<8>(trainer.stats.best_chain);line(120,129,score,true,1,&practice_labels);}
+   line(120,138,trainer.drill()?"SELECT RETRY":"SELECT: RESET PRACTICE",true,1,&practice_labels);
    last_practice_damage=trainer.stats.last_damage;last_practice_chain=trainer.stats.chain;last_practice_best=trainer.stats.best_chain;
+   last_practice_feedback=trainer.feedback;
   }
  }
 };
@@ -369,15 +372,15 @@ public:
  bool practice=false;uint32_t seed=0x504b4d4e;int peak=0,missed=0;
  auto save_progress=[&](){progress.music=sound_settings.music;progress.sound=sound_settings.sound;if(storage.save(progress))mastery_dirty=false;};
  auto avoid_mirror=[&](){if(trainer.opponent==selected)trainer.opponent=(selected+1)%character_count;};
- auto start_match=[&](bool keep_stats=false){
+ auto start_match=[&](bool keep_stats=false,bool quick_practice=false){
   feel.reset();audio.reset();round.reset();renderer.reset_scene();seed=seed*1664525u+1013904223u;
   if(arcade.active){selected=arcade.fighter;difficulty=arcade.difficulty;cpu=arcade.opponent();}
   if(practice){avoid_mirror();cpu=trainer.opponent;trainer.begin_round(keep_stats);practice_rounds=keep_stats?practice_rounds+1:1;}
   if(mastery_dirty)save_progress();mastery_tracker.reset();match_medals=progress.medals(selected);medal_earned=false;
   battle_arena=arcade.active?arcade.arena():chosen_arena;
   core.reset(selected,cpu,seed);core.training=practice;
-  if(practice)core.f[0].sp=core.f[1].sp=100;
-  ai.reset(difficulty,seed^0xa5a5a5a5u);count=match_countdown_display_ticks;screen=COUNTDOWN;choice=0;
+  if(practice)trainer.prepare(core);
+  ai.reset(difficulty,seed^0xa5a5a5a5u);count=quick_practice?practice_retry_frames:match_countdown_display_ticks;screen=quick_practice?RESUME_COUNTDOWN:COUNTDOWN;choice=0;
  };
  while(true){
   Input keys=input();++frame;Screen previous_screen=screen;int previous_options=selector_row*3+chosen_arena;int previous_menu=selected+choice*10+difficulty*100+practice_row*1000+int(trainer.mode)*10000+trainer.opponent*100000+audio_row*1000000+mode_row*10000000;AudioCue cue=AUDIO_NONE;bool confirm=keys.pressed&(A|START);
@@ -445,7 +448,7 @@ public:
   else if(screen==COUNTDOWN||screen==RESUME_COUNTDOWN){core.f[0].pending=core.f[1].pending=0;if(--count<=0){screen=FIGHTING;}}
   else if(screen==FIGHTING){
    if(keys.pressed&START){screen=PAUSED;choice=0;core.f[0].pending=core.f[1].pending=0;}
-   else if(practice&&(keys.pressed&SELECT))start_match();
+   else if(practice&&(keys.pressed&SELECT))start_match(false,true);
    else{if(arcade.active)++arcade.ticks;core.frame(keys,practice?trainer.input(core):ai.input(core));if(practice)trainer.observe(core);else{mastery_dirty=mastery_tracker.observe(core,progress)||mastery_dirty;medal_earned=progress.medals(selected)>match_medals;}if(core.outcome){round.begin(core,practice);screen=ROUND_END;count=round.duration();}}
   }
   else if(screen==PAUSED){
@@ -454,12 +457,12 @@ public:
    if((keys.pressed&B)||(keys.pressed&START)){screen=RESUME_COUNTDOWN;count=match_resume_countdown_display_ticks;}
    else if(confirm){
     if(choice==0){screen=RESUME_COUNTDOWN;count=match_resume_countdown_display_ticks;}
-    else if(choice==1){if(!arcade.active||arcade.retry(2))start_match();}
+    else if(choice==1){if(!arcade.active||arcade.retry(2))start_match(false,practice);}
     else if(choice==2){if(mastery_dirty)save_progress();arcade.active=false;screen=practice?PRACTICE_SETUP:SELECTOR;selector_row=0;practice_row=0;}
     else if(choice==3){help_return=PAUSED;screen=HELP;}else{audio_return=PAUSED;audio_row=0;screen=AUDIO_OPTIONS;}
    }
   }
-  else if(screen==ROUND_END){round.advance();if(round.age==8&&mastery_dirty)save_progress();if(keys.pressed&(A|START))round.skip();count=round.duration()-round.age;if(round.done()){if(practice)start_match(true);else{screen=RESULT;choice=0;if(arcade.active){if(core.outcome==1)arcade.advance();if(arcade.finished){progress.complete(arcade);medal_earned=progress.medals(selected)>match_medals;save_progress();screen=CHAMPION;}else screen=ARCADE_RESULT;}}}}
+  else if(screen==ROUND_END){round.advance();if(round.age==8&&mastery_dirty)save_progress();if(keys.pressed&(A|START))round.skip();count=round.duration()-round.age;if(round.done()){if(practice)start_match(true,true);else{screen=RESULT;choice=0;if(arcade.active){if(core.outcome==1)arcade.advance();if(arcade.finished){progress.complete(arcade);medal_earned=progress.medals(selected)>match_medals;save_progress();screen=CHAMPION;}else screen=ARCADE_RESULT;}}}}
   else if(screen==RECORDS){
    if(keys.pressed&(B|START)){arcade.active=false;screen=MODE_MENU;mode_row=3;}
    else if(keys.pressed&LEFT)selected=(selected+character_count-1)%character_count;
@@ -508,6 +511,9 @@ public:
   pkmn_cpu_debug[14]=cpu_difficulties[difficulty].reaction_ticks;pkmn_cpu_debug[15]=cpu_difficulties[difficulty].think_ticks;
   pkmn_cpu_debug[16]=tactics.closing;
   pkmn_feel_debug[0]=0x4645454c;pkmn_feel_debug[1]=feel.seen_events;pkmn_feel_debug[2]=feel.dx;pkmn_feel_debug[3]=feel.dy;pkmn_feel_debug[4]=audio.active_voices();pkmn_feel_debug[5]=audio.character_mask;pkmn_feel_debug[6]=audio.charge_mask;pkmn_feel_debug[7]=audio.release_mask;pkmn_feel_debug[8]=feel.guard_breaks;pkmn_feel_debug[9]=feel.rejected_actions;pkmn_feel_debug[10]=feel.landing_jumps;pkmn_feel_debug[11]=feel.shake_frames;pkmn_feel_debug[12]=audio.active_charges();pkmn_feel_debug[13]=bn::core::last_cpu_usage().data();pkmn_feel_debug[14]=feel.status(core,0);pkmn_feel_debug[15]=feel.status(core,1);
+  pkmn_practice_debug[0]=0x50524143;pkmn_practice_debug[1]=trainer.feedback;pkmn_practice_debug[2]=trainer.completed();pkmn_practice_debug[3]=trainer.super_started;pkmn_practice_debug[4]=trainer.super_released;pkmn_practice_debug[5]=practice&&screen==RESUME_COUNTDOWN?count:0;pkmn_practice_debug[6]=core.p[3].active;pkmn_practice_debug[7]=core.p[3].x;pkmn_practice_debug[8]=core.p[3].id;pkmn_practice_debug[9]=practice&&trainer.drill();
+  int training_projectiles=0;if(practice)for(int i=0;i<4;++i)if(core.p[i].active||core.p[i].reserved)training_projectiles|=1<<i;
+  pkmn_practice_debug[10]=training_projectiles;pkmn_practice_debug[11]=core.f[0].pending;pkmn_practice_debug[12]=core.f[1].pending;
   pkmn_depth_debug[0]=0x44455054;pkmn_depth_debug[1]=practice;pkmn_depth_debug[2]=practice_row;pkmn_depth_debug[3]=trainer.mode;pkmn_depth_debug[4]=trainer.opponent;pkmn_depth_debug[5]=trainer.stats.last_damage;pkmn_depth_debug[6]=trainer.stats.chain;pkmn_depth_debug[7]=trainer.stats.best_chain;pkmn_depth_debug[8]=core.f[0].chain_depth;pkmn_depth_debug[9]=core.f[1].chain_depth;pkmn_depth_debug[10]=core.f[0].confirmed_at;pkmn_depth_debug[11]=core.f[1].confirmed_at;pkmn_depth_debug[12]=characters[selected].melee_reach;pkmn_depth_debug[13]=characters[cpu].melee_reach;pkmn_depth_debug[14]=trainer.stats.followups;pkmn_depth_debug[15]=trainer.stats.punishes;pkmn_depth_debug[16]=feel.followups;pkmn_depth_debug[17]=feel.punishes;pkmn_depth_debug[18]=trainer.stats.hits;pkmn_depth_debug[19]=core.training;pkmn_depth_debug[20]=bn::core::last_cpu_usage().data();pkmn_depth_debug[21]=core.f[0].vx;pkmn_depth_debug[22]=core.f[1].vx;pkmn_depth_debug[23]=core.f[0].kb;pkmn_depth_debug[24]=core.f[1].kb;pkmn_depth_debug[25]=core.f[0].ends;pkmn_depth_debug[26]=core.f[1].ends;pkmn_depth_debug[27]=core.f[0].began;pkmn_depth_debug[28]=core.f[1].began;pkmn_depth_debug[29]=core.event_count;pkmn_depth_debug[30]=feel.status(core,0);pkmn_depth_debug[31]=practice_rounds;
   int usage=bn::core::last_cpu_usage().data();if(usage>peak)peak=usage;missed+=bn::core::last_missed_frames();
   pkmn_debug[0]=0x504b4d4e;pkmn_debug[1]=screen;pkmn_debug[2]=selected;pkmn_debug[3]=cpu;pkmn_debug[4]=difficulty;pkmn_debug[5]=core.tick;pkmn_debug[6]=core.f[0].hp;pkmn_debug[7]=core.f[1].hp;pkmn_debug[8]=core.f[0].sta;pkmn_debug[9]=core.f[1].sta;pkmn_debug[10]=core.f[0].sp;pkmn_debug[11]=core.f[1].sp;pkmn_debug[12]=core.f[0].x;pkmn_debug[13]=core.f[1].x;pkmn_debug[14]=core.f[0].y;pkmn_debug[15]=core.f[1].y;pkmn_debug[16]=core.f[0].action;pkmn_debug[17]=core.f[1].action;pkmn_debug[18]=core.remaining;pkmn_debug[19]=core.hitstop;pkmn_debug[20]=core.outcome;pkmn_debug[21]=peak;pkmn_debug[22]=missed;pkmn_debug[23]=frame;pkmn_debug[24]=seed;

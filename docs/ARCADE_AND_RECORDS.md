@@ -2,9 +2,9 @@
 
 ## Menu-first navigation
 
-The title's Play button (A/Start) opens seven visible buttons: Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery. D-pad movement and A/Start enter the selected mode; B returns. Quick/Arcade then present the nine-fighter grid and Easy/Normal/Hard row. Practice presents the roster and dummy/rival options. Select in every setup opens settings directly for the chosen fighter. The visible Fighter Info row opens with A. B restores the row and then the chosen card. Legacy shortcuts may remain optional, but no primary menu function requires L/R.
+The title's Play button (A/Start) opens seven visible buttons: Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery. D-pad movement and A/Start enter the selected mode; B returns. Quick/Arcade then present the nine-fighter grid and Easy/Normal/Hard row. Practice presents the roster and training/rival/arena options. Select in every setup opens settings directly for the chosen fighter. The visible Fighter Info row opens with A. B restores the row and then the chosen card. Legacy shortcuts may remain optional, but no primary menu function requires L/R.
 
-The title displays v0.10.0 and the nine-fighter roster count. Keyboard letters belong to the emulator: GBA A/Start are the confirmation controls. Native GBA screens use controller navigation; mouse/touch behavior is provided by the emulator.
+The title displays v0.11.0 and the nine-fighter roster count. Keyboard letters belong to the emulator: GBA A/Start are the confirmation controls. Native GBA screens use controller navigation; mouse/touch behavior is provided by the emulator.
 
 ## Arcade contract
 

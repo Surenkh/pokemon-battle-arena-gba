@@ -80,7 +80,7 @@ try:
   old_sta=state()[8];frames(1,2);frames(1);check(state()[16]==3 and info()[8]==1,'A-to-B follow-up entered');check(state()[8]==old_sta-1200,'Follow-up pays full fire stamina cost')
   frames(75);d=info();check(d[6]==2 and d[7]==2 and d[14]>=1,'Only damaging follow-up counts as a two-hit sequence');capture('follow_'+name)
   check(d[5]==[12,14,11,12,10,11][ch],'Feedback displays actual projectile damage')
-  press(4);check(state()[1]==2,'Select resets practice into countdown');frames(185);check(info()[5:8]==[0,0,0],'Manual reset clears practice statistics');check(state()[10]==100 and state()[8]==[105,90,110,100,115,100][ch]*60,'Manual reset restores real resources')
+  press(4);check(state()[1]==8,'Select resets practice into quick Ready');frames(10);check(info()[5:8]==[0,0,0],'Manual reset clears practice statistics');check(state()[10]==100 and state()[8]==[105,90,110,100,115,100][ch]*60,'Manual reset restores real resources')
   press(8);frozen=state();d=info();frames(60);check(state()[5:21]==frozen[5:21],'Pause freezes practice simulation');check(info()[5:20]==d[5:20],'Pause freezes practice statistics');check(feedback()[4]==0,'Practice pause stops combat audio');press(8);frames(65);check(state()[1]==3,'Practice resumes after countdown')
   check(state()[22]==0,'No missed frames in practice roster flow');roster.append(dict(character=name,confirmed_followup=True,guide=True,reset=True,pause=True,peak_cpu_fraction=state()[21]/4096))
   change()

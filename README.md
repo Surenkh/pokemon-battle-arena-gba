@@ -8,9 +8,9 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.10.0 — Clear Navigation**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **0.11.0 — Practice & Drills**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.10.0** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.11.0** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
@@ -92,13 +92,32 @@ Normal projectiles and supers have four-frame animations. Muzzle flashes, hit ef
 | L held in battle | Block |
 | R in battle | Super at 100 SP and 25 stamina |
 | Start in battle | Pause |
-| Select in practice battle | Reset practice |
+| Select in practice battle | Reset Free Practice or retry the drill |
 
 The button labels describe GBA controls. Keyboard letters depend on the emulator's mappings; use its mapped D-pad and A/Start or its on-screen controls. All primary mode/menu functions are reachable without L/R shortcuts.
 
 Emulator key bindings depend on your setup. Clean hits earn super power; blocks and misses do not. For a follow-up, tap B when FOLLOW B appears after a clean A hit. Eevee may use A when FOLLOW A/B appears; stay close enough for the second melee hit. One follow-up is allowed per attack sequence, and the defender can block it.
 
-Practice uses the same combat rules, starts with full SP and freezes the timeout. Choose IDLE, BLOCK or ATTACK behavior and a different rival Pokémon. KOs automatically restart practice while retaining the best sequence; Select manually resets it. Start opens the normal pause menu.
+Practice uses the same combat rules, starts with full SP and freezes the timeout.
+Its **Training** row offers **Free, Block, Attack, Follow-up and Evade Super**.
+Free retains the idle rival and damage/chain feedback. Block and Attack keep their
+normal dummy behaviors. Choose a rival and arena with the existing settings.
+
+**Follow-up** starts in melee range and coaches a clean A hit into a damaging B
+follow-up. **Evade Super** lets the rival charge one real super, then asks for a
+nearby jump or timed squeeze. Short messages report a landed follow-up, an evade,
+a real hit or an interrupted charge. Both lessons work with all nine fighters.
+Practice progress stays separate from mastery.
+
+**Select** retries with restored resources and positions. A fresh action works on
+emulator frame **8** after a manual reset. A Practice KO holds for six frames and
+restarts automatically, accepting a fresh action on frame **14** while keeping
+statistics. Start still opens Pause. See [Practice validation](docs/PRACTICE_DRILLS_TEST_REPORT.md).
+
+![Follow-up drill](docs/media/practice-followup-native.png)
+
+![Super evasion drill](docs/media/practice-evade-native.png)
+
 
 ## Build and development
 
