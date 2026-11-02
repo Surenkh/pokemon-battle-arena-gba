@@ -285,7 +285,7 @@ public:
     bn::string<40> rival=practice_row==2?"> RIVAL: ":"RIVAL: ";rival+=characters[trainer.opponent].name;line(120,127,rival,true);
     bn::string<40> stage=practice_row==3?"> ARENA: ":"ARENA: ";stage+=arena_names[chosen_arena];line(120,139,stage,true);
    }
-   if(group==12){static const char* descriptions[]={"ONE FIGHT. PICK YOUR ARENA.","FIVE RIVALS. THREE ARENAS.","TRAIN WITH A PRACTICE RIVAL.","YOUR SAVED ARCADE RECORDS.","MUSIC AND SOUND SETTINGS.","MOVES AND GAME CONTROLS.","THREE MEDALS FOR EVERY FIGHTER."};line(120,140,descriptions[mode_row],true);}
+   if(group==12){static const char* descriptions[]={"ONE FIGHT. PICK YOUR ARENA.","FIVE RIVALS. THREE ARENAS.","TRAIN WITH A PRACTICE RIVAL.","YOUR SAVED ARCADE RECORDS.","MUSIC AND SOUND SETTINGS.","MOVES AND GAME CONTROLS.","THREE MEDALS PER FIGHTER."};line(120,140,descriptions[mode_row],true);}
    if(group==3&&arcade.active)line(120,139,arcade.continues?"REMATCH COSTS 1 CONTINUE":"NO REMATCH: NO CONTINUES",true);
    if(group==8){line(182,66,sound_settings.music?"ON":"OFF",true);line(182,90,sound_settings.sound?"ON":"OFF",true);}
    if(group==7){const auto&d=characters[selected];line(120,36,d.name,true,2);line(120,54,d.role,true);line(120,72,d.trait,true);line(120,86,d.tip1,true);line(120,98,d.tip2,true);if(d.melee_followup)line(120,136,"EEVEE CAN ALSO FOLLOW WITH A",true);}

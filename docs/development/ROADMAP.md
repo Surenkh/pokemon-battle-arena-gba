@@ -2,6 +2,10 @@
 
 **Design baseline · 2 November 2026 · Released game v0.9.0**
 
+The v0.9.1 candidate now implements the firing cues, menu text correction and
+Practice controls description. The measured response gate passes for all nine
+fighters. The five-person pilot remains open. [Candidate validation](../RESPONSIVE_FIRING_TEST_REPORT.md)
+
 **Ship v0.9.1 first.** When a player taps B, their Pokémon should visibly start its move. When they change an arena, they should enter the fight with the Pokémon they picked. Improve those two moments before adding reasons to play longer. The player we are designing for can start a short fight immediately, then use Practice and Arcade to get better with a favorite fighter.
 
 ## What the current game tells us

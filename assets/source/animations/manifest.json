@@ -211,7 +211,8 @@
           "direction": 2
         }
       },
-      "frame_count": 68
+      "frame_count": 68,
+      "fire_windup": "Charge"
     },
     "charmander": {
       "clips": {
@@ -412,7 +413,8 @@
           "direction": 2
         }
       },
-      "frame_count": 66
+      "frame_count": 66,
+      "fire_windup": "Shoot"
     },
     "squirtle": {
       "clips": {
@@ -622,7 +624,8 @@
           "direction": 2
         }
       },
-      "frame_count": 75
+      "frame_count": 75,
+      "fire_windup": "Charge"
     },
     "bulbasaur": {
       "clips": {
@@ -822,7 +825,8 @@
           "direction": 2
         }
       },
-      "frame_count": 65
+      "frame_count": 65,
+      "fire_windup": "Shoot"
     },
     "eevee": {
       "clips": {
@@ -1024,7 +1028,8 @@
           "direction": 2
         }
       },
-      "frame_count": 67
+      "frame_count": 67,
+      "fire_windup": "Shoot"
     },
     "meowth": {
       "clips": {
@@ -1226,7 +1231,8 @@
           "direction": 2
         }
       },
-      "frame_count": 67
+      "frame_count": 67,
+      "fire_windup": "Charge"
     },
     "psyduck": {
       "clips": {
@@ -1427,7 +1433,8 @@
           "direction": 0
         }
       },
-      "frame_count": 66
+      "frame_count": 66,
+      "fire_windup": "Charge"
     },
     "jigglypuff": {
       "clips": {
@@ -1634,7 +1641,8 @@
           "direction": 2
         }
       },
-      "frame_count": 72
+      "frame_count": 72,
+      "fire_windup": "Shoot"
     },
     "machop": {
       "clips": {
@@ -1834,7 +1842,8 @@
           "direction": 2
         }
       },
-      "frame_count": 65
+      "frame_count": 65,
+      "fire_windup": "Charge"
     }
   }
 }

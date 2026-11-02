@@ -8,15 +8,15 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.9.0 — Arenas & Fighter Mastery**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **0.9.1 — Responsive Firing**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.9.0** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.9.1** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
 Arcade samples five unique opponents from the other eight fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 27 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
 
-![Native mode menu](docs/media/mode-menu-native.png)
+![Native mode menu](docs/media/mode-menu-v091-native.png)
 
 ![Native nine-fighter selector](docs/media/nine-fighter-selector-native.png)
 
@@ -27,6 +27,8 @@ Normal fights end with a Poké Ball recalling the defeated Pokémon through an a
 CPU rivals now use fighter-specific spacing and attack preferences, varied tactical plans and stamina reserves. Easy leaves more openings; Normal mixes plans; Hard reacts and follows up more reliably. The AI reacts to delayed visible actions and remembers only a short history of repeated attacks.
 
 Nine fighter traits change movement, guard pressure, reach and counterattacks. A clean melee hit can lead into one projectile follow-up; Eevee can also follow with melee at close range. Follow-ups spend normal stamina and remain blockable. B on the title opens practice, with idle, blocking and attacking opponents, damage feedback and quick arena reset.
+
+Normal shots now show an immediate windup for Pikachu, Squirtle, Meowth, Psyduck and Machop. The firing cue appears by the second emulator frame after a sampled tap. See [response measurements](docs/RESPONSIVE_FIRING_TEST_REPORT.md).
 
 ## Three arenas and fighter mastery
 
@@ -77,7 +79,7 @@ Normal projectiles and supers have four-frame animations. Muzzle flashes, hit ef
 | A / Start in menus | Confirm / play |
 | B in menus | Back |
 | Select in Quick/Arcade selection | Fighter information |
-| Select in Practice setup | Choose fighter / dummy behavior / rival row |
+| Select in Practice setup | Choose fighter / dummy behavior / rival / arena row |
 | Left / Right in battle | Move |
 | Up / Down in battle | Jump / timed squeeze |
 | A / B in battle | Melee / fire |

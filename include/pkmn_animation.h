@@ -11,7 +11,10 @@ inline Pose attack_pose(int ch,Clip clip,int age,int startup,int active,int tota
 inline Pose fighter_pose(const CombatCore&core,int who){const auto&v=core.f[who];const auto&d=characters[v.character];int age=core.age(v)-1;if(age<0)age=0;
  if(v.action==HITSTUN||v.action==GUARD_BREAK)return loop_pose(v.character,CLIP_HURT,age,false);
  if(v.action==MELEE)return attack_pose(v.character,CLIP_ATTACK,age,d.melee_start,d.melee_active,d.melee_total);
- if(v.action==FIRE)return attack_pose(v.character,CLIP_SHOOT,age,d.fire_start,1,d.fire_total);
+ if(v.action==FIRE){
+  if(age<d.fire_start&&fire_charge_windup[v.character])return loop_pose(v.character,CLIP_CHARGE,age);
+  return attack_pose(v.character,CLIP_SHOOT,age,d.fire_start,1,d.fire_total);
+ }
  if(v.action==SUPER){if(age<super_startup_ticks)return loop_pose(v.character,CLIP_CHARGE,age);return attack_pose(v.character,CLIP_SHOOT,age-super_startup_ticks+1,1,3,super_recovery_ticks+4);}
  if(v.action==BLOCK||v.action==BLOCKSTUN)return loop_pose(v.character,CLIP_GUARD,core.tick);
  if(v.action==SQUEEZE){if(age>=squeeze_startup_ticks&&age<squeeze_startup_ticks+squeeze_active_ticks)return loop_pose(v.character,CLIP_SQUEEZE,age-squeeze_startup_ticks);return loop_pose(v.character,CLIP_LAND,age,false);}

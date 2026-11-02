@@ -1,0 +1,735 @@
+{
+  "status": "passed",
+  "checks": 707,
+  "rom_sha256": "7a3fe1a3b83c5c83f2d6fca169b9cc7958a1150a125bb4441aae762a1d180f01",
+  "sampled_trials": 90,
+  "cases": [
+    {
+      "character": "pikachu",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "pikachu",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "pikachu",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "pikachu",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "pikachu",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "pikachu",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "pikachu",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "pikachu",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "pikachu",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "pikachu",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "charmander",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "charmander",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "charmander",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "charmander",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "charmander",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "charmander",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "charmander",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "charmander",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "charmander",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "charmander",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "squirtle",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "squirtle",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "squirtle",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "squirtle",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "squirtle",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "squirtle",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "squirtle",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "squirtle",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "squirtle",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "squirtle",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "bulbasaur",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "bulbasaur",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 12
+    },
+    {
+      "character": "bulbasaur",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "bulbasaur",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "bulbasaur",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "bulbasaur",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "bulbasaur",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "bulbasaur",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 12
+    },
+    {
+      "character": "bulbasaur",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 12
+    },
+    {
+      "character": "bulbasaur",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 12
+    },
+    {
+      "character": "eevee",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "eevee",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "eevee",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "eevee",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "eevee",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "eevee",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "eevee",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "eevee",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "eevee",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "eevee",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "meowth",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "meowth",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "meowth",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "meowth",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "meowth",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "meowth",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "meowth",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "meowth",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "meowth",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "meowth",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 9
+    },
+    {
+      "character": "psyduck",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "psyduck",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "psyduck",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "psyduck",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "psyduck",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "psyduck",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "psyduck",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "psyduck",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "psyduck",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "psyduck",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 11
+    },
+    {
+      "character": "jigglypuff",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "jigglypuff",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 10
+    },
+    {
+      "character": "jigglypuff",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "jigglypuff",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "jigglypuff",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "jigglypuff",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "jigglypuff",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "jigglypuff",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 10
+    },
+    {
+      "character": "jigglypuff",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 10
+    },
+    {
+      "character": "jigglypuff",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 10
+    },
+    {
+      "character": "machop",
+      "action": "melee",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "machop",
+      "action": "fire",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 13
+    },
+    {
+      "character": "machop",
+      "action": "jump",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "machop",
+      "action": "squeeze",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "machop",
+      "action": "guard",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "machop",
+      "action": "super",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 31
+    },
+    {
+      "character": "machop",
+      "action": "right",
+      "phase": 0,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": null
+    },
+    {
+      "character": "machop",
+      "action": "fire",
+      "phase": 4,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 13
+    },
+    {
+      "character": "machop",
+      "action": "fire",
+      "phase": 8,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 13
+    },
+    {
+      "character": "machop",
+      "action": "fire",
+      "phase": 12,
+      "accepted_frame": 1,
+      "visible_frame": 2,
+      "release_frame": 13
+    }
+  ],
+  "held_and_rejected_fighters": 9,
+  "menu_descriptions": 7,
+  "peak_cpu_fraction": 0.685302734375,
+  "missed_display_frames": 0,
+  "method": "mGBA 0.10.2; one-frame physical inputs and matched no-input framebuffer replays; read-only telemetry",
+  "test_source": "tests/native_response_flow.py",
+  "test_source_sha256": "ed7c816094392029329223546c0a1168491e879ba9688ba9aa964f6e8cc97f25"
+}
