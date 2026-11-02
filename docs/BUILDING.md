@@ -103,3 +103,15 @@ python3 tests/native_navigation_flow.py
 This covers both product setup tasks, all fighter guide round trips, focus
 pixels and exhausted Arcade continues. Package with all eleven ROM-bound native
 reports. See [navigation validation](NAVIGATION_TEST_REPORT.md).
+
+For the v0.11 Practice gate, also run:
+
+```sh
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/practice_tests.cpp -o /tmp/pkmn_practice_tests
+/tmp/pkmn_practice_tests
+python3 tests/native_practice_flow.py
+```
+
+The native runner verifies all fighters, both drills, five training modes, retry
+latency, stale inputs, mastery exclusion and a real Practice KO. Release packaging
+requires all twelve ROM-bound native reports.

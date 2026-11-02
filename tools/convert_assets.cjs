@@ -28,11 +28,11 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
   ui.box(ctx,25,123,190,20);save('practice_'+kind,scene,'background');
  }
  require('./arena_art.cjs').masteryBadge(canvas,save);
- let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 9 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V0.10.0',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
+ let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 9 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V0.11.0',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
  function rosterCards(ctx){for(let i=0;i<names.length;i++){let x=8+i%3*76,y=18+Math.floor(i/3)*22;ui.box(ctx,x,y,72,21);ui.text(ctx,names[i],x+36,y+14,'#edf8f0',1,'center');}}
  function setupLabels(ctx,practice=false){
   ctx.fillStyle='#365573';ctx.fillRect(8,85,224,1);ctx.fillRect(8,143,224,1);
-  const labels=practice?['DUMMY','RIVAL','ARENA']:['LEVEL','ARENA'];
+  const labels=practice?['TRAINING','RIVAL','ARENA']:['LEVEL','ARENA'];
   labels.forEach((label,i)=>ui.text(ctx,label,25,88+i*13,'#edf8f0'));
   ui.text(ctx,'FIGHTER INFO',25,127,'#edf8f0');ui.text(ctx,'>',223,127,'#9db8c6');
  }

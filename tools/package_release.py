@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -110,11 +110,16 @@ Up/Down in settings: Choose a row. Left/Right: Change its value
 B in settings: Return to the same fighter card
 A on Fighter Info: Open guide. B: Return to its row
 A/Start on grid or value rows: Play. Start also plays from Info
-Select in practice: Reset arena, resources and statistics
+Select in practice: Retry with restored resources/positions and cleared statistics
+A fresh action works on emulator frame 8 after reset; Practice KOs restart in 14.
+Training options: Free, Block, Attack, Follow-up and Evade Super.
+Follow-up: Land A, then tap B when FOLLOW B appears.
+Evade Super: Let the rival charge, then jump or time Down to avoid its super.
+Drills show feedback from actual combat events and never award mastery.
 
 ARENAS AND FIGHTER MASTERY
 Quick Battle settings: Level, Arena and Fighter Info.
-Practice settings: Dummy, Rival, Arena and Fighter Info.
+Practice settings: Training, Rival, Arena and Fighter Info.
 Arcade arena rotation is informational; the cursor skips it.
 A check marks the chosen Pokemon, and an outline marks the focused row.
 All arenas share the same floor, hitboxes and combat rules.

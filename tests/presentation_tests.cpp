@@ -6,7 +6,7 @@ static int checks=0;
 int main(){
  for(int a=0;a<character_count;++a)for(int b=0;b<character_count;++b)for(int outcome=1;outcome<=3;++outcome)for(int practice=0;practice<2;++practice)
  for(int side=0;side<2;++side){CombatCore c;c.reset(a,b,17);c.outcome=outcome;c.f[0].x=(side?208:32)*256;c.f[1].x=(side?32:208)*256;
-  RoundPresentation p;p.begin(c,practice);auto before=c.checksum();bool expected=outcome<3&&!practice;CHECK(p.recall==expected);CHECK(p.duration()==(expected?156:60));
+  RoundPresentation p;p.begin(c,practice);auto before=c.checksum();bool expected=outcome<3&&!practice;CHECK(p.recall==expected);CHECK(p.duration()==(practice?6:expected?156:60));
   int seen=0,previous_scale=256;
   for(int frame=0;frame<p.duration();++frame){CHECK(p.age==frame);CHECK(!p.done());seen|=1<<p.phase();
    CHECK(p.ball_x_q8()>=16*256&&p.ball_x_q8()<=224*256);CHECK(p.body_scale_q8()>=16&&p.body_scale_q8()<=256);

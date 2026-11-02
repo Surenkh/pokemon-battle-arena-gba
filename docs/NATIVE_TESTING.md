@@ -118,3 +118,26 @@ borders, unique result highlighting and exhausted-continue routes. It sends GBA
 buttons and reads telemetry/framebuffer pixels without gameplay-memory writes.
 `pkmn_arcade_debug[20]` now exposes the focused pause/result choice. Other existing
 telemetry indices keep their meaning. Reports live in verification/v0.10.0/.
+
+## v0.11 Practice and drills
+
+Run `python3 tests/native_practice_flow.py`. It completes a damaging B follow-up
+and jump/squeeze super evasions for all nine fighters using normal GBA inputs.
+It measures manual retries and a real KO restart, clears stale inputs, freezes a
+charge during Pause and verifies Practice mastery exclusion. The new
+`pkmn_practice_debug` array has 16 read-only words.
+
+| Word | Value |
+| --- | --- |
+| 0 | Magic 0x50524143 |
+| 1–4 | Coaching feedback, completion, rival super started and released |
+| 5 | Remaining Practice Ready frames |
+| 6–8 | Incoming super active flag, x and attack identity |
+| 9 | A drill is active in Practice |
+| 10 | Four-bit mask of active or reserved projectile slots in Practice |
+| 11–12 | Player and rival pending action |
+| 13–15 | Reserved zeros |
+
+Reports live in verification/v0.11.0/. See
+[Practice validation](PRACTICE_DRILLS_TEST_REPORT.md) for frame definitions and
+coaching rules.

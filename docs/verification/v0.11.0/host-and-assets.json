@@ -1,0 +1,94 @@
+{
+  "status": "passed",
+  "rom_sha256": "c558f89f3efc88644d1803859a0605cf95d39a0fbb17fc5379517ef2a16d8072",
+  "host_suites": [
+    {
+      "suite": "combat",
+      "status": "passed",
+      "output": "PASS 15786295 assertions; 1620 seeded matches; all 81 ordered matchups."
+    },
+    {
+      "suite": "movement",
+      "status": "passed",
+      "output": "PASS 28352 movement and animation checks."
+    },
+    {
+      "suite": "feel",
+      "status": "passed",
+      "output": "PASS 139443 combat-feedback, pause, resource and input-buffer checks."
+    },
+    {
+      "suite": "depth",
+      "status": "passed",
+      "output": "PASS 35437 fighter-depth, follow-up and practice checks."
+    },
+    {
+      "suite": "cpu",
+      "status": "passed",
+      "output": "PASS 2029694 CPU assertions; 216 deterministic rounds; public perception, reaction delays, bounded memory, recovery, difficulty and replay. CPU bytes=4408"
+    },
+    {
+      "suite": "presentation",
+      "status": "passed",
+      "output": "PASS 658695 round-presentation checks; all fighters, outcomes, stage edges, practice, skip and checksum isolation."
+    },
+    {
+      "suite": "arcade",
+      "status": "passed",
+      "output": "PASS Arcade/save: 2700 roster runs; 9072000 bit-corruption cases; 840 interrupted writes; schema-1 migration, nine-fighter records, retries and sequence wraparound."
+    },
+    {
+      "suite": "roster",
+      "status": "passed",
+      "output": "PASS nine-fighter traits/animation checks; float airtime 47 versus 33 ticks, Psy Push knockback and Heavy Hands guard pressure."
+    },
+    {
+      "suite": "mastery",
+      "status": "passed",
+      "output": "PASS mastery: all nine fighters, real damaging follow-ups, jump/squeeze evasion, training exclusion, caps, schema-2/3 migration and 100 arena rotations; combat checksums unchanged."
+    },
+    {
+      "suite": "practice",
+      "status": "passed",
+      "output": "PASS 37206 practice checks; all nine fighters, real B follow-ups, jump/squeeze evasion, rejection, interruption, training exclusion and retry timing."
+    }
+  ],
+  "asset_suites": [
+    {
+      "command": [
+        "node",
+        "tests/assets_test.cjs"
+      ],
+      "status": "passed",
+      "output": "{\n  \"status\": \"passed\",\n  \"validated_frames\": 611,\n  \"characters\": [\n    {\n      \"name\": \"pikachu\",\n      \"frames\": 68,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"charmander\",\n      \"frames\": 66,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"squirtle\",\n      \"frames\": 75,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"bulbasaur\",\n      \"frames\": 65,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"eevee\",\n      \"frames\": 67,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"meowth\",\n      \"frames\": 67,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"psyduck\",\n      \"frames\": 66,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"jigglypuff\",\n      \"frames\": 72,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"machop\",\n      \"frames\": 65,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    }\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "tests/effects_assets_test.cjs"
+      ],
+      "status": "passed",
+      "output": "{\"status\":\"passed\",\"effects\":45,\"frames\":180,\"distinct_normal_silhouettes\":9}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tests/combat_audio_assets_test.py"
+      ],
+      "status": "passed",
+      "output": "PASS 39 original PCM effects: non-silent, bounded, ramped, importable; nine distinct themes per bank.\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python3",
+        "tests/presentation_assets_test.py"
+      ],
+      "status": "passed",
+      "output": "PASS 2225 presentation asset checks; 14 PCM cues, original 3-voice MOD, ball/beam/glint sprite imports.\n",
+      "stderr": ""
+    }
+  ]
+}
