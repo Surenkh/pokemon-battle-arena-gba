@@ -109,3 +109,12 @@ with held and rejected B, and side margins for all seven menu descriptions.
 The runner uses existing telemetry and never writes game memory. Its report is
 `tests/native_artifacts/response/report.json`. See
 [the validation report](RESPONSIVE_FIRING_TEST_REPORT.md) for frame definitions.
+
+## v0.10 navigation
+
+Run `python3 tests/native_navigation_flow.py`. The runner checks the two roadmap
+setup tasks, 27 fighter guide round trips, held/rapid confirmation, joined focus
+borders, unique result highlighting and exhausted-continue routes. It sends GBA
+buttons and reads telemetry/framebuffer pixels without gameplay-memory writes.
+`pkmn_arcade_debug[20]` now exposes the focused pause/result choice. Other existing
+telemetry indices keep their meaning. Reports live in verification/v0.10.0/.

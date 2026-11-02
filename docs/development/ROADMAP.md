@@ -2,11 +2,11 @@
 
 **Design baseline · 2 November 2026 · Released game v0.9.0**
 
-The v0.9.1 candidate now implements the firing cues, menu text correction and
-Practice controls description. The measured response gate passes for all nine
-fighters. The five-person pilot remains open. [Candidate validation](../RESPONSIVE_FIRING_TEST_REPORT.md)
-
-**Ship v0.9.1 first.** When a player taps B, their Pokémon should visibly start its move. When they change an arena, they should enter the fight with the Pokémon they picked. Improve those two moments before adding reasons to play longer. The player we are designing for can start a short fight immediately, then use Practice and Arcade to get better with a favorite fighter.
+v0.9.1 is implemented and merged. The **v0.10.0 candidate** now provides direct
+settings access, retained fighter selection, a visible Info action and consistent
+focus/Back controls. Both product setup tasks and all 27 guide round trips pass
+native automation. The five-person navigation pilot remains open.
+[Candidate validation](../NAVIGATION_TEST_REPORT.md)
 
 ## What the current game tells us
 
@@ -26,8 +26,8 @@ Each row ends in a build someone can play. The effort ranges are provisional han
 
 | Order | Playable iteration | Why it comes here | Release decision |
 | --- | --- | --- | --- |
-| 1 · v0.9.1 · 3–5 days | Immediate firing cues, starting with Machop and Pikachu. Repair the clipped Mastery description and list Arena in the Practice controls. | There is a measured, visible delay and a small visual repair that can ship independently. | Every fighter's eligible B tap visibly starts by frame 2 in all four replay phases. The projectile still spawns on its original tick. |
-| 2 · v0.10.0 · 4–7 days | Consistent focus, direct access to setup options, contextual button labels and predictable Back behavior. | Changing the stage currently changes the selected fighter along a natural route. This affects the choice made before combat. | From Pikachu, set Volcanic and fight as Pikachu with no roster traversal. At least 4 of 5 pilot players independently configure both requested setups. |
+| 1 · v0.9.1 · implemented | Immediate firing cues, starting with Machop and Pikachu. Repair the clipped Mastery description and list Arena in the Practice controls. | There is a measured, visible delay and a small visual repair that can ship independently. | Every fighter's eligible B tap visibly starts by frame 2 in all four replay phases. The projectile still spawns on its original tick. |
+| 2 · v0.10.0 · candidate | Consistent focus, direct access to setup options, contextual button labels and predictable Back behavior. | Changing the stage currently changes the selected fighter along a natural route. This affects the choice made before combat. | From Pikachu, set Volcanic and fight as Pikachu with no roster traversal. At least 4 of 5 pilot players independently configure both requested setups. |
 | 3 · v0.11.0 · 5–8 days | Fast Practice retry and two optional drills inside Practice. | Once controls and navigation are readable, players can learn what earns a follow-up or evades a super. | Practice accepts a fresh action within 15 display frames of reset. At least 4 of 5 learners perform both techniques against the dummy without verbal coaching. |
 | 4 · v0.12.0 · 3–6 days, conditional | Show a relevant mastery increment after a fight and a short scouting cue for the next Arcade rival. | The existing records, traits and medals can make a return match purposeful with little new content. | Prototype only if post-match observation shows players lack a next goal. Keep the feature if 4 of 5 can name their next goal and at least 3 voluntarily start another fight in the pilot. |
 | 5 · v1.0 candidate · 3–5 days plus device sessions | Human matchup review, hardware checks, save migration and release regression. | The nine-fighter roster needs to hold up across devices and skill levels before a stable launch. | Reproduce the input and menu gates, complete representative real-device runs, and resolve reproducible control, progression or performance blockers. |

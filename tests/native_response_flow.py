@@ -171,17 +171,17 @@ for character, definition in enumerate(CHARACTERS):
                                 accepted_frame=accepted, visible_frame=visible, release_frame=released))
     rejected_and_held(character)
 
-# Check the real runtime font, including every menu description's side margins.
+# Check the real runtime font, including every mode hint's side margins.
 game = Emulator()
 try:
     game.tap(8)
-    for row in range(7):
+    for row, y in enumerate((41, 56, 71, 96, 108, 120, 132)):
         game.frames(6)
         check(game.read(ARCADE)[17] == row, 'Expected visible mode row')
         picture = game.capture()
         for left, right in ((0, 8), (232, 240)):
-            edge = picture.crop((left, 133, right, 145))
-            check(all(min(pixel) < 180 for pixel in edge.getdata()), 'Menu description stays within side margins')
+            edge = picture.crop((left, y - 5, right, y + 6))
+            check(all(min(pixel) < 180 for pixel in edge.getdata()), 'Mode hint stays within side margins')
         if row == 6:
             picture.save(OUTPUT / 'mastery-menu.png')
         game.tap(128)
@@ -191,7 +191,7 @@ finally:
 check(missed == 0, 'Zero missed native display frames')
 report = dict(status='passed', checks=checks, rom_sha256=hashlib.sha256(ROM.read_bytes()).hexdigest(),
               sampled_trials=len(results), cases=results, held_and_rejected_fighters=len(CHARACTERS),
-              menu_descriptions=7, peak_cpu_fraction=peak / 4096, missed_display_frames=missed,
+              menu_hints=7, peak_cpu_fraction=peak / 4096, missed_display_frames=missed,
               method='mGBA 0.10.2; one-frame physical inputs and matched no-input framebuffer replays; read-only telemetry')
 (OUTPUT / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps({key: value for key, value in report.items() if key != 'cases'}, indent=2))

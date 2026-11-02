@@ -84,7 +84,7 @@ try:
  raw[40]^=1;save.write_bytes(raw);boot();check(read(audio)[1:3]==[0,1],'Corrupt newest copy falls back to schema-1 copy');choose(4);press(1);press(2)
  # Each new fighter has a guide and actual native movement/attack/charge VFX.
  for ch in (6,7,8):
-  choose(0);character(ch);press(4);check(state()[1]==10,'SELECT opens fighter information without R');capture('guide_'+chars[ch]['id']);press(2);press(2)
+  choose(0);character(ch);press(4);press(128);press(128);press(1);check(state()[1]==10,'Visible Info opens without R');capture('guide_'+chars[ch]['id']);press(2);press(2);press(2)
   choose(2);character(ch);capture('select_'+chars[ch]['id']);press(8);frames(185)
   check(state()[1]==3 and state()[6]==chars[ch]['max_hp'] and state()[8]==chars[ch]['max_stamina']*60 and state()[10]==100,'New fighter practice resources')
   pictures=[];record(55,0,chars[ch]['id']);record(100,16,chars[ch]['id']);press(64);record(60,0,chars[ch]['id']);press(1);record(36,0,chars[ch]['id']);press(2);record(40,0,chars[ch]['id']);press(512);record(12,512,chars[ch]['id']);frames(20);press(256);record(85,0,chars[ch]['id'])
@@ -97,8 +97,8 @@ try:
   check(finish(False)==2,'Idle player loses naturally');check(info()[4]==remaining and info()[3]==0,'Loss preserves opponent and waits for continue choice');capture('loss_'+str(remaining));clock=info()[6];frames(60);check(info()[6]==clock,'Result screen freezes run clock')
   if remaining:
    before_arena=read(mastery)[2];press(8);check(state()[1]==2 and info()[4]==remaining-1,'Continue consumes exactly one');check(read(mastery)[2]==before_arena,'Continue preserves current arena');frames(185)
-  else:press(8);check(state()[1]==12,'No third continue')
- press(2);check(state()[1]==15 and not info()[2],'End run returns to mode menu')
+  else:press(8);check(state()[1]==15,'Exhausted run finishes with A/Start')
+ check(state()[1]==15 and not info()[2],'End run returns to mode menu')
  # Actual external play, never gameplay memory writes, earns a five-win clear.
  champion=False
  for attempt in range(18):

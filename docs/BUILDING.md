@@ -93,3 +93,13 @@ python3 tests/native_response_flow.py
 This uses actual one-frame taps, matched idle framebuffer replays, held/rejected
 shots and native menu text bounds. Release packaging requires its ROM-bound
 report alongside the other nine native suites.
+
+The v0.10 navigation gate additionally requires:
+
+```sh
+python3 tests/native_navigation_flow.py
+```
+
+This covers both product setup tasks, all fighter guide round trips, focus
+pixels and exhausted Arcade continues. Package with all eleven ROM-bound native
+reports. See [navigation validation](NAVIGATION_TEST_REPORT.md).

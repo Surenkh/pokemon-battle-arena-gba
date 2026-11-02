@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -92,6 +92,7 @@ Five unique rivals from the other eight fighters. Two continues.
 Woodland, Volcanic and Shoreline rotate between rivals; retries keep the same arena.
 Full HP/stamina between fights; draws retry for free.
 Pause Rematch costs a continue; changing Pokemon ends the run.
+With zero continues Rematch is dimmed and skipped. A finishes an exhausted run.
 Records saves clears, no-continue clears and fastest total battle time.
 Battle time includes active frames and failed attempts; menus/countdown/recall are excluded.
 Unfinished runs do not resume after power-off.
@@ -104,14 +105,18 @@ All nine fighters have animated movement/attacks, unique themed VFX and sounds.
 
 PRACTICE
 Choose Practice from the mode menu
-SELECT in Quick/Arcade selection: Fighter guide
-Select in practice setup: Cycle fighter / behavior / rival / arena options
+Select in any fighter grid: Open settings directly for that Pokemon
+Up/Down in settings: Choose a row. Left/Right: Change its value
+B in settings: Return to the same fighter card
+A on Fighter Info: Open guide. B: Return to its row
+A/Start on grid or value rows: Play. Start also plays from Info
 Select in practice: Reset arena, resources and statistics
 
 ARENAS AND FIGHTER MASTERY
-Quick Battle: Move below the fighter grid to Level, then Arena. Left/Right changes it.
-Return to the grid to choose any fighter; A/Start plays from any setup row.
-Practice: Select cycles Fighter, Dummy, Rival and Arena rows; Left/Right changes an option.
+Quick Battle settings: Level, Arena and Fighter Info.
+Practice settings: Dummy, Rival, Arena and Fighter Info.
+Arcade arena rotation is informational; the cursor skips it.
+A check marks the chosen Pokemon, and an outline marks the focused row.
 All arenas share the same floor, hitboxes and combat rules.
 Fighter Mastery is a visible main-menu button. Left/Right changes the fighter.
 Earn three medals per fighter: 10 damaging follow-up hits, 5 successful super

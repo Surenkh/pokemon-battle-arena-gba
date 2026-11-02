@@ -42,7 +42,7 @@ def configure(ch,mode=0,opponent=None):
  while info()[3]!=mode:press(16)
  if opponent is not None:
   check(opponent!=ch,'Test does not select a mirror')
-  press(4)
+  press(128)
   for _ in range(9):
    if info()[4]==opponent:break
    press(16)

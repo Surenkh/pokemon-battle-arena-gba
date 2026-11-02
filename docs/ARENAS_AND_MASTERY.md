@@ -1,5 +1,8 @@
 # v0.9.0 — Arenas & Fighter Mastery
 
+The v0.10 setup controls are described in [navigation validation](NAVIGATION_TEST_REPORT.md).
+The contract below records the v0.9.0 implementation.
+
 ## Three arenas
 
 Woodland, Volcanic and Shoreline use the same flat floor, world bounds, spawn
