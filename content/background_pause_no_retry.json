@@ -1,0 +1,6 @@
+{
+  "id": "pause_no_retry",
+  "type": "background",
+  "name": "pause_no_retry",
+  "path": "graphics/pause_no_retry.bmp"
+}

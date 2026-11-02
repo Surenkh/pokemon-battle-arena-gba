@@ -1,14 +1,19 @@
 # Implementation status — 2 November 2026
 
-Playable candidate: **0.9.1 — Responsive Firing**, developed on
-`fix/firing-response` from the released v0.9.0 baseline and merged product roadmap.
-The combat ruleset and fighter/CPU parameters remain v0.8.0.
+Playable candidate: **0.10.0 — Clear Navigation**, developed on
+`feat/clear-navigation` from the merged v0.9.1 release.
 
-The v0.9.1 candidate uses an existing charge pose to acknowledge accepted normal
-shots for five fighters whose Shoot clip began in an idle pose. All 90 sampled
-tap trials respond visibly on frame 2. The Mastery menu description fits within
-the viewport, and player controls list the Practice Arena row. See
-[response validation](RESPONSIVE_FIRING_TEST_REPORT.md).
+Quick Battle, Arcade and Practice use Select for direct settings access. A check
+keeps the chosen fighter visible, and a gold outline follows the focused row.
+B from settings restores the same card. Fighter Info is a visible A action;
+Start plays directly from every setup row. Menu, Pause, results and audio share
+the focus treatment. Unavailable Arcade rematches are dimmed and skipped, and
+A visibly finishes an exhausted run.
+
+The native navigation suite completes both planned setup tasks, 27 guide round
+trips and rapid confirmations using real buttons. All 11 native suites pass
+with 14,275 checks and zero missed frames. The five-person menu pilot and physical
+hardware testing remain open. See [navigation validation](NAVIGATION_TEST_REPORT.md).
 
 The native game includes nine animated Pokémon, elemental attacks and sounds,
 stamina, hit-earned supers, follow-ups and fighter traits, three CPU difficulties,

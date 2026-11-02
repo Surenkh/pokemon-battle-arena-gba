@@ -8,17 +8,17 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.9.1 — Responsive Firing**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **0.10.0 — Clear Navigation**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.9.1** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.10.0** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
 Arcade samples five unique opponents from the other eight fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 27 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
 
-![Native mode menu](docs/media/mode-menu-v091-native.png)
+![Native mode menu](docs/media/navigation-menu-native.png)
 
-![Native nine-fighter selector](docs/media/nine-fighter-selector-native.png)
+![Native nine-fighter selector](docs/media/navigation-setup-native.png)
 
 The title and menus now play an original looping tune, with new navigation, countdown, pause, result and recall cues. Press **L** on the title or pause screen for independent **Music** and **Sound FX** controls. Both default to On with a moderate mix; choices save when you leave Audio Settings.
 
@@ -32,10 +32,16 @@ Normal shots now show an immediate windup for Pikachu, Squirtle, Meowth, Psyduck
 
 ## Three arenas and fighter mastery
 
-Choose **Woodland, Volcanic or Shoreline** in Quick Battle or Practice. Quick
-Battle has an Arena row below Level; Practice adds Arena as its fourth option.
-Configure the options, return to the grid to choose any fighter, then A/Start
-plays. Arcade rotates through all three arenas; retries preserve the current
+Choose **Woodland, Volcanic or Shoreline** in Quick Battle or Practice. Press
+**Select** from any fighter card to open settings directly. Up/Down chooses a
+row and Left/Right changes its value. A check marks the chosen Pokémon while a
+gold outline marks the focused row. **B** returns to the same card.
+
+**Fighter Info** is a visible settings action. A opens the guide and B restores
+its row. A/Start plays from the grid or a value row; Start also plays from Info.
+Quick Battle, Arcade and Practice share these controls. See [navigation validation](docs/NAVIGATION_TEST_REPORT.md).
+
+Arcade rotates through all three arenas; retries preserve the current
 stage. The arenas share the same floor, hitboxes and combat rules.
 
 **Fighter Mastery** is a visible main-menu button. Each Pokémon has three cosmetic
@@ -77,9 +83,9 @@ Normal projectiles and supers have four-frame animations. Muzzle flashes, hit ef
 | --- | --- |
 | D-pad in menus | Select a mode button, Pokémon or option |
 | A / Start in menus | Confirm / play |
-| B in menus | Back |
-| Select in Quick/Arcade selection | Fighter information |
-| Select in Practice setup | Choose fighter / dummy behavior / rival / arena row |
+| B in menus | Back to the originating row, fighter grid or mode |
+| Select in any fighter setup | Jump between the fighter grid and settings |
+| A on Fighter Info | Open the guide |
 | Left / Right in battle | Move |
 | Up / Down in battle | Jump / timed squeeze |
 | A / B in battle | Melee / fire |

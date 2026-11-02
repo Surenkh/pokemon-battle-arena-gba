@@ -93,9 +93,9 @@ def configure_practice(ch,stage,mode=0,rival=1):
     choose(2);fighter(ch)
     press(4)
     while read(depth)[3]!=mode:press(16)
-    press(4)
+    press(128)
     while read(depth)[4]!=rival:press(16)
-    press(4);check(read(depth)[2]==3,'Practice arena row reachable')
+    press(128);check(read(depth)[2]==3,'Practice arena row reachable')
     while info()[1]!=stage:press(16)
     fighter(ch)
 def finish_or_retry():
