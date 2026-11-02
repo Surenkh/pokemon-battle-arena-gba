@@ -10,6 +10,10 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 Version **0.12.0 — Match Goals & Rival Scouting**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
 
+![Gameplay highlights featuring Pikachu, Psyduck, Jigglypuff and Machop in three arenas](docs/media/battle-highlights-native.gif)
+
+*Four fighters, three arenas and super moves — captured from the v0.12.0 GBA release.*
+
 Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.12.0** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
@@ -84,8 +88,6 @@ and the pilot retention gate remain unverified. See [goal/scouting validation](d
 | Machop | Heavy Hands drains extra melee guard stamina | Fists and impact bursts |
 
 Normal projectiles and supers have four-frame animations. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
-
-![Native Poké Ball recall capture](docs/media/pokeball-recall-native.gif)
 
 [Watch the native music and recall preview](docs/media/sound-and-recall-native.mp4)
 
