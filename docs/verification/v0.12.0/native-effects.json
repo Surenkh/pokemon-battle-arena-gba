@@ -1,0 +1,101 @@
+{
+  "status": "passed",
+  "checks": 625,
+  "characters": [
+    {
+      "character": "pikachu",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 15,
+      "theme_mask": 65793,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.71923828125,
+      "missed_frames": 0
+    },
+    {
+      "character": "charmander",
+      "rounds": 2,
+      "player_supers": 1,
+      "effect_frame_mask": 255,
+      "theme_mask": 198406,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.741455078125,
+      "missed_frames": 0
+    },
+    {
+      "character": "squirtle",
+      "rounds": 1,
+      "player_supers": 2,
+      "effect_frame_mask": 15,
+      "theme_mask": 1285,
+      "peak_particles": 3,
+      "peak_cpu_fraction": 0.741455078125,
+      "missed_frames": 0
+    },
+    {
+      "character": "bulbasaur",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 15,
+      "theme_mask": 2313,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.741455078125,
+      "missed_frames": 0
+    },
+    {
+      "character": "eevee",
+      "rounds": 1,
+      "player_supers": 2,
+      "effect_frame_mask": 63,
+      "theme_mask": 37008,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.74462890625,
+      "missed_frames": 0
+    },
+    {
+      "character": "meowth",
+      "rounds": 1,
+      "player_supers": 2,
+      "effect_frame_mask": 15,
+      "theme_mask": 74016,
+      "peak_particles": 3,
+      "peak_cpu_fraction": 0.74462890625,
+      "missed_frames": 0
+    },
+    {
+      "character": "psyduck",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 15,
+      "theme_mask": 4214864,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.74609375,
+      "missed_frames": 0
+    },
+    {
+      "character": "jigglypuff",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 15,
+      "theme_mask": 41120,
+      "peak_particles": 4,
+      "peak_cpu_fraction": 0.766845703125,
+      "missed_frames": 0
+    },
+    {
+      "character": "machop",
+      "rounds": 1,
+      "player_supers": 1,
+      "effect_frame_mask": 15,
+      "theme_mask": 16844036,
+      "peak_particles": 3,
+      "peak_cpu_fraction": 0.766845703125,
+      "missed_frames": 0
+    }
+  ],
+  "wall_seconds": 8.47,
+  "method": "mGBA 0.10.2; physical button inputs; read-only telemetry; no game-memory writes",
+  "rom_sha256": "cce5c5b04141538d82c36190c31e295582e9021bc600a226beff2911bd8b8ec9",
+  "test_source": "tests/native_effects_flow.py",
+  "test_source_sha256": "7a2c9d3fde80a37829a80b0f30918cb3990ae03040a945279fd2d07420ba1171"
+}

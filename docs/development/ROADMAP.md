@@ -1,12 +1,19 @@
 # Pokémon Battle Arena product roadmap
 
-**Design baseline · 2 November 2026 · Released game v0.9.0**
+**Updated 2 November 2026 · Released game v0.11.0 · v0.12.0 candidate**
 
-The **v0.11.0 candidate** implements fast Practice retry and two optional drills
-on the validated v0.10 navigation branch. Manual reset accepts a fresh action on
-frame 8 and KO restart on frame 14. All nine fighters complete the follow-up,
-jump and squeeze goals in native tests. The learner pilot and transfer into
-Quick Battle remain open. [Candidate validation](../PRACTICE_DRILLS_TEST_REPORT.md)
+The v0.9.1 response, v0.10.0 navigation and v0.11.0 Practice iterations are
+merged. The [v0.11.0 release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.11.0)
+includes both optional drills and fast retry. The uncoached navigation/learning
+pilots and physical-device testing remain open.
+
+The **v0.12.0 candidate — Match Goals & Rival Scouting** implements the next
+roadmap idea as a playable prototype: one relevant mastery line on existing
+results and an authored trait/counter cue for the actual upcoming Arcade rival.
+A newly earned medal takes priority; otherwise the line shows an actual match
+increment or the next unfinished goal. The observation condition for this
+iteration has not been established by a human pilot. Its retention decision
+remains open. [Implementation and pilot protocol](../MATCH_GOALS_TEST_REPORT.md)
 
 ## What the current game tells us
 
@@ -27,9 +34,9 @@ Each row ends in a build someone can play. The effort ranges are provisional han
 | Order | Playable iteration | Why it comes here | Release decision |
 | --- | --- | --- | --- |
 | 1 · v0.9.1 · implemented | Immediate firing cues, starting with Machop and Pikachu. Repair the clipped Mastery description and list Arena in the Practice controls. | There is a measured, visible delay and a small visual repair that can ship independently. | Every fighter's eligible B tap visibly starts by frame 2 in all four replay phases. The projectile still spawns on its original tick. |
-| 2 · v0.10.0 · candidate | Consistent focus, direct access to setup options, contextual button labels and predictable Back behavior. | Changing the stage currently changes the selected fighter along a natural route. This affects the choice made before combat. | From Pikachu, set Volcanic and fight as Pikachu with no roster traversal. At least 4 of 5 pilot players independently configure both requested setups. |
-| 3 · v0.11.0 · candidate | Fast Practice retry and two optional drills inside Practice. | Once controls and navigation are readable, players can learn what earns a follow-up or evades a super. | Practice accepts a fresh action within 15 display frames of reset. At least 4 of 5 learners perform both techniques against the dummy without verbal coaching. |
-| 4 · v0.12.0 · 3–6 days, conditional | Show a relevant mastery increment after a fight and a short scouting cue for the next Arcade rival. | The existing records, traits and medals can make a return match purposeful with little new content. | Prototype only if post-match observation shows players lack a next goal. Keep the feature if 4 of 5 can name their next goal and at least 3 voluntarily start another fight in the pilot. |
+| 2 · v0.10.0 · implemented | Consistent focus, direct access to setup options, contextual button labels and predictable Back behavior. | Changing the stage currently changes the selected fighter along a natural route. This affects the choice made before combat. | From Pikachu, set Volcanic and fight as Pikachu with no roster traversal. At least 4 of 5 pilot players independently configure both requested setups. |
+| 3 · v0.11.0 · implemented | Fast Practice retry and two optional drills inside Practice. | Once controls and navigation are readable, players can learn what earns a follow-up or evades a super. | Practice accepts a fresh action within 15 display frames of reset. At least 4 of 5 learners perform both techniques against the dummy without verbal coaching. |
+| 4 · v0.12.0 · playable prototype | Show a relevant mastery increment after a fight and a short scouting cue for the next Arcade rival. | The existing records, traits and medals can make a return match purposeful with little new content. | Implementation is ready for the previously conditional pilot; the lack-of-goal observation is still unverified. Keep the feature if 4 of 5 can name their next goal and at least 3 voluntarily start another fight. Rework or remove it if those gates fail. |
 | 5 · v1.0 candidate · 3–5 days plus device sessions | Human matchup review, hardware checks, save migration and release regression. | The nine-fighter roster needs to hold up across devices and skill levels before a stable launch. | Reproduce the input and menu gates, complete representative real-device runs, and resolve reproducible control, progression or performance blockers. |
 
 ## First iteration backlog
@@ -64,7 +71,7 @@ The two uncoached tasks are **“Start as Pikachu in Volcanic after reading its 
 
 **Practice.** Start with one repeatable clean melee into B against an idle rival. Then give the rival one visible super and let the player jump or squeeze through it. Show one short explanation per attempt, such as “Blocked” or “Pressed before the opening,” only when the combat events support it. Retry in place, clear stale presses and restore the drill position and resources. Free Practice stays available and medal progress belongs to regular fights. After the two drills, ask players to attempt one technique in Quick Battle. Record how many can transfer what they learned. [Practice implementation](../../include/pkmn_practice.h) · [Fighter depth](../FIGHTER_DEPTH.md)
 
-**Arcade and mastery.** Put one line on the existing results panel, for example “Pikachu follow-ups 6 → 7 / 10.” On the existing next-rival panel, try one actionable hint, for example “Machop drains guard stamina. Leave room to retreat.” Use the selected fighter's actual session delta and the next rival's authored trait. Give Rematch or Next Rival the same input count as today. Observe a fixed ten-minute free-play period on each build and record replays and players' reasons. A small pilot can select a design for further testing. [Existing progression rules](../ARENAS_AND_MASTERY.md) · [Nine fighter traits](../NINE_FIGHTERS.md)
+**Arcade and mastery — v0.12.0 prototype implemented.** The design below is now playable; the human observation and retention gate remain open. Put one line on the existing results panel, for example “Pikachu follow-ups 6 → 7 / 10.” On the existing next-rival panel, try one actionable hint, for example “Machop drains guard stamina. Leave room to retreat.” Use the selected fighter's actual session delta and the next rival's authored trait. Give Rematch or Next Rival the same input count as today. Observe a fixed ten-minute free-play period on each build and record replays and players' reasons. A small pilot can select a design for further testing. [Existing progression rules](../ARENAS_AND_MASTERY.md) · [Nine fighter traits](../NINE_FIGHTERS.md)
 
 **Stable release.** Start with rushdown against guard pressure, ranged pushback and a floaty jump against long reach. Have human players swap sides and report whether they recognized what beat them and could try a counter. Use the 81 ordered CPU matchups to catch regressions. Test legacy SRAM, power-cycle records and mastery, and rehearse a five-rival run on a physical GBA. Require zero missed frames on the native suite and no increase over the v0.9.0 busiest Arcade transition. Profile new menu work toward 90% of a frame or less. Delay additional visuals if that budget slips. [Native testing](../NATIVE_TESTING.md) · [Save compatibility](../ARENAS_AND_MASTERY.md)
 

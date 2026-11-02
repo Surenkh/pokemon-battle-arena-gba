@@ -141,3 +141,32 @@ charge during Pause and verifies Practice mastery exclusion. The new
 Reports live in verification/v0.11.0/. See
 [Practice validation](PRACTICE_DRILLS_TEST_REPORT.md) for frame definitions and
 coaching rules.
+
+## v0.12 match goals and rival scouting
+
+Run `python3 tests/native_goals_flow.py`. This uses real controls, read-only
+telemetry and exact framebuffer/font-mask comparisons. Schema-3 SRAM fixtures
+are prepared offline before boot to establish counter boundaries. Follow-up,
+super-evade and no-continue increments are then actually earned through play.
+The runner covers all nine fighters/cues, unchanged counts, capped medals,
+fresh Rematch baselines, power cycles, exhausted runs and one-confirm paths.
+No test writes live gameplay memory. The 32-word `pkmn_goals_debug` array is
+separate from earlier telemetry:
+
+| Word | Value |
+| --- | --- |
+| 0 | Magic 0x474f414c |
+| 1 | A regular result goal is available on the current screen |
+| 2 | Goal: 0 none, 1 follow-ups, 2 evades, 3 no-continue, 4 all medals |
+| 3–5 | Chosen goal's before, after and target |
+| 6 | This match advanced the chosen goal |
+| 7 | Fighter whose baseline was captured |
+| 8 | Actual scouting rival index plus one, or zero for none |
+| 9 | Scouting is available on this screen |
+| 10 | Rendered text bits: 1 goal, 2 scouting, 4 medal notice, 8 save warning |
+| 11–31 | Reserved zeros |
+
+Goal text uploads on the third result frame, the retained save/medal notice on
+the fourth, and the scouting cue on the fifth. Those labels do not delay input
+or add a screen. Reports live in verification/v0.12.0/. See
+[goal/scouting validation](MATCH_GOALS_TEST_REPORT.md) for the open human pilot.
