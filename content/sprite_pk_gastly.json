@@ -1,0 +1,8 @@
+{
+  "id": "pk_gastly",
+  "type": "sprite",
+  "name": "pk_gastly",
+  "path": "graphics/pk_gastly.bmp",
+  "width": 64,
+  "height": 64
+}

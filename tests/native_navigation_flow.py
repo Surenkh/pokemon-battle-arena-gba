@@ -113,7 +113,7 @@ def choose(mode):
 
 def fighter(character):
     check(read()[1] in (1, 9) and row() == 0, 'Fighter grid is focused')
-    for _ in range(9):
+    for _ in range(13):
         if read()[2] == character:
             break
         tap(16)
@@ -177,7 +177,7 @@ try:
     tap(4)
     tap(16)
     tap(128)
-    for _ in range(9):
+    for _ in range(13):
         if read(DEPTH)[4] == 2:
             break
         tap(16)
@@ -196,7 +196,7 @@ try:
     # Every roster card uses the same Select, Info and Back convention.
     for mode in (0, 1, 2):
         choose(mode)
-        for character in range(9):
+        for character in range(13):
             fighter(character)
             before = (read()[4], read(DETAIL)[1], read(DEPTH)[3:5])
             tap(4)

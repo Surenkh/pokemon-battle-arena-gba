@@ -1,0 +1,8 @@
+{
+  "id": "pk_totodile",
+  "type": "sprite",
+  "name": "pk_totodile",
+  "path": "graphics/pk_totodile.bmp",
+  "width": 64,
+  "height": 64
+}

@@ -43,7 +43,7 @@ def configure(ch,mode=0,opponent=None):
  if opponent is not None:
   check(opponent!=ch,'Test does not select a mirror')
   press(128)
-  for _ in range(9):
+  for _ in range(13):
    if info()[4]==opponent:break
    press(16)
   check(info()[4]==opponent,'Choose dummy character')

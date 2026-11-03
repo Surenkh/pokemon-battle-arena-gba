@@ -1,0 +1,540 @@
+[
+  {
+    "character": "vulpix",
+    "upstream": "sprite/0037",
+    "revision": "18c8a218537b984839803b95d588382624a8301a",
+    "files": [
+      {
+        "file": "AnimData.xml",
+        "sha256": "d6b486c0c54950b1da64ac3649f5960003adc2da705f7f4f22384d92ac962890",
+        "bytes": 12032
+      },
+      {
+        "file": "Attack-Anim.png",
+        "sha256": "b9fb6516c1050a257cd80001c0b03f0b14e574727408d98adb8751338d95966a",
+        "bytes": 22086
+      },
+      {
+        "file": "Attack-Offsets.png",
+        "sha256": "9e4cbccd49f0aa6876c51633e2060879e47b24b916360cfa0a0b7e1a9e0b1840",
+        "bytes": 2773
+      },
+      {
+        "file": "Charge-Anim.png",
+        "sha256": "adf9b64ab9eee86e0fa95fbf8a44d019c3d795733f7090ed0139add1a0ec1983",
+        "bytes": 6629
+      },
+      {
+        "file": "Charge-Offsets.png",
+        "sha256": "3917c63772ed5a490b2d55f6cdaac1f0bf3521d53cbefcc7cfa7fdb6c814d51c",
+        "bytes": 905
+      },
+      {
+        "file": "Cringe-Anim.png",
+        "sha256": "9f75412ae506fa5163d6e30568f82a8a02b215b13a347dcb985d16f71f6c2bb0",
+        "bytes": 874
+      },
+      {
+        "file": "Cringe-Offsets.png",
+        "sha256": "c71a8f503938281ce541cfc9460523ac24bc59a5c383ea13348a737fc43049b1",
+        "bytes": 116
+      },
+      {
+        "file": "Faint-Anim.png",
+        "sha256": "5f15d867ee6909e3ba7b55e4bae9dba54b7da669552f1b125b644802f4301cc7",
+        "bytes": 4070
+      },
+      {
+        "file": "Faint-Offsets.png",
+        "sha256": "591da7d55feab3f62bd5f126174d1f2a1816c056bde8dbc654c633844f393375",
+        "bytes": 421
+      },
+      {
+        "file": "Hop-Anim.png",
+        "sha256": "83489f17a5519a6f5b7717e0df9a26237b3c1676d9a01b8bbf77588d72857db5",
+        "bytes": 16350
+      },
+      {
+        "file": "Hop-Offsets.png",
+        "sha256": "775b8d82d35f77b1338073067c22812df456c45812493510f8a6cf24c17b30e9",
+        "bytes": 1494
+      },
+      {
+        "file": "Hurt-Anim.png",
+        "sha256": "bc0a225deafffdf982286279cdb7784bed63f984e91212ba7b25dda979715531",
+        "bytes": 5540
+      },
+      {
+        "file": "Hurt-Offsets.png",
+        "sha256": "3e769997d33dd1a6a1753d96c746cfbe5579cb648042b26a88306f75fd5b3755",
+        "bytes": 413
+      },
+      {
+        "file": "Idle-Anim.png",
+        "sha256": "365953294d7e2fc734e7ae2889cde72ef085ce3e6e5896f6b964bf36022a386a",
+        "bytes": 5734
+      },
+      {
+        "file": "Idle-Offsets.png",
+        "sha256": "fb2986852dcf684babf72f3e3e1f70e36f8ca995cfee4e1d96707150ff8b3ba6",
+        "bytes": 517
+      },
+      {
+        "file": "Laying-Anim.png",
+        "sha256": "cd2ff9adc3a4cbf7d377998d18f35409f85a1cbd02f96a2fae1cf437d2fadbba",
+        "bytes": 851
+      },
+      {
+        "file": "Laying-Offsets.png",
+        "sha256": "aaa92424f8378ed8abf5de107ad603a8be8590048c89596c10001c2326de7dd2",
+        "bytes": 153
+      },
+      {
+        "file": "Pose-Anim.png",
+        "sha256": "a8d6ef24a92f564676bb2ae12b67a16098e86a8e87d4175bade3f30d74dcc75e",
+        "bytes": 4944
+      },
+      {
+        "file": "Pose-Offsets.png",
+        "sha256": "05e1d71cc2502b6271e27bd7abef3fd6542471f5fa7c6ceb670085fc9bbeef0a",
+        "bytes": 591
+      },
+      {
+        "file": "Shoot-Anim.png",
+        "sha256": "663684a20421dae0d78aa4329e0ecac95a9d19240725d96761a2c3555483a3f1",
+        "bytes": 16189
+      },
+      {
+        "file": "Shoot-Offsets.png",
+        "sha256": "64f07e68a6e0dd4f7e3c3220c0d38f40e32f0b849e1544387bf53696c3bbe5c1",
+        "bytes": 1724
+      },
+      {
+        "file": "Sit-Anim.png",
+        "sha256": "6c7be19f1c080c573bb530c292b1e7c4d4ae3c813ca7301f24018b9bc3977026",
+        "bytes": 1078
+      },
+      {
+        "file": "Sit-Offsets.png",
+        "sha256": "657e6fff1fc9d62fb1fbbb03b71f75571994cabf5214e350ea764671147a81a7",
+        "bytes": 131
+      },
+      {
+        "file": "Sleep-Anim.png",
+        "sha256": "4bfd2670da692f245208d2519623b7d6e9c19fa91c6c4a699d2b84709fb273d2",
+        "bytes": 647
+      },
+      {
+        "file": "Sleep-Offsets.png",
+        "sha256": "3ebab7cd448d687c59d8cee628a42076c452c234a138fb835feeeccc03e48570",
+        "bytes": 112
+      },
+      {
+        "file": "Walk-Anim.png",
+        "sha256": "e2d911614423ffa3675f60d653d947394d5a587cf53a688cd13ab3322c157925",
+        "bytes": 8926
+      },
+      {
+        "file": "Walk-Offsets.png",
+        "sha256": "5e6e7cfb23c3c1da7b7cc2cbb4b99cf6a02086abcb2739d2056585cafe451a33",
+        "bytes": 697
+      },
+      {
+        "file": "credits.txt",
+        "sha256": "1ce879fcef8a4e0fd1c6ac4921a321505fc613837dfad81a31f1a7f38f3eacc5",
+        "bytes": 299
+      }
+    ]
+  },
+  {
+    "character": "gastly",
+    "upstream": "sprite/0092",
+    "revision": "18c8a218537b984839803b95d588382624a8301a",
+    "files": [
+      {
+        "file": "AnimData.xml",
+        "sha256": "9e294db4b4b11f63e9de09237cbf376786b697511719e9d323053d0a40ffb72f",
+        "bytes": 5622
+      },
+      {
+        "file": "Attack-Anim.png",
+        "sha256": "81dc99320325ec3d9fc86f625bfd221857ca78da75770107f71523e7ae39624b",
+        "bytes": 31199
+      },
+      {
+        "file": "Attack-Offsets.png",
+        "sha256": "ec6851cebd5ad108625f6c624c1ccfb75b53269e98622c5fc020060ec949ca51",
+        "bytes": 3207
+      },
+      {
+        "file": "Charge-Anim.png",
+        "sha256": "b5c03fe287b4418a2335003bb1adfbf39f8d67f01433d9ae8439f6df788adbbe",
+        "bytes": 9763
+      },
+      {
+        "file": "Charge-Offsets.png",
+        "sha256": "d5382d2321763b3b13808e918a7faa2a1a5e835cea01ec7e597373a8bcb4b3e6",
+        "bytes": 1380
+      },
+      {
+        "file": "Hop-Anim.png",
+        "sha256": "609dc4e4169d60fc9247798ac86ebc0681d9441e809f0db84cf5305dcb59c549",
+        "bytes": 28817
+      },
+      {
+        "file": "Hop-Offsets.png",
+        "sha256": "ac6473fe3a880fb4ca27cd952e869dcaf2211a65774c3ca207663b112a0a89c6",
+        "bytes": 2527
+      },
+      {
+        "file": "Hurt-Anim.png",
+        "sha256": "08dd2d4e2e288beaaab5330d912a0d78759ed8c2cf217125b9d47317e17f5f8f",
+        "bytes": 7085
+      },
+      {
+        "file": "Hurt-Offsets.png",
+        "sha256": "d13e9e5996a6d6c0303cab50202226db9671c68a2641a936ff217cc9f4f59ae2",
+        "bytes": 489
+      },
+      {
+        "file": "Idle-Anim.png",
+        "sha256": "fab0e9c1c3c5444b03bdbd570c7a24d73f2e25fb35f27b407a6c9f53dc63cd11",
+        "bytes": 12516
+      },
+      {
+        "file": "Idle-Offsets.png",
+        "sha256": "1b9f7beb1ddf26df67f598f3ce7aef2a0bab8f129fa04a04cc58d95567e27900",
+        "bytes": 1061
+      },
+      {
+        "file": "Shoot-Anim.png",
+        "sha256": "6abab6503c80fb109d0a39f14d2ad508285aef70436d7f00e001301e4f31c108",
+        "bytes": 20794
+      },
+      {
+        "file": "Shoot-Offsets.png",
+        "sha256": "1975ac2a56f382e2d6d816b3493877dca5db9e4be9b61b6a493e5134024f9492",
+        "bytes": 1980
+      },
+      {
+        "file": "Sleep-Anim.png",
+        "sha256": "fcde7ccb101587916b597d8974fcedae70b27b1b15c840061873eccf0631f7f3",
+        "bytes": 1558
+      },
+      {
+        "file": "Sleep-Offsets.png",
+        "sha256": "b735d5a7189bcd1355b1d4b42cd8e35f675d2c0df497643a4ae5a85fcf64b383",
+        "bytes": 190
+      },
+      {
+        "file": "Walk-Anim.png",
+        "sha256": "d60535fae6d2d131c6ba5d75a776446753eef826d956a3827172631d4ed5878f",
+        "bytes": 22076
+      },
+      {
+        "file": "Walk-Offsets.png",
+        "sha256": "0ecd75a8cce898d84da3de31b66471ae3c29e483c9f0155f2296de27edb1d6d2",
+        "bytes": 2188
+      },
+      {
+        "file": "credits.txt",
+        "sha256": "7c23ffa99b6376d5650df4b47ba248844e4dd93046b09cef19c021d99a1dacca",
+        "bytes": 129
+      }
+    ]
+  },
+  {
+    "character": "riolu",
+    "upstream": "sprite/0447",
+    "revision": "18c8a218537b984839803b95d588382624a8301a",
+    "files": [
+      {
+        "file": "AnimData.xml",
+        "sha256": "d3aff04667f64b5c9f410122b068103a0723a3f840211951b0462dbfa069c948",
+        "bytes": 12421
+      },
+      {
+        "file": "Attack-Anim.png",
+        "sha256": "d86befd1a8603bbb103e1b841e360ff4ddc543895ec75a270e1ac364d6f44757",
+        "bytes": 24835
+      },
+      {
+        "file": "Attack-Offsets.png",
+        "sha256": "7b82b2ac267e98fbb093a5fe0e8dcdb378ae48b6f2bc0701a9f7e5305f9efaf5",
+        "bytes": 3658
+      },
+      {
+        "file": "Charge-Anim.png",
+        "sha256": "a29482a71f60dec81eee9d9e2463b6d9c63cb75fcbeb3bb5444f5e869514742d",
+        "bytes": 5518
+      },
+      {
+        "file": "Charge-Offsets.png",
+        "sha256": "7bba48483cfbf9360243551385fa61df81aebd2f43602085d77cfffce5488b23",
+        "bytes": 792
+      },
+      {
+        "file": "Cringe-Anim.png",
+        "sha256": "a6921a2a0ec752f0dc6bcc6bb0b6ba49c498d16ebdf7ecdf18164180a0eaeea1",
+        "bytes": 786
+      },
+      {
+        "file": "Cringe-Offsets.png",
+        "sha256": "2fcf225c9c07e4097315dc74005b8e4932ef3e414222817ad488fb755025a763",
+        "bytes": 113
+      },
+      {
+        "file": "Faint-Anim.png",
+        "sha256": "49a983a9e3ff56f12283b8aa5292b74893ea63e353876d7b42d7a5f68bc38e2e",
+        "bytes": 3568
+      },
+      {
+        "file": "Faint-Offsets.png",
+        "sha256": "ad726f2c043f93f5d3443facbfd0b872cf684f3c19dc34a03d6b2121494e4ac5",
+        "bytes": 505
+      },
+      {
+        "file": "Hop-Anim.png",
+        "sha256": "48b18986ee98f9da1900c906d398f393d95d123e5f7f0f13bf7bcfeb9d6ce623",
+        "bytes": 18857
+      },
+      {
+        "file": "Hop-Offsets.png",
+        "sha256": "e62fc6f12d7f4415f96a3897c6e44f7e4fbce8c274db31f4b88744e226b33fc4",
+        "bytes": 1604
+      },
+      {
+        "file": "Hurt-Anim.png",
+        "sha256": "b9c3065fd85bfbea2fdfcb653ad956cf72caa15493a305cdfe71002427756e99",
+        "bytes": 4519
+      },
+      {
+        "file": "Hurt-Offsets.png",
+        "sha256": "59b22d6da14db15c5cd8f8dc6076876d32db01d2eabf7835c447fdfc653d4370",
+        "bytes": 415
+      },
+      {
+        "file": "Idle-Anim.png",
+        "sha256": "34f45f1881d734d012c778c9ef689b591a9ef678646845e134908b7b5d8c8f98",
+        "bytes": 5615
+      },
+      {
+        "file": "Idle-Offsets.png",
+        "sha256": "b988a263928bf9126d428472bd740b6769b12965f8b66f893d2ff9bd427a48a6",
+        "bytes": 545
+      },
+      {
+        "file": "Laying-Anim.png",
+        "sha256": "adb5dc60627cff3a2ef95f841822f58dfa4bf323d373df30bcbb0e34b69b0cdd",
+        "bytes": 940
+      },
+      {
+        "file": "Laying-Offsets.png",
+        "sha256": "20826430b08348a74a5877b0584d761f329e3c10dc56b47d6e3da7e062ba909e",
+        "bytes": 178
+      },
+      {
+        "file": "Pose-Anim.png",
+        "sha256": "8504780070b3409bce5e8961265b2b88becb4ddc8132319e3199d352739c8961",
+        "bytes": 4156
+      },
+      {
+        "file": "Pose-Offsets.png",
+        "sha256": "86f7a765367e8dcd16e35d41b22b3583cdf563e6a3ca90dfc9f366f3b21a36b0",
+        "bytes": 581
+      },
+      {
+        "file": "RearUp-Anim.png",
+        "sha256": "74f6e93e584ce2bdac97d89a61846ea2269895aa7f934a03bfc4cb76b748d618",
+        "bytes": 12659
+      },
+      {
+        "file": "RearUp-Offsets.png",
+        "sha256": "144843f604df7f45cb83411e2da0df978826b8b9d2b7f244464c0718d52660c8",
+        "bytes": 1203
+      },
+      {
+        "file": "Sit-Anim.png",
+        "sha256": "6ebc021480df5e6697748b01ad54e6206e9399bd79e71d084b09616e49af59e2",
+        "bytes": 1013
+      },
+      {
+        "file": "Sit-Offsets.png",
+        "sha256": "5631284a93e64624345fef301ff26d907eb14074be54cfc39cbb85ce77007b5f",
+        "bytes": 124
+      },
+      {
+        "file": "Sleep-Anim.png",
+        "sha256": "69957683ee045d065cc9c92adc139dfb12d1563a3f89ed857dcb623b5cff2ba5",
+        "bytes": 658
+      },
+      {
+        "file": "Sleep-Offsets.png",
+        "sha256": "92281fac0535d82246c07f39ff0a96e1aee96ee13dfc13212b0afc48d97f426e",
+        "bytes": 115
+      },
+      {
+        "file": "Walk-Anim.png",
+        "sha256": "6816ceb6127395063a69ad22a661a0374d72698edb26ce9ffee8b552211e64e0",
+        "bytes": 6460
+      },
+      {
+        "file": "Walk-Offsets.png",
+        "sha256": "582f61be96a3a2a7fae77f7a90cba7de15ebdb436e15768772b4bf6d182c4048",
+        "bytes": 521
+      },
+      {
+        "file": "credits.txt",
+        "sha256": "d3fcf51948d6a9daaa9254b8d1cbf99f702f8013a2ead9101a3101509b1bffb7",
+        "bytes": 298
+      }
+    ]
+  },
+  {
+    "character": "totodile",
+    "upstream": "sprite/0158",
+    "revision": "18c8a218537b984839803b95d588382624a8301a",
+    "files": [
+      {
+        "file": "AnimData.xml",
+        "sha256": "3ce03826cf0cfb5c5b49ad7d5e4fcc98db58ed0842b3cbc24a2a3823a44eb634",
+        "bytes": 11786
+      },
+      {
+        "file": "Attack-Anim.png",
+        "sha256": "9a7df37116f1d28d4522436faad96f8d9ac10dc71594ed0c8e5a963d014e7cdf",
+        "bytes": 19194
+      },
+      {
+        "file": "Attack-Offsets.png",
+        "sha256": "52e4d7d1b5644f0917dc9e9e237206ca9bc5e2a738f91c19527354e3ffd07389",
+        "bytes": 2506
+      },
+      {
+        "file": "Charge-Anim.png",
+        "sha256": "4ddbfc8be470553886bbbda8a3dd9796e5f76586998feec307c30a94ded3529d",
+        "bytes": 5891
+      },
+      {
+        "file": "Charge-Offsets.png",
+        "sha256": "8632df596798e7bf199793533a690a2f809cbc8325a33aa93b453224d8e5a982",
+        "bytes": 727
+      },
+      {
+        "file": "Cringe-Anim.png",
+        "sha256": "6298a269e48eec64a4997d280323df04ffb88c0495b3890161336dc47e4dcf5f",
+        "bytes": 794
+      },
+      {
+        "file": "Cringe-Offsets.png",
+        "sha256": "741868cf357c5153eb23a2fc054f5c2d0d5d5a3d02822b4e6f900290f4de6504",
+        "bytes": 117
+      },
+      {
+        "file": "Faint-Anim.png",
+        "sha256": "a39db868d1ce7478e5c54193de52b7a6cfb911daa3c706dd8f83aa6297990654",
+        "bytes": 4124
+      },
+      {
+        "file": "Faint-Offsets.png",
+        "sha256": "bd60e0c20948e7ec1be4696dcaf195e172ee2ea7139e1f8bb062206ce37a850f",
+        "bytes": 609
+      },
+      {
+        "file": "Hop-Anim.png",
+        "sha256": "4c0ccbfae3bd9c94a548f74655c9127991a5cad650e500eb20e61d1cf1413b6c",
+        "bytes": 19998
+      },
+      {
+        "file": "Hop-Offsets.png",
+        "sha256": "db2b196f5ea5c131fa7f61a206f311a5432546b62eda4f2c0d56b4b620236871",
+        "bytes": 1763
+      },
+      {
+        "file": "Hurt-Anim.png",
+        "sha256": "690cdf2b79058149595315b01c048c31b12d4f8061e37ee5d97c2df6d35d08eb",
+        "bytes": 5515
+      },
+      {
+        "file": "Hurt-Offsets.png",
+        "sha256": "0fdae21eba396ce8c5764f3bedeeb86f4e74a22079eba9259e3bb62e4e58b41a",
+        "bytes": 440
+      },
+      {
+        "file": "Idle-Anim.png",
+        "sha256": "d8630f045d6f98c967c350b717de88380e0167832f69e810fb44a29f3c35e6b8",
+        "bytes": 13396
+      },
+      {
+        "file": "Idle-Offsets.png",
+        "sha256": "39b79d0e3c925b7f9033c797791fe2b4428105b1d18808916ed444c105f5e5a1",
+        "bytes": 997
+      },
+      {
+        "file": "Laying-Anim.png",
+        "sha256": "df2bc39731f35d25f4d9269b0983f60dddeb18cb9a8f0bfd7d2b4b3a7721eee5",
+        "bytes": 1026
+      },
+      {
+        "file": "Laying-Offsets.png",
+        "sha256": "fc31e709a44822ff58ada7cdeb7fc0677e81ab9defe091f93b38dc12a2d07c72",
+        "bytes": 175
+      },
+      {
+        "file": "Pose-Anim.png",
+        "sha256": "5ecfb50bb326b7d86cb8fb7d6d18e002990e959e61b3ae6aeafa7809e6ede68e",
+        "bytes": 2424
+      },
+      {
+        "file": "Pose-Offsets.png",
+        "sha256": "84939bd0df117f23958b1e47766d8b1c6afc44615023d8ae076fed957823b9e5",
+        "bytes": 331
+      },
+      {
+        "file": "Shoot-Anim.png",
+        "sha256": "2b69368116502a4b23fc57f873af6aaab69c74e429fa3ec2b47303de2314229e",
+        "bytes": 18125
+      },
+      {
+        "file": "Shoot-Offsets.png",
+        "sha256": "19caefa27549deeda73c7bc5458c039257eb51f1b209acbde46a06f8c71b1177",
+        "bytes": 2021
+      },
+      {
+        "file": "Sit-Anim.png",
+        "sha256": "43b9a6d0fd6161c13b181d9037ecc23da9fe114dfaf71c80b4b6615e3aba894b",
+        "bytes": 987
+      },
+      {
+        "file": "Sit-Offsets.png",
+        "sha256": "cd2786929d4accdf454e6301026a62e1bb9253c707c2157e886a130a92119e6d",
+        "bytes": 129
+      },
+      {
+        "file": "Sleep-Anim.png",
+        "sha256": "9ef3d47cf6ec6871498b1b6803f4ca3e3733662b14ec90760fa4b6a43736f7b6",
+        "bytes": 685
+      },
+      {
+        "file": "Sleep-Offsets.png",
+        "sha256": "a5034e4904e97d815ac03a9122d87feab600bf5fbeb5503bd723e5c0a05ec2e7",
+        "bytes": 111
+      },
+      {
+        "file": "Walk-Anim.png",
+        "sha256": "12205a823bdd91aad1c7db5e554f4ce2dfd3a9b190aa152874d632e9e8cc47a4",
+        "bytes": 6896
+      },
+      {
+        "file": "Walk-Offsets.png",
+        "sha256": "aef3136c075804c2a78e68ec2b45b61134ee5ea43241a453a719f35434255f64",
+        "bytes": 531
+      },
+      {
+        "file": "credits.txt",
+        "sha256": "bca761e282ff7879255988b62aeb4b19fb5fa47ddf15a6b5c8ab24a7559190a3",
+        "bytes": 285
+      }
+    ]
+  }
+]

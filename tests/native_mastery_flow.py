@@ -66,7 +66,7 @@ def fighter(ch):
         while info()[3]:press(64)
     elif state()[1]==9:
         while read(depth)[2]:press(4)
-    for _ in range(9):
+    for _ in range(13):
         if state()[2]==ch:break
         press(16)
     check(state()[2]==ch,'Select requested fighter')
@@ -137,13 +137,13 @@ try:
     boot();capture('title-v09');choose(6);check(info()[4:8]==[0,0,0,0],'New mastery starts empty');capture('mastery-empty')
     press(1);check(state()[1]==14,'Mastery links to Records');press(1);check(state()[1]==16,'Records links to Mastery');press(2);capture('mode-menu-v09')
     # Three regular stages, live effects and frozen pause behavior.
-    for stage in range(3):
+    for stage in range(5):
         setup_quick(0,stage);capture('arena-selector-'+str(stage));play();check(info()[2]==stage,'Quick Battle uses selected arena')
         frames(30);press(2);frames(20);capture('arena-'+str(stage))
         press(8);frozen=state()[5:21];frames(60);check(state()[5:21]==frozen,'Pause freezes combat on each stage');change();press(2)
         arena_checks.append(dict(arena=stage,quick=True,pause=True))
     # Practice supports the same stage set and cannot farm mastery.
-    for stage in range(3):
+    for stage in range(5):
         configure_practice(0,stage);play();approach();frames(1,1);frames(1)
         for _ in range(50):
             if read(feel,'v')[14] in (7,8):break
@@ -161,8 +161,8 @@ try:
     while state()[4]!=2:press(128)
     check(read(arcade)[8:11]==[27,8,16200],'Last legacy fighter record retained');press(2)
     choose(4);press(1);press(2);close()
-    raw=bytearray(save.read_bytes());check(struct.unpack_from('<I',raw,4)[0]==3,'Migration writes schema 3')
-    raw[40]^=1;save.write_bytes(raw);boot();check(read(audio)[1:3]==[0,0],'Corrupt schema-3 falls back to valid schema-2 copy');close()
+    raw=bytearray(save.read_bytes());check(struct.unpack_from('<I',raw,1028)[0]==4,'Migration writes schema 4')
+    raw[1024+40]^=1;save.write_bytes(raw);boot();check(read(audio)[1:3]==[0,0],'Corrupt schema-4 falls back to valid schema-2 copy');close()
     # Earn a complete new medal through actual regular fights from zero.
     save.unlink();boot();setup_quick(0,1);play();followup_policy();check(info()[4]==10 and info()[7]>=1,'Ten resolved follow-ups earn a mastery medal');capture('followup-medal-earned')
     change();followups=info()[4];check(not info()[8],'Leaving fight saves earned mastery');press(2);choose(6);fighter(0);capture('mastery-followup-medal');close()
@@ -170,6 +170,6 @@ try:
     setup_quick(3,2,1);play();evade_policy();evades=info()[5];check(evades>=1,'Actual CPU super evasion advances mastery');capture('real-super-evaded');change();close()
     boot();choose(6);fighter(3);check(info()[5]==evades,'Super-evasion counter survives power cycle');capture('mastery-evade-progress')
     check(not menu_keys&0x300,'All new menu paths use no shoulder shortcuts');check(missed==0,'Zero missed native display frames')
-    report=dict(status='passed',checks=checks,arenas=arena_checks,mastery_menu=True,regular_followup_hits=followups,regular_super_evades=evades,completed_medal=True,practice_excluded=True,schema2_migration=True,mixed_schema_corruption_recovery=True,mastery_power_cycle=True,save_schema=3,save_copy_bytes=420,menu_keys=menu_keys,no_shoulder_required_in_menus=True,regular_matches_completed=match_count,peak_cpu_fraction=peak/4096,missed_display_frames=missed,rom_sha256=hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2 real button inputs and read-only telemetry; native captures and SRAM power cycles; frozen legacy fixture for migration, new mastery earned from zero in regular matches; no gameplay-memory writes')
+    report=dict(status='passed',checks=checks,arenas=arena_checks,mastery_menu=True,regular_followup_hits=followups,regular_super_evades=evades,completed_medal=True,practice_excluded=True,schema2_migration=True,mixed_schema_corruption_recovery=True,mastery_power_cycle=True,save_schema=4,save_copy_bytes=596,menu_keys=menu_keys,no_shoulder_required_in_menus=True,regular_matches_completed=match_count,peak_cpu_fraction=peak/4096,missed_display_frames=missed,rom_sha256=hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2 real button inputs and read-only telemetry; native captures and SRAM power cycles; frozen legacy fixture for migration, new mastery earned from zero in regular matches; no gameplay-memory writes')
     (out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 finally:close()

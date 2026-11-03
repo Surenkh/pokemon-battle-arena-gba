@@ -25,7 +25,7 @@ MAIN, GOALS, MASTERY, ARCADE, FEEL, DEPTH = map(symbol, [
     'pkmn_arcade_debug', 'pkmn_feel_debug', 'pkmn_depth_debug'])
 CHARACTERS = json.loads((ROOT / 'config/balance.json').read_text())['characters']
 ACTIONS = ['KEEP SOME SPACE', 'JUMP FIRE', 'USE SUPER', 'BAIT THEN CLOSE',
-           'BLOCK FIRST A', 'AVOID MISSED A', 'JUMP THE PULSE', 'PUNISH LANDING', 'LEAVE SPACE']
+           'BLOCK FIRST A', 'AVOID MISSED A', 'JUMP THE PULSE', 'PUNISH LANDING', 'LEAVE SPACE', 'KEEP SOME SPACE', 'PUNISH LANDING', 'AVOID MISSED A', 'LEAVE SPACE']
 FONT = Image.open(ROOT / 'docs/pkfont.png').convert('RGB')
 SAVE = OUT / 'goals.sav'
 process = None
@@ -111,19 +111,19 @@ def close():
 
 
 def fixture(fighter=0, followups=0, evades=0, perfect=False):
-    """Valid schema-3 bytes prepared BEFORE boot; no live gameplay writes."""
+    """Valid schema-4 bytes prepared BEFORE boot; no live gameplay writes."""
     close()
-    words = [0] * 105
-    words[:4] = [0x504b4d38, 3, 1, 3]
-    words[85 + fighter * 2:87 + fighter * 2] = [followups, evades]
+    words = [0] * 149
+    words[:4] = [0x504b4d38, 4, 1, 3]
+    words[121 + fighter * 2:123 + fighter * 2] = [followups, evades]
     if perfect:
         words[4 + fighter * 9:7 + fighter * 9] = [1, 1, 600]
-    payload = struct.pack('<104I', *words[:-1])
+    payload = struct.pack('<148I', *words[:-1])
     checksum = 2166136261
     for value in payload:
         checksum = ((checksum ^ value) * 16777619) & 0xffffffff
     data = bytearray(32768)
-    data[:420] = payload + struct.pack('<I', checksum)
+    data[1024:1620] = payload + struct.pack('<I', checksum)
     SAVE.write_bytes(data)
 
 
@@ -146,7 +146,7 @@ def choose(mode, fighter=0, level=0):
             break
         tap(128)
     tap(1)
-    for _ in range(9):
+    for _ in range(13):
         if read()[2] == fighter:
             break
         tap(16)
@@ -278,7 +278,7 @@ try:
 
     # Both the longer fighter name and the longest fallback line fit. Every
     # fighter gets its own snapshot rather than borrowing the prior selection.
-    for fighter in range(9):
+    for fighter in range(13):
         fixture(fighter, 10, 5)
         boot()
         choose(0, fighter)
@@ -323,7 +323,7 @@ try:
     exhausted_seen = True
     advances = 0
     for attempt in range(20):
-        fighter = 3 if attempt % 2 == 0 else 2
+        fighter = 3 if attempt % 2 == 0 else 4
         fixture(fighter, 10, 5)
         boot()
         frames(attempt * 7)
@@ -368,9 +368,9 @@ try:
                 check(read(ARCADE)[4] == before[1], 'Winning/drawing never spends a continue')
             advances += 1
             frames(185)
-        if len(scouts) == 9 and perfect_clear and loss_seen:
+        if len(scouts) == len(CHARACTERS) and perfect_clear and loss_seen:
             break
-    check(len(scouts) == 9, 'All nine actual Arcade rivals display their own cue')
+    check(len(scouts) == len(CHARACTERS), 'All thirteen actual Arcade rivals display their own cue')
     check(champion_seen and perfect_clear and loss_seen, 'Actual wins, paid losses and a no-continue Champion validated')
     check(missed == 0, 'Zero missed display frames')
     report = dict(status='passed', checks=checks, cases=cases, scouting_fighters=sorted(scouts),
@@ -380,7 +380,7 @@ try:
                   practice_excluded=True, native_glyph_masks=True, unchanged_confirm_paths=True,
                   peak_cpu_fraction=peak / 4096, missed_display_frames=missed,
                   rom_sha256=hashlib.sha256(ROM.read_bytes()).hexdigest(), wall_seconds=round(time.time() - started, 2),
-                  method='mGBA 0.10.2 real GBA keys, read-only telemetry and exact native font masks; valid schema-3 SRAM fixtures prepared offline before boot, actual earned increments and five-rival clears; no gameplay-memory writes')
+                  method='mGBA 0.10.2 real GBA keys, read-only telemetry and exact native font masks; valid schema-4 SRAM fixtures prepared offline before boot, actual earned increments and five-rival clears; no gameplay-memory writes')
     (OUT / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({key: value for key, value in report.items() if key != 'cases'}, indent=2))
 finally:

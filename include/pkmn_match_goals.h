@@ -57,7 +57,8 @@ public:
 // trait + ": " + action fits within 28 native eight-pixel glyphs.
 inline constexpr const char* scouting_actions[character_count]={
  "KEEP SOME SPACE", "JUMP FIRE", "USE SUPER", "BAIT THEN CLOSE",
- "BLOCK FIRST A", "AVOID MISSED A", "JUMP THE PULSE", "PUNISH LANDING", "LEAVE SPACE"
+ "BLOCK FIRST A", "AVOID MISSED A", "JUMP THE PULSE", "PUNISH LANDING", "LEAVE SPACE",
+ "KEEP SOME SPACE", "PUNISH LANDING", "AVOID MISSED A", "LEAVE SPACE"
 };
 
 // Called after Arcade's existing advance. Wins scout the next rival; a draw

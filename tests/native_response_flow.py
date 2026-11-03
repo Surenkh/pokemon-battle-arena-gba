@@ -132,7 +132,7 @@ def rejected_and_held(character):
         attack_tick = game.read(DEPTH)[27]
         while state[16] == 3:
             state = game.frames(keys=2)
-        check(state[7] == CHARACTERS[(character + 1) % 9]['max_hp'], 'First shot is still traveling')
+        check(state[7] == CHARACTERS[(character + 1) % len(CHARACTERS)]['max_hp'], 'First shot is still traveling')
         game.frames()
         state = game.frames(keys=2)
         check(state[16] != 3 and state[27] != 5, 'Occupied projectile slot rejects B without a charge pose')

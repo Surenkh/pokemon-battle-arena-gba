@@ -255,6 +255,118 @@
       "sha256": "adc171baff7045d319de3768cfcdbe57e3cd5c283cb58926d2cd4d1330ab5f6e"
     },
     {
+      "name": "shot_fx_9",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "3f81d734e3662c632f2e472ea3018e6fdbe57ed192ef4f4ead9ff65dc83207ac"
+    },
+    {
+      "name": "hit_fx_9",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "c5628c966cac0781e65b23114e70dcb96eeab506cc7e94c80f6764db47bdc7ad"
+    },
+    {
+      "name": "charge_fx_9",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "ec56d1180a763fcf3ce13a4824ca6821ffc2f438131168fe7b7e2d6b9d0a3f2d"
+    },
+    {
+      "name": "release_fx_9",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 23592,
+      "sha256": "2ff209b6503aba5c8befb6dbfd361cf69c5a5dd0c8d71f96d583bd9f7d64207f"
+    },
+    {
+      "name": "shot_fx_10",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 13631,
+      "sha256": "5be605a679a3f838075e1840a2c8bbbf409fb5da1b4ac8dd677b1e3262795e32"
+    },
+    {
+      "name": "hit_fx_10",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 11796,
+      "sha256": "c16ad16c33fcfcb07ecbaec58d9403878c1579630154752a3ea5d29d4a62744f"
+    },
+    {
+      "name": "charge_fx_10",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 14020,
+      "sha256": "a25327f58e6bb956c030eafa1270da9f5241a091ab412536f7d61f7e374ebc84"
+    },
+    {
+      "name": "release_fx_10",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 14444,
+      "sha256": "4bab3a8a4ce6f8cceb2673b2a2405e7493cd68c398b8a4d6f0e190b6ec02cbcc"
+    },
+    {
+      "name": "shot_fx_11",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 17992,
+      "sha256": "1142738e971839dbed9ee9c1c7c8e4ccd291dd5446733ab69f6352d6524e9f49"
+    },
+    {
+      "name": "hit_fx_11",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 18359,
+      "sha256": "a57c003f2383bbbbc046f3007ec8fb7a7050fa553656d4a1383e6799048d2937"
+    },
+    {
+      "name": "charge_fx_11",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 20103,
+      "sha256": "0d12ed0e1e0668b0530e59cfa7fcdc30ad447a2a360653bbfde1d7277b073c6f"
+    },
+    {
+      "name": "release_fx_11",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 19609,
+      "sha256": "a260de71b22dd03609358a47eeedbf46bd46eb9bbaec91558d0a32d4de3e93b7"
+    },
+    {
+      "name": "shot_fx_12",
+      "samples": 1884,
+      "rate": 16384,
+      "peak": 19174,
+      "sha256": "89583e32a50ff5f519438c96b4cd902e4764635490678065b26d41ce5db2dd19"
+    },
+    {
+      "name": "hit_fx_12",
+      "samples": 1638,
+      "rate": 16384,
+      "peak": 16653,
+      "sha256": "cb579b15207618fc7fd48dca7114c059b39f9479cb72adfa26a1d95a1dd1a5df"
+    },
+    {
+      "name": "charge_fx_12",
+      "samples": 2048,
+      "rate": 16384,
+      "peak": 21091,
+      "sha256": "f43075c7b84c55fbfb07945a693d8abd76ec020745d6026a87d4d1a5ef31cf71"
+    },
+    {
+      "name": "release_fx_12",
+      "samples": 3932,
+      "rate": 16384,
+      "peak": 19690,
+      "sha256": "ccf48ec1e71c48c993ecf49f9cb32476e3203eb9f6a22e9c21bc2d9d296c0e83"
+    },
+    {
       "name": "guard_break",
       "samples": 2949,
       "rate": 16384,

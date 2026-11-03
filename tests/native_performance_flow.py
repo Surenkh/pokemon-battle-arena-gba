@@ -98,26 +98,26 @@ def right_text(picture, value, y):
 
 
 def fixture():
-    """Prepare bounded schema-3 values offline; all navigation uses GBA keys."""
+    """Prepare bounded schema-4 values offline; all navigation uses GBA keys."""
     values = []
-    words = [0] * 105
-    words[:4] = [0x504b4d38, 3, 10, 3]
-    for index in range(27):
+    words = [0] * 149
+    words[:4] = [0x504b4d38, 4, 10, 3]
+    for index in range(39):
         record = [100 + index, index + 1, (1000 + index * 23) * 60]
         if index == 0:
             record = [999999, 999999, 0xffffffff]
-        elif index == 26:
+        elif index == 38:
             record = [0, 0, 0]
         words[4 + index * 3:7 + index * 3] = record
         values.append(record)
-    for fighter in range(9):
-        words[85 + fighter * 2:87 + fighter * 2] = [fighter, fighter % 5]
-    payload = struct.pack('<104I', *words[:-1])
+    for fighter in range(13):
+        words[121 + fighter * 2:123 + fighter * 2] = [min(fighter,10), fighter % 5]
+    payload = struct.pack('<148I', *words[:-1])
     checksum = 2166136261
     for byte in payload:
         checksum = ((checksum ^ byte) * 16777619) & 0xffffffff
     data = bytearray(32768)
-    data[:420] = payload + struct.pack('<I', checksum)
+    data[1024:1620] = payload + struct.pack('<I', checksum)
     SAVE.write_bytes(data)
     return values
 
@@ -162,8 +162,8 @@ def records_pass(values, muted):
             if read()[4] == level:
                 break
             tap(128)
-        for fighter in range(9):
-            for _ in range(9):
+        for fighter in range(13):
+            for _ in range(13):
                 if read()[2] == fighter:
                     break
                 tap(16)
@@ -177,13 +177,13 @@ def records_pass(values, muted):
             entries += 1
             tap(1)
             check(read()[1] == 16 and read()[2] == fighter, 'A opens Mastery for the same fighter')
-            check(read(MASTERY)[4:6] == [fighter, fighter % 5], 'Mastery snapshot remains intact')
+            check(read(MASTERY)[4:6] == [min(fighter,10), fighter % 5], 'Mastery snapshot remains intact')
             tap(1)
             check(read()[1] == 14 and read()[4] == level, 'A returns to the same Records entry')
-    for _ in range(90):
+    for _ in range(130):
         previous = read()[2]
         frames(1, 16)
-        check(read()[2] == (previous + 1) % 9, 'A one-frame direction changes fighter immediately')
+        check(read()[2] == (previous + 1) % 13, 'A one-frame direction changes fighter immediately')
         frames(1)
         check(read(ARCADE)[8:11] == values[read()[2] * 3 + read()[4]], 'Rapid navigation never shows another entry')
         switches += 1
@@ -217,7 +217,7 @@ try:
                   records_peak_cpu_fraction=records_peak / 4096, peak_cpu_fraction=peak / 4096,
                   missed_display_frames=missed, rom_sha256=hashlib.sha256(ROM.read_bytes()).hexdigest(),
                   wall_seconds=round(time.time() - started, 2),
-                  method='mGBA 0.10.2 real GBA keys, per-frame read-only telemetry and exact framebuffer glyph masks; bounded schema-3 SRAM fixture prepared offline before boot, audio save and actual SRAM restart; no gameplay-memory writes')
+                  method='mGBA 0.10.2 real GBA keys, per-frame read-only telemetry and exact framebuffer glyph masks; bounded schema-4 SRAM fixture prepared offline before boot, audio save and actual SRAM restart; no gameplay-memory writes')
     (OUTPUT / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps(report, indent=2))
 finally:

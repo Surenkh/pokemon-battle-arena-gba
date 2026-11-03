@@ -30,23 +30,28 @@ struct Progress {
  int medals(int fighter)const{return int(mastery[fighter].followups>=mastery_followup_goal)+int(mastery[fighter].evades>=mastery_evade_goal)+int(no_continue(fighter));}
  void complete(const ArcadeRun&run){if(!run.finished)return;auto&r=record(run.fighter,run.difficulty);if(r.clears<999999)++r.clears;if(!run.used&&r.perfect<999999)++r.perfect;if(!r.best_ticks||run.ticks<r.best_ticks)r.best_ticks=run.ticks;}
 };
-// Schema 3 appends two bounded mastery counters per fighter. Original records
-// keep their offsets; schema 1/2 checksums use their original payload lengths.
-// The no-continue medal is derived from records, including migrated records.
+// Each legacy schema has a frozen size independent of the expanded roster.
+inline constexpr int save_schema=4,save_characters=13;
+static_assert(character_count==save_characters,"A roster change needs an explicit save migration");
+inline constexpr int save_offsets[2]={1024,2048},legacy_save_offsets[2]={0,512};
 inline constexpr int mastery_offset=4+record_count*3;
 inline constexpr int save_words=6+record_count*3+character_count*2;
 struct SaveSlot {uint32_t words[save_words]={};};
-static_assert(sizeof(SaveSlot)<512,"Each save copy fits its independent slot");
+static_assert(sizeof(SaveSlot)<1024,"Each save copy fits its independent slot");
+inline int schema_characters(uint32_t schema){return schema==1?6:schema<4?9:save_characters;}
+inline int schema_words(uint32_t schema){int count=schema_characters(schema);return 6+count*9+(schema>=3?count*2:0);}
 inline uint32_t save_checksum(const SaveSlot&s,int count=save_words){uint32_t h=2166136261u;for(int i=0;i<count-1;++i)for(int b=0;b<4;++b){h^=(s.words[i]>>(b*8))&255;h*=16777619u;}return h;}
-inline SaveSlot encode_save(const Progress&p,uint32_t sequence){SaveSlot s;s.words[0]=0x504b4d38;s.words[1]=3;s.words[2]=sequence;s.words[3]=uint32_t(p.music)|(uint32_t(p.sound)<<1);for(int i=0;i<record_count;++i){s.words[4+i*3]=p.records[i].clears;s.words[5+i*3]=p.records[i].perfect;s.words[6+i*3]=p.records[i].best_ticks;}for(int i=0;i<character_count;++i){s.words[mastery_offset+i*2]=p.mastery[i].followups;s.words[mastery_offset+i*2+1]=p.mastery[i].evades;}s.words[save_words-1]=save_checksum(s);return s;}
+inline SaveSlot encode_save(const Progress&p,uint32_t sequence){SaveSlot s;s.words[0]=0x504b4d38;s.words[1]=save_schema;s.words[2]=sequence;s.words[3]=uint32_t(p.music)|(uint32_t(p.sound)<<1);for(int i=0;i<record_count;++i){s.words[4+i*3]=p.records[i].clears;s.words[5+i*3]=p.records[i].perfect;s.words[6+i*3]=p.records[i].best_ticks;}for(int i=0;i<character_count;++i){s.words[mastery_offset+i*2]=p.mastery[i].followups;s.words[mastery_offset+i*2+1]=p.mastery[i].evades;}s.words[save_words-1]=save_checksum(s);return s;}
 inline bool valid_save(const SaveSlot&s){
- if(s.words[0]!=0x504b4d38||s.words[1]<1||s.words[1]>3||s.words[3]>3)return false;
- int records=s.words[1]==1?18:record_count,count=s.words[1]==3?save_words:6+records*3;
+ if(s.words[0]!=0x504b4d38||s.words[1]<1||s.words[1]>save_schema||s.words[3]>3)return false;
+ int fighters=schema_characters(s.words[1]),records=fighters*3,count=schema_words(s.words[1]);
  if(s.words[count-2]!=0||s.words[count-1]!=save_checksum(s,count))return false;
  for(int i=0;i<records;++i){uint32_t clears=s.words[4+i*3],perfect=s.words[5+i*3],best=s.words[6+i*3];if(clears>999999||perfect>clears||bool(clears)!=bool(best))return false;}
- if(s.words[1]==3)for(int i=0;i<character_count;++i)if(s.words[mastery_offset+i*2]>mastery_followup_goal||s.words[mastery_offset+i*2+1]>mastery_evade_goal)return false;
+ if(s.words[1]>=3)for(int i=0;i<fighters;++i)if(s.words[4+records*3+i*2]>mastery_followup_goal||s.words[4+records*3+i*2+1]>mastery_evade_goal)return false;
  return true;
 }
-inline int newest_save(const SaveSlot&a,const SaveSlot&b){bool av=valid_save(a),bv=valid_save(b);if(!av)return bv?1:-1;if(!bv)return 0;uint32_t delta=b.words[2]-a.words[2];return delta&&delta<0x80000000u?1:0;}
-inline Progress decode_save(const SaveSlot&s){Progress p;p.music=s.words[3]&1;p.sound=s.words[3]&2;int count=s.words[1]==1?18:record_count;for(int i=0;i<count;++i)p.records[i]={s.words[4+i*3],s.words[5+i*3],s.words[6+i*3]};if(s.words[1]==3)for(int i=0;i<character_count;++i)p.mastery[i]={s.words[mastery_offset+i*2],s.words[mastery_offset+i*2+1]};return p;}
+inline int newest_save_version(const SaveSlot&a,const SaveSlot&b,int minimum,int maximum){bool av=valid_save(a)&&int(a.words[1])>=minimum&&int(a.words[1])<=maximum,bv=valid_save(b)&&int(b.words[1])>=minimum&&int(b.words[1])<=maximum;if(!av)return bv?1:-1;if(!bv)return 0;uint32_t delta=b.words[2]-a.words[2];return delta&&delta<0x80000000u?1:0;}
+inline int newest_save(const SaveSlot&a,const SaveSlot&b){return newest_save_version(a,b,1,save_schema);}
+inline int select_save(const SaveSlot&a,const SaveSlot&b,const SaveSlot&legacy_a,const SaveSlot&legacy_b){int current=newest_save_version(a,b,save_schema,save_schema);if(current>=0)return current;int legacy=newest_save_version(legacy_a,legacy_b,1,save_schema-1);return legacy<0?-1:legacy+2;}
+inline Progress decode_save(const SaveSlot&s){Progress p;p.music=s.words[3]&1;p.sound=s.words[3]&2;int fighters=schema_characters(s.words[1]),count=fighters*3;for(int i=0;i<count;++i)p.records[i]={s.words[4+i*3],s.words[5+i*3],s.words[6+i*3]};if(s.words[1]>=3)for(int i=0;i<fighters;++i)p.mastery[i]={s.words[4+count*3+i*2],s.words[4+count*3+i*2+1]};return p;}
 }

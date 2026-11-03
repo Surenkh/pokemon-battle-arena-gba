@@ -60,9 +60,9 @@ int main(){
  SaveSlot old;fixture.seekg(512);fixture.read(reinterpret_cast<char*>(&old),sizeof(old));
  assert(valid_save(old)&&old.words[1]==2);Progress migrated=decode_save(old);
  assert(!migrated.music&&!migrated.sound);
- for(int i=0;i<record_count;++i){assert(migrated.records[i].clears==unsigned(i+1));assert(migrated.records[i].perfect==unsigned(i/3));assert(migrated.records[i].best_ticks==unsigned((i+1)*600));}
- for(int i=0;i<character_count;++i){assert(!migrated.mastery[i].followups&&!migrated.mastery[i].evades);assert(migrated.medals(i)==(i==0?0:1));}
- SaveSlot next=encode_save(migrated,100);assert(valid_save(next)&&next.words[1]==3&&sizeof(next)==420);
+ for(int i=0;i<27;++i){assert(migrated.records[i].clears==unsigned(i+1));assert(migrated.records[i].perfect==unsigned(i/3));assert(migrated.records[i].best_ticks==unsigned((i+1)*600));}
+ for(int i=0;i<character_count;++i){assert(!migrated.mastery[i].followups&&!migrated.mastery[i].evades);assert(migrated.medals(i)==(i==0||i>=9?0:1));}
+ SaveSlot next=encode_save(migrated,100);assert(valid_save(next)&&next.words[1]==save_schema&&sizeof(next)==596);
  Progress recovered=decode_save(next);assert(recovered.record(8,2).clears==27&&recovered.medals(8)==1);
  auto full=encode_save(p,101);assert(valid_save(full));recovered=decode_save(full);
  for(int i=0;i<character_count;++i)assert(recovered.medals(i)==3);
@@ -72,11 +72,11 @@ int main(){
  unsigned rotations=0;
  for(unsigned seed=0;seed<100;++seed){ArcadeRun run;run.begin(0,1,seed);unsigned mask=0;int previous=-1;
   for(int stage=0;stage<5;++stage){int arena=run.arena();assert(arena>=0&&arena<arena_count&&arena!=previous);mask|=1u<<arena;previous=arena;assert(run.retry(3)&&run.arena()==arena);run.advance();}
-  assert(mask==7);++rotations;
+  assert(mask==(1u<<arena_count)-1);++rotations;
  }
  for(int stage=0;stage<arena_count;++stage)for(int phase=-1;phase<16;++phase)for(int y=0;y<160;++y){
   int motion=arena_sway(stage,y,phase);assert(motion>=-1&&motion<=1);
   if(phase<0||y<44||y>=100)assert(motion==0);
  }
- std::printf("PASS mastery: all nine fighters, real damaging follow-ups, jump/squeeze evasion, training exclusion, caps, schema-2/3 migration and %u arena rotations; combat checksums unchanged.\n",rotations);
+ std::printf("PASS mastery: all thirteen fighters, real damaging follow-ups, jump/squeeze evasion, training exclusion, caps, schema-2/3 migration and %u arena rotations; combat checksums unchanged.\n",rotations);
 }
