@@ -4,14 +4,14 @@
   "compiler": "arm-none-eabi-g++ (devkitARM) 16.1.0",
   "host": "Linux x86_64",
   "studio_deb_sha256": "5df46494f63d4cf9697ff27c78d35b661026d17ff4e92ea7942548635288a371",
-  "rom_sha256": "ce79a2006b0fb5218794f12997eae1ccd790609c1b8b81fe5572ae8f4c8f1d28",
+  "rom_sha256": "d4933cd8718b2711a7ca4eef3590e7a7314315f75ad4ba1939dc089ed7ee01b7",
   "build_engine": "project-scoped vendored GBA Studio CLI and Butano",
-  "game_release": "1.0.0-rc.2",
+  "game_release": "1.1.0",
   "ruleset": "1.0.0-rc.2",
   "animation_source_revision": "18c8a218537b984839803b95d588382624a8301a",
   "compiler_package_note": "GBA Studio 0.5.0 bundled linux.tar.gz; compiler binaries verified as x86-64.",
   "baseline_rebuild_sha256": "d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845",
-  "rom_bytes": 3221768,
+  "rom_bytes": 3369564,
   "audio_assets": 69,
   "combat_voice_limit": 2,
   "combat_audio_assets": 55,
@@ -32,5 +32,11 @@
   "legacy_save_offsets": [
     0,
     512
-  ]
+  ],
+  "selection_pages": 1,
+  "selection_columns": 5,
+  "elemental_effect_sheets": 104,
+  "elemental_effect_frames": 598,
+  "super_effect_frames": 8,
+  "power_punch_frames": 6
 }

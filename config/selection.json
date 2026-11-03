@@ -1,0 +1,16 @@
+{
+  "columns": 5,
+  "grid_x": 8,
+  "grid_y": 20,
+  "step_x": 45,
+  "step_y": 28,
+  "card_width": 44,
+  "card_height": 26,
+  "portrait_x": 22,
+  "portrait_y": 8,
+  "quick_rows": [0, 114, 128, 141],
+  "practice_rows": [0, 108, 120, 132, 144],
+  "footer_y": 155,
+  "preview_x": 188,
+  "preview_y": 88
+}

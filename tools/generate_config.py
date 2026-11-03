@@ -56,3 +56,15 @@ for c,s in zip(chars,cpu['styles']):
 lines+=['};','}']
 (r/'include/pkmn_cpu_defs.h').write_text('\n'.join(lines)+'\n')
 print('Generated three difficulty profiles and thirteen CPU styles.')
+
+# One source of truth for the native setup geometry and asset painter.
+ui=json.loads((r/'config/selection.json').read_text())
+assert ui['columns']==5 and ui['grid_x']+(ui['columns']-1)*ui['step_x']+ui['card_width']<=232
+assert ui['grid_y']+((len(chars)-1)//ui['columns'])*ui['step_y']+ui['card_height']<=102
+lines=['#pragma once','namespace pkmn {']
+for key,value in ui.items():
+ if isinstance(value,int):lines.append(f'inline constexpr int selection_{key}={value};')
+ else:lines.append(f'inline constexpr int selection_{key}[{len(value)}]={{'+','.join(map(str,value))+'};')
+lines+=['inline int selection_row_y(bool training,int row){return training?selection_practice_rows[row]:selection_quick_rows[row];}','}']
+(r/'include/pkmn_selection_layout.h').write_text('\n'.join(lines)+'\n')
+print('Generated single-screen selection layout.')

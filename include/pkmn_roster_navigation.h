@@ -1,11 +1,13 @@
 #pragma once
 #include "pkmn_character_defs.h"
+#include "pkmn_selection_layout.h"
 namespace pkmn {
-inline constexpr int roster_columns=3,roster_page_size=9;
-inline constexpr int roster_pages=(character_count+roster_page_size-1)/roster_page_size;
-inline int roster_page(int who){return who/roster_page_size;}
-inline int roster_slot(int who){return who%roster_page_size;}
-inline int roster_page_count(int who){int remaining=character_count-roster_page(who)*roster_page_size;return remaining<roster_page_size?remaining:roster_page_size;}
-inline int roster_up(int who){int local=roster_slot(who);if(local>=roster_columns)return who-roster_columns;int target=local+((roster_page_count(who)-1)/roster_columns)*roster_columns;if(target>=roster_page_count(who))target-=roster_columns;return who-local+target;}
-inline bool roster_has_down(int who){return roster_slot(who)+roster_columns<roster_page_count(who);}
+inline constexpr int roster_columns=selection_columns,roster_page_size=character_count,roster_pages=1;
+inline int roster_page(int){return 0;}
+inline int roster_slot(int who){return who;}
+inline int roster_page_count(int){return character_count;}
+inline int roster_x(int who){return selection_grid_x+(who%roster_columns)*selection_step_x+selection_card_width/2;}
+inline int roster_y(int who){return selection_grid_y+(who/roster_columns)*selection_step_y;}
+inline int roster_up(int who){if(who>=roster_columns)return who-roster_columns;int target=who+((character_count-1)/roster_columns)*roster_columns;if(target>=character_count)target-=roster_columns;return target;}
+inline bool roster_has_down(int who){return who+roster_columns<character_count;}
 }

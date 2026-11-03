@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'native-v11', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -127,6 +127,8 @@ Quick Battle settings: Level, Arena and Fighter Info.
 Practice settings: Training, Rival, Arena and Fighter Info.
 Arcade arena rotation is informational; the cursor skips it.
 A check marks the chosen Pokemon, and an outline marks the focused row.
+A attacks have a six-frame power-punch animation. Supers have eight-frame auras,
+energy-ribbon shots and impact bursts. Combat timing, damage and save schema stay unchanged.
 All arenas share the same floor, hitboxes and combat rules.
 Fighter Mastery is a visible main-menu button. Left/Right changes the fighter.
 Earn three medals per fighter: 10 damaging follow-up hits, 5 successful super

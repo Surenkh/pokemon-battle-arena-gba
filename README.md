@@ -6,15 +6,15 @@
 
 A native Game Boy Advance fan-made fighter by **Surenkh**.
 
-[**Download v1.0 RC2**](downloads/PokemonBattleArena.gba?raw=true) · [Candidate release and ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.0.0-rc.2) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
+[**Download v1.1**](downloads/PokemonBattleArena.gba?raw=true) · [Candidate release and ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **1.0.0-rc.2 — Roster & Arena Expansion**. This candidate adds **Vulpix, Gastly, Riolu and Totodile**, plus **Frostpeak and Ancient Ruins**. Open the ROM in a GBA emulator such as mGBA. Earlier saves migrate automatically. Player pilots and physical GBA/controller checks remain open before stable v1.0; v0.12.0 remains the latest stable release. See the [expansion report](docs/ROSTER_EXPANSION_TEST_REPORT.md) and [release checklist](docs/V1_RELEASE_CHECKLIST.md).
+Version **1.1.0 — Selection & Power**. All thirteen Pokémon now appear on one screen. Explicit **Difficulty** and **Location** rows, a full selected-name header and a matching arena preview make setup clearer. Supers have eight-frame charge, energy-ribbon and impact effects; A attacks have a six-frame power-punch animation. Combat rules and existing saves stay compatible. Open the ROM in a GBA emulator such as mGBA. [Validation report](docs/V1_1_TEST_REPORT.md) · [Build and controls](docs/BUILDING.md).
 
-![Gameplay highlights featuring Pikachu, Psyduck, Jigglypuff and Machop in three arenas](docs/media/battle-highlights-native.gif)
+![Native v1.1 super shots and power punches](docs/media/v1-1-power-native.gif)
 
-*Four fighters, three arenas and super moves — captured from the v0.12.0 GBA release.*
+*Eight-frame energy supers and power punches — captured from the v1.1 GBA ROM.*
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v1.0 RC2** and **13 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v1.1** and **13 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
@@ -22,7 +22,7 @@ Arcade samples five unique opponents from the other twelve fighters at the selec
 
 ![Native mode menu](docs/media/navigation-menu-native.png)
 
-![Expanded native roster](docs/media/expanded-roster-native.png)
+![All thirteen Pokémon on one native screen](docs/media/selection-one-page-native.png)
 
 The title and menus now play an original looping tune, with new navigation, countdown, pause, result and recall cues. Press **L** on the title or pause screen for independent **Music** and **Sound FX** controls. Both default to On with a moderate mix; choices save when you leave Audio Settings.
 
@@ -43,7 +43,7 @@ gold outline marks the focused row. **B** returns to the same card.
 
 **Fighter Info** is a visible settings action. A opens the guide and B restores
 its row. A/Start plays from the grid or a value row; Start also plays from Info.
-Left/Right crosses the two roster pages; the header shows 1/2 or 2/2. Up/Down stays on valid cards on the current page or enters settings. Quick Battle, Arcade and Practice share these controls. See [navigation validation](docs/NAVIGATION_TEST_REPORT.md).
+All thirteen fighters stay visible. Select opens Difficulty and Location directly for the highlighted Pokémon; the preview follows the actual chosen arena. Quick Battle, Arcade and Practice share these controls. See [navigation validation](docs/NAVIGATION_TEST_REPORT.md).
 
 Arcade rotates through all five arenas; retries preserve the current
 stage. The arenas share the same floor, hitboxes and combat rules.
@@ -91,7 +91,7 @@ and the pilot retention gate remain unverified. See [goal/scouting validation](d
 | Riolu | Aura Punish adds damage against recovery | Aura diamonds |
 | Totodile | Jaw Pressure taxes guard stamina | Water fangs |
 
-Normal projectiles and supers have four-frame animations. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
+Normal shots retain their four-frame animation. Supers now use eight frames with energy ribbons, orbiting charge effects and expanding impact bursts. Melee uses a six-frame power-punch overlay synchronized to its real startup and active frames. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
 
 [Watch the native music and recall preview](docs/media/sound-and-recall-native.mp4)
 

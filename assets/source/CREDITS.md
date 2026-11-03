@@ -47,3 +47,10 @@ The four added Pokémon retain the credited CHUNSOFT artwork and upstream record
 in `animations/`. Frostpeak and Ancient Ruins are original deterministic pixel
 art in `tools/arena_art.cjs`. New elemental effects and combat sounds are authored
 by project code with no new sampled recordings. Existing rights/notices apply.
+
+## v1.1 Selection & Power
+
+The compact chooser reuses the existing credited body artwork. The tiny bitmap
+labels, selection backplates, arena previews, energy ribbons, charge rings,
+power-punch and super-impact sprites are authored in project code. No new
+third-party art, recordings or synthesized body poses are introduced.

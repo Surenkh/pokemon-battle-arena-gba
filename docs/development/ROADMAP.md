@@ -1,6 +1,6 @@
 # Pokémon Battle Arena product roadmap
 
-**Updated 3 November 2026 · Stable release v0.12.0 · Candidate v1.0.0-rc.2**
+**Updated 3 November 2026 · Stable release v0.12.0 · Current work v1.1.0**
 
 The response, navigation, Practice and goal/scouting implementations are merged.
 [v0.12.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.12.0)
@@ -30,6 +30,17 @@ Human matchup review now includes the expanded roster. Player pilots and
 physical-device gates remain open before stable v1.0.
 
 [Expansion contract](../ROSTER_EXPANSION.md) · [Validation](../ROSTER_EXPANSION_TEST_REPORT.md)
+
+## v1.1 — requested selection and animation polish
+
+Replace the paged selector with all thirteen visible cards, full selected names,
+explicit Difficulty/Location rows and an accurate arena preview. Preserve direct
+Select access, Back context and Arcade rotation. Add eight-frame supers, charge
+and impact effects, plus a six-frame power-punch overlay on A. Combat numbers,
+input timings, CPU tuning and save schema stay fixed. Verify actual native glyphs,
+all choices, per-fighter animation frames, save recovery and frame budgets.
+
+[Implementation contract](../SELECTION_AND_POWER.md) · [Validation](../V1_1_TEST_REPORT.md)
 
 ## What the current game tells us
 

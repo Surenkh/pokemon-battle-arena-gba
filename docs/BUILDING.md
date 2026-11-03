@@ -152,3 +152,18 @@ plays 10,140 rounds; `balance_probe legacy-nine --legacy-nine` replays the old
 4,860 rounds and must retain digest 1172440822. Included animation sources are
 pinned and credited; `python3 tools/import_expansion_assets.py` optionally repeats
 the import. Normal offline builds use the included art.
+
+## v1.1 Selection & Power
+
+The version is `1.1.0`; the combat ruleset and schema 4 remain unchanged.
+`config/selection.json` drives the native layout header and bitmap painter.
+`tools/selection_art.cjs` bakes all thirteen portrait cards into the background;
+only the selected body animates as a sprite. `tools/elemental_fx.cjs` generates
+eight-frame super/aura/impact sheets and six-frame punch sheets.
+
+Run `tests/selection_power_tests.cpp` alongside the previous twelve host suites,
+and `python3 tests/native_v11_flow.py` alongside the previous fifteen native
+suites. The new runner verifies all card labels, selected names and location
+values against real framebuffer glyphs, actual battles at each location, and
+all effect phases/damage for every fighter. Release packaging requires all
+sixteen ROM-bound native reports. Its GIF uses actual emulator frames.
