@@ -1,0 +1,426 @@
+{
+  "status": "passed",
+  "checks": 948,
+  "rom_sha256": "ce79a2006b0fb5218794f12997eae1ccd790609c1b8b81fe5572ae8f4c8f1d28",
+  "characters": [
+    {
+      "character": "pikachu",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "charmander",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "squirtle",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "bulbasaur",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "eevee",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "meowth",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "psyduck",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "jigglypuff",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "machop",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "vulpix",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "gastly",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "riolu",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    },
+    {
+      "character": "totodile",
+      "followup": true,
+      "jump": true,
+      "squeeze": true
+    }
+  ],
+  "manual_retries": [
+    {
+      "character": "pikachu",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "pikachu",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "charmander",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "charmander",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "squirtle",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "squirtle",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "bulbasaur",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "bulbasaur",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "eevee",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "eevee",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "meowth",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "meowth",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "psyduck",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "psyduck",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "jigglypuff",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "jigglypuff",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "machop",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "machop",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "vulpix",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "vulpix",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "gastly",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "gastly",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "riolu",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "riolu",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "totodile",
+      "mode": 3,
+      "actionable_frame": 8
+    },
+    {
+      "character": "totodile",
+      "mode": 4,
+      "actionable_frame": 8
+    },
+    {
+      "character": "pikachu",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "pikachu",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "pikachu",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "charmander",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "charmander",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "charmander",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "squirtle",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "squirtle",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "squirtle",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "bulbasaur",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "bulbasaur",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "bulbasaur",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "eevee",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "eevee",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "eevee",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "meowth",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "meowth",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "meowth",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "psyduck",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "psyduck",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "psyduck",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "jigglypuff",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "jigglypuff",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "jigglypuff",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "machop",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "machop",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "machop",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "vulpix",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "vulpix",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "vulpix",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "gastly",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "gastly",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "gastly",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "riolu",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "riolu",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "riolu",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "totodile",
+      "mode": 0,
+      "actionable_frame": 8
+    },
+    {
+      "character": "totodile",
+      "mode": 1,
+      "actionable_frame": 8
+    },
+    {
+      "character": "totodile",
+      "mode": 2,
+      "actionable_frame": 8
+    },
+    {
+      "character": "pikachu",
+      "mode": 4,
+      "actionable_frame": 8
+    }
+  ],
+  "automatic_ko_actionable_frame": 14,
+  "stale_inputs_cleared": true,
+  "practice_excluded_from_mastery": true,
+  "normal_mode_restored": true,
+  "peak_cpu_fraction": 0.87255859375,
+  "missed_display_frames": 0,
+  "method": "mGBA 0.10.2, actual button input, resolved events, read-only telemetry and native captures; no gameplay-memory writes",
+  "test_source": "tests/native_practice_flow.py",
+  "test_source_sha256": "dba9330d33e7085227fab34dd2461fa60076fe3b47a9836cf45c5a91c1f5d2ac"
+}

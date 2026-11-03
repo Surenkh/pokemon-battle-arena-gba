@@ -6,23 +6,23 @@
 
 A native Game Boy Advance fan-made fighter by **Surenkh**.
 
-[**Download v1.0 RC1**](downloads/PokemonBattleArena.gba?raw=true) · [Candidate release and ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.0.0-rc.1) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
+[**Download v1.0 RC2**](downloads/PokemonBattleArena.gba?raw=true) · [Candidate release and ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.0.0-rc.2) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **1.0.0-rc.1 — v1.0 Release Candidate**. Open the ROM in a GBA emulator such as mGBA. RC1 improves Records responsiveness and prepares the game for v1.0 validation. Automated checks pass; player testing and physical GBA/controller checks remain open. The latest stable release is v0.12.0. See the [candidate report](docs/V1_RELEASE_CANDIDATE_TEST_REPORT.md) and [v1.0 checklist](docs/V1_RELEASE_CHECKLIST.md). The player ZIP includes controls, credits and checksums; no commercial ROM or BIOS is included.
+Version **1.0.0-rc.2 — Roster & Arena Expansion**. This candidate adds **Vulpix, Gastly, Riolu and Totodile**, plus **Frostpeak and Ancient Ruins**. Open the ROM in a GBA emulator such as mGBA. Earlier saves migrate automatically. Player pilots and physical GBA/controller checks remain open before stable v1.0; v0.12.0 remains the latest stable release. See the [expansion report](docs/ROSTER_EXPANSION_TEST_REPORT.md) and [release checklist](docs/V1_RELEASE_CHECKLIST.md).
 
 ![Gameplay highlights featuring Pikachu, Psyduck, Jigglypuff and Machop in three arenas](docs/media/battle-highlights-native.gif)
 
 *Four fighters, three arenas and super moves — captured from the v0.12.0 GBA release.*
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v1.0 RC1** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v1.0 RC2** and **13 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
-Arcade samples five unique opponents from the other eight fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 27 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
+Arcade samples five unique opponents from the other twelve fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 39 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
 
 ![Native mode menu](docs/media/navigation-menu-native.png)
 
-![Native nine-fighter selector](docs/media/navigation-setup-native.png)
+![Expanded native roster](docs/media/expanded-roster-native.png)
 
 The title and menus now play an original looping tune, with new navigation, countdown, pause, result and recall cues. Press **L** on the title or pause screen for independent **Music** and **Sound FX** controls. Both default to On with a moderate mix; choices save when you leave Audio Settings.
 
@@ -30,29 +30,29 @@ Normal fights end with a Poké Ball recalling the defeated Pokémon through an a
 
 CPU rivals now use fighter-specific spacing and attack preferences, varied tactical plans and stamina reserves. Easy leaves more openings; Normal mixes plans; Hard reacts and follows up more reliably. The AI reacts to delayed visible actions and remembers only a short history of repeated attacks.
 
-Nine fighter traits change movement, guard pressure, reach and counterattacks. A clean melee hit can lead into one projectile follow-up; Eevee can also follow with melee at close range. Follow-ups spend normal stamina and remain blockable. B on the title opens practice, with idle, blocking and attacking opponents, damage feedback and quick arena reset.
+Thirteen fighter traits change movement, guard pressure, reach and counterattacks. A clean melee hit can lead into one projectile follow-up; Eevee can also follow with melee at close range. Follow-ups spend normal stamina and remain blockable. B on the title opens practice, with idle, blocking and attacking opponents, damage feedback and quick arena reset.
 
 Normal shots now show an immediate windup for Pikachu, Squirtle, Meowth, Psyduck and Machop. The firing cue appears by the second emulator frame after a sampled tap. See [response measurements](docs/RESPONSIVE_FIRING_TEST_REPORT.md).
 
-## Three arenas and fighter mastery
+## Five arenas and fighter mastery
 
-Choose **Woodland, Volcanic or Shoreline** in Quick Battle or Practice. Press
+Choose **Woodland, Volcanic, Shoreline, Frostpeak or Ancient Ruins** in Quick Battle or Practice. Press
 **Select** from any fighter card to open settings directly. Up/Down chooses a
 row and Left/Right changes its value. A check marks the chosen Pokémon while a
 gold outline marks the focused row. **B** returns to the same card.
 
 **Fighter Info** is a visible settings action. A opens the guide and B restores
 its row. A/Start plays from the grid or a value row; Start also plays from Info.
-Quick Battle, Arcade and Practice share these controls. See [navigation validation](docs/NAVIGATION_TEST_REPORT.md).
+Left/Right crosses the two roster pages; the header shows 1/2 or 2/2. Up/Down stays on valid cards on the current page or enters settings. Quick Battle, Arcade and Practice share these controls. See [navigation validation](docs/NAVIGATION_TEST_REPORT.md).
 
-Arcade rotates through all three arenas; retries preserve the current
+Arcade rotates through all five arenas; retries preserve the current
 stage. The arenas share the same floor, hitboxes and combat rules.
 
 **Fighter Mastery** is a visible main-menu button. Each Pokémon has three cosmetic
 medals: **10 damaging follow-up hits**, **5 successful super evasions**, and a
 **no-continue Arcade clear** at any difficulty. Practice does not count. Roster
 badges show earned medals, and Mastery/Records link with A. Progress saves at round
-end, Rematch or leaving a fight. Both six- and nine-fighter v0.8 saves migrate;
+end, Rematch or leaving a fight. Schema-1/2/3 saves migrate to separate schema-4 slots;
 existing no-continue records already count toward their medal.
 
 Quick Battle and Arcade results now show one relevant mastery change from the
@@ -67,13 +67,13 @@ and the pilot retention gate remain unverified. See [goal/scouting validation](d
 
 ![Native Arcade scouting](docs/media/rival-scout-native.png)
 
-![Native volcanic arena](docs/media/volcanic-arena-native.png)
+![Native Frostpeak](docs/media/frostpeak-native.png)
 
-![Native shoreline arena](docs/media/shoreline-arena-native.png)
+![Native Ancient Ruins](docs/media/ancient-ruins-native.png)
 
 ![Native fighter mastery](docs/media/fighter-mastery-native.png)
 
-## Nine fighters, nine playstyles
+## Thirteen fighters, thirteen playstyles
 
 | Fighter | Signature behavior | Attack visuals |
 | --- | --- | --- |
@@ -86,6 +86,10 @@ and the pilot retention gate remain unverified. See [goal/scouting validation](d
 | Psyduck | Mind Push gives strong projectile knockback | Psychic rings and pulses |
 | Jigglypuff | Float Step lowers gravity and extends jumps | Musical notes and crescendos |
 | Machop | Heavy Hands drains extra melee guard stamina | Fists and impact bursts |
+| Vulpix | Fox Step advances melee startup | Twin flames |
+| Gastly | Hover lowers gravity for longer airtime | Shadow orbs |
+| Riolu | Aura Punish adds damage against recovery | Aura diamonds |
+| Totodile | Jaw Pressure taxes guard stamina | Water fangs |
 
 Normal projectiles and supers have four-frame animations. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
 
@@ -120,7 +124,7 @@ normal dummy behaviors. Choose a rival and arena with the existing settings.
 **Follow-up** starts in melee range and coaches a clean A hit into a damaging B
 follow-up. **Evade Super** lets the rival charge one real super, then asks for a
 nearby jump or timed squeeze. Short messages report a landed follow-up, an evade,
-a real hit or an interrupted charge. Both lessons work with all nine fighters.
+a real hit or an interrupted charge. Both lessons work with all thirteen fighters.
 Practice progress stays separate from mastery.
 
 **Select** retries with restored resources and positions. A fresh action works on
@@ -141,7 +145,7 @@ Gameplay updates use feature branches and pull requests. Validated versions on `
 
 ## Limits and feedback
 
-Physical GBA hardware and non-Linux rebuilding have not been tested. There are three arenas and no multiplayer or mid-run resume. Mastery, completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
+Physical GBA hardware and non-Linux rebuilding have not been tested. There are five arenas and no multiplayer or mid-run resume. Mastery, completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
 
 ## Credits
 

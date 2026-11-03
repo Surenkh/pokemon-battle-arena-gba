@@ -40,3 +40,10 @@ Volcanic/shoreline scenery and the mastery badge atlas are original deterministi
 pixel artwork authored in `tools/arena_art.cjs`. Native HUD and mastery/menu
 backgrounds are composed by `tools/convert_assets.cjs` using the existing project
 UI renderer. These additions introduce no third-party artwork or downloads.
+
+## v1.0 RC2 expansion
+
+The four added Pokémon retain the credited CHUNSOFT artwork and upstream records
+in `animations/`. Frostpeak and Ancient Ruins are original deterministic pixel
+art in `tools/arena_art.cjs`. New elemental effects and combat sounds are authored
+by project code with no new sampled recordings. Existing rights/notices apply.

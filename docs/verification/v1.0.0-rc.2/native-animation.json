@@ -1,0 +1,359 @@
+{
+  "status": "passed",
+  "checks": 2730,
+  "characters": [
+    {
+      "character": "pikachu",
+      "native_walk_frames": [
+        6,
+        7,
+        8,
+        9
+      ],
+      "native_jump_frames": [
+        33,
+        35,
+        38
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 2951,
+      "missed_frames": 0
+    },
+    {
+      "character": "charmander",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        31,
+        33,
+        36
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        3,
+        4,
+        7,
+        9
+      ],
+      "peak_cpu_q12": 3034,
+      "missed_frames": 0
+    },
+    {
+      "character": "squirtle",
+      "native_walk_frames": [
+        8,
+        9,
+        10,
+        11
+      ],
+      "native_jump_frames": [
+        35,
+        37,
+        40
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3131,
+      "missed_frames": 0
+    },
+    {
+      "character": "bulbasaur",
+      "native_walk_frames": [
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_jump_frames": [
+        28,
+        30,
+        33
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3139,
+      "missed_frames": 0
+    },
+    {
+      "character": "eevee",
+      "native_walk_frames": [
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_jump_frames": [
+        30,
+        32,
+        35
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3139,
+      "missed_frames": 0
+    },
+    {
+      "character": "meowth",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        32,
+        34,
+        37
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3184,
+      "missed_frames": 0
+    },
+    {
+      "character": "psyduck",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        31,
+        33,
+        36
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3184,
+      "missed_frames": 0
+    },
+    {
+      "character": "jigglypuff",
+      "native_walk_frames": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "native_jump_frames": [
+        37,
+        39,
+        42
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3184,
+      "missed_frames": 0
+    },
+    {
+      "character": "machop",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        30,
+        32,
+        35
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3184,
+      "missed_frames": 0
+    },
+    {
+      "character": "vulpix",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "native_jump_frames": [
+        35,
+        37,
+        40
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        3,
+        4,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3221,
+      "missed_frames": 0
+    },
+    {
+      "character": "gastly",
+      "native_walk_frames": [
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "native_jump_frames": [
+        44,
+        46,
+        49
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3221,
+      "missed_frames": 0
+    },
+    {
+      "character": "riolu",
+      "native_walk_frames": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "native_jump_frames": [
+        37,
+        39,
+        42
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        7,
+        8,
+        9
+      ],
+      "peak_cpu_q12": 3221,
+      "missed_frames": 0
+    },
+    {
+      "character": "totodile",
+      "native_walk_frames": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "native_jump_frames": [
+        37,
+        39,
+        42
+      ],
+      "observed_clip_ids": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        7,
+        9
+      ],
+      "peak_cpu_q12": 3221,
+      "missed_frames": 0
+    }
+  ],
+  "method": "Native ROM, physical button input and read-only telemetry; no game memory writes.",
+  "rom_sha256": "ce79a2006b0fb5218794f12997eae1ccd790609c1b8b81fe5572ae8f4c8f1d28",
+  "test_source": "tests/native_animation_flow.py",
+  "test_source_sha256": "89adeeb7e13020c2638a17b9ec5824933cfa9db8b3bf1ee702375cc66b7d8dd6"
+}

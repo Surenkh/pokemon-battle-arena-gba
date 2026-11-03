@@ -142,3 +142,13 @@ save/power cycle. It enforces a 90% frame budget for that journey. Package RC1
 with all fourteen ROM-bound native reports. The publisher marks semver versions
 such as `1.0.0-rc.1` as prereleases and leaves the stable latest-download links
 on the stable release.
+
+## RC2 expansion checks
+
+Run the previous fourteen native suites plus `python3 tests/native_expansion_flow.py`.
+Host coverage adds `tests/expansion_tests.cpp` to the previous eleven suites.
+All fifteen ROM-bound reports are required for packaging. The full balance probe
+plays 10,140 rounds; `balance_probe legacy-nine --legacy-nine` replays the old
+4,860 rounds and must retain digest 1172440822. Included animation sources are
+pinned and credited; `python3 tools/import_expansion_assets.py` optionally repeats
+the import. Normal offline builds use the included art.
