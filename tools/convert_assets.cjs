@@ -28,17 +28,8 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
   ui.box(ctx,25,123,190,20);save('practice_'+kind,scene,'background');
  }
  require('./arena_art.cjs').masteryBadge(canvas,save);
- let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 13 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V1.0 RC2',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
- function rosterCards(ctx,page=0){for(let i=page*9;i<Math.min(names.length,page*9+9);i++){let slot=i%9,x=8+slot%3*76,y=18+Math.floor(slot/3)*22;ui.box(ctx,x,y,72,21);ui.text(ctx,names[i],x+36,y+14,'#edf8f0',1,'center');}}
- function setupLabels(ctx,practice=false){
-  ctx.fillStyle='#365573';ctx.fillRect(8,85,224,1);ctx.fillRect(8,143,224,1);
-  const labels=practice?['TRAINING','RIVAL','ARENA']:['LEVEL','ARENA'];
-  labels.forEach((label,i)=>ui.text(ctx,label,25,88+i*13,'#edf8f0'));
-  ui.text(ctx,'FIGHTER INFO',25,127,'#edf8f0');ui.text(ctx,'>',223,127,'#9db8c6');
- }
- for(const [name,title,practice] of [['selector','QUICK BATTLE',false],['arcade_selector','ARCADE',false],['practice_setup','PRACTICE',true]])for(let page=0;page<Math.ceil(names.length/9);++page){
-  const scene=await bg('screens/layers/selector_background.png'),ctx=scene.getContext('2d');ui.text(ctx,title,12,5,'#ffda6b');rosterCards(ctx,page);setupLabels(ctx,practice);save(name+(page?'_more':''),scene,'background');
- }
+ let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 13 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V1.1',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
+ await require('./selection_art.cjs').buildSelection({root,source,names,canvas,save,bg,ui});
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');save('arcade_panel',c,'background');}
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');ui.text(ctx,'ARCADE RECORDS',120,16,'#ffda6b',2,'center');ui.text(ctx,'CLEARS',16,77,'#edf8f0');ui.text(ctx,'NO CONTINUE',16,91,'#edf8f0');ui.text(ctx,'BEST',16,105,'#edf8f0');ui.text(ctx,'< > FIGHTER  UP/DOWN LEVEL',120,130,'#9db8c6',1,'center');ui.text(ctx,'A MASTERY  B/START BACK',120,142,'#9db8c6',1,'center');save('records_panel',c,'background');}
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');ui.text(ctx,'FIGHTER MASTERY',120,16,'#ffda6b',2,'center');ui.text(ctx,'MEDALS',93,55,'#9db8c6',1,'right');ui.text(ctx,'FOLLOW-UP HITS',15,75,'#edf8f0');ui.text(ctx,'SUPER EVADES',15,90,'#edf8f0');ui.text(ctx,'NO-CONTINUE ARCADE',15,105,'#edf8f0');ui.text(ctx,'< > FIGHTER  A RECORDS',120,133,'#9db8c6',1,'center');ui.text(ctx,'B / START BACK',120,145,'#9db8c6',1,'center');save('mastery_panel',c,'background');}

@@ -1,0 +1,8 @@
+{
+  "id": "punch_5",
+  "type": "sprite",
+  "name": "punch_5",
+  "path": "graphics/punch_5.bmp",
+  "width": 32,
+  "height": 32
+}

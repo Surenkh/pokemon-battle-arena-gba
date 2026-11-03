@@ -1,0 +1,8 @@
+{
+  "id": "aura_1",
+  "type": "sprite",
+  "name": "aura_1",
+  "path": "graphics/aura_1.bmp",
+  "width": 32,
+  "height": 32
+}

@@ -1,0 +1,26 @@
+{
+  "rom_sha256": "d4933cd8718b2711a7ca4eef3590e7a7314315f75ad4ba1939dc089ed7ee01b7",
+  "method": "Actual mGBA frames through physical GBA keys; GIF at two display frames per image, no gameplay-memory writes",
+  "captures": [
+    {
+      "file": "selection-one-page-native.png",
+      "source": "tests/native_artifacts/v11/setup-0-7.png",
+      "sha256": "72ad2d7a1df56f1a370e08e2bd7941df70e290f701d530d8948d86b6363ea87f"
+    },
+    {
+      "file": "selection-location-native.png",
+      "source": "tests/native_artifacts/v11/quick-location-4.png",
+      "sha256": "9f6e9f808de461ef0b9d865683eacca904043bdff2f64cdc9b537fe28bd34d5f"
+    },
+    {
+      "file": "power-punch-native.png",
+      "source": "tests/native_artifacts/v11/punch-5.png",
+      "sha256": "b383d17b7c51003cdbd48d9b9d6daf6267085736916aeea47b0252ca1a63fab8"
+    },
+    {
+      "file": "v1-1-power-native.gif",
+      "source": "tests/native_artifacts/v11/v1-1-power-native.gif",
+      "sha256": "335298761d8d7bfa8dc71f0bd79dd5cb197721e00be2b1ad71cc32a797c7ae11"
+    }
+  ]
+}

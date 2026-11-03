@@ -13,9 +13,9 @@ int main(){
  CHECK(character_count==13&&arena_count==5&&record_count==39&&save_schema==4&&sizeof(SaveSlot)==596);
  CHECK(schema_words(1)==60&&schema_words(2)==87&&schema_words(3)==105&&schema_words(4)==149);
  CHECK(save_offsets[0]>=932&&save_offsets[1]>=save_offsets[0]+int(sizeof(SaveSlot)));
- CHECK(roster_pages==2&&roster_page(8)==0&&roster_page(9)==1&&roster_slot(12)==3);
+ CHECK(roster_pages==1&&roster_page(8)==0&&roster_page(9)==0&&roster_slot(12)==12);
  for(int i=0;i<13;++i){CHECK(roster_up(i)>=0&&roster_up(i)<13);CHECK(roster_page(roster_up(i))==roster_page(i));}
- CHECK(roster_up(9)==12&&roster_up(12)==9&&!roster_has_down(10)&&!roster_has_down(12));
+ CHECK(roster_up(9)==4&&roster_up(12)==7&&!roster_has_down(10)&&!roster_has_down(12));
  CHECK(guarded(12)>guarded(1));CHECK(characters[9].melee_lunge>0&&characters[10].gravity_percent==80);
  CombatCore c;c.reset(11,1);c.f[0].x=100*256;c.f[1].x=120*256;c.f[1].action=FIRE;c.f[1].began=-characters[1].fire_start-1;c.f[1].ends=100;c.step({A,A},{});bool punished=false;
  for(int t=0;t<30;++t){for(int i=0;i<c.event_count;++i)punished|=c.events[i].kind==EV_PUNISH;c.step({},{});}CHECK(punished&&c.f[1].hp==characters[1].hp-characters[11].melee_damage-4);

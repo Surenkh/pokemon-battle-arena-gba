@@ -1,5 +1,7 @@
 # Roster & Arena Expansion — v1.0.0-rc.2
 
+Historical RC2 contract. [v1.1](SELECTION_AND_POWER.md) replaces the paged chooser and expands the attack presentation; the roster, arena and save rules below remain.
+
 The requested four Pokémon and two levels extend the game to thirteen fighters
 and five arenas. Levels means battle stages; Arcade remains five rivals and two
 continues. All new content is available immediately.

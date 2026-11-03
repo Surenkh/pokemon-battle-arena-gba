@@ -1,0 +1,8 @@
+{
+  "id": "selected_card",
+  "type": "sprite",
+  "name": "selected_card",
+  "path": "graphics/selected_card.bmp",
+  "width": 64,
+  "height": 32
+}

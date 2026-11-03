@@ -25,7 +25,7 @@ def check(ok,msg):
 def boot():
  global p
  p=subprocess.Popen([os.environ.get('PKMN_MGBA_DRIVER',str(r/'tests/mgba_driver')),str(rom),str(save)],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=(out/'errors.log').open('a'),text=True,bufsize=1)
- frames(90);check(read()[1]==0,'Boot title');check(read(EXP)[:9]==[0x45585032,13,5,0,9,4,596,1024,2048],'Counts and save layout')
+ frames(90);check(read()[1]==0,'Boot title');check(read(EXP)[:9]==[0x45585032,13,5,0,13,4,596,1024,2048],'Counts and save layout')
 def close():
  global p
  if p is not None:p.stdin.write('q\n');p.stdin.flush();p.wait(timeout=10);assert p.returncode==0;p=None
@@ -68,12 +68,12 @@ try:
  for mode in (0,1,2):
   choose(mode)
   for who in range(13):
-   fighter(who);frames(8);e=read(EXP);check(e[3:5]==[who//9,9 if who<9 else 4],'Correct page and card count');check(e[9]==(511 if who<9 else 15<<9),'Only visible page allocates portraits')
+   fighter(who);frames(8);e=read(EXP);check(e[3:5]==[0,13],'Correct page and card count');check(e[9]==8191,'All thirteen cards stay visible')
    if who in (8,9,12):capture(f'setup-{mode}-fighter-{who}')
   tap(16);check(read()[2]==0,'Right wraps last fighter');tap(32);check(read()[2]==12,'Left wraps first fighter')
-  fighter(9);tap(64);check(read()[2]==12,'Sparse column Up');tap(64);check(read()[2]==9,'Sparse Up wraps');fighter(10);tap(128);check(read()[2]==10,'Down enters settings without changing fighter');tap(2)
+  fighter(0);tap(64);check(read()[2]==10,'Up wraps within a five-column grid');tap(64);check(read()[2]==5,'Up traverses a valid card');fighter(10);tap(128);check(read()[2]==10,'Down enters settings without changing fighter');tap(2)
   for _ in range(20):
-   fighter(8);tap(16);check(read()[2]==9 and not read(EXP)[9]&511,'Cross to page two releases old portraits');tap(32);check(read()[2]==8 and not read(EXP)[9]&(15<<9),'Return releases new portraits');crossings+=2
+   fighter(8);tap(16);check(read()[2]==9 and read(EXP)[9]==8191,'Rapid next fighter retains the full roster');tap(32);check(read()[2]==8 and read(EXP)[9]==8191,'Rapid previous fighter retains the full roster');crossings+=2
   tap(2)
  close()
  original=(r/'tests/fixtures/nine_fighter_v1.sav').read_bytes();fixture=json.loads((r/'tests/fixtures/nine_fighter_v1.json').read_text());check(hashlib.sha256(original).hexdigest()==fixture['sha256'],'Independent frozen RC1 fixture hash')
@@ -107,6 +107,6 @@ try:
  raw=bytearray(earned);offsets=[o for o in (1024,2048)if struct.unpack_from('<I',raw,o+4)[0]==4];check(len(offsets)==2,'Both new copies populated');newest=max(offsets,key=lambda o:struct.unpack_from('<I',raw,o+8)[0]);previous=next(o for o in offsets if o!=newest);prior=[list(struct.unpack_from('<III',raw,previous+16+i*12))for i in range(39)];raw[newest+40]^=1;save.write_bytes(raw);boot();records_check(prior);close()
  raw[1024:1028]=b'\0'*4;raw[2048:2052]=b'\0'*4;save.write_bytes(raw);records[27]=[0,0,0];mastery[9]=[0,0];boot();records_check(records);mastery_check(mastery);check(read(AUDIO)[1:3]==[0,0],'Both new copies invalid recovers original settings');close()
  check(not missed,'Zero missed display frames');check(peak<.9*4096,'Expansion journey below 90 percent')
- report=dict(status='passed',checks=checks,roster_count=13,arena_count=5,rapid_page_changes=crossings,max_visible_portraits=9,legacy_schema=3,save_schema=4,save_copy_bytes=596,save_offsets=[1024,2048],records_verified=39,mastery_fighters_verified=13,new_fighter_mastery_earned=True,new_fighter_arcade_clear=True,arcade_attempts=attempt+1,arcade_arenas=sorted(arenas),power_cycle=True,legacy_copies_unchanged=True,corrupt_newest_recovery=True,both_new_copies_legacy_recovery=True,peak_cpu_fraction=peak/4096,missed_display_frames=missed,rom_sha256=hashlib.sha256(rom.read_bytes()).hexdigest(),wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2, physical GBA keys and read-only telemetry; frozen RC1 SRAM, actual Vulpix mastery and five-rival clear, power cycles and offline corruption; no gameplay-memory writes')
+ report=dict(status='passed',checks=checks,roster_count=13,arena_count=5,rapid_card_changes=crossings,max_visible_portraits=1,legacy_schema=3,save_schema=4,save_copy_bytes=596,save_offsets=[1024,2048],records_verified=39,mastery_fighters_verified=13,new_fighter_mastery_earned=True,new_fighter_arcade_clear=True,arcade_attempts=attempt+1,arcade_arenas=sorted(arenas),power_cycle=True,legacy_copies_unchanged=True,corrupt_newest_recovery=True,both_new_copies_legacy_recovery=True,peak_cpu_fraction=peak/4096,missed_display_frames=missed,rom_sha256=hashlib.sha256(rom.read_bytes()).hexdigest(),wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2, physical GBA keys and read-only telemetry; frozen RC1 SRAM, actual Vulpix mastery and five-rival clear, power cycles and offline corruption; no gameplay-memory writes')
  (out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 finally:close()

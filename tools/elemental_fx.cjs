@@ -122,16 +122,54 @@ function contact(p,id,f,blocked=false){
  else{for(let i=0;i<3;i++)p.chain([[x-7+i*4,y+7-f],[x-3+i*4,y+1],[x+i*4,y-6-f]],f<2?7:4,2);}
 }
 
+// Eight-frame energy ribbons retain each fighter's original projectile motif.
+function superTravel(ctx,p,id,f){
+ const bend=Math.round(Math.sin(f*Math.PI/4)*4);
+ p.chain([[3,16+bend],[10,12-bend],[20,19+bend],[28,16]],1,5);
+ p.chain([[3,16+bend],[10,12-bend],[20,19+bend],[28,16]],4,3);
+ p.chain([[3,16+bend],[10,12-bend],[20,19+bend],[28,16]],6);
+ p.chain([[5,23-bend],[14,18+bend],[24,21-bend],[31,17]],4,2);
+ p.line(2+f,8+(f%3),20+f,8+(f%3),5);
+ p.ring(32,16,10+(f%2),7+(f%3),1,2);p.ring(32,16,9+(f%2),6+(f%3),4);
+ ctx.save();ctx.translate(16,8);travel(p,id,f%4,true);ctx.restore();
+ const angle=f*Math.PI/4;p.star(32+Math.round(Math.cos(angle)*11),16+Math.round(Math.sin(angle)*9),2,6);
+ p.disk(32,16,2+(f%2),2,7);
+}
+function aura(p,f){
+ p.ring(16,16,11+(f%2),12-(f%3),2);p.ring(16,16,8,9,4);
+ for(let i=0;i<3;i++){const a=f*Math.PI/4+i*2*Math.PI/3;p.star(16+Math.round(Math.cos(a)*12),16+Math.round(Math.sin(a)*12),i?1:2,i?4+i:7);}
+ p.line(13,16,19,16,6);p.line(16,13,16,19,5);
+}
+function punch(p,f){
+ const x=[10,13,18,21,23,24][f],y=16;
+ if(f<4){
+  p.poly([[x-7,y-4],[x-3,y-7],[x+5,y-6],[x+9,y-2],[x+9,y+4],[x+3,y+7],[x-6,y+4]],1);
+  p.poly([[x-5,y-3],[x-2,y-5],[x+4,y-4],[x+7,y-1],[x+7,y+3],[x+2,y+5],[x-4,y+3]],4);
+  for(let k=0;k<3;k++)p.line(x-1+k*3,y-4,x-1+k*3,y,6);
+  p.line(x+2,y+1,x+6,y+1,7);
+ }
+ for(let i=0;i<3;i++)p.line(Math.max(1,x-14),8+i*7,x-7,7+i*7,3+i);
+ if(f>=2){const rad=4+(f-2)*3;p.chain([[x-2,16-rad],[x+3,16-rad/2],[x+5,16],[x+3,16+rad/2],[x-2,16+rad]],f<4?7:4,2);}
+ if(f>=4){p.star(8+f,7,2,5);p.star(12+f,24,1,4);}
+}
+function burst(p,id,f){
+ if(f<4)contact(p,id,f,false);
+ const radius=3+f*2;p.ring(16,16,radius,Math.max(2,radius-2),f<3?6:4,2);
+ for(let i=0;i<5;i++){const a=i*Math.PI*2/5+f*.12;p.line(16+Math.cos(a)*(radius-2),16+Math.sin(a)*(radius-2),16+Math.cos(a)*(radius+2),16+Math.sin(a)*(radius+2),i%2?5:6);}
+ if(f<3)p.star(16,16,5-f,7);
+}
 function buildElementalEffects({canvas,save}){
  for(let id=0;id<colors.length;id++){
-  const rgb=colors[id].map(c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)));
-  const palette=[[255,0,255],...rgb];
-  for(const[kind,w,h]of[['shot',32,32],['wave',32,16],['hit',32,32],['cast',16,16],['guard',32,32]]){
-   const sheet=canvas(w,h*4),ctx=sheet.getContext('2d');
-   for(let f=0;f<4;f++){
-    ctx.save();ctx.translate(0,f*h);ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();
-    const p=pen(ctx,['#FF00FF',...colors[id]]);
-    if(kind==='shot'||kind==='wave')travel(p,id,f,kind==='wave');
+  const rgb=colors[id].map(c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16))),palette=[[255,0,255],...rgb];
+  for(const[kind,w,h,count]of[['shot',32,32,4],['wave',64,32,8],['hit',32,32,4],['cast',16,16,4],['guard',32,32,4],['aura',32,32,8],['punch',32,32,6],['burst',32,32,8]]){
+   const sheet=canvas(w,h*count),ctx=sheet.getContext('2d');
+   for(let f=0;f<count;f++){
+    ctx.save();ctx.translate(0,f*h);ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();const p=pen(ctx,['#FF00FF',...colors[id]]);
+    if(kind==='shot')travel(p,id,f,false);
+    else if(kind==='wave')superTravel(ctx,p,id,f);
+    else if(kind==='aura')aura(p,f);
+    else if(kind==='punch')punch(p,f);
+    else if(kind==='burst')burst(p,id,f);
     else if(kind==='cast'){ctx.translate(-8,-8);contact(p,id,f);if(f>=2)p.star(16,16,3,f===2?6:4);}
     else contact(p,id,f,kind==='guard');
     ctx.restore();

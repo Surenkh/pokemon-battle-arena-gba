@@ -1,0 +1,8 @@
+{
+  "id": "burst_0",
+  "type": "sprite",
+  "name": "burst_0",
+  "path": "graphics/burst_0.bmp",
+  "width": 32,
+  "height": 32
+}

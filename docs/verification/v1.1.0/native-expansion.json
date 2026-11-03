@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "checks": 814,
+  "roster_count": 13,
+  "arena_count": 5,
+  "rapid_card_changes": 120,
+  "max_visible_portraits": 1,
+  "legacy_schema": 3,
+  "save_schema": 4,
+  "save_copy_bytes": 596,
+  "save_offsets": [
+    1024,
+    2048
+  ],
+  "records_verified": 39,
+  "mastery_fighters_verified": 13,
+  "new_fighter_mastery_earned": true,
+  "new_fighter_arcade_clear": true,
+  "arcade_attempts": 1,
+  "arcade_arenas": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "power_cycle": true,
+  "legacy_copies_unchanged": true,
+  "corrupt_newest_recovery": true,
+  "both_new_copies_legacy_recovery": true,
+  "peak_cpu_fraction": 0.85302734375,
+  "missed_display_frames": 0,
+  "rom_sha256": "d4933cd8718b2711a7ca4eef3590e7a7314315f75ad4ba1939dc089ed7ee01b7",
+  "wall_seconds": 7.69,
+  "method": "mGBA 0.10.2, physical GBA keys and read-only telemetry; frozen RC1 SRAM, actual Vulpix mastery and five-rival clear, power cycles and offline corruption; no gameplay-memory writes",
+  "test_source": "tests/native_expansion_flow.py",
+  "test_source_sha256": "139bcf869aacbb95fc31bb06f25b6a8f1720a2812a5dd283c4c31d3e960e260d"
+}

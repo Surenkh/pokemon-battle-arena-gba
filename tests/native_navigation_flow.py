@@ -161,7 +161,7 @@ try:
     tap(16)
     check(row() == 2 and read(DETAIL)[1] == 1 and read()[2] == 0, 'Pikachu selects Volcanic directly')
     picture = capture('pikachu-volcanic')
-    check(gold(picture, (8, 98, 16, 113)) > 10 and gold(picture, (224, 98, 232, 113)) > 10, 'Arena focus reaches both ends of the full row')
+    check(gold(picture, (8, 122, 16, 135)) > 10 and gold(picture, (224, 122, 232, 135)) > 10, 'Arena focus reaches both ends of the full row')
     tap(128)
     tap(1)
     check(read()[1] == 10, 'Visible Fighter Info opens with A')
