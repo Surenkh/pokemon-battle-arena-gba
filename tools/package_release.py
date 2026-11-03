@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'clean-build', 'host-and-assets')
 
 
 def digest(data):

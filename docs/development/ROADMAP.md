@@ -1,19 +1,22 @@
 # Pokémon Battle Arena product roadmap
 
-**Updated 2 November 2026 · Released game v0.11.0 · v0.12.0 candidate**
+**Updated 3 November 2026 · Stable release v0.12.0 · Candidate v1.0.0-rc.1**
 
-The v0.9.1 response, v0.10.0 navigation and v0.11.0 Practice iterations are
-merged. The [v0.11.0 release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.11.0)
-includes both optional drills and fast retry. The uncoached navigation/learning
-pilots and physical-device testing remain open.
+The response, navigation, Practice and goal/scouting implementations are merged.
+[v0.12.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.12.0)
+remains the latest stable release. The updated native gameplay GIF is also merged.
 
-The **v0.12.0 candidate — Match Goals & Rival Scouting** implements the next
-roadmap idea as a playable prototype: one relevant mastery line on existing
-results and an authored trait/counter cue for the actual upcoming Arcade rival.
-A newly earned medal takes priority; otherwise the line shows an actual match
-increment or the next unfinished goal. The observation condition for this
-iteration has not been established by a human pilot. Its retention decision
-remains open. [Implementation and pilot protocol](../MATCH_GOALS_TEST_REPORT.md)
+**v1.0.0-rc.1** starts the stable-release validation phase. Profiling traced the
+near-budget Arcade-suite frame to rebuilding the Records heading/instructions
+when browsing fighters. RC1 bakes fixed text into its background and redraws
+only the selected fighter, difficulty and values. Native stress checks cover
+all 27 entries, maximum values, rapid taps and SRAM power cycles.
+
+This is a release candidate. The uncoached navigation/Practice pilots,
+technique transfer, goal/scouting retention decision, human matchup review and
+physical GBA/controller sessions remain open. These gates must be assessed
+before the final v1.0 release. [Candidate evidence](../V1_RELEASE_CANDIDATE_TEST_REPORT.md)
+· [Remaining release checklist](../V1_RELEASE_CHECKLIST.md)
 
 ## What the current game tells us
 
@@ -36,8 +39,8 @@ Each row ends in a build someone can play. The effort ranges are provisional han
 | 1 · v0.9.1 · implemented | Immediate firing cues, starting with Machop and Pikachu. Repair the clipped Mastery description and list Arena in the Practice controls. | There is a measured, visible delay and a small visual repair that can ship independently. | Every fighter's eligible B tap visibly starts by frame 2 in all four replay phases. The projectile still spawns on its original tick. |
 | 2 · v0.10.0 · implemented | Consistent focus, direct access to setup options, contextual button labels and predictable Back behavior. | Changing the stage currently changes the selected fighter along a natural route. This affects the choice made before combat. | From Pikachu, set Volcanic and fight as Pikachu with no roster traversal. At least 4 of 5 pilot players independently configure both requested setups. |
 | 3 · v0.11.0 · implemented | Fast Practice retry and two optional drills inside Practice. | Once controls and navigation are readable, players can learn what earns a follow-up or evades a super. | Practice accepts a fresh action within 15 display frames of reset. At least 4 of 5 learners perform both techniques against the dummy without verbal coaching. |
-| 4 · v0.12.0 · playable prototype | Show a relevant mastery increment after a fight and a short scouting cue for the next Arcade rival. | The existing records, traits and medals can make a return match purposeful with little new content. | Implementation is ready for the previously conditional pilot; the lack-of-goal observation is still unverified. Keep the feature if 4 of 5 can name their next goal and at least 3 voluntarily start another fight. Rework or remove it if those gates fail. |
-| 5 · v1.0 candidate · 3–5 days plus device sessions | Human matchup review, hardware checks, save migration and release regression. | The nine-fighter roster needs to hold up across devices and skill levels before a stable launch. | Reproduce the input and menu gates, complete representative real-device runs, and resolve reproducible control, progression or performance blockers. |
+| 4 · v0.12.0 · released prototype | Show a relevant mastery increment after a fight and a short scouting cue for the next Arcade rival. | The existing records, traits and medals can make a return match purposeful with little new content. | Implementation is ready for the previously conditional pilot; the lack-of-goal observation is still unverified. Keep the feature if 4 of 5 can name their next goal and at least 3 voluntarily start another fight. Rework or remove it if those gates fail. |
+| 5 · v1.0.0-rc.1 · automated candidate | Human matchup review, hardware checks, save migration and release regression. | The nine-fighter roster needs to hold up across devices and skill levels before a stable launch. | RC1 completes the automated performance/save/regression pass. Complete the player gates and representative real-device runs, then resolve reproducible control, progression or performance blockers before final v1.0. |
 
 ## First iteration backlog
 
@@ -73,7 +76,7 @@ The two uncoached tasks are **“Start as Pikachu in Volcanic after reading its 
 
 **Arcade and mastery — v0.12.0 prototype implemented.** The design below is now playable; the human observation and retention gate remain open. Put one line on the existing results panel, for example “Pikachu follow-ups 6 → 7 / 10.” On the existing next-rival panel, try one actionable hint, for example “Machop drains guard stamina. Leave room to retreat.” Use the selected fighter's actual session delta and the next rival's authored trait. Give Rematch or Next Rival the same input count as today. Observe a fixed ten-minute free-play period on each build and record replays and players' reasons. A small pilot can select a design for further testing. [Existing progression rules](../ARENAS_AND_MASTERY.md) · [Nine fighter traits](../NINE_FIGHTERS.md)
 
-**Stable release.** Start with rushdown against guard pressure, ranged pushback and a floaty jump against long reach. Have human players swap sides and report whether they recognized what beat them and could try a counter. Use the 81 ordered CPU matchups to catch regressions. Test legacy SRAM, power-cycle records and mastery, and rehearse a five-rival run on a physical GBA. Require zero missed frames on the native suite and no increase over the v0.9.0 busiest Arcade transition. Profile new menu work toward 90% of a frame or less. Delay additional visuals if that budget slips. [Native testing](../NATIVE_TESTING.md) · [Save compatibility](../ARENAS_AND_MASTERY.md)
+**Stable release — RC1 automated pass implemented; player/device checks open.** Start with rushdown against guard pressure, ranged pushback and a floaty jump against long reach. Have human players swap sides and report whether they recognized what beat them and could try a counter. Use the 81 ordered CPU matchups to catch regressions. Test legacy SRAM, power-cycle records and mastery, and rehearse a five-rival run on a physical GBA. Require zero missed frames on the native suite and no increase over the v0.9.0 busiest Arcade transition. Profile new menu work toward 90% of a frame or less. Delay additional visuals if that budget slips. [Native testing](../NATIVE_TESTING.md) · [Save compatibility](../ARENAS_AND_MASTERY.md)
 
 **Scope decision.** Revisit a tenth fighter or fourth arena when returning players can use the current roster and ask for new matchups. Mid-run saving becomes a candidate if interrupted runs are a recurring reason people leave Arcade. Link multiplayer needs its own hardware feasibility study. The first two releases above address problems already visible in the shipped game.
 

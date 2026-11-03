@@ -170,3 +170,21 @@ Goal text uploads on the third result frame, the retained save/medal notice on
 the fourth, and the scouting cue on the fifth. Those labels do not delay input
 or add a screen. Reports live in verification/v0.12.0/. See
 [goal/scouting validation](MATCH_GOALS_TEST_REPORT.md) for the open human pilot.
+
+## v1.0 RC1 performance and save regression
+
+Run `python3 tests/native_performance_flow.py`. It sends normal buttons and
+samples existing per-frame CPU/missed-frame telemetry. It checks all nine
+fighters and three difficulties with audio on/off, 180 one-frame direction taps,
+Mastery round trips, maximum bounded counters and the maximum 32-bit saved time.
+Exact native glyph masks verify right-aligned values and side margins. An
+offline valid schema-3 fixture establishes those boundary values. The runner
+then changes audio preferences through the UI, saves, restarts the emulator and
+verifies every record and mastery counter again. It never writes live gameplay
+memory. The Records/Mastery/audio journey must stay below 90% of a display frame
+with zero missed frames.
+
+The v0.12.0 Arcade trace locates the prior peak at Records (screen 14) during
+fighter browsing. RC1's like-for-like full Arcade replay is recorded separately
+from the maximum-value stress journey. The candidate report distinguishes those
+measurements. Reports live in verification/v1.0.0-rc.1/.

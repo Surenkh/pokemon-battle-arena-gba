@@ -1,0 +1,146 @@
+{
+  "status": "passed",
+  "rom_sha256": "a3578d3fddb10b07a54034c8ec00fa864036bbeb4dd4232497677dafa0626790",
+  "test_source": "tests/native_arcade_flow.py",
+  "test_source_sha256": "cfb8afd43c23da040cd30b1723285690582d2c764b121d0710281aac7662ccde",
+  "baseline": {
+    "version": "0.12.0",
+    "rom_sha256": "cce5c5b04141538d82c36190c31e295582e9021bc600a226beff2911bd8b8ec9",
+    "checks": 132,
+    "peak_cpu_fraction": 0.99609375,
+    "peak_screen": 14,
+    "top_frames": [
+      {
+        "usage": 4080,
+        "screen": 14,
+        "frame": 114,
+        "prev_screen": 14,
+        "prev_frame": 113,
+        "fighter": 3,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 4031,
+        "screen": 14,
+        "frame": 102,
+        "prev_screen": 14,
+        "prev_frame": 101,
+        "fighter": 1,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 3996,
+        "screen": 14,
+        "frame": 106,
+        "prev_screen": 14,
+        "prev_frame": 105,
+        "fighter": 2,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 3970,
+        "screen": 14,
+        "frame": 110,
+        "prev_screen": 14,
+        "prev_frame": 109,
+        "fighter": 3,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 3730,
+        "screen": 14,
+        "frame": 106,
+        "prev_screen": 14,
+        "prev_frame": 105,
+        "fighter": 1,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 3724,
+        "screen": 14,
+        "frame": 102,
+        "prev_screen": 14,
+        "prev_frame": 101,
+        "fighter": 0,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 3690,
+        "screen": 14,
+        "frame": 114,
+        "prev_screen": 14,
+        "prev_frame": 113,
+        "fighter": 3,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      },
+      {
+        "usage": 3642,
+        "screen": 14,
+        "frame": 126,
+        "prev_screen": 14,
+        "prev_frame": 125,
+        "fighter": 5,
+        "rival": 1,
+        "action": 0,
+        "enemy": 0
+      }
+    ]
+  },
+  "candidate": {
+    "version": "1.0.0-rc.1",
+    "checks": 132,
+    "peak_cpu_fraction": 0.864013671875,
+    "top_frames": [
+      {
+        "usage": 3539,
+        "screen": 3,
+        "frame": 765,
+        "prev_screen": 3,
+        "prev_frame": 764,
+        "fighter": 6,
+        "rival": 1,
+        "action": 5,
+        "enemy": 6
+      },
+      {
+        "usage": 3517,
+        "screen": 3,
+        "frame": 1489,
+        "prev_screen": 3,
+        "prev_frame": 1488,
+        "fighter": 7,
+        "rival": 1,
+        "action": 5,
+        "enemy": 6
+      },
+      {
+        "usage": 3466,
+        "screen": 3,
+        "frame": 2212,
+        "prev_screen": 3,
+        "prev_frame": 2211,
+        "fighter": 8,
+        "rival": 1,
+        "action": 5,
+        "enemy": 6
+      }
+    ]
+  },
+  "rounds_and_results_identical": true,
+  "stress_report": "native-performance.json",
+  "method": "Same native Arcade runner and real button journey on both ROMs. Host-only read-only logging after mCore.runFrame reads pkmn_depth_debug[20] (last CPU use) and pkmn_debug (screen/frame); no gameplay-memory writes. Trace snapshots include previous screen/frame because CPU telemetry describes a completed frame."
+}
