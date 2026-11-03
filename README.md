@@ -6,7 +6,7 @@
 
 A native Game Boy Advance fan-made fighter by **Surenkh**.
 
-[**Download v1.1**](downloads/PokemonBattleArena.gba?raw=true) · [Candidate release and ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
+[**Download v1.1 ROM**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena.gba) · [**Download v1.1 ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena-v1.1.0.zip) · [v1.1 release notes](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
 Version **1.1.0 — Selection & Power**. All thirteen Pokémon now appear on one screen. Explicit **Difficulty** and **Location** rows, a full selected-name header and a matching arena preview make setup clearer. Supers have eight-frame charge, energy-ribbon and impact effects; A attacks have a six-frame power-punch animation. Combat rules and existing saves stay compatible. Open the ROM in a GBA emulator such as mGBA. [Validation report](docs/V1_1_TEST_REPORT.md) · [Build and controls](docs/BUILDING.md).
 
