@@ -107,6 +107,7 @@
 #include "bn_regular_bg_items_help.h"
 #include "bn_regular_bg_items_audio_options.h"
 #include "bn_regular_bg_items_arcade_panel.h"
+#include "bn_regular_bg_items_records_panel.h"
 #include "bn_regular_bg_items_mastery_panel.h"
 #include "bn_regular_bg_items_arcade_selector.h"
 #include "bn_regular_bg_items_mode_menu.h"
@@ -157,6 +158,7 @@ class Renderer {
  bn::sprite_text_generator text{font};bn::vector<bn::sprite_ptr,64> labels;bn::vector<bn::sprite_ptr,8> hud_names;bn::vector<bn::sprite_ptr,16> practice_labels;
  bn::vector<bn::sprite_ptr,24> result_labels;
  void line(int x,int y,bn::string_view value,bool center=false,int scale=1,bn::ivector<bn::sprite_ptr>* output=nullptr){auto& target=output?*output:static_cast<bn::ivector<bn::sprite_ptr>&>(labels);int first=target.size();if(center)text.set_center_alignment();else text.set_left_alignment();text.generate(x-120,y-80,value,target);for(int i=first;i<target.size();i++)target[i].set_bg_priority(0);if(scale>1){if(scale>2)scale=2;for(int i=first;i<target.size();i++){auto&sp=target[i];sp.set_position(x-120+(sp.x()-(x-120))*scale,y-80);sp.set_scale(scale);}}}
+ void right_line(int x,int y,bn::string_view value){int first=labels.size();text.set_right_alignment();text.generate(x-120,y-80,value,labels);for(int i=first;i<labels.size();++i)labels[i].set_bg_priority(0);}
  void clear(){for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();result_labels.clear();result_detail_phase=result_detail_bits=0;active_draw_frames=scene_frames=0;last_practice_damage=last_practice_chain=last_practice_best=last_practice_feedback=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
  void focus_at(int x,int y,int width,int height){
   // A wide affine sprite clips at twice its source width. Join two halves.
@@ -182,7 +184,8 @@ public:
    if(group==2){static const bn::regular_bg_item* const stages[]={&bn::regular_bg_items::arena,&bn::regular_bg_items::arena_volcanic,&bn::regular_bg_items::arena_shoreline};static const bn::regular_bg_item* const training_stages[]={&bn::regular_bg_items::practice_arena,&bn::regular_bg_items::practice_volcanic,&bn::regular_bg_items::practice_shoreline};backdrop(*(practice?training_stages[battle_arena]:stages[battle_arena]));shake_x.fill(0);shake_y.fill(0);}
    if(group==3){backdrop(arcade.active&&!arcade.continues?bn::regular_bg_items::pause_no_retry:bn::regular_bg_items::pause);focus=bn::sprite_items::focus.create_sprite(0,0);marker=bn::sprite_items::nav_markers.create_sprite(0,0,1);}
    if(group==4){result_started=frame;backdrop(core.outcome==1?bn::regular_bg_items::victory:core.outcome==2?bn::regular_bg_items::defeat:bn::regular_bg_items::draw);if(core.outcome==2)recall_ball=bn::sprite_items::recall_ball.create_sprite(0,30);else fighters[0]=bodies[selected]->create_sprite(0,0);focus=bn::sprite_items::focus.create_sprite(0,0);marker=bn::sprite_items::nav_markers.create_sprite(0,0,1);}
-   if(group>=9&&group<=11)backdrop(bn::regular_bg_items::arcade_panel);
+   if(group==9||group==10)backdrop(bn::regular_bg_items::arcade_panel);
+   if(group==11)backdrop(bn::regular_bg_items::records_panel);
    if(group==13)backdrop(bn::regular_bg_items::mastery_panel);
    if(group==12){backdrop(bn::regular_bg_items::mode_menu);focus=bn::sprite_items::focus.create_sprite(0,0);marker=bn::sprite_items::nav_markers.create_sprite(0,0,1);}
    if(group==5)backdrop(bn::regular_bg_items::help);
@@ -331,12 +334,11 @@ public:
    if(group>=9&&group<=11){
     const char* diff=difficulty==0?"EASY":difficulty==1?"NORMAL":"HARD";
     if(group==11){
-     line(120,22,"ARCADE RECORDS",true,2);line(120,45,characters[selected].name,true);line(120,59,diff,true);
+     line(120,45,characters[selected].name,true);line(120,59,diff,true);
      const auto&r=progress.record(selected,difficulty);
-     bn::string<40> v="CLEARS ";v+=bn::to_string<12>(r.clears);line(120,80,v,true);
-     v="NO CONTINUE ";v+=bn::to_string<12>(r.perfect);line(120,94,v,true);
-     v="BEST ";if(r.best_ticks){v+=bn::to_string<12>(r.best_ticks/60);v+=" SEC";}else v+="--";line(120,108,v,true);
-     line(120,133,"< > FIGHTER  UP/DOWN LEVEL",true);line(120,145,"A MASTERY  B/START BACK",true);
+     right_line(224,80,bn::to_string<12>(r.clears));
+     right_line(224,94,bn::to_string<12>(r.perfect));
+     bn::string<24> v;if(r.best_ticks){v=bn::to_string<12>(r.best_ticks/60);v+=" SEC";}else v="--";right_line(224,108,v);
     }else{
      line(120,22,group==10?"CHAMPION!":core.outcome==1?"RIVAL DEFEATED":core.outcome==3?"DRAW - TRY AGAIN":"DEFEATED",true,2);
      bn::string<40> v=characters[selected].name;v+=" / ";v+=diff;line(120,40,v,true);

@@ -13,7 +13,7 @@ The generic ROM/checksum asset names keep the README's latest-download links sta
 
 Update package.json/package-lock.json, docs/build_versions.json, downloads/PokemonBattleArena.gba, downloads/SHA256SUMS.txt, release notes in docs/releases/vX.Y.Z.md and version-specific validation evidence under docs/verification/vX.Y.Z/. Keep the built ruleset consistent with config/balance.json and config/cpu.json. Native reports must identify the exact ROM hash and report passed checks with zero missed display frames. Preserve the required clean-build evidence.
 
-Merge the validated change into main. The release workflow runs packaging/publication tests, verifies generated combat definitions, and runs all six host suites, including CPU tactics and presentation, plus original music/recall asset checks. Publication is limited to main after validation; pull requests receive read-only validation. Pushes touching version, download, release-note, verification or release-pipeline files trigger it. It can also be run manually from Actions → Validate and publish game release → Run workflow on main.
+Merge the validated change into main. The release workflow runs packaging/publication tests, verifies generated combat definitions, and runs all eleven host suites, including CPU tactics, presentation, Practice and match goals, plus original music/recall asset checks. Publication is limited to main after validation; pull requests receive read-only validation. Pushes touching version, download, release-note, verification or release-pipeline files trigger it. It can also be run manually from Actions → Validate and publish game release → Run workflow on main.
 
 The publisher creates a draft, uploads all assets, downloads/verifies every uploaded byte, then publishes. A successful rerun verifies the existing public files without modifying them. A conflicting tag, different ROM under an existing version, unrelated draft or failed validation stops publication. An interrupted draft created by this workflow can resume when the same commit is rerun. Published releases and tags are not replaced; use a new version for changed game builds.
 
@@ -22,3 +22,15 @@ The workflow uses only GitHub's built-in repository token with contents write pe
 For local packaging and tests, see BUILDING.md. tools/package_release.py prepares the files without credentials; tools/publish_release.py is intended to run inside the configured GitHub Actions job.
 
 The cover is promotional art. .github/social-preview.jpg must be uploaded separately in repository Settings to configure the social preview.
+
+## Release candidates
+
+A version such as `1.0.0-rc.1` is packaged with its own immutable tag, ROM,
+checksums and player ZIP. The publisher sets `prerelease=true` and
+`make_latest=false`, so the current stable release remains behind GitHub's
+latest-download URLs. RC publication uses the same upload/download verification
+and read-only rerun behavior. A regression test verifies that candidate behavior.
+
+For final v1.0, complete [the release checklist](V1_RELEASE_CHECKLIST.md), then
+prepare a separately versioned `1.0.0` build/evidence set. Do not relabel the RC
+tag or claim its uncompleted player/device gates have passed.

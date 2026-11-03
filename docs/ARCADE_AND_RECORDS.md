@@ -1,10 +1,10 @@
-# Mode menu, Arcade and records — v0.12.0
+# Mode menu, Arcade and records — v1.0 RC1
 
 ## Menu-first navigation
 
 The title's Play button (A/Start) opens seven visible buttons: Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery. D-pad movement and A/Start enter the selected mode; B returns. Quick/Arcade then present the nine-fighter grid and Easy/Normal/Hard row. Practice presents the roster and training/rival/arena options. Select in every setup opens settings directly for the chosen fighter. The visible Fighter Info row opens with A. B restores the row and then the chosen card. Legacy shortcuts may remain optional, but no primary menu function requires L/R.
 
-The title displays v0.12.0 and the nine-fighter roster count. Keyboard letters belong to the emulator: GBA A/Start are the confirmation controls. Native GBA screens use controller navigation; mouse/touch behavior is provided by the emulator.
+The title displays v1.0 RC1 and the nine-fighter roster count. Keyboard letters belong to the emulator: GBA A/Start are the confirmation controls. Native GBA screens use controller navigation; mouse/touch behavior is provided by the emulator.
 
 ## Arcade contract
 
@@ -41,3 +41,12 @@ Champion and exhausted runs have no scouting cue. Confirm paths, continues,
 run time and save boundaries retain their existing behavior.
 
 [Design, validation and open pilot](MATCH_GOALS_TEST_REPORT.md).
+
+## RC1 Records performance
+
+Records uses a dedicated native background with fixed heading, row labels and
+controls. Changing fighter or difficulty replaces only the name, level and
+three values. Values align to the right at x=224; the longest valid 32-bit time
+and six-digit counter fit. Direction taps still take effect on their first
+eligible frame. A links to the same fighter's Mastery and returns to the same
+level. See [the candidate evidence](V1_RELEASE_CANDIDATE_TEST_REPORT.md).

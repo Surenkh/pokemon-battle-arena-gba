@@ -129,3 +129,16 @@ exact rendered glyph masks, no-continue Champion, exhausted runs and unchanged
 confirm paths. It creates valid SRAM fixtures offline before boot; fights and
 new increments use actual buttons. Release packaging requires all thirteen
 ROM-bound native reports and the independent clean rebuild.
+
+For v1.0 RC1, also run:
+
+```sh
+python3 tests/native_performance_flow.py
+```
+
+This checks all 27 Records entries with audio on/off, extreme valid values,
+180 rapid direction taps, native glyph masks, Mastery links and an actual SRAM
+save/power cycle. It enforces a 90% frame budget for that journey. Package RC1
+with all fourteen ROM-bound native reports. The publisher marks semver versions
+such as `1.0.0-rc.1` as prereleases and leaves the stable latest-download links
+on the stable release.

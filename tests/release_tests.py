@@ -13,6 +13,7 @@ class FakeGitHub:
         self.data = {}
         self.writes = []
         self.interrupt = False
+        self.latest = None
 
     def find(self, tag):
         return copy.deepcopy(self.release)
@@ -23,7 +24,7 @@ class FakeGitHub:
     def create(self, meta, target, body):
         self.writes.append('draft')
         self.release = dict(id=1, tag_name=meta['tag'], target_commitish=target, body=body,
-                            draft=True, assets=[], html_url='https://github.com/test/game/releases/tag/' + meta['tag'])
+                            draft=True, prerelease=meta['prerelease'], assets=[], html_url='https://github.com/test/game/releases/tag/' + meta['tag'])
         return copy.deepcopy(self.release)
 
     def upload(self, release, name, data):
@@ -48,6 +49,7 @@ class FakeGitHub:
         self.writes.append('publish')
         self.release['draft'] = False
         self.tag = release['target_commitish']
+        self.latest = latest
         return copy.deepcopy(self.release)
 
 
@@ -114,6 +116,25 @@ class ReleaseTests(unittest.TestCase):
         self.assertFalse(result['already_published'])
         self.assertEqual(remote.writes[-1], 'publish')
         self.assertEqual(len(remote.data), 3)
+        self.assertTrue(remote.latest)
+        before = list(remote.writes)
+        self.assertTrue(publish(remote, self.output, self.target)['already_published'])
+        self.assertEqual(remote.writes, before)
+
+    def test_release_candidate_is_a_prerelease_and_never_replaces_latest_stable(self):
+        version = '1.0.0-rc.1'
+        self.js('package.json', dict(version=version))
+        self.js('docs/build_versions.json', dict(game_release=version, ruleset='0.5.0', rom_sha256=self.sha, rom_bytes=256))
+        self.write('docs/releases/v' + version + '.md', '# Game v' + version + '\n\nRelease candidate.\n')
+        for name in REPORTS:
+            self.js('docs/verification/v' + version + '/' + name + '.json', dict(status='passed', rom_sha256=self.sha,
+                    missed_display_frames=0, generated_inputs_match=True, rom_byte_identical=True))
+        meta = prepare(self.root, self.output)
+        self.assertTrue(meta['prerelease'])
+        remote = FakeGitHub()
+        publish(remote, self.output, self.target)
+        self.assertTrue(remote.release['prerelease'])
+        self.assertFalse(remote.latest)
         before = list(remote.writes)
         self.assertTrue(publish(remote, self.output, self.target)['already_published'])
         self.assertEqual(remote.writes, before)

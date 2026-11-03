@@ -6,15 +6,15 @@
 
 A native Game Boy Advance fan-made fighter by **Surenkh**.
 
-[**Download the GBA game**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba) · [Player ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Checksums](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/SHA256SUMS.txt) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
+[**Download v1.0 RC1**](downloads/PokemonBattleArena.gba?raw=true) · [Candidate release and ZIP](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.0.0-rc.1) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **0.12.0 — Match Goals & Rival Scouting**. Open the ROM in a GBA emulator such as mGBA. The release includes the ROM, a player ZIP with controls/credits, checksums and source archives. No commercial ROM or BIOS is included. A [repository copy](downloads/PokemonBattleArena.gba?raw=true) is also available.
+Version **1.0.0-rc.1 — v1.0 Release Candidate**. Open the ROM in a GBA emulator such as mGBA. RC1 improves Records responsiveness and prepares the game for v1.0 validation. Automated checks pass; player testing and physical GBA/controller checks remain open. The latest stable release is v0.12.0. See the [candidate report](docs/V1_RELEASE_CANDIDATE_TEST_REPORT.md) and [v1.0 checklist](docs/V1_RELEASE_CHECKLIST.md). The player ZIP includes controls, credits and checksums; no commercial ROM or BIOS is included.
 
 ![Gameplay highlights featuring Pikachu, Psyduck, Jigglypuff and Machop in three arenas](docs/media/battle-highlights-native.gif)
 
 *Four fighters, three arenas and super moves — captured from the v0.12.0 GBA release.*
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v0.12.0** and **9 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v1.0 RC1** and **9 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
