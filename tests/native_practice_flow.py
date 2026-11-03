@@ -84,7 +84,7 @@ def setup(character, mode, arena=0):
     check(read()[1] == 9, 'Practice setup')
     if read(DEPTH)[2]:
         tap(2)
-    for _ in range(9):
+    for _ in range(len(characters)):
         if read()[2] == character:
             break
         tap(16)
@@ -94,12 +94,12 @@ def setup(character, mode, arena=0):
             break
         tap(16)
     tap(128)
-    for _ in range(9):
-        if read(DEPTH)[4] == (character + 1) % 9:
+    for _ in range(len(characters)):
+        if read(DEPTH)[4] == (character + 1) % len(characters):
             break
         tap(16)
     tap(128)
-    for _ in range(3):
+    for _ in range(5):
         if read(MASTERY)[1] == arena:
             break
         tap(16)
@@ -185,8 +185,8 @@ def evade(button, pause=False):
 try:
     frames(90)
     tap(2)
-    for character in range(9):
-        setup(character, 3, character % 3)
+    for character in range(len(characters)):
+        setup(character, 3, character % 5)
         followup()
         frames(20)
         capture('followup-' + characters[character]['id'])
@@ -195,7 +195,7 @@ try:
         check(read()[18] == 3600, 'Practice keeps its frozen timeout')
         lessons.append(dict(character=characters[character]['id'], followup=True))
 
-        setup(character, 4, (character + 1) % 3)
+        setup(character, 4, (character + 1) % 5)
         evade(64, pause=character == 0)
         frames(20)
         capture('jump-' + characters[character]['id'])
@@ -206,9 +206,9 @@ try:
         lessons[-1].update(jump=True, squeeze=True)
 
     # Free, Block and Attack use the same retry contract as the two lessons.
-    for character in range(9):
+    for character in range(len(characters)):
         for mode in (0, 1, 2):
-            setup(character, mode, (character + mode) % 3)
+            setup(character, mode, (character + mode) % 5)
             retry()
             no_mastery()
 

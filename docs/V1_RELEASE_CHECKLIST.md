@@ -1,15 +1,15 @@
 # v1.0 release checklist
 
-Updated 3 November 2026. RC1 is `1.0.0-rc.1`; v0.12.0 remains the stable release.
+Updated 3 November 2026. RC2 is `1.0.0-rc.2`; v0.12.0 remains the stable release.
 The automated candidate is ready for the sessions below. A pending row has not
 been completed by emulator tests.
 
-| Gate | RC1 evidence / remaining decision | Status |
+| Gate | RC2 evidence / remaining decision | Status |
 | --- | --- | --- |
 | Automated performance | Records/Mastery/audio stress below 90% of a frame; full native regression has zero missed frames | Passed |
-| Input and navigation regression | All nine fighters, tap-response trials, setup/focus/Back routes and Practice retry boundaries | Passed |
-| Progress and saves | Schema-1/2 migration, schema-3 power cycles, corruption recovery, interrupted writes, records/mastery retention | Passed |
-| Combat regression | All 81 ordered matchups, three difficulties and the unchanged 4,860-match replay comparison | Passed |
+| Input and navigation regression | All thirteen fighters, tap-response trials, setup/focus/Back routes and Practice retry boundaries | Passed |
+| Progress and saves | Schema-1/2/3 migration, schema-4 power cycles, corruption recovery, interrupted writes, records/mastery retention | Passed |
+| Combat regression | All 169 ordered matchups, three difficulties and unchanged legacy-nine replay | Passed |
 | Reproducible distribution | Exact tested ROM, regenerated inputs, identical clean rebuild, verified package/checksums and RC publication behavior | Passed |
 | Uncoached navigation | Five-player setup tasks below | Open |
 | Practice understanding and transfer | Both techniques without verbal coaching, then use a technique in Quick Battle | Open |
@@ -18,8 +18,8 @@ been completed by emulator tests.
 | Physical GBA/controller | Device response, full Arcade run, audio, save persistence and power cycles | Open |
 
 The machine-readable native and host evidence is in
-[verification/v1.0.0-rc.1](verification/v1.0.0-rc.1/). The
-[candidate report](V1_RELEASE_CANDIDATE_TEST_REPORT.md) explains performance scope.
+[verification/v1.0.0-rc.2](verification/v1.0.0-rc.2/). The
+[expansion report](ROSTER_EXPANSION_TEST_REPORT.md) explains performance scope.
 
 ## Five-player sessions
 

@@ -53,8 +53,7 @@ def choose(row):
 def character(ch):
  while state()[2]!=ch:press(16)
 def level(value):
- while state()[2]<6:press(128)
- press(128)
+ press(4)
  while state()[4]!=value:press(32)
  press(64)
 def leave_practice():
@@ -62,7 +61,7 @@ def leave_practice():
 def setup_arcade():
  choose(1);level(0);character(3);press(8)
  check(state()[1]==2,'Arcade countdown');roster=info()[12:17]
- check(len(set(roster))==5 and 3 not in roster and all(0<=x<9 for x in roster),'Five unique non-mirror rivals from all nine fighters')
+ check(len(set(roster))==5 and 3 not in roster and all(0<=x<len(chars) for x in roster),'Five unique non-mirror rivals from all thirteen fighters')
  check(info()[4]==2,'Two starting continues');frames(185)
 def finish(auto=True):
  if auto:cmd(f'b 6500 {main:08x} {feel:08x}')
@@ -80,8 +79,8 @@ try:
  save.write_bytes((r/'tests/fixtures/six_fighter_v08.sav').read_bytes());boot();check(read(audio)[1:3]==[0,1],'Schema-1 audio preferences loaded')
  choose(3);press(64);check(state()[4]==0 and info()[8:11]==[2,1,3600],'Schema-1 Pikachu record retained')
  character(5);press(64);check(state()[4]==2 and info()[8:11]==[7,3,14400],'Schema-1 Meowth record retained');character(6);check(info()[8:11]==[0,0,0],'New fighter starts with empty records');press(2)
- choose(4);press(1);press(2);check(not info()[11],'Migrated save write verified');close();raw=bytearray(save.read_bytes());check(struct.unpack_from('<I',raw,4)[0]==3,'Next save writes schema 3')
- raw[40]^=1;save.write_bytes(raw);boot();check(read(audio)[1:3]==[0,1],'Corrupt newest copy falls back to schema-1 copy');choose(4);press(1);press(2)
+ choose(4);press(1);press(2);check(not info()[11],'Migrated save write verified');close();raw=bytearray(save.read_bytes());check(struct.unpack_from('<I',raw,1028)[0]==4,'Next save writes schema 4')
+ raw[1024+40]^=1;save.write_bytes(raw);boot();check(read(audio)[1:3]==[0,1],'Corrupt newest copy falls back to schema-1 copy');choose(4);press(1);press(2)
  # Each new fighter has a guide and actual native movement/attack/charge VFX.
  for ch in (6,7,8):
   choose(0);character(ch);press(4);press(128);press(128);press(1);check(state()[1]==10,'Visible Info opens without R');capture('guide_'+chars[ch]['id']);press(2);press(2);press(2)
@@ -108,12 +107,12 @@ try:
    if state()[1]==13:
     champion=True;check(info()[3]==5 and info()[8]==1 and info()[10]==info()[6],'Five wins grant one clear and exact run time');capture('champion');break
    if result==2 and info()[4]==0:press(2);break
-   stage=info()[3];before_arena=read(mastery)[2];press(8);check(state()[1]==2 and state()[4]==0 and state()[6]==120 and state()[8]==6000 and state()[10]==0,'Next rival restores resources and chosen difficulty');check(state()[3]==info()[12+stage],'Correct next rival');check(read(mastery)[2]==((before_arena+1)%3 if result==1 else before_arena),'Winning rotates the arena; losing preserves it');frames(185)
+   stage=info()[3];before_arena=read(mastery)[2];press(8);check(state()[1]==2 and state()[4]==0 and state()[6]==120 and state()[8]==6000 and state()[10]==0,'Next rival restores resources and chosen difficulty');check(state()[3]==info()[12+stage],'Correct next rival');check(read(mastery)[2]==((before_arena+1)%5 if result==1 else before_arena),'Winning rotates the arena; losing preserves it');frames(185)
   if champion:break
  check(champion,'Player clears five-rival Arcade');ticks=info()[10];perfect=info()[9];frames(90);check(info()[8]==1,'Champion screen does not double count');press(1);capture('records_clear');close()
  boot();choose(3);character(3)
  while state()[4]!=0:press(64)
  check(info()[8:11]==[1,perfect,ticks],'Completed record survives power cycle');check(not menu_keys&0x300,'All new menu paths use no L/R shoulder shortcuts');check(missed==0,'No missed display frames')
- report=dict(status='passed',checks=checks,mode_menu=True,menu_keys=menu_keys,no_shoulder_required_in_menus=True,roster_count=9,new_fighters=native_new,legacy_save_migration=True,corrupt_save_recovery=True,rounds=rounds,cleared_after_runs=attempt+1,best_ticks=ticks,no_continue_clears=perfect,peak_cpu_fraction=peak/4096,missed_display_frames=missed,rom_sha256=hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2 real buttons and read-only telemetry; native frame/audio dispatch; synthetic schema-1 SRAM fixture, restarts and offline save corruption; no gameplay-memory writes')
+ report=dict(status='passed',checks=checks,mode_menu=True,menu_keys=menu_keys,no_shoulder_required_in_menus=True,roster_count=len(chars),new_fighters=native_new,legacy_save_migration=True,corrupt_save_recovery=True,rounds=rounds,cleared_after_runs=attempt+1,best_ticks=ticks,no_continue_clears=perfect,peak_cpu_fraction=peak/4096,missed_display_frames=missed,rom_sha256=hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2 real buttons and read-only telemetry; native frame/audio dispatch; synthetic schema-1 SRAM fixture, restarts and offline save corruption; no gameplay-memory writes')
  (out/'report.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report,indent=2))
 finally:close()

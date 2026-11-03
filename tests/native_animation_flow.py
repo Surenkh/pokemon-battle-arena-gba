@@ -20,8 +20,8 @@ def check(ok,msg):
  checks+=1
  if not ok:raise AssertionError(msg+' '+str(state()))
 report=[];frames(90);press(8);press(1);selected=0
-for ch,name in enumerate(['pikachu', 'charmander', 'squirtle', 'bulbasaur', 'eevee', 'meowth', 'psyduck', 'jigglypuff', 'machop']):
- while selected!=ch:press(16);selected=(selected+1)%9
+for ch,name in enumerate(m['characters']):
+ while selected!=ch:press(16);selected=(selected+1)%len(m['characters'])
  press(1)
  while state()[1]==2:frames(1)
  walk=set();hop=set();clips=set();video=0

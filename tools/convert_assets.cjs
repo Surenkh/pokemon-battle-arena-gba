@@ -3,7 +3,7 @@ const fs=require('fs'),path=require('path'),sharp=require('sharp');
 const {createCanvas,loadImage}=require('@napi-rs/canvas');
 const root=path.resolve(__dirname,'..'), source=path.resolve(process.env.PKMN_ASSETS||path.join(root,'assets/source'));
 const ui=require(path.join(source,'screens/ui_renderer.js'));
-const names=["pikachu", "charmander", "squirtle", "bulbasaur", "eevee", "meowth", "psyduck", "jigglypuff", "machop"];
+const names=JSON.parse(fs.readFileSync(path.join(root,'config/balance.json'))).characters.map(c=>c.id);
 function canvas(w=240,h=160){let c=createCanvas(w,h);c.getContext('2d').imageSmoothingEnabled=false;return c;}
 function palette(images,n){let map=new Map();for(const im of images){let d=im.getContext('2d').getImageData(0,0,im.width,im.height).data;for(let i=0;i<d.length;i+=4)if(d[i+3]>127){let k=(d[i]>>3)<<10|(d[i+1]>>3)<<5|(d[i+2]>>3);map.set(k,(map.get(k)||0)+1);}}
  let boxes=[[...map].map(([k,w])=>({c:[(k>>10)*8,((k>>5)&31)*8,(k&31)*8],w}))];
@@ -16,7 +16,7 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
  for(const n of names){let im=await loadImage(path.join(source,'animations','packed_'+n+'.png'));let c=canvas(64,im.height);c.getContext('2d').drawImage(im,0,0);save('pk_'+n,c,'sprite',64,64);}
  let arena=await bg('screens/layers/fighting_background.png'),a=arena.getContext('2d');ui.box(a,2,2,98,39);ui.box(a,140,2,98,39);ui.box(a,103,3,34,27);ui.text(a,'HP',5,15);ui.text(a,'STA',5,24);ui.text(a,'SP',5,33);ui.text(a,'HP',143,15);ui.text(a,'STA',143,24);ui.text(a,'SP',143,33);for(const x of[25,163])for(const y of[15,24,33]){a.fillStyle='#07101e';a.fillRect(x,y,71,6);}a.fillStyle='#101d32';a.fillRect(0,144,240,16);ui.text(a,'A HIT  B FIRE  L BLOCK  R SUPER',120,146,'#d1e2eb',1,'center');ui.text(a,'UP JUMP  DOWN SQUEEZE  START PAUSE',120,153,'#8ca9ba',1,'center');let arenaPalette=palette([arena],255);a.drawImage(arena,239,42,1,102,240,42,3,102);a.drawImage(arena,0,42,1,102,253,42,3,102);save('arena',arena,'background',0,0,arenaPalette);
  let practiceArena=canvas(256,256),pa=practiceArena.getContext('2d');pa.drawImage(arena,0,0);ui.box(pa,25,123,190,20);save('practice_arena',practiceArena,'background');
- for(const kind of ['volcanic','shoreline']){
+ for(const kind of ['volcanic','shoreline','frostpeak','ruins']){
   const scene=require('./arena_art.cjs').paintArena(canvas,kind),ctx=scene.getContext('2d');
   // Identical HUD, floor and footer geometry across all three stages.
   ui.box(ctx,2,2,98,39);ui.box(ctx,140,2,98,39);ui.box(ctx,103,3,34,27);
@@ -28,17 +28,17 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
   ui.box(ctx,25,123,190,20);save('practice_'+kind,scene,'background');
  }
  require('./arena_art.cjs').masteryBadge(canvas,save);
- let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 9 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V1.0 RC1',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
- function rosterCards(ctx){for(let i=0;i<names.length;i++){let x=8+i%3*76,y=18+Math.floor(i/3)*22;ui.box(ctx,x,y,72,21);ui.text(ctx,names[i],x+36,y+14,'#edf8f0',1,'center');}}
+ let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 13 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V1.0 RC2',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
+ function rosterCards(ctx,page=0){for(let i=page*9;i<Math.min(names.length,page*9+9);i++){let slot=i%9,x=8+slot%3*76,y=18+Math.floor(slot/3)*22;ui.box(ctx,x,y,72,21);ui.text(ctx,names[i],x+36,y+14,'#edf8f0',1,'center');}}
  function setupLabels(ctx,practice=false){
   ctx.fillStyle='#365573';ctx.fillRect(8,85,224,1);ctx.fillRect(8,143,224,1);
   const labels=practice?['TRAINING','RIVAL','ARENA']:['LEVEL','ARENA'];
   labels.forEach((label,i)=>ui.text(ctx,label,25,88+i*13,'#edf8f0'));
   ui.text(ctx,'FIGHTER INFO',25,127,'#edf8f0');ui.text(ctx,'>',223,127,'#9db8c6');
  }
- let selector=await bg('screens/layers/selector_background.png'),s=selector.getContext('2d');ui.text(s,'QUICK BATTLE - CHOOSE POKEMON',120,5,'#ffda6b',1,'center');rosterCards(s);setupLabels(s);save('selector',selector,'background');
- s.fillStyle='#122639';s.fillRect(0,0,240,16);ui.text(s,'ARCADE - CHOOSE POKEMON',120,5,'#ffda6b',1,'center');save('arcade_selector',selector,'background');
- let practiceSetup=await bg('screens/layers/selector_background.png'),ps=practiceSetup.getContext('2d');ui.text(ps,'PRACTICE - CHOOSE POKEMON',120,5,'#ffda6b',1,'center');rosterCards(ps);setupLabels(ps,true);save('practice_setup',practiceSetup,'background');
+ for(const [name,title,practice] of [['selector','QUICK BATTLE',false],['arcade_selector','ARCADE',false],['practice_setup','PRACTICE',true]])for(let page=0;page<Math.ceil(names.length/9);++page){
+  const scene=await bg('screens/layers/selector_background.png'),ctx=scene.getContext('2d');ui.text(ctx,title,12,5,'#ffda6b');rosterCards(ctx,page);setupLabels(ctx,practice);save(name+(page?'_more':''),scene,'background');
+ }
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');save('arcade_panel',c,'background');}
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');ui.text(ctx,'ARCADE RECORDS',120,16,'#ffda6b',2,'center');ui.text(ctx,'CLEARS',16,77,'#edf8f0');ui.text(ctx,'NO CONTINUE',16,91,'#edf8f0');ui.text(ctx,'BEST',16,105,'#edf8f0');ui.text(ctx,'< > FIGHTER  UP/DOWN LEVEL',120,130,'#9db8c6',1,'center');ui.text(ctx,'A MASTERY  B/START BACK',120,142,'#9db8c6',1,'center');save('records_panel',c,'background');}
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');ui.text(ctx,'FIGHTER MASTERY',120,16,'#ffda6b',2,'center');ui.text(ctx,'MEDALS',93,55,'#9db8c6',1,'right');ui.text(ctx,'FOLLOW-UP HITS',15,75,'#edf8f0');ui.text(ctx,'SUPER EVADES',15,90,'#edf8f0');ui.text(ctx,'NO-CONTINUE ARCADE',15,105,'#edf8f0');ui.text(ctx,'< > FIGHTER  A RECORDS',120,133,'#9db8c6',1,'center');ui.text(ctx,'B / START BACK',120,145,'#9db8c6',1,'center');save('mastery_panel',c,'background');}
@@ -69,5 +69,5 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
  let spark=canvas(8,8);ui.star(spark.getContext('2d'),1,1,'#ffda6b');save('spark',spark,'sprite');
  // The font starts at ASCII !, as required by bn::sprite_font.
  let font=canvas(8,94*8),ft=font.getContext('2d');for(let i=0;i<94;i++)ui.text(ft,String.fromCharCode(33+i),1,i*8,'#edf8f0');save('pkfont',font,'sprite',8,8);
- console.log('Converted 9 fighters and native menu backgrounds, UI, effects and font.');
+ console.log('Converted 13 fighters and native menu backgrounds, UI, effects and font.');
 })();

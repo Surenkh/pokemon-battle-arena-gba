@@ -5,7 +5,24 @@ function paintArena(canvas,kind){
  const rect=(x,y,w,h,color)=>{g.fillStyle=color;g.fillRect(x,y,w,h);};
  const polygon=(points,color)=>{g.fillStyle=color;g.beginPath();points.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath();g.fill();};
  rect(0,0,256,256,'#101d32');
- if(kind==='volcanic'){
+ if(kind==='frostpeak'){
+  rect(0,42,240,72,'#537996');rect(0,42,240,22,'#3b587d');rect(187,49,14,13,'#e5edc7');
+  for(const [x,y,h] of [[-20,106,36],[36,109,53],[95,107,42],[160,108,48],[212,112,41]]){
+   polygon([[x,y],[x+h,y-h],[x+h*2,y]],'#8aaebf');polygon([[x+h,y-h],[x+h+13,y-h+20],[x+h+6,y-h+16],[x+h-4,y-h+24],[x+h-13,y-h+20]],'#eff7ec');
+  }
+  for(const [x,y,h] of [[9,114,29],[41,115,23],[199,114,31],[226,115,26]]){rect(x+5,y-5,3,10,'#294953');polygon([[x-4,y],[x+6,y-h],[x+16,y]],'#325663');polygon([[x,y-11],[x+6,y-h],[x+12,y-11]],'#adcbd0');}
+  for(const [x,y]of[[9,49],[44,45],[71,67],[115,55],[171,63],[213,48],[230,73]])rect(x,y,3,1,'#dfefea');
+  rect(0,112,240,5,'#e9f5e9');rect(0,117,240,3,'#b5d6d8');rect(0,120,240,23,'#658da5');
+  for(let x=0;x<240;x+=24){rect(x+3,122,1,8,'#466c88');rect(x+3,129,12,1,'#466c88');rect(x+15,130,1,12,'#466c88');rect(x+7,134,6,1,'#b5d6d8');}
+ }else if(kind==='ruins'){
+  rect(0,42,240,74,'#234047');rect(0,42,240,22,'#263751');rect(191,48,15,15,'#cad2a2');rect(197,45,14,16,'#263751');
+  polygon([[0,96],[34,81],[61,92],[102,75],[144,94],[184,82],[240,92],[240,117],[0,117]],'#2c4b4b');
+  for(const [x,top,h]of[[20,66,47],[92,57,56],[151,64,49],[222,59,54]]){rect(x,top,8,h,'#536c63');rect(x+2,top,2,h,'#6c8471');rect(x-3,top-3,14,5,'#83937a');rect(x-2,top+h-3,12,4,'#7a8a70');rect(x+5,top+7,1,12,'#344e4d');}
+  for(const x of[58,179]){rect(x,83,3,21,'#655d48');polygon([[x-2,84],[x+1,72],[x+6,84]],'#c88646');polygon([[x,84],[x+2,77],[x+4,84]],'#ffe59a');}
+  rect(0,112,240,5,'#65745e');rect(0,117,240,3,'#b1b493');rect(0,120,240,23,'#516459');
+  for(let x=0;x<240;x+=24){rect(x,120,1,23,'#334b48');rect(x+3,123,16,1,'#7e8d70');rect(x+3,133,18,1,'#334b48');rect(x+13,134,1,9,'#334b48');}
+  for(const x of[8,37,215,234]){rect(x,110,1,8,'#7f9564');rect(x+1,111,3,2,'#7f9564');}
+ }else if(kind==='volcanic'){
   const sky=['#30243f','#49304c','#674254','#8d5655','#b36d58'];
   sky.forEach((color,i)=>rect(0,42+i*12,240,12,color));
   rect(188,52,18,18,'#e5a06a');rect(185,57,24,8,'#e5a06a');

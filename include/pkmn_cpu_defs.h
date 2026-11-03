@@ -10,7 +10,7 @@ inline constexpr CpuDifficulty cpu_difficulties[3] = {
 {8,4,90,88,90,90,4,4,60,12},
 };
 struct CpuStyle { int distance_px,melee_percent,fire_percent,guard_bonus,punish_bonus,recover_below,resume_at; };
-inline constexpr CpuStyle cpu_styles[9] = {
+inline constexpr CpuStyle cpu_styles[13] = {
 {24,88,28,0,4,18,38},
 {72,65,82,0,0,22,44},
 {60,65,70,12,10,24,44},
@@ -20,5 +20,9 @@ inline constexpr CpuStyle cpu_styles[9] = {
 {78,64,88,4,6,24,44},
 {54,72,76,2,4,24,46},
 {27,94,35,8,12,20,42},
+{62,72,83,4,7,24,44},
+{70,62,88,1,5,26,46},
+{36,88,61,7,16,22,45},
+{30,91,44,10,10,24,46},
 };
 }

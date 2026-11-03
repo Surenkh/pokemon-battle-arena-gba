@@ -1,6 +1,6 @@
 # Pokémon Battle Arena product roadmap
 
-**Updated 3 November 2026 · Stable release v0.12.0 · Candidate v1.0.0-rc.1**
+**Updated 3 November 2026 · Stable release v0.12.0 · Candidate v1.0.0-rc.2**
 
 The response, navigation, Practice and goal/scouting implementations are merged.
 [v0.12.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.12.0)
@@ -17,6 +17,19 @@ technique transfer, goal/scouting retention decision, human matchup review and
 physical GBA/controller sessions remain open. These gates must be assessed
 before the final v1.0 release. [Candidate evidence](../V1_RELEASE_CANDIDATE_TEST_REPORT.md)
 · [Remaining release checklist](../V1_RELEASE_CHECKLIST.md)
+
+## Owner-requested expansion — v1.0.0-rc.2
+
+Add Vulpix, Gastly, Riolu and Totodile plus Frostpeak and Ancient Ruins. Two-page
+selection preserves readable cards; schema-4 migration preserves older progress.
+All thirteen fighters support Practice, guides, scouting, records and mastery.
+All five arenas rotate over a five-rival run. Preserve original-nine tuning,
+first-frame input acceptance, second-frame visible response and fast retries.
+This request supersedes the earlier deferral of additional fighters/arenas.
+Human matchup review now includes the expanded roster. Player pilots and
+physical-device gates remain open before stable v1.0.
+
+[Expansion contract](../ROSTER_EXPANSION.md) · [Validation](../ROSTER_EXPANSION_TEST_REPORT.md)
 
 ## What the current game tells us
 
@@ -78,7 +91,7 @@ The two uncoached tasks are **“Start as Pikachu in Volcanic after reading its 
 
 **Stable release — RC1 automated pass implemented; player/device checks open.** Start with rushdown against guard pressure, ranged pushback and a floaty jump against long reach. Have human players swap sides and report whether they recognized what beat them and could try a counter. Use the 81 ordered CPU matchups to catch regressions. Test legacy SRAM, power-cycle records and mastery, and rehearse a five-rival run on a physical GBA. Require zero missed frames on the native suite and no increase over the v0.9.0 busiest Arcade transition. Profile new menu work toward 90% of a frame or less. Delay additional visuals if that budget slips. [Native testing](../NATIVE_TESTING.md) · [Save compatibility](../ARENAS_AND_MASTERY.md)
 
-**Scope decision.** Revisit a tenth fighter or fourth arena when returning players can use the current roster and ask for new matchups. Mid-run saving becomes a candidate if interrupted runs are a recurring reason people leave Arcade. Link multiplayer needs its own hardware feasibility study. The first two releases above address problems already visible in the shipped game.
+**Scope decision updated for RC2.** The owner requested four fighters and two arenas; that expansion is implemented. Keep further content changes separate from final validation. Mid-run saving becomes a candidate if interrupted runs are a recurring reason people leave Arcade. Link multiplayer needs its own hardware feasibility study. The first two releases above address problems already visible in the shipped game.
 
 ## Where the earlier roadmap landed
 

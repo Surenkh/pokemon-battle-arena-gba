@@ -2,7 +2,7 @@
 from pathlib import Path
 import json
 r=Path(__file__).resolve().parents[1];j=json.loads((r/'config/balance.json').read_text())
-chars=j['characters'];assert len(chars)==9 and len({c['id'] for c in chars})==9
+chars=j['characters'];assert len(chars)==13 and len({c['id'] for c in chars})==13
 count=len(chars)
 out=['#pragma once','#include <stdint.h>','namespace pkmn {',
 'struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; int melee_guard_percent,gravity_percent,jump_percent; bool melee_followup; const char* role; const char* trait; const char* tip1; const char* tip2; };',
@@ -29,7 +29,7 @@ for name,v in j['collision'].items():
  else:out.append(f'inline constexpr int collision_{name}[4] = {{{",".join(map(str,v))}}};')
 out.append('}')
 (r/'include/pkmn_character_defs.h').write_text('\n'.join(out)+'\n')
-print('Generated nine character definitions and shared rules.')
+print('Generated thirteen character definitions and shared rules.')
 
 # CPU tuning is separate from the combat rules: no difficulty stat modifiers.
 cpu=json.loads((r/'config/cpu.json').read_text())
@@ -55,4 +55,4 @@ for c,s in zip(chars,cpu['styles']):
  lines.append('{'+','.join(str(s[k]) for k in style)+'},')
 lines+=['};','}']
 (r/'include/pkmn_cpu_defs.h').write_text('\n'.join(lines)+'\n')
-print('Generated three difficulty profiles and nine CPU styles.')
+print('Generated three difficulty profiles and thirteen CPU styles.')

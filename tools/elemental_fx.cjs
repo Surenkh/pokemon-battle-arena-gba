@@ -9,7 +9,11 @@ const colors=[
  ['#29213C','#69506F','#A66B98','#DF9CC8','#BFCDDF','#EAF3FF','#FFFFFF'],
  ['#22193E','#533284','#8054BE','#B181EF','#D5B5FA','#EEE0FF','#FFFFFF'],
  ['#3B203D','#924D83','#CF75AB','#EF9EC8','#FFD2E9','#FFF0FA','#FFFFFF'],
- ['#192C36','#355865','#5D9195','#93BABB','#D0C58A','#FFF1BA','#FFFFFF']
+ ['#192C36','#355865','#5D9195','#93BABB','#D0C58A','#FFF1BA','#FFFFFF'],
+ ['#321A24','#7D3322','#BB5927','#E88437','#FFBA61','#FFE3A0','#FFFFFF'],
+ ['#201A38','#49305F','#78519D','#AC7CD0','#D1A9EE','#E6D4FF','#FFFFFF'],
+ ['#172E45','#295D87','#378BC1','#65BBDC','#A9E8F4','#D8FBFF','#FFFFFF'],
+ ['#142D3F','#1D5B7D','#2A8DA4','#57BBC6','#9CE1DA','#D4FFF0','#FFFFFF']
 ];
 
 // Integer rasterization avoids antialiased fringe colors at GBA resolution.
@@ -79,6 +83,14 @@ function travel(p,id,f,superAttack){
   p.poly([[13,y-3],[20,y-4],[24,y-2],[24,y+3],[18,y+4],[13,y+2]],4);
   for(let k=0;k<3;k++)p.line(16+k*3,y-4,16+k*3,y,6);p.line(20,y+1,24,y+1,7);
   p.line(1+f,y-3,9+f,y-3,5);p.line(3+f,y+4,10+f,y+4,3);p.dot(8+f*2,y-6,6,2);
+ }else if(id===9){
+  for(const dy of[-3,3]){p.poly([[4,y+dy+2],[12,y+dy-4-f%2],[26,y+dy],[12,y+dy+4]],2);p.poly([[10,y+dy+1],[16,y+dy-2],[24,y+dy],[15,y+dy+2]],5);p.dot(5+f*2,y+dy-4,4);}
+ }else if(id===10){
+  p.disk(18,y,6,5,1);p.disk(18,y,5,4,3);p.ring(18,y,9,superAttack?5:8,5);p.star(18,y,2,7);p.dot(6+f,y-5,4,2);p.dot(27-f,y+5,6);
+ }else if(id===11){
+  p.poly([[6,y],[17,y-7],[29,y],[17,y+7]],2);p.poly([[12,y],[18,y-4],[25,y],[18,y+4]],5);p.line(7,y,28,y,7);p.line(2+f,y-3,8+f,y-3,4);p.line(3+f,y+4,9+f,y+4,5);
+ }else if(id===12){
+  p.chain([[6,y-5],[13,y-7],[26,y-3],[22,y],[25,y+4],[12,y+7],[6,y+5]],3,3);for(let i=0;i<3;i++){p.poly([[11+i*4,y-5],[13+i*4,y-1],[15+i*4,y-5]],6);p.poly([[11+i*4,y+5],[13+i*4,y+1],[15+i*4,y+5]],5);}p.dot(4+f,y,4,2);
  }else{
   for(let i=0;i<3;i++){
    const yy=y+(i-1)*(superAttack?4:5),off=(f+i)%2;
@@ -103,11 +115,15 @@ function contact(p,id,f,blocked=false){
  else if(id===6){p.ring(x,y,r,Math.max(2,r-2),4,2);p.star(x,y,f<2?4:2,7);p.line(x-r,y+f,x+r,y-f,6);}
  else if(id===7){for(let i=0;i<3;i++){const xx=x+(i-1)*(3+f*2);p.disk(xx,y+f,2,1,5);p.line(xx+2,y+f,xx+2,y-5-f,6);}if(f<2)p.star(x,y,3,7);}
  else if(id===8){for(let i=0;i<6;i++){const a=i*Math.PI/3;p.line(x+Math.cos(a)*3,y+Math.sin(a)*3,x+Math.cos(a)*r,y+Math.sin(a)*r,i%2?5:6,2);}if(f<2)p.disk(x,y,4-f,3-f,7);}
+ else if(id===9){for(let i=0;i<4;i++)p.poly([[x+(i-2)*3,y+4],[x+(i-2)*3+1,y-r],[x+(i-2)*3+4,y+3]],i%2?4:6);}
+ else if(id===10){p.ring(x,y,r,r-1,4,2);p.disk(x,y,3,3,2);p.star(x,y,2,7);}
+ else if(id===11){p.poly([[x-r,y],[x,y-r],[x+r,y],[x,y+r]],4);p.star(x,y,Math.max(2,5-f),7);}
+ else if(id===12){p.chain([[x-r,y-r],[x,y+f],[x+r,y-r]],5,2);p.chain([[x-r,y+r],[x,y-f],[x+r,y+r]],4,2);if(f<2)p.disk(x,y,3,2,7);}
  else{for(let i=0;i<3;i++)p.chain([[x-7+i*4,y+7-f],[x-3+i*4,y+1],[x+i*4,y-6-f]],f<2?7:4,2);}
 }
 
 function buildElementalEffects({canvas,save}){
- for(let id=0;id<9;id++){
+ for(let id=0;id<colors.length;id++){
   const rgb=colors[id].map(c=>[1,3,5].map(i=>parseInt(c.slice(i,i+2),16)));
   const palette=[[255,0,255],...rgb];
   for(const[kind,w,h]of[['shot',32,32],['wave',32,16],['hit',32,32],['cast',16,16],['guard',32,32]]){

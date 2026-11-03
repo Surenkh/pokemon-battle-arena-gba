@@ -6,6 +6,7 @@ root = Path(__file__).resolve().parents[1]
 out = root / 'tests/native_artifacts/effects'
 out.mkdir(parents=True, exist_ok=True)
 symbols = subprocess.check_output(['readelf', '-sW', str(root / '.gbastudio/PokemonBattleArena.elf')], text=True)
+expansion = int(re.search(r'\b([0-9a-f]{8})\s+128\s+OBJECT\s+GLOBAL[^\n]+pkmn_expansion_debug', symbols).group(1), 16)
 address = int(re.search(r'\b([0-9a-f]{8})\s+128\s+OBJECT\s+GLOBAL[^\n]+pkmn_debug', symbols).group(1), 16)
 checks = 0
 report = []
@@ -36,10 +37,10 @@ with (out / 'errors.log').open('w') as errors:
         frames(90)
         press(8)
         press(1)
-        for character, name in enumerate(['pikachu', 'charmander', 'squirtle', 'bulbasaur', 'eevee', 'meowth', 'psyduck', 'jigglypuff', 'machop']):
+        for character, name in enumerate([c['id'] for c in json.loads((root/'config/balance.json').read_text())['characters']]):
             while state()[2] != character:
                 press(16)
-            masks = themes = supers = peak = particles = missed = 0
+            masks = themes = supers = peak = particles = missed = hits = casts = 0
             rounds = 0
             for attempt in range(5):
                 check(state()[1] == 1, 'Selector before match')
@@ -70,15 +71,16 @@ with (out / 'errors.log').open('w') as errors:
                 # Change selection, preserving all observations before renderer cleanup.
                 press(16)
                 press(1)
-                if supers and masks & 15 == 15 and themes & (1 << character) and themes & (1 << (8 + character)):
+                e=list(map(int,command(f's {expansion:08x}').split()[1:]));hits|=e[10];casts|=e[11]
+                if supers and masks & 15 == 15 and hits & (1 << character) and casts & (1 << character):
                     break
             # Close supers can hit before completing a travel cycle.
             check(masks & 15 == 15, 'All four normal travel frames rendered')
             check(supers > 0, 'Player earned and activated a real super')
-            check(bool(themes & (1 << character)), 'Character-specific hit effect rendered')
-            check(bool(themes & (1 << (8 + character))), 'Character-specific muzzle effect rendered')
+            check(bool(hits & (1 << character)), 'Character-specific hit effect rendered')
+            check(bool(casts & (1 << character)), 'Character-specific muzzle effect rendered')
             check(missed == 0, 'No missed native display frames')
-            report.append(dict(character=name, rounds=rounds, player_supers=supers, effect_frame_mask=masks, theme_mask=themes, peak_particles=particles, peak_cpu_fraction=peak/4096, missed_frames=missed))
+            report.append(dict(character=name, rounds=rounds, player_supers=supers, effect_frame_mask=masks, theme_mask=themes,hit_mask=hits,cast_mask=casts, peak_particles=particles, peak_cpu_fraction=peak/4096, missed_frames=missed))
             print('Native elemental effects passed:', name, flush=True)
     finally:
         if process.poll() is None:

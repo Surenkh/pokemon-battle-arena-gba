@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -83,16 +83,17 @@ Audio settings are available as a main-menu button; no shoulder shortcut is need
 AUDIO
 Music and sound effects have independent On/Off options.
 Settings save when you leave Audio options and survive power-off.
-Old six- and nine-fighter v0.8 SRAM records migrate without losing existing entries.
+Earlier six- and nine-fighter SRAM records, mastery and audio settings migrate.
 The default mix is moderate; emulator/device output volume is separate.
 
 ARCADE
 Choose Arcade from the visible mode menu, then difficulty and Pokemon.
-Five unique rivals from the other eight fighters. Two continues.
+Five unique rivals from the other twelve fighters. Two continues.
 Results show a mastery increment or the next unfinished goal.
 The upcoming/retry rival has one authored trait and counter cue.
 A/Start still continues directly; a finished/exhausted run has no next-rival cue.
-Woodland, Volcanic and Shoreline rotate between rivals; retries keep the same arena.
+Woodland, Volcanic, Shoreline, Frostpeak and Ancient Ruins rotate between rivals.
+Retries keep the current arena.
 Full HP/stamina between fights; draws retry for free.
 Pause Rematch costs a continue; changing Pokemon ends the run.
 With zero continues Rematch is dimmed and skipped. A finishes an exhausted run.
@@ -100,11 +101,12 @@ Records saves clears, no-continue clears and fastest total battle time.
 Battle time includes active frames and failed attempts; menus/countdown/recall are excluded.
 Unfinished runs do not resume after power-off.
 
-NINE FIGHTERS
+THIRTEEN FIGHTERS
 Psyduck: Mind Push adds strong psychic projectile knockback.
 Jigglypuff: Float Step gives lighter gravity and longer jumps.
 Machop: Heavy Hands adds melee guard-stamina pressure.
-All nine fighters have animated movement/attacks, unique themed VFX and sounds.
+Vulpix, Gastly, Riolu and Totodile join the previous roster.
+All thirteen fighters have animated movement/attacks, unique themed VFX and sounds.
 
 PRACTICE
 Choose Practice from the mode menu

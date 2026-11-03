@@ -1,5 +1,5 @@
 {
-  "version": "0.8.0",
+  "version": "1.0.0-rc.2",
   "history_ticks": 32,
   "memory_actions": 6,
   "memory_expire_ticks": 240,
@@ -134,6 +134,46 @@
       "punish_bonus": 12,
       "recover_below": 20,
       "resume_at": 42
+    },
+    {
+      "character": "vulpix",
+      "distance_px": 62,
+      "melee_percent": 72,
+      "fire_percent": 83,
+      "guard_bonus": 4,
+      "punish_bonus": 7,
+      "recover_below": 24,
+      "resume_at": 44
+    },
+    {
+      "character": "gastly",
+      "distance_px": 70,
+      "melee_percent": 62,
+      "fire_percent": 88,
+      "guard_bonus": 1,
+      "punish_bonus": 5,
+      "recover_below": 26,
+      "resume_at": 46
+    },
+    {
+      "character": "riolu",
+      "distance_px": 36,
+      "melee_percent": 88,
+      "fire_percent": 61,
+      "guard_bonus": 7,
+      "punish_bonus": 16,
+      "recover_below": 22,
+      "resume_at": 45
+    },
+    {
+      "character": "totodile",
+      "distance_px": 30,
+      "melee_percent": 91,
+      "fire_percent": 44,
+      "guard_bonus": 10,
+      "punish_bonus": 10,
+      "recover_below": 24,
+      "resume_at": 46
     }
   ]
 }

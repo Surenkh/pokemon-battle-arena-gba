@@ -1,0 +1,8 @@
+{
+  "id": "wave_12",
+  "type": "sprite",
+  "name": "wave_12",
+  "path": "graphics/wave_12.bmp",
+  "width": 32,
+  "height": 16
+}

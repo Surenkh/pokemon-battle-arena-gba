@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "checks": 355,
+  "rom_sha256": "ce79a2006b0fb5218794f12997eae1ccd790609c1b8b81fe5572ae8f4c8f1d28",
+  "configured_product_tasks": 2,
+  "roster_guide_round_trips": 27,
+  "menu_keys": 223,
+  "held_confirmation_safe": true,
+  "result_focus_unique": true,
+  "exhausted_continue_paths": true,
+  "peak_cpu_fraction": 0.7734375,
+  "missed_display_frames": 0,
+  "method": "mGBA 0.10.2, real buttons, read-only telemetry and framebuffer captures; no gameplay-memory writes",
+  "test_source": "tests/native_navigation_flow.py",
+  "test_source_sha256": "9aa1966c75e1c6daabf2784b04f7186db9115aa554b9f77ec0aff3da417f32af"
+}

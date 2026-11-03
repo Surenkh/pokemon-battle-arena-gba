@@ -1,22 +1,26 @@
-# Mode menu, Arcade and records — v1.0 RC1
+# Mode menu, Arcade and records — v1.0 RC2
 
 ## Menu-first navigation
 
-The title's Play button (A/Start) opens seven visible buttons: Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery. D-pad movement and A/Start enter the selected mode; B returns. Quick/Arcade then present the nine-fighter grid and Easy/Normal/Hard row. Practice presents the roster and training/rival/arena options. Select in every setup opens settings directly for the chosen fighter. The visible Fighter Info row opens with A. B restores the row and then the chosen card. Legacy shortcuts may remain optional, but no primary menu function requires L/R.
+The title's Play button (A/Start) opens seven visible buttons: Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery. D-pad movement and A/Start enter the selected mode; B returns. Quick/Arcade then present the thirteen-fighter grid across two pages and Easy/Normal/Hard row. Practice presents the roster and training/rival/arena options. Select in every setup opens settings directly for the chosen fighter. The visible Fighter Info row opens with A. B restores the row and then the chosen card. Legacy shortcuts may remain optional, but no primary menu function requires L/R.
 
-The title displays v1.0 RC1 and the nine-fighter roster count. Keyboard letters belong to the emulator: GBA A/Start are the confirmation controls. Native GBA screens use controller navigation; mouse/touch behavior is provided by the emulator.
+The title displays v1.0 RC2 and the thirteen-fighter roster count. Keyboard letters belong to the emulator: GBA A/Start are the confirmation controls. Native GBA screens use controller navigation; mouse/touch behavior is provided by the emulator.
 
 ## Arcade contract
 
-A seeded shuffle samples five distinct rivals from the other eight Pokémon, with no mirror matches. Fighter and difficulty remain fixed throughout the run. Wins advance after the Poké Ball recall; the fifth win records one clear and shows Champion. Losses retry the same rival only after spending one of two continues. Draws retry freely. Pause Rematch also costs a continue; changing Pokémon abandons the run. With zero continues, Pause dims and skips Rematch, and A on the final loss screen finishes the run. New rounds reset HP/stamina/SP, projectile and CPU state.
+A seeded shuffle samples five distinct rivals from the other twelve Pokémon, with no mirror matches. Fighter and difficulty remain fixed throughout the run. Wins advance after the Poké Ball recall; the fifth win records one clear and shows Champion. Losses retry the same rival only after spending one of two continues. Draws retry freely. Pause Rematch also costs a continue; changing Pokémon abandons the run. With zero continues, Pause dims and skips Rematch, and A on the final loss screen finishes the run. New rounds reset HP/stamina/SP, projectile and CPU state.
 
-The clock counts active display ticks, including hitstop and unsuccessful attempts. Pause/options, countdown, recall and result screens are excluded. Records track clears, no-continue clears and fastest total battle ticks for all 27 fighter/difficulty combinations. Unfinished runs are not saved. Seconds use 60 ticks, versus native refresh near 59.73 Hz.
+The clock counts active display ticks, including hitstop and unsuccessful attempts. Pause/options, countdown, recall and result screens are excluded. Records track clears, no-continue clears and fastest total battle ticks for all 39 fighter/difficulty combinations. Unfinished runs are not saved. Seconds use 60 ticks, versus native refresh near 59.73 Hz.
 
 ## Recoverable persistence
 
-Two independent SRAM copies live at offsets 0 and 512. Schema 3 uses 420 bytes per copy, retaining the schema-2 record layout and appending two mastery counters per fighter. Schema 2 uses 348 bytes per copy: explicit 32-bit magic/schema/sequence/audio fields, 27 counter/time triples, reserved zero and FNV-1a checksum. Schema 1 uses the earlier 240-byte, 18-record layout. Loading validates each copy using its own schema and checksum, chooses the newest valid sequence with wraparound handling, and supplies empty records for new fighters when migrating schema 1. Unknown tail bytes from a legacy slot are ignored. Schema 3 keeps original records/audio preferences and derives the no-continue mastery medal from existing perfect-clear records.
-
-Saving invalidates only the inactive copy, writes payload then checksum, and verifies it before changing the active slot/sequence. The previous valid copy remains available, including mixed schema-1/schema-2/schema-3 recovery after an interrupted migration. Settings save on leaving changed Audio Settings; completed runs save at Champion. Failures leave the in-memory records available and show a save warning on progression screens. Neither slot valid means defaults, without overwriting SRAM at boot.
+Schema 4 uses 596-byte copies at offsets 1024 and 2048 for 39 record triples,
+thirteen mastery pairs and audio preferences. The legacy copies at 0 and 512
+remain untouched. Their schema-1/2/3 sizes are fixed at 240/348/420 bytes. Loading
+validates the new copies first, falling back to old copies if neither is valid.
+Existing records, audio and mastery migrate; new fighters start empty. Saving
+writes payload/checksum to a new slot and verifies before advancing the active
+copy. Keep the full SRAM file. [Migration details](ROSTER_EXPANSION.md).
 
 ## Rendering budget
 

@@ -2,8 +2,8 @@
 #include <stdint.h>
 namespace pkmn {
 struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; int melee_guard_percent,gravity_percent,jump_percent; bool melee_followup; const char* role; const char* trait; const char* tip1; const char* tip2; };
-inline constexpr int character_count = 9;
-inline constexpr CharacterDef characters[9] = {
+inline constexpr int character_count = 13;
+inline constexpr CharacterDef characters[13] = {
 {"PIKACHU",95,105,26,384,8,12,32,4,3,18,8,26,896,21,128,100,100,512,0,100,100,100,0,"RUSH AND PRESSURE","QUICK STEP","MELEE STEPS FORWARD","FAST APPROACH. COMMIT TO A."},
 {"CHARMANDER",100,90,24,307,10,14,36,6,3,23,10,32,768,21,0,100,125,512,0,100,100,100,0,"HEAVY FIRE","EMBER PRESSURE","FIRE DRAINS EXTRA GUARD","SLOW RECOVERY. KEEP SPACE."},
 {"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704,21,0,80,100,768,0,100,100,100,0,"DEFENSE AND SPACE","SHELL CONTROL","EFFICIENT BLOCK. WATER PUSH.","SUPERS STILL IGNORE BLOCK."},
@@ -13,6 +13,10 @@ inline constexpr CharacterDef characters[9] = {
 {"PSYDUCK",105,105,23,294,8,13,34,6,3,23,10,30,768,23,0,100,100,896,0,100,100,100,0,"RANGED CONTROL","MIND PUSH","PSY PULSE PUSHES RIVALS BACK","KEEP SPACE. SPEND FIRE WISELY."},
 {"JIGGLYPUFF",125,100,21,256,7,10,30,5,3,21,9,28,768,21,0,100,100,512,0,100,75,105,0,"AERIAL EVASION","FLOAT STEP","LIGHT GRAVITY. LONGER JUMPS.","LAND BEFORE COMMITTING A SUPER"},
 {"MACHOP",115,95,24,282,11,9,37,7,3,25,12,34,640,25,0,100,100,512,0,135,100,100,0,"CLOSE POWER","HEAVY HANDS","MELEE DRAINS EXTRA GUARD","CLOSE THE GAP. MIND RECOVERY."},
+{"VULPIX",95,100,27,358,7,13,34,4,3,19,9,28,896,21,96,100,100,512,0,100,100,100,0,"MOBILE FIRE","FOX STEP","MELEE STEPS INTO RANGE","MOVE IN. FIRE ON A CLEAN HIT"},
+{"GASTLY",90,95,24,333,8,12,33,5,3,21,8,27,832,24,0,100,100,512,0,100,80,100,0,"AERIAL DISRUPTION","HOVER","LOW GRAVITY. LONGER AIRTIME","LAND BEFORE USING A SUPER"},
+{"RIOLU",100,110,27,346,8,11,34,4,3,18,9,28,896,22,0,100,100,512,4,100,100,100,0,"RECOVERY COUNTER","AURA PUNISH","EXTRA DAMAGE ON RECOVERY","BAIT AN ATTACK. THEN HIT A."},
+{"TOTODILE",115,105,22,294,10,10,35,6,3,23,10,31,768,24,0,90,100,640,0,125,100,100,0,"GUARD PRESSURE","JAW PRESSURE","MELEE TAXES GUARD STAMINA","CLOSE IN. WATCH YOUR STAMINA"},
 };
 inline constexpr int world_width = 240;
 inline constexpr int world_height = 160;

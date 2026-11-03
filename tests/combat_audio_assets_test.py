@@ -4,7 +4,7 @@ import array, hashlib, json, math, wave
 
 r=Path(__file__).resolve().parents[1]
 meta=json.loads((r/'docs/combat_audio_assets.json').read_text())
-assert len(meta['assets'])==39
+assert len(meta['assets'])==55
 groups={kind:set() for kind in ['shot','hit','charge','release']}
 for item in meta['assets']:
     path=r/'audio'/(item['name']+'.wav')
@@ -22,5 +22,5 @@ for item in meta['assets']:
     assert info['type']=='sound' and (r/info['path']).is_file()
     for kind in groups:
         if item['name'].startswith(kind+'_fx_'):groups[kind].add(hashlib.sha256(data).hexdigest())
-assert all(len(hashes)==9 for hashes in groups.values())
-print('PASS 39 original PCM effects: non-silent, bounded, ramped, importable; nine distinct themes per bank.')
+assert all(len(hashes)==13 for hashes in groups.values())
+print('PASS 55 original PCM effects: non-silent, bounded, ramped, importable; thirteen distinct themes per bank.')

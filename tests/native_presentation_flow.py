@@ -42,8 +42,7 @@ def change():
  elif state()[1]==3:press(8);press(128);press(128);press(1)
  check(state()[1]==1,'Return to selector')
 def level(value):
- while state()[2]<6:press(128)
- press(128)
+ press(4)
  while state()[4]!=value:press(16)
  press(64)
  while state()[2]!=0:press(16)

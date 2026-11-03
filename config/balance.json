@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "0.8.0",
+  "ruleset_version": "1.0.0-rc.2",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -545,6 +545,182 @@
         "trait_name": "HEAVY HANDS",
         "tip_1": "MELEE DRAINS EXTRA GUARD",
         "tip_2": "CLOSE THE GAP. MIND RECOVERY."
+      }
+    },
+    {
+      "id": "vulpix",
+      "name": "Vulpix",
+      "type": "Fire",
+      "max_hp": 95,
+      "max_stamina": 100,
+      "stamina_regen_per_second": 27,
+      "walk_speed_q8": 358,
+      "melee": {
+        "name": "Ember Paw",
+        "damage": 7,
+        "startup_ticks": 4,
+        "active_ticks": 3,
+        "recovery_ticks": 12
+      },
+      "fire": {
+        "name": "Fire Spin",
+        "damage": 13,
+        "startup_ticks": 9,
+        "active_ticks": 1,
+        "recovery_ticks": 18,
+        "speed_q8": 896
+      },
+      "super": {
+        "name": "Flame Wheel",
+        "damage": 34
+      },
+      "style": {
+        "melee_reach_px": 21,
+        "melee_lunge_q8": 96,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100,
+        "role": "MOBILE FIRE",
+        "trait_name": "FOX STEP",
+        "tip_1": "MELEE STEPS INTO RANGE",
+        "tip_2": "MOVE IN. FIRE ON A CLEAN HIT"
+      }
+    },
+    {
+      "id": "gastly",
+      "name": "Gastly",
+      "type": "Ghost",
+      "max_hp": 90,
+      "max_stamina": 95,
+      "stamina_regen_per_second": 24,
+      "walk_speed_q8": 333,
+      "melee": {
+        "name": "Lick",
+        "damage": 8,
+        "startup_ticks": 5,
+        "active_ticks": 3,
+        "recovery_ticks": 13
+      },
+      "fire": {
+        "name": "Shadow Orb",
+        "damage": 12,
+        "startup_ticks": 8,
+        "active_ticks": 1,
+        "recovery_ticks": 18,
+        "speed_q8": 832
+      },
+      "super": {
+        "name": "Shadow Wave",
+        "damage": 33
+      },
+      "style": {
+        "melee_reach_px": 24,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 80,
+        "jump_percent": 100,
+        "role": "AERIAL DISRUPTION",
+        "trait_name": "HOVER",
+        "tip_1": "LOW GRAVITY. LONGER AIRTIME",
+        "tip_2": "LAND BEFORE USING A SUPER"
+      }
+    },
+    {
+      "id": "riolu",
+      "name": "Riolu",
+      "type": "Fighting",
+      "max_hp": 100,
+      "max_stamina": 110,
+      "stamina_regen_per_second": 27,
+      "walk_speed_q8": 346,
+      "melee": {
+        "name": "Quick Palm",
+        "damage": 8,
+        "startup_ticks": 4,
+        "active_ticks": 3,
+        "recovery_ticks": 11
+      },
+      "fire": {
+        "name": "Aura Pulse",
+        "damage": 11,
+        "startup_ticks": 9,
+        "active_ticks": 1,
+        "recovery_ticks": 18,
+        "speed_q8": 896
+      },
+      "super": {
+        "name": "Aura Storm",
+        "damage": 34
+      },
+      "style": {
+        "melee_reach_px": 22,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 100,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 512,
+        "recovery_punish_bonus": 4,
+        "melee_followup": false,
+        "melee_guard_percent": 100,
+        "gravity_percent": 100,
+        "jump_percent": 100,
+        "role": "RECOVERY COUNTER",
+        "trait_name": "AURA PUNISH",
+        "tip_1": "EXTRA DAMAGE ON RECOVERY",
+        "tip_2": "BAIT AN ATTACK. THEN HIT A."
+      }
+    },
+    {
+      "id": "totodile",
+      "name": "Totodile",
+      "type": "Water",
+      "max_hp": 115,
+      "max_stamina": 105,
+      "stamina_regen_per_second": 22,
+      "walk_speed_q8": 294,
+      "melee": {
+        "name": "Bite",
+        "damage": 10,
+        "startup_ticks": 6,
+        "active_ticks": 3,
+        "recovery_ticks": 14
+      },
+      "fire": {
+        "name": "Water Fang",
+        "damage": 10,
+        "startup_ticks": 10,
+        "active_ticks": 1,
+        "recovery_ticks": 20,
+        "speed_q8": 768
+      },
+      "super": {
+        "name": "Tidal Chomp",
+        "damage": 35
+      },
+      "style": {
+        "melee_reach_px": 24,
+        "melee_lunge_q8": 0,
+        "guard_impact_percent": 90,
+        "fire_guard_percent": 100,
+        "fire_knockback_q8": 640,
+        "recovery_punish_bonus": 0,
+        "melee_followup": false,
+        "melee_guard_percent": 125,
+        "gravity_percent": 100,
+        "jump_percent": 100,
+        "role": "GUARD PRESSURE",
+        "trait_name": "JAW PRESSURE",
+        "tip_1": "MELEE TAXES GUARD STAMINA",
+        "tip_2": "CLOSE IN. WATCH YOUR STAMINA"
       }
     }
   ],
