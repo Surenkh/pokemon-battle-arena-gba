@@ -102,6 +102,6 @@ int main() {
         check(adjacent_mode(next, false) == mode, "Menu navigation reverses without skipping a mode");
         mode = next;
     }
-    check(mode == 0 && seen == 255, "All eight modes are reachable in one cycle");
+    check(mode == 0 && seen == 511, "All nine modes are reachable in one cycle");
     std::printf("Local Versus: %d checks passed\n", checks);
 }

@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "checks": 815,
+  "roster_count": 13,
+  "arena_count": 5,
+  "rapid_card_changes": 120,
+  "max_visible_portraits": 1,
+  "legacy_schema": 3,
+  "save_schema": 4,
+  "save_copy_bytes": 596,
+  "save_offsets": [
+    1024,
+    2048
+  ],
+  "records_verified": 39,
+  "mastery_fighters_verified": 13,
+  "new_fighter_mastery_earned": true,
+  "new_fighter_arcade_clear": true,
+  "arcade_attempts": 1,
+  "arcade_arenas": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "power_cycle": true,
+  "legacy_copies_unchanged": true,
+  "corrupt_newest_recovery": true,
+  "both_new_copies_legacy_recovery": true,
+  "peak_cpu_fraction": 0.8828125,
+  "missed_display_frames": 0,
+  "rom_sha256": "1349e629e795a929f1f9185e5c85276b2b29faa3323aa398ae06939eaf32ec28",
+  "wall_seconds": 6.85,
+  "method": "mGBA 0.10.2, physical GBA keys and read-only telemetry; frozen RC1 SRAM, actual Vulpix mastery and five-rival clear, power cycles and offline corruption; no gameplay-memory writes",
+  "test_source": "tests/native_expansion_flow.py",
+  "test_source_sha256": "a86490cc58a350494d4837976c85172cf88fb8444ba87a43afa316bb85e96d6c",
+  "driver_source": "tests/mgba_driver.c",
+  "driver_source_sha256": "df1d134795dff636ca8ec6b31653681ac5ac7975780e0716c1ac224afd0f2935"
+}

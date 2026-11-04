@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "rom_sha256": "1349e629e795a929f1f9185e5c85276b2b29faa3323aa398ae06939eaf32ec28",
+  "rom_bytes": 3539528,
+  "native_suites": 19,
+  "native_checks": 25338,
+  "host_suites": 16,
+  "host_cup_checks": 5449,
+  "native_cup_checks": 672,
+  "release_integrity_tests": 13,
+  "missed_display_frames": 0,
+  "highest_cpu_fraction": 0.93701171875,
+  "cup_cpu_fraction": 0.935546875,
+  "versus_cpu_fraction": 0.83349609375,
+  "all_three_cups_cleared": true,
+  "earned_native_style_clear": true,
+  "combat_rules_unchanged": true,
+  "human_cup_pacing_verified": false,
+  "physical_keyboard_and_gui_verified": false,
+  "human_balance_verified": false
+}

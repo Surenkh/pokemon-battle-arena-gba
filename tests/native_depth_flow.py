@@ -126,7 +126,7 @@ try:
  line=cmd(f'b 12000 {main:08x} {feel:08x}');check(info()[7]==2,'Auto KO reset retains best sequence');check(info()[31]>=3,'KO automatically restarts practice rounds');check(state()[1] in (2,3,5),'Practice never routes to ordinary result screen');check(state()[22]==0,'No missed display frames in long practice replay');capture('long_practice')
  if state()[1]==2:frames(185)
  if state()[1]==5:frames(245)
- change();press(2);check(state()[1]==15,'Leave practice to mode menu');press(64);press(64);press(8);press(1);frames(185);check(state()[1]==3 and info()[19]==0,'Ordinary mode restores timed rules');check(state()[10]<100 and state()[18]<3600,'Ordinary match has earned SP and a running clock');check(state()[22]==0,'No missed frames in mode transitions')
+ change();press(2);check(state()[1]==15,'Leave practice to mode menu');press(64);press(64);press(64);press(8);press(1);frames(185);check(state()[1]==3 and info()[19]==0,'Ordinary mode restores timed rules');check(state()[10]<100 and state()[18]<3600,'Ordinary match has earned SP and a running clock');check(state()[22]==0,'No missed frames in mode transitions')
  result=dict(status='passed',checks=checks,roster=roster,guard=guard,practice_auto_rounds=info()[31],automatic_restarts=max(0,info()[31]-1),practice_stress_display_frames=12000,peak_cpu_fraction=state()[21]/4096,missed_display_frames=state()[22],wall_seconds=round(time.time()-started,2),rom_sha256=hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),method='mGBA 0.10.2; physical buttons, read-only telemetry; no gameplay-memory writes')
  (out/'report.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
 finally:

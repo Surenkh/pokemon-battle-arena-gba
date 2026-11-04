@@ -7,6 +7,7 @@ import os
 import re
 import shutil
 import subprocess
+import struct
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,6 +27,15 @@ MAIN, VERSUS, DEPTH, MASTERY, ARCADE = map(symbol, [
     'pkmn_debug', 'pkmn_versus_debug', 'pkmn_depth_debug', 'pkmn_mastery_debug', 'pkmn_arcade_debug'])
 save = OUTPUT / 'progress.sav'
 shutil.copyfile(ROOT / 'tests/fixtures/nine_fighter_v1.sav', save)
+# Keep meaningful existing Cup achievements intact through real two-player sets.
+cup_words = [0x43555031, 1, 17] + [2, 1, 1, 1200] * 9
+cup_payload = struct.pack('<39I', *cup_words)
+cup_checksum = 2166136261
+for byte in cup_payload:
+    cup_checksum = ((cup_checksum ^ byte) * 16777619) & 0xffffffff
+save_bytes = bytearray(save.read_bytes())
+save_bytes[4096:4256] = cup_payload + struct.pack('<I', cup_checksum)
+save.write_bytes(save_bytes)
 original_save = save.read_bytes()
 errors = (OUTPUT / 'errors.log').open('w')
 driver = os.environ.get('PKMN_VERSUS_DRIVER', str(ROOT / '.tooling/mgba_versus_driver'))
@@ -144,7 +154,7 @@ try:
     frames(90)
     check(read(VERSUS)[2] == 1, 'Shipped Lua adapter connects through the actual mGBA API')
     tap(1)
-    for _ in range(3):
+    for _ in range(4):
         tap(128)
     check(read(ARCADE)[17] == 7, 'Local Versus is beside Practice in the visible menu')
     capture('mode-menu')
@@ -281,7 +291,7 @@ report = dict(status='passed', checks=checks, rom_sha256=hashlib.sha256(ROM.read
               raw_host_key_events=True, combat_state_writes=False, input_mailbox_only=True,
               first_frame_actions=True, roster_per_player=13, locations=5, mirror_matches=True,
               p1_and_p2_wins=True, first_to_two=True, quick_rematch=True,
-              pause_and_reconnect=True, save_byte_identical=True,
+              pause_and_reconnect=True, save_byte_identical=True, existing_cup_journal_byte_identical=True,
               peak_cpu_fraction=peak / 4096, missed_display_frames=missed,
               mgba_revision=emulator_info[1], mgba_version=emulator_info[2],
               wall_seconds=round(time.time() - started, 2),

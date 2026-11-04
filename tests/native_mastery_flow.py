@@ -56,7 +56,7 @@ def menu():
     check(state()[1]==15,'Visible eight-button menu')
 def choose(row):
     menu()
-    for _ in range(8):
+    for _ in range(9):
         if read(arcade)[17]==row:break
         press(128)
     press(1)

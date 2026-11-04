@@ -293,3 +293,29 @@ macro. Each runs 10,140 seeded CPU matches. Compare the 121 pairings excluding
 fighters 7 and 10. Baseline: a2df69db08eb4503789dc0a82e979cb9c1069595.
 `tools/balance_probe.cpp` provides broader per-fighter diagnostics. These do not
 establish human balance; physical keyboard/Qt and player pilots remain open.
+
+
+## Rival Cup (v1.4.0-rc.1)
+
+Add `tests/cup_tests.cpp` to the host suites and run
+`python3 tests/native_cup_flow.py` with the ordinary mGBA driver. The driver
+`g` command supplies the same visible-state button policy as `b` plus fresh
+B attempts during melee recovery; it never writes combat state. The native
+runner checks all thirteen fighters, all Cup/difficulty launches, real clears
+and style events, pause/continue/exhaustion, glyphs, maximum legal records,
+power cycles and independent corrupt/interrupted-save recovery. Local Versus
+also carries a valid populated Cup journal through its unchanged-save test.
+
+The appended 32-word `pkmn_cup_debug` layout is: 0 magic 0x43555034; 1 Cup
+selector context; 2 active run; 3 selected Cup; 4 wins/stage; 5 continues;
+6 continues used; 7 cumulative active display ticks; 8 style count; 9 finished;
+10 awarded; 11 last outcome; 12 current run rival fighter; 13 its arena;
+14–17 selected Cup/difficulty clears, style, perfect and best ticks;
+18 journal write failed; 19 active/last run's goal target; 20 last fought stage;
+21 new-best flag; 22 copy bytes (160); 23–24 journal offsets (4096/5120).
+25–31 are reserved. Existing telemetry layouts remain stable.
+
+Menu mode ID 8 is Rival Cup. Its board is screen 18 and result is screen 19;
+all earlier IDs retain their meaning. `config/cups.json` is the route source.
+A build with `rival_cup: true` requires its own ROM-bound `native-cup.json`
+evidence at packaging time. See [contract and pilot](RIVAL_CUP.md).

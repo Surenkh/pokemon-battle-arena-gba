@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "rom_sha256": "1349e629e795a929f1f9185e5c85276b2b29faa3323aa398ae06939eaf32ec28",
+  "method": "Actual 240x160 native framebuffer captures.",
+  "files": [
+    {
+      "file": "docs/media/rival-cup-board-native.png",
+      "sha256": "476514c46921fa17b9039156f13d3600b55891912008a9bc4a7de2e66317ba74"
+    },
+    {
+      "file": "docs/media/rival-cup-menu-native.png",
+      "sha256": "034353f8318fb141681e0fa25ccd5285df15cde3e0e16a21d9098d154e3e3664"
+    },
+    {
+      "file": "docs/media/rival-cup-records-native.png",
+      "sha256": "c6cc18857c6457465060c607396741c5a49c5afe6d754bdf3691491a168e624c"
+    },
+    {
+      "file": "docs/media/rival-cup-scout-native.png",
+      "sha256": "88291ffb0ab83b45daf9c11d04f8b1ea17daf6ca1f9129b007ca3c1e4bdc2f7b"
+    },
+    {
+      "file": "docs/media/rival-cup-style-native.png",
+      "sha256": "6c1424f3e43ae99c759c6a026ce8eda902950e64e97565ef6a62314624bcf682"
+    }
+  ]
+}

@@ -175,7 +175,7 @@ for character, definition in enumerate(CHARACTERS):
 game = Emulator()
 try:
     game.tap(8)
-    for row, y in ((0,36),(1,49),(2,62),(7,75),(3,99),(4,111),(5,123),(6,135)):
+    for row, y in ((0,34),(1,46),(8,58),(2,70),(7,82),(3,104),(4,116),(5,128),(6,140)):
         game.frames(6)
         check(game.read(ARCADE)[17] == row, 'Expected visible mode row')
         picture = game.capture()
@@ -191,7 +191,7 @@ finally:
 check(missed == 0, 'Zero missed native display frames')
 report = dict(status='passed', checks=checks, rom_sha256=hashlib.sha256(ROM.read_bytes()).hexdigest(),
               sampled_trials=len(results), cases=results, held_and_rejected_fighters=len(CHARACTERS),
-              menu_hints=8, peak_cpu_fraction=peak / 4096, missed_display_frames=missed,
+              menu_hints=9, peak_cpu_fraction=peak / 4096, missed_display_frames=missed,
               method='mGBA 0.10.2; one-frame physical inputs and matched no-input framebuffer replays; read-only telemetry')
 (OUTPUT / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps({key: value for key, value in report.items() if key != 'cases'}, indent=2))

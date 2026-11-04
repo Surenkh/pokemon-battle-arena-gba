@@ -55,7 +55,7 @@ def menu():
  check(read()[1]==15,'Visible mode menu')
 def choose(mode):
  menu()
- for _ in range(8):
+ for _ in range(9):
   if read(ARCADE)[17]==mode:break
   tap(128)
  tap(1)

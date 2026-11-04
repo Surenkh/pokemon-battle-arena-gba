@@ -8,12 +8,12 @@ namespace pkmn {
 
 inline constexpr uint32_t versus_input_magic = 0x56534931;
 inline constexpr int versus_input_timeout = 3;
-inline constexpr int mode_count = 8;
+inline constexpr int mode_count = 9;
 
-// Keep existing mode IDs stable while putting Local Versus beside Practice.
+// Keep existing mode IDs stable; Cup joins the play section before Practice.
 inline int adjacent_mode(int mode, bool forward) {
-    constexpr int next[] = {1, 2, 7, 4, 5, 6, 0, 3};
-    constexpr int previous[] = {6, 0, 1, 7, 3, 4, 5, 2};
+    constexpr int next[] = {1, 8, 7, 4, 5, 6, 0, 3, 2};
+    constexpr int previous[] = {6, 0, 8, 7, 3, 4, 5, 2, 1};
     return forward ? next[mode] : previous[mode];
 }
 
