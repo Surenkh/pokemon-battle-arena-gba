@@ -3,6 +3,7 @@ namespace pkmn {
 inline constexpr int cpu_history_ticks = 32;
 inline constexpr int cpu_memory_actions = 6;
 inline constexpr int cpu_memory_expire_ticks = 240;
+inline constexpr int cpu_signature_zone_burst_percent = 10;
 struct CpuDifficulty { int reaction_ticks,think_ticks,defense_percent,super_evade_percent,punish_percent,followup_percent,mistake_percent,hesitate_ticks,plan_ticks,adapt_percent; };
 inline constexpr CpuDifficulty cpu_difficulties[3] = {
 {20,9,40,45,25,25,22,12,90,0},

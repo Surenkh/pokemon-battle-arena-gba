@@ -35,6 +35,9 @@ public:
   if(tired[who])return 3;if(blocked[who])return 2;
   if(punish[who])return 6;
   if(c.can_followup(who,A))return 8;if(c.can_followup(who,B))return 7;
+  if(c.air_braking(who))return 9;
+  if(c.can_burst(who))return 10;
+  if(c.can_air_brake(who))return 11;
   if(c.f[who].sta<fire_stamina_cost*60)return 1;
   return c.f[who].sp==100?5:0;
  }

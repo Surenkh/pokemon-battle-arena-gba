@@ -4,14 +4,14 @@
   "compiler": "arm-none-eabi-g++ (devkitARM) 16.1.0",
   "host": "Linux x86_64",
   "studio_deb_sha256": "5df46494f63d4cf9697ff27c78d35b661026d17ff4e92ea7942548635288a371",
-  "rom_sha256": "a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2",
+  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
   "build_engine": "project-scoped vendored GBA Studio CLI and Butano",
-  "game_release": "1.2.0-rc.1",
-  "ruleset": "1.0.0-rc.2",
+  "game_release": "1.3.0-rc.1",
+  "ruleset": "1.3.0-rc.1",
   "animation_source_revision": "18c8a218537b984839803b95d588382624a8301a",
   "compiler_package_note": "GBA Studio 0.5.0 bundled linux.tar.gz; compiler binaries verified as x86-64.",
   "baseline_rebuild_sha256": "d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845",
-  "rom_bytes": 3424892,
+  "rom_bytes": 3434140,
   "audio_assets": 69,
   "combat_voice_limit": 2,
   "combat_audio_assets": 55,
@@ -43,5 +43,11 @@
   "local_versus_input_protocol": 1,
   "local_versus_keyboard_players": 2,
   "local_versus_emulated_instances": 1,
-  "local_versus_mgba_revision": "a67176cd3e6bf60a5016d7adc94357142dd12617"
+  "local_versus_mgba_revision": "a67176cd3e6bf60a5016d7adc94357142dd12617",
+  "fighter_techniques": true,
+  "technique_fighters": [
+    "jigglypuff",
+    "gastly"
+  ],
+  "technique_effect_frames": 8
 }

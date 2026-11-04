@@ -260,3 +260,36 @@ g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp \
 
 Use [the player guide](LOCAL_VERSUS.md) for desktop setup and the remaining
 physical-keyboard/Qt pilot. Stable mGBA 0.10.x cannot run this input adapter.
+
+## v1.3 fighter techniques
+
+Use the pinned upstream mGBA/Lua build described above and compile the current
+`tests/mgba_versus_driver.c` with `tools/build_versus_test_driver.py`. P1 O now maps
+to Select for options and Practice retry.
+
+```sh
+python3 tests/native_techniques_flow.py
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp tests/techniques_tests.cpp -o .tooling/techniques-tests
+.tooling/techniques-tests
+node tests/techniques_assets_test.cjs
+```
+
+The runner completes both lessons with real raw-key inputs, tests both player
+sides and all advertised counters, and verifies all eight actual warning/blast
+frames with exact palette masks. It observes pause, reconnect, fast retry and
+SRAM isolation. The harness has no combat-state write command. Results are in
+`tests/native_artifacts/techniques/`.
+
+The 32-word `pkmn_technique_debug` array preserves prior layouts. Word 0 is magic
+0x54454333; 1–2 are technique IDs, 3–4 used flags, 5–6 brake expiry, 7–8 signed
+vertical velocities, 9–12 input opportunities, 13–14 orb activity, 15–16 burst
+start (-1 unarmed), 17–20 orb x/y Q8, 21–22 visual phase, 23 event mask, 24–29
+per-round brake/arm/hit counters, 30 renderer float bits and 31 packed requested
+burst phase plus one for P1/P2.
+
+Compile `tools/technique_probe.cpp` with `-DPKMN_TECHNIQUE_PROBE_BASELINE` against
+the baseline core/include directory, then against candidate source without the
+macro. Each runs 10,140 seeded CPU matches. Compare the 121 pairings excluding
+fighters 7 and 10. Baseline: a2df69db08eb4503789dc0a82e979cb9c1069595.
+`tools/balance_probe.cpp` provides broader per-fighter diagnostics. These do not
+establish human balance; physical keyboard/Qt and player pilots remain open.

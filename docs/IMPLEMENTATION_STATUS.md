@@ -1,5 +1,11 @@
 # Implementation status — 4 November 2026
 
+**v1.3.0-rc.1 — Fighter Techniques Preview** adds Jigglypuff Air Brake and Gastly Shadow Burst, with stamina costs, readable cues, counters and Technique lessons in Practice. Both work on either side in Local Versus. The keyboard adapter adds P1 O for Select/options/retry. Save schema 4 and base fighter stats are preserved.
+
+[Player guide](TECHNIQUES_PLAYER_GUIDE.md) · [Validation](TECHNIQUES_TEST_REPORT.md). Human readability, timing and matchup testing remain open.
+
+## Previous iteration
+
 **v1.2.0-rc.1 — Local Versus Preview** adds two keyboard players to one running
 GBA game. An mGBA 0.11 development Lua adapter sends independent button streams
 through a versioned 16-byte input mailbox. Both players choose from all thirteen

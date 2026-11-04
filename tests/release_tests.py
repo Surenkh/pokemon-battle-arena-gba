@@ -114,6 +114,23 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             prepare(self.root, self.output)
 
+    def test_technique_bundle_requires_both_native_tested_fighters_and_drills(self):
+        guide = b'# Fighter techniques\nAir Brake and Shadow Burst.\n'
+        self.write('docs/TECHNIQUES_PLAYER_GUIDE.md', guide)
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0',
+                rom_sha256=self.sha, rom_bytes=256, fighter_techniques=True))
+        report = dict(status='passed', rom_sha256=self.sha,
+                      signature_fighters=['jigglypuff', 'gastly'], drills_completed=True)
+        self.js('docs/verification/v0.5.0/native-techniques.json', report)
+        meta = prepare(self.root, self.output)
+        with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
+            self.assertEqual(archive.read('FIGHTER_TECHNIQUES.md'), guide)
+            self.assertIn(b'FIGHTER TECHNIQUES PREVIEW', archive.read('README.txt'))
+        for change in [dict(signature_fighters=['gastly']), dict(drills_completed=False)]:
+            self.js('docs/verification/v0.5.0/native-techniques.json', dict(report, **change))
+            with self.assertRaises(ValueError):
+                prepare(self.root, self.output)
+
     def test_version_mismatch_cannot_package(self):
         self.js('package.json', dict(version='0.6.0'))
         with self.assertRaises(ValueError): prepare(self.root, self.output)

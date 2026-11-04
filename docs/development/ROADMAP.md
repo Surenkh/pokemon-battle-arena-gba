@@ -1,12 +1,27 @@
 # Pokémon Battle Arena product roadmap
 
-**Updated 4 November 2026 · Stable release v1.1.0 · Current work v1.2.0-rc.1**
+**Updated 4 November 2026 · Stable release v1.1.0 · Current work v1.3.0-rc.1**
 
 The response, navigation, Practice and goal/scouting implementations are merged.
 [v1.1.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0)
 is the latest stable release. The updated native gameplay GIF is also merged.
 
-## Current iteration — one-window Local Versus
+## Current iteration — more distinctive fighter techniques
+
+The owner selected the next item after merging Local Versus. Start with the two
+proposed fighters: Jigglypuff alters landing timing with Air Brake, while Gastly
+chooses when Shadow Orb bursts. v1.3.0-rc.1 implements costs, cues, counters,
+guides and two Practice lessons. Verify both player sides, interruption, input
+edges, pause/reconnect, persistence and frame budgets. Human readability,
+counterplay and fun remain pilot gates before further roster expansion.
+
+[Design](../DISTINCTIVE_TECHNIQUES.md) · [Player guide](../TECHNIQUES_PLAYER_GUIDE.md)
+· [Validation](../TECHNIQUES_TEST_REPORT.md).
+
+Next comes Rival Cup: a short authored series with rival identities and a reason
+to rematch. The Local Versus physical-keyboard pilot also remains open.
+
+## v1.2 — one-window Local Versus, merged
 
 The owner chose two people selecting Pokémon and fighting in one emulator and
 one game window. v1.2.0-rc.1 implements two keyboard layouts through mGBA 0.11

@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+  "rom_bytes": 3434140,
+  "rom_byte_identical": true,
+  "generated_inputs_match": true,
+  "source_files": 2339,
+  "generated_input_files": 489,
+  "regenerated_commands": [
+    [
+      "npm",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    [
+      "npm",
+      "run",
+      "assets:prepare"
+    ],
+    [
+      "npm",
+      "run",
+      "assets"
+    ],
+    [
+      "npm",
+      "run",
+      "test:assets"
+    ],
+    [
+      "npm",
+      "run",
+      "audio"
+    ],
+    [
+      "npm",
+      "run",
+      "test:audio"
+    ],
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "tools/generate_config.py"
+    ]
+  ],
+  "method": "Fresh source snapshot, fresh pinned dependencies, full animation/art/audio/config regeneration and clean native build; byte-identical to the previously tested v1.3 ROM recovered from its GitHub blob."
+}

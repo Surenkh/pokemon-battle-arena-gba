@@ -4,8 +4,27 @@ import json
 r=Path(__file__).resolve().parents[1];j=json.loads((r/'config/balance.json').read_text())
 chars=j['characters'];assert len(chars)==13 and len({c['id'] for c in chars})==13
 count=len(chars)
-out=['#pragma once','#include <stdint.h>','namespace pkmn {',
-'struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; int melee_guard_percent,gravity_percent,jump_percent; bool melee_followup; const char* role; const char* trait; const char* tip1; const char* tip2; };',
+technique_ids={'none':0,'air_brake':1,'shadow_burst':2}
+techniques=j['techniques']
+assert set(techniques)=={'air_brake','shadow_burst'}
+limits={'air_brake':{'stamina_cost':(4,16),'duration_ticks':(6,18),'max_fall_speed_q8':(64,256)},
+        'shadow_burst':{'stamina_cost':(4,16),'startup_ticks':(8,18),'active_ticks':(2,6),'damage':(1,12)}}
+for name,bounds in limits.items():
+ for field,(lo,hi) in bounds.items():
+  value=techniques[name][field];assert type(value) is int and lo<=value<=hi,(name,field)
+box=techniques['shadow_burst']['hitbox']
+assert len(box)==4 and all(type(v) is int for v in box)
+assert -15<=box[0]<0<box[2]<=15 and -12<=box[1]<0<box[3]<=12
+tech=['#pragma once','namespace pkmn {',
+      'enum Technique { TECHNIQUE_NONE, TECHNIQUE_AIR_BRAKE, TECHNIQUE_SHADOW_BURST };']
+for name,values in techniques.items():
+ for field,value in values.items():
+  if isinstance(value,int):tech.append(f'inline constexpr int {name}_{field}={value};')
+  else:tech.append(f'inline constexpr int {name}_{field}[4]={{'+','.join(map(str,value))+'};')
+tech.append('}')
+(r/'include/pkmn_technique_defs.h').write_text('\n'.join(tech)+'\n')
+out=['#pragma once','#include <stdint.h>','#include "pkmn_technique_defs.h"','namespace pkmn {',
+'struct CharacterDef { const char* name; int hp,sta,regen,speed,melee_damage,fire_damage,super_damage,melee_start,melee_active,melee_total,fire_start,fire_total,shot_speed; int melee_reach,melee_lunge,guard_percent,fire_guard_percent,fire_knockback,punish_bonus; int melee_guard_percent,gravity_percent,jump_percent; bool melee_followup; int technique; const char* role; const char* trait; const char* tip1; const char* tip2; };',
 f'inline constexpr int character_count = {count};',
 f'inline constexpr CharacterDef characters[{count}] = {{']
 for c in chars:
@@ -15,6 +34,8 @@ for c in chars:
  assert isinstance(s['melee_followup'],bool)
  for name in ['role','trait_name','tip_1','tip_2']:assert s[name].isascii() and len(s[name])<=30
  v.extend(s[name] for name in bounds);v.append(int(s['melee_followup']))
+ assert s['technique'] in technique_ids
+ v.append(technique_ids[s['technique']])
  strings=[s[k] for k in ['role','trait_name','tip_1','tip_2']]
  out.append('{'+json.dumps(c['name'].upper())+','+','.join(map(str,v))+','+','.join(json.dumps(s) for s in strings)+'},')
 out+=['};']
@@ -39,7 +60,8 @@ assert len(cpu['difficulties'])==3 and len(cpu['styles'])==count
 fields=['reaction_ticks','think_ticks','defense_percent','super_evade_percent','punish_percent','followup_percent','mistake_percent','hesitate_ticks','plan_ticks','adapt_percent']
 style=['distance_px','melee_percent','fire_percent','guard_bonus','punish_bonus','recover_below','resume_at']
 lines=['#pragma once','namespace pkmn {']
-for k in ['history_ticks','memory_actions','memory_expire_ticks']:lines.append(f'inline constexpr int cpu_{k} = {cpu[k]};')
+assert type(cpu['signature_zone_burst_percent']) is int and 0<=cpu['signature_zone_burst_percent']<=25
+for k in ['history_ticks','memory_actions','memory_expire_ticks','signature_zone_burst_percent']:lines.append(f'inline constexpr int cpu_{k} = {cpu[k]};')
 lines+=['struct CpuDifficulty { int '+','.join(fields)+'; };','inline constexpr CpuDifficulty cpu_difficulties[3] = {']
 for d in cpu['difficulties']:
  assert 0<d['reaction_ticks']<cpu['history_ticks'] and 1<=d['think_ticks']<=12

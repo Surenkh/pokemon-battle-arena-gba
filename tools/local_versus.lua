@@ -3,6 +3,7 @@
 -- P1: arrows, J melee/ready, K fire/back, U block, I super, Enter pause.
 -- P2: W/A/S/D, F melee/ready, G fire/back, Q block, E super, T pause.
 -- P1 U/I changes location on the shared selection screen.
+-- P1 O is Select: setup options and Practice retry.
 
 assert(emu, "Load Pokemon Battle Arena before running local_versus.lua")
 assert(input and input.isKeyActive,
@@ -74,6 +75,7 @@ local function poll()
     p1 = add(p1, letter("k"), 2)
     p1 = add(p1, letter("u"), 512)
     p1 = add(p1, letter("i"), 256)
+    p1 = add(p1, letter("o"), 4)
     p1 = add(p1, input:isKeyActive(C.KEY.ENTER), 8)
 
     p2 = add(p2, letter("d"), 16)

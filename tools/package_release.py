@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'native-v11', 'native-versus', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'native-v11', 'native-versus', 'native-techniques', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -117,18 +117,18 @@ A on Fighter Info: Open guide. B: Return to its row
 A/Start on grid or value rows: Play. Start also plays from Info
 Select in practice: Retry with restored resources/positions and cleared statistics
 A fresh action works on emulator frame 8 after reset; Practice KOs restart in 14.
-Training options: Free, Block, Attack, Follow-up and Evade Super.
+Training options: Free, Block, Attack, Follow-up, Evade Super; Technique for Jigglypuff/Gastly.
 Follow-up: Land A, then tap B when FOLLOW B appears.
 Evade Super: Let the rival charge, then jump or time Down to avoid its super.
 Drills show feedback from actual combat events and never award mastery.
 
 ARENAS AND FIGHTER MASTERY
-Quick Battle settings: Level, Arena and Fighter Info.
-Practice settings: Training, Rival, Arena and Fighter Info.
+Quick Battle settings: Difficulty, Location and Fighter Info.
+Practice settings: Training, Rival, Location and Fighter Info.
 Arcade arena rotation is informational; the cursor skips it.
 A check marks the chosen Pokemon, and an outline marks the focused row.
 A attacks have a six-frame power-punch animation. Supers have eight-frame auras,
-energy-ribbon shots and impact bursts. Combat timing, damage and save schema stay unchanged.
+energy-ribbon shots and impact bursts. Ordinary attack timing/base damage and save schema remain compatible.
 All arenas share the same floor, hitboxes and combat rules.
 Fighter Mastery is a visible main-menu button. Left/Right changes the fighter.
 Earn three medals per fighter: 10 damaging follow-up hits, 5 successful super
@@ -161,7 +161,7 @@ See CREDITS.md and RELEASE_NOTES.md. Editable source is attached to the GitHub R
         introduction = b'''LOCAL VERSUS PREVIEW: TWO KEYBOARD PLAYERS, ONE GAME WINDOW
 Use an mGBA 0.11 development build with raw keyboard scripting.
 Open PokemonBattleArena.gba, then Tools > Scripting and load local_versus.lua.
-Focus the game window. P1 uses arrows, J/K, U/I and Enter.
+Focus the game window. P1 uses arrows, J/K, U/I and Enter; O is Select/options/retry.
 P2 uses WASD, F/G, Q/E and T. Choose Local Versus from the visible mode menu.
 Both players press Ready. First to two wins takes the set.
 Read LOCAL_VERSUS.md for full setup, controls and preview limitations.
@@ -169,6 +169,21 @@ Read LOCAL_VERSUS.md for full setup, controls and preview limitations.
 '''
         bundle_files[2] = ('README.txt', introduction + readme)
         bundle_files.extend([('local_versus.lua', adapter), ('LOCAL_VERSUS.md', guide)])
+    if build.get('fighter_techniques'):
+        report = json_file(evidence / 'native-techniques.json')
+        check(report.get('signature_fighters') == ['jigglypuff', 'gastly'] and report.get('drills_completed'),
+              'Both signature fighters and their drills need native evidence')
+        guide = (root / 'docs/TECHNIQUES_PLAYER_GUIDE.md').read_bytes()
+        introduction = b'''FIGHTER TECHNIQUES PREVIEW
+Jigglypuff: tap Up again during descent for Air Brake (8 stamina).
+Gastly: B casts Shadow Orb; a fresh B arms its delayed burst (8 extra stamina).
+Practice > Training > Technique teaches both moves. Select retries quickly.
+With the keyboard adapter loaded, P1 O is Select for options and retry.
+Read FIGHTER_TECHNIQUES.md for timing, costs and counters.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
+        bundle_files.append(('FIGHTER_TECHNIQUES.md', guide))
     output.mkdir(parents=True, exist_ok=True)
     (output / 'PokemonBattleArena.gba').write_bytes(rom)
     archive = output / ('PokemonBattleArena-v' + version + '.zip')
