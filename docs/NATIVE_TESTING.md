@@ -188,3 +188,75 @@ The v0.12.0 Arcade trace locates the prior peak at Records (screen 14) during
 fighter browsing. RC1's like-for-like full Arcade replay is recorded separately
 from the maximum-value stress journey. The candidate report distinguishes those
 measurements. Reports live in verification/v1.0.0-rc.1/.
+
+## v1.2 one-window Local Versus
+
+The older native runners above use mGBA 0.10.2. The additional Versus runner
+requires upstream **mGBA `a67176cd3e6bf60a5016d7adc94357142dd12617`** with its
+0.11 raw-key input API and Lua enabled. It creates one GBA core, loads the
+shipping `tools/local_versus.lua`, and fires actual host-key events through
+`mScriptContextFireEvent`. The script alone writes its dedicated input mailbox.
+The harness has no combat-state write command. `i` reports the linked upstream
+revision. The GUI and a physical keyboard are not part of this automated test.
+
+Use the upstream mGBA repository and Lua repository at these revisions:
+
+```sh
+git clone https://github.com/mgba-emu/mgba.git .tooling/mgba-dev-src
+git -C .tooling/mgba-dev-src checkout a67176cd3e6bf60a5016d7adc94357142dd12617
+git clone --branch v5.4.8 --depth 1 https://github.com/lua/lua.git .tooling/lua-5.4.8
+git -C .tooling/lua-5.4.8 rev-parse HEAD
+# Expected Lua revision: 6e22fedb74cf0c9b6656e9fce8b7331db847c605
+```
+
+Build Lua as a static PIC library. The official Git repository includes test
+and amalgamation entry points which must be excluded:
+
+```sh
+mkdir -p .tooling/lua-5.4.8/objects
+python3 - <<'PY'
+from pathlib import Path
+import subprocess
+root = Path('.tooling/lua-5.4.8').resolve()
+objects = []
+for source in sorted(root.glob('*.c')):
+    if source.name in {'lua.c', 'luac.c', 'onelua.c', 'ltests.c'}:
+        continue
+    target = root / 'objects' / (source.stem + '.o')
+    subprocess.run(['cc', '-O2', '-fPIC', '-DLUA_USE_LINUX', '-I' + str(root),
+                    '-c', str(source), '-o', str(target)], check=True)
+    objects.append(str(target))
+subprocess.run(['ar', 'rcs', str(root / 'liblua.a'), *objects], check=True)
+PY
+cmake -S .tooling/mgba-dev-src -B .tooling/mgba-dev-build \
+  -DCMAKE_BUILD_TYPE=Release -DLIBMGBA_ONLY=OFF \
+  -DBUILD_QT=OFF -DBUILD_SDL=OFF -DBUILD_GL=OFF -DBUILD_GLES2=OFF -DBUILD_GLES3=OFF \
+  -DBUILD_SHARED=OFF -DBUILD_STATIC=ON -DBUILD_LTO=OFF \
+  -DM_CORE_GBA=ON -DM_CORE_GB=OFF -DENABLE_SCRIPTING=ON -DENABLE_DEBUGGERS=OFF \
+  -DUSE_LUA=5.4 -DLUA_INCLUDE_DIR="$PWD/.tooling/lua-5.4.8" \
+  -DLUA_LIBRARY="$PWD/.tooling/lua-5.4.8/liblua.a" \
+  -DUSE_PNG=OFF -DUSE_ZLIB=OFF -DUSE_FFMPEG=OFF -DUSE_EDITLINE=OFF \
+  -DUSE_LIBZIP=OFF -DUSE_MINIZIP=OFF -DUSE_ELF=OFF -DUSE_SQLITE3=OFF \
+  -DUSE_JSON_C=OFF -DUSE_FREETYPE=OFF -DUSE_DISCORD_RPC=OFF -DUSE_LZMA=OFF
+cmake --build .tooling/mgba-dev-build -j2
+python3 tools/build_versus_test_driver.py \
+  --mgba-source .tooling/mgba-dev-src --mgba-build .tooling/mgba-dev-build
+python3 tests/native_versus_flow.py
+```
+
+The helper obtains conditional ABI defines and Lua paths from the actual mGBA
+build. Retain the ELF from the same game build as the tested ROM. The runner
+checks every player's roster choices, all locations, simultaneous F1 movement
+and attacks, held-input edges, pause, adapter loss/reload/reconnect, mirror
+matches, real wins for both players, first-to-two scoring, quick rematch and
+byte-identical solo SRAM. Captures and a ROM/script-bound report are written to
+`tests/native_artifacts/versus/`. Host mailbox and set-state checks run with:
+
+```sh
+g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp \
+  tests/local_versus_tests.cpp -o .tooling/local-versus-tests
+.tooling/local-versus-tests
+```
+
+Use [the player guide](LOCAL_VERSUS.md) for desktop setup and the remaining
+physical-keyboard/Qt pilot. Stable mGBA 0.10.x cannot run this input adapter.

@@ -3,7 +3,7 @@ from pathlib import Path
 import argparse, hashlib, json, re, zipfile
 
 REPORTS = ('native-general', 'native-animation', 'native-effects', 'native-feel',
-           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'native-v11', 'clean-build', 'host-and-assets')
+           'native-depth', 'native-cpu', 'native-presentation', 'native-arcade', 'native-mastery', 'native-response', 'native-navigation', 'native-practice', 'native-goals', 'native-performance', 'native-expansion', 'native-v11', 'native-versus', 'clean-build', 'host-and-assets')
 
 
 def digest(data):
@@ -149,12 +149,31 @@ Physical hardware and non-Linux rebuilding remain unverified.
 Unofficial fan project, not affiliated with Nintendo, Game Freak or The Pokemon Company.
 See CREDITS.md and RELEASE_NOTES.md. Editable source is attached to the GitHub Release.
 '''.encode()
+    bundle_files = [('PokemonBattleArena.gba', rom),
+                    ('SHA256SUMS.txt', (sha + '  PokemonBattleArena.gba\n').encode()),
+                    ('README.txt', readme), ('RELEASE_NOTES.md', notes.encode()), ('CREDITS.md', credits)]
+    if build.get('local_versus'):
+        adapter = (root / 'tools/local_versus.lua').read_bytes()
+        report = json_file(evidence / 'native-versus.json')
+        check(report.get('adapter_sha256') == digest(adapter), 'Input adapter differs from native-tested script')
+        check(report.get('emulated_gba_instances') == 1, 'Local Versus must be tested in one emulated GBA')
+        guide = (root / 'docs/LOCAL_VERSUS.md').read_bytes()
+        introduction = b'''LOCAL VERSUS PREVIEW: TWO KEYBOARD PLAYERS, ONE GAME WINDOW
+Use an mGBA 0.11 development build with raw keyboard scripting.
+Open PokemonBattleArena.gba, then Tools > Scripting and load local_versus.lua.
+Focus the game window. P1 uses arrows, J/K, U/I and Enter.
+P2 uses WASD, F/G, Q/E and T. Choose Local Versus from the visible mode menu.
+Both players press Ready. First to two wins takes the set.
+Read LOCAL_VERSUS.md for full setup, controls and preview limitations.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + readme)
+        bundle_files.extend([('local_versus.lua', adapter), ('LOCAL_VERSUS.md', guide)])
     output.mkdir(parents=True, exist_ok=True)
     (output / 'PokemonBattleArena.gba').write_bytes(rom)
     archive = output / ('PokemonBattleArena-v' + version + '.zip')
     with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
-        for name, data in [('PokemonBattleArena.gba', rom), ('SHA256SUMS.txt', (sha + '  PokemonBattleArena.gba\n').encode()),
-                           ('README.txt', readme), ('RELEASE_NOTES.md', notes.encode()), ('CREDITS.md', credits)]:
+        for name, data in bundle_files:
             entry = zipfile.ZipInfo(name, (1980, 1, 1, 0, 0, 0))
             entry.create_system = 3
             entry.external_attr = 0o100644 << 16

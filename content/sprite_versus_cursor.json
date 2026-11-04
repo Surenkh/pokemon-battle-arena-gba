@@ -1,0 +1,8 @@
+{
+  "id": "versus_cursor",
+  "type": "sprite",
+  "name": "versus_cursor",
+  "path": "graphics/versus_cursor.bmp",
+  "width": 64,
+  "height": 32
+}

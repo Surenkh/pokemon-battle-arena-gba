@@ -53,10 +53,10 @@ def close():
 def menu():
     if state()[1]==0:press(8)
     elif state()[1] in (1,9,14,16):press(2)
-    check(state()[1]==15,'Visible seven-button menu')
+    check(state()[1]==15,'Visible eight-button menu')
 def choose(row):
     menu()
-    for _ in range(7):
+    for _ in range(8):
         if read(arcade)[17]==row:break
         press(128)
     press(1)

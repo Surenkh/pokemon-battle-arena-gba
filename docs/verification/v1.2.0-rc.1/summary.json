@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "rom_sha256": "a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2",
+  "rom_bytes": 3424892,
+  "native_suites": 17,
+  "native_checks": 24605,
+  "host_suites": 14,
+  "release_integrity_tests": 11,
+  "missed_display_frames": 0,
+  "highest_cpu_fraction": 0.92431640625,
+  "versus_cpu_fraction": 0.771240234375,
+  "unchanged_sources": [
+    "src/pkmn_combat_core.cpp",
+    "include/pkmn_combat_core.h",
+    "include/pkmn_arcade.h",
+    "config/balance.json",
+    "config/cpu.json"
+  ],
+  "physical_keyboard_and_gui_verified": false
+}

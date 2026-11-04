@@ -1,0 +1,83 @@
+{
+  "status": "passed",
+  "checks": 241,
+  "roster": [
+    {
+      "character": "pikachu",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.80712890625
+    },
+    {
+      "character": "charmander",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.80712890625
+    },
+    {
+      "character": "squirtle",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.80712890625
+    },
+    {
+      "character": "bulbasaur",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.80712890625
+    },
+    {
+      "character": "eevee",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.80712890625
+    },
+    {
+      "character": "meowth",
+      "confirmed_followup": true,
+      "guide": true,
+      "reset": true,
+      "pause": true,
+      "peak_cpu_fraction": 0.80712890625
+    }
+  ],
+  "guard": [
+    {
+      "player": 1,
+      "dummy": 0,
+      "guard_points": 23
+    },
+    {
+      "player": 0,
+      "dummy": 2,
+      "guard_points": 12
+    },
+    {
+      "player": 1,
+      "dummy": 2,
+      "guard_points": 18
+    }
+  ],
+  "practice_auto_rounds": 31,
+  "automatic_restarts": 30,
+  "practice_stress_display_frames": 12000,
+  "peak_cpu_fraction": 0.92431640625,
+  "missed_display_frames": 0,
+  "wall_seconds": 11.2,
+  "rom_sha256": "a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2",
+  "method": "mGBA 0.10.2; physical buttons, read-only telemetry; no gameplay-memory writes",
+  "test_source": "tests/native_depth_flow.py",
+  "test_source_sha256": "a8285ce61d4c6056ff97232f83a974347ed420eb9973e849895b832eec850a77",
+  "driver_source": "tests/mgba_driver.c",
+  "driver_source_sha256": "e9c449652ef7ea288bd65fcee6d838ab9366028e284269433697dbd2fe5264aa"
+}

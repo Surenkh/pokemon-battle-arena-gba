@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "version": "1.2.0-rc.1",
+  "tag": "v1.2.0-rc.1",
+  "rom_sha256": "a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2",
+  "rom_bytes": 3424892,
+  "title": "Pok\u00e9mon Battle Arena v1.2.0-rc.1 \u2014 Local Versus Preview",
+  "assets": [
+    "PokemonBattleArena.gba",
+    "PokemonBattleArena-v1.2.0-rc.1.zip",
+    "SHA256SUMS.txt"
+  ],
+  "prerelease": true,
+  "asset_sha256": {
+    "PokemonBattleArena.gba": "a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2",
+    "PokemonBattleArena-v1.2.0-rc.1.zip": "ce41eee42dc95baa70eeba2f0cd4b769887efdfe7c49aaaf52d8a9c78f21ad91",
+    "SHA256SUMS.txt": "76b7575f7bd9370d879e44af0ccf8c615e70839ce9f012c4f80d0e7a5866224b"
+  },
+  "marker": "<!-- pkmn-release:1.2.0-rc.1:a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2 -->"
+}
