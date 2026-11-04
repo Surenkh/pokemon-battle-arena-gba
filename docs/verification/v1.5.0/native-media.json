@@ -2,6 +2,8 @@
   "status": "passed",
   "rom_sha256": "bbac8d74a0f1408a6ca5531da1b043fbd9228d02f4895f1922d42c54168d9e42",
   "method": "Actual framebuffer captures from native_starter_flow.py against this ROM; no generated illustration.",
+  "source_ref": "v1.5.0",
+  "note": "These files are recorded in the v1.5.0 release tag. The starter GIF was removed from the current branch after a reported playback issue.",
   "files": [
     {
       "path": "docs/media/starter-techniques-native.gif",
