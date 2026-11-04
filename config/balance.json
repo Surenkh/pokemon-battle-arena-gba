@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "1.0.0-rc.2",
+  "ruleset_version": "1.3.0-rc.1",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -192,7 +192,8 @@
         "melee_followup": false,
         "melee_guard_percent": 100,
         "gravity_percent": 100,
-        "jump_percent": 100
+        "jump_percent": 100,
+        "technique": "none"
       }
     },
     {
@@ -236,7 +237,8 @@
         "melee_followup": false,
         "melee_guard_percent": 100,
         "gravity_percent": 100,
-        "jump_percent": 100
+        "jump_percent": 100,
+        "technique": "none"
       }
     },
     {
@@ -280,7 +282,8 @@
         "melee_followup": false,
         "melee_guard_percent": 100,
         "gravity_percent": 100,
-        "jump_percent": 100
+        "jump_percent": 100,
+        "technique": "none"
       }
     },
     {
@@ -324,7 +327,8 @@
         "melee_followup": false,
         "melee_guard_percent": 100,
         "gravity_percent": 100,
-        "jump_percent": 100
+        "jump_percent": 100,
+        "technique": "none"
       }
     },
     {
@@ -368,7 +372,8 @@
         "melee_followup": true,
         "melee_guard_percent": 100,
         "gravity_percent": 100,
-        "jump_percent": 100
+        "jump_percent": 100,
+        "technique": "none"
       }
     },
     {
@@ -412,7 +417,8 @@
         "melee_followup": false,
         "melee_guard_percent": 100,
         "gravity_percent": 100,
-        "jump_percent": 100
+        "jump_percent": 100,
+        "technique": "none"
       }
     },
     {
@@ -456,7 +462,8 @@
         "role": "RANGED CONTROL",
         "trait_name": "MIND PUSH",
         "tip_1": "PSY PULSE PUSHES RIVALS BACK",
-        "tip_2": "KEEP SPACE. SPEND FIRE WISELY."
+        "tip_2": "KEEP SPACE. SPEND FIRE WISELY.",
+        "technique": "none"
       }
     },
     {
@@ -497,10 +504,11 @@
         "melee_guard_percent": 100,
         "gravity_percent": 75,
         "jump_percent": 105,
-        "role": "AERIAL EVASION",
-        "trait_name": "FLOAT STEP",
-        "tip_1": "LIGHT GRAVITY. LONGER JUMPS.",
-        "tip_2": "LAND BEFORE COMMITTING A SUPER"
+        "role": "AERIAL TIMING",
+        "trait_name": "AIR BRAKE",
+        "tip_1": "UP IN DESCENT: AIR BRAKE (8)",
+        "tip_2": "ONCE PER JUMP. NO INVULN.",
+        "technique": "air_brake"
       }
     },
     {
@@ -544,7 +552,8 @@
         "role": "CLOSE POWER",
         "trait_name": "HEAVY HANDS",
         "tip_1": "MELEE DRAINS EXTRA GUARD",
-        "tip_2": "CLOSE THE GAP. MIND RECOVERY."
+        "tip_2": "CLOSE THE GAP. MIND RECOVERY.",
+        "technique": "none"
       }
     },
     {
@@ -588,7 +597,8 @@
         "role": "MOBILE FIRE",
         "trait_name": "FOX STEP",
         "tip_1": "MELEE STEPS INTO RANGE",
-        "tip_2": "MOVE IN. FIRE ON A CLEAN HIT"
+        "tip_2": "MOVE IN. FIRE ON A CLEAN HIT",
+        "technique": "none"
       }
     },
     {
@@ -629,10 +639,11 @@
         "melee_guard_percent": 100,
         "gravity_percent": 80,
         "jump_percent": 100,
-        "role": "AERIAL DISRUPTION",
-        "trait_name": "HOVER",
-        "tip_1": "LOW GRAVITY. LONGER AIRTIME",
-        "tip_2": "LAND BEFORE USING A SUPER"
+        "role": "DELAYED SPACE CONTROL",
+        "trait_name": "SHADOW BURST",
+        "tip_1": "B AGAIN: ARM YOUR SHADOW ORB",
+        "tip_2": "8 STAMINA. BLOCK OR JUMP IT.",
+        "technique": "shadow_burst"
       }
     },
     {
@@ -676,7 +687,8 @@
         "role": "RECOVERY COUNTER",
         "trait_name": "AURA PUNISH",
         "tip_1": "EXTRA DAMAGE ON RECOVERY",
-        "tip_2": "BAIT AN ATTACK. THEN HIT A."
+        "tip_2": "BAIT AN ATTACK. THEN HIT A.",
+        "technique": "none"
       }
     },
     {
@@ -720,7 +732,8 @@
         "role": "GUARD PRESSURE",
         "trait_name": "JAW PRESSURE",
         "tip_1": "MELEE TAXES GUARD STAMINA",
-        "tip_2": "CLOSE IN. WATCH YOUR STAMINA"
+        "tip_2": "CLOSE IN. WATCH YOUR STAMINA",
+        "technique": "none"
       }
     }
   ],
@@ -732,5 +745,24 @@
     "dummy_think_ticks": 6,
     "dummy_shot_interval_ticks": 90,
     "dummy_super_interval_ticks": 180
+  },
+  "techniques": {
+    "air_brake": {
+      "stamina_cost": 8,
+      "duration_ticks": 12,
+      "max_fall_speed_q8": 128
+    },
+    "shadow_burst": {
+      "stamina_cost": 8,
+      "startup_ticks": 12,
+      "active_ticks": 4,
+      "damage": 10,
+      "hitbox": [
+        -14,
+        -10,
+        14,
+        10
+      ]
+    }
   }
 }

@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+  "method": "Actual native framebuffer captures; GIF scaled using nearest-neighbor.",
+  "files": [
+    {
+      "file": "docs/media/fighter-techniques-native.gif",
+      "sha256": "6bcdadfa3b1e3766cda488ee98c3e48ca7843e7972af7f53fd4cb545462692ed"
+    },
+    {
+      "file": "docs/media/air-brake-native.png",
+      "sha256": "bad44737cb2c246077b15fc4fb9102d3630678d18c040518834c5340a28cb874"
+    },
+    {
+      "file": "docs/media/shadow-warning-native.png",
+      "sha256": "e7fef747f018f12296d6bb646ab26efd3ac234ca09ab92aa5927dffc9ee6e669"
+    },
+    {
+      "file": "docs/media/shadow-burst-native.png",
+      "sha256": "86eecf40d67a170967d4a51e73721cd6ce76f219d42422271edd7f2adecac0f0"
+    },
+    {
+      "file": "docs/media/shadow-burst-block-native.png",
+      "sha256": "97bce22894f6e185580a48ef37fe1e4ada0d9c450bc04bca6dbab218214ddb3c"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+  "paired_rounds_per_build": 10140,
+  "unchanged_ordered_pairings": 121,
+  "unchanged_rounds_per_build": 7260,
+  "unchanged_replay_digests_identical": true,
+  "air_brakes": 23,
+  "orbs_armed": 91,
+  "burst_hits": 30,
+  "base_stats_unchanged_all_fighters": true,
+  "save_schema_unchanged": true,
+  "baseline_source_commit": "a2df69db08eb4503789dc0a82e979cb9c1069595",
+  "core_sha256": "bb58db999c6e78b6d0110f8e6e5db6a1075ea1d30f99792a8d2ba113105a0e31",
+  "config_sha256": "cb381a7a5e1afb596a97671591f9344d831279bcf0a337109e8ba1d866bd76fd",
+  "cpu_config_sha256": "fedd718f095e354408d9566a9e8c74d5d5996f727c01a4ca7fb8a5ff57b1f1da",
+  "method": "Paired CPU result/timing summaries and replay digests. Human balance remains unverified."
+}

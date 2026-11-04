@@ -28,7 +28,7 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
   ui.box(ctx,25,123,190,20);save('practice_'+kind,scene,'background');
  }
  require('./arena_art.cjs').masteryBadge(canvas,save);
- let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 13 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V1.2 RC1',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
+ let title=await bg('screens/layers/title_background.png'),t=title.getContext('2d');ui.text(t,'POKEMON',120,8,'#ffda6b',3,'center');ui.text(t,'BATTLE ARENA - 13 FIGHTERS',120,34,'#d1e2eb',1,'center');ui.button(t,'PLAY',76,128,88,16,'focused');ui.text(t,'START / A : CHOOSE MODE',120,152,'#9db8c6',1,'center');ui.text(t,'V1.3 RC1',236,2,'#9db8c6',1,'right');let art=canvas(256,256);art.getContext('2d').drawImage(await loadImage(path.join(source,'screens/layers/title_illustration.png')),16,41);let pal=palette([title,art],255);save('title',title,'background',0,0,pal);save('ensemble',art,'background',0,0,pal);
  await require('./selection_art.cjs').buildSelection({root,source,names,canvas,save,bg,ui});
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');save('arcade_panel',c,'background');}
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,4,4,232,152,'#122639','#6085a1');ui.text(ctx,'ARCADE RECORDS',120,16,'#ffda6b',2,'center');ui.text(ctx,'CLEARS',16,77,'#edf8f0');ui.text(ctx,'NO CONTINUE',16,91,'#edf8f0');ui.text(ctx,'BEST',16,105,'#edf8f0');ui.text(ctx,'< > FIGHTER  UP/DOWN LEVEL',120,130,'#9db8c6',1,'center');ui.text(ctx,'A MASTERY  B/START BACK',120,142,'#9db8c6',1,'center');save('records_panel',c,'background');}
@@ -58,6 +58,7 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
  let bars=canvas(64,96),bc=bars.getContext('2d');['#9ee287','#6cc5ef','#ffd35c'].forEach((color,i)=>{bc.fillStyle=color;bc.fillRect(0,i*32,64,32);});save('bars',bars,'sprite',64,32);
  let shield=canvas(32,32),sh=shield.getContext('2d');sh.strokeStyle='#8ae2ff';sh.lineWidth=2;sh.beginPath();sh.arc(16,16,14,-Math.PI*.6,Math.PI*.6);sh.stroke();save('shield',shield,'sprite');
  require('./elemental_fx.cjs').buildElementalEffects({canvas,save});
+ require('./technique_art.cjs').buildTechniqueArt({canvas,save});
  require('./round_fx.cjs').buildRoundEffects({canvas,save});
  let dust=canvas(16,64),dc=dust.getContext('2d');
  for(let f=0;f<4;f++){dc.fillStyle=['#d6b987','#c7ab7b','#aa916b','#86775e'][f];for(let p=0;p<5;p++){let x=7+(p-2)*(f+1),y=f*16+12-((p%2)*(f+1));dc.fillRect(Math.max(0,Math.min(14,x)),y,Math.max(1,3-f),Math.max(1,3-f));}}save('dust',dust,'sprite',16,16);

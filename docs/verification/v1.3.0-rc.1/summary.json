@@ -1,0 +1,18 @@
+{
+  "status": "passed",
+  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+  "rom_bytes": 3434140,
+  "native_suites": 18,
+  "native_checks": 24660,
+  "host_suites": 15,
+  "host_technique_checks": 314,
+  "release_integrity_tests": 12,
+  "missed_display_frames": 0,
+  "highest_cpu_fraction": 0.935791015625,
+  "technique_cpu_fraction": 0.78466796875,
+  "versus_cpu_fraction": 0.779052734375,
+  "unchanged_pairings": 121,
+  "unchanged_rounds": 7260,
+  "physical_keyboard_and_gui_verified": false,
+  "human_balance_verified": false
+}

@@ -20,7 +20,7 @@ static const char* adapter;
 static mColor video[240 * 160];
 
 static const unsigned host_keys[2][10] = {
-    {'j', 'k', 0, mSCRIPT_KEY_ENTER, mSCRIPT_KEY_RIGHT, mSCRIPT_KEY_LEFT,
+    {'j', 'k', 'o', mSCRIPT_KEY_ENTER, mSCRIPT_KEY_RIGHT, mSCRIPT_KEY_LEFT,
      mSCRIPT_KEY_UP, mSCRIPT_KEY_DOWN, 'i', 'u'},
     {'f', 'g', 0, 't', 'd', 'a', 'w', 's', 'e', 'q'}
 };

@@ -3,20 +3,25 @@
 #include "pkmn_super_evasion.h"
 
 namespace pkmn {
-enum DummyMode { DUMMY_IDLE, DUMMY_BLOCK, DUMMY_ATTACK, DUMMY_FOLLOWUP, DUMMY_EVADE, DUMMY_MODE_COUNT };
+enum DummyMode { DUMMY_IDLE, DUMMY_BLOCK, DUMMY_ATTACK, DUMMY_FOLLOWUP, DUMMY_EVADE, DUMMY_TECHNIQUE, DUMMY_MODE_COUNT };
 enum DrillFeedback {
     FOLLOWUP_PROMPT, FOLLOWUP_WAIT, FOLLOWUP_NEEDS_MELEE, FOLLOWUP_STARTED,
     FOLLOWUP_COMPLETE, EVADE_PROMPT, SUPER_WARNING, SUPER_FLYING,
     EVADE_COMPLETE, EVADE_HIT, EVADE_INTERRUPTED, EVADE_MISSED,
-    DRILL_NO_STAMINA, DRILL_BLOCKED, FOLLOWUP_USE_B
+    DRILL_NO_STAMINA, DRILL_BLOCKED, FOLLOWUP_USE_B,
+    BRAKE_PROMPT, BRAKE_ACTIVE, BRAKE_COMPLETE, ORB_PROMPT, ORB_WARNING,
+    ORB_COMPLETE, ORB_MISSED, ORB_NORMAL_HIT, TECHNIQUE_INTERRUPTED
 };
 inline constexpr int practice_retry_frames = 6;
-inline constexpr const char* practice_mode_names[] = {"FREE", "BLOCK", "ATTACK", "FOLLOW-UP", "EVADE SUPER"};
+inline constexpr const char* practice_mode_names[] = {"FREE", "BLOCK", "ATTACK", "FOLLOW-UP", "EVADE SUPER", "TECHNIQUE"};
 inline constexpr const char* practice_feedback_text[] = {
     "LAND A THEN FOLLOW B", "WAIT FOR FOLLOW B", "START WITH MELEE A", "FOLLOW-UP STARTED",
     "FOLLOW-UP LANDED!", "EVADE THE RIVAL SUPER", "WATCH THE SUPER CHARGE", "JUMP OR TIME DOWN",
     "SUPER EVADED!", "SUPER HIT - TRY AGAIN", "LET THE SUPER RELEASE", "TRY JUMP OR DOWN",
-    "NEED STAMINA", "BLOCKED - TRY AGAIN", "USE B FOR THE FOLLOW-UP"
+    "NEED STAMINA", "BLOCKED - TRY AGAIN", "USE B FOR THE FOLLOW-UP",
+    "JUMP. UP WHILE FALLING", "AIR BRAKE! LAND SAFELY", "AIR BRAKE LANDED!",
+    "B ORB. B NEAR RIVAL", "ORB ARMED. WATCH BURST", "SHADOW BURST HIT!",
+    "TOO FAR. SELECT RETRY", "NORMAL HIT. B EARLIER", "HIT - SELECT TO RETRY"
 };
 struct PracticeStats {
     int last_damage = 0, chain = 0, best_chain = 0, hits = 0, followups = 0, punishes = 0;
@@ -28,7 +33,7 @@ class PracticeSession {
     uint32_t last_event_frame = ~0u;
     uint32_t followup_shot_id = 0;
     SuperEvasion evasion;
-    bool finished = false, followup_shot_seen = false;
+    bool finished = false, followup_shot_seen = false, technique_started = false;
     static int bounded(int value) { return value > 9999 ? 9999 : value; }
 
 public:
@@ -38,8 +43,11 @@ public:
     DrillFeedback feedback = FOLLOWUP_PROMPT;
     bool super_started = false, super_released = false;
 
-    bool drill() const { return mode == DUMMY_FOLLOWUP || mode == DUMMY_EVADE; }
-    bool completed() const { return feedback == FOLLOWUP_COMPLETE || feedback == EVADE_COMPLETE; }
+    static bool has_technique(int fighter) { return characters[fighter].technique != TECHNIQUE_NONE; }
+    static int available_modes(int fighter) { return has_technique(fighter) ? DUMMY_MODE_COUNT : DUMMY_TECHNIQUE; }
+    void validate_mode(int fighter) { if(mode == DUMMY_TECHNIQUE && !has_technique(fighter))mode=DUMMY_IDLE; }
+    bool drill() const { return mode == DUMMY_FOLLOWUP || mode == DUMMY_EVADE || mode == DUMMY_TECHNIQUE; }
+    bool completed() const { return feedback == FOLLOWUP_COMPLETE || feedback == EVADE_COMPLETE || feedback == BRAKE_COMPLETE || feedback == ORB_COMPLETE; }
     const char* message() const { return practice_feedback_text[feedback]; }
 
     void begin_round(bool keep_stats = false) {
@@ -48,13 +56,16 @@ public:
         finished = super_started = super_released = false;
         followup_shot_id = 0;
         followup_shot_seen = false;
+        technique_started = false;
         feedback = mode == DUMMY_EVADE ? EVADE_PROMPT : FOLLOWUP_PROMPT;
         if(!keep_stats) stats = PracticeStats{};
     }
 
-    void prepare(CombatCore& core) const {
+    void prepare(CombatCore& core) {
         if(!core.training) return;
+        validate_mode(core.f[0].character);
         core.f[0].sp = core.f[1].sp = 100;
+        if(mode == DUMMY_TECHNIQUE)feedback=characters[core.f[0].character].technique==TECHNIQUE_AIR_BRAKE?BRAKE_PROMPT:ORB_PROMPT;
         if(mode == DUMMY_FOLLOWUP) {
             core.f[0].x = 96 * 256;
             core.f[1].x = 116 * 256;
@@ -70,7 +81,7 @@ public:
                 return {R, R};
             return {};
         }
-        if(mode == DUMMY_IDLE || mode == DUMMY_FOLLOWUP) return {};
+        if(mode == DUMMY_IDLE || mode == DUMMY_FOLLOWUP || mode == DUMMY_TECHNIQUE) return {};
         if(mode == DUMMY_BLOCK) return {L, 0};
         int delta = core.f[0].x - rival.x;
         int distance = (delta < 0 ? -delta : delta) / 256;
@@ -106,6 +117,15 @@ public:
                 }
             }
             if(!drill() || finished) continue;
+            if(mode == DUMMY_TECHNIQUE) {
+                if(event.target == 0 && event.kind == EV_HIT) { feedback=TECHNIQUE_INTERRUPTED;finished=true; }
+                if(event.owner == 0) {
+                    if(event.kind == EV_AIR_BRAKE) { technique_started=true;feedback=BRAKE_ACTIVE; }
+                    if(event.kind == EV_ORB_ARM) { technique_started=true;feedback=ORB_WARNING; }
+                    if(event.kind == EV_BURST_HIT) { feedback=ORB_COMPLETE;finished=true; }
+                    if(event.kind == EV_HIT && !technique_started)feedback=ORB_NORMAL_HIT;
+                }
+            }
             if(event.owner == 0 && event.kind == EV_TIRED) feedback = DRILL_NO_STAMINA;
             if(mode == DUMMY_FOLLOWUP && event.owner == 0) {
                 if(event.kind == EV_SHOT) {
@@ -138,6 +158,14 @@ public:
                     feedback = EVADE_HIT;
                     finished = true;
                 }
+            }
+        }
+        if(mode == DUMMY_TECHNIQUE && !finished && technique_started) {
+            if(characters[core.f[0].character].technique == TECHNIQUE_AIR_BRAKE &&
+               core.grounded(core.f[0]) && core.f[0].landed_at == core.tick-1) {
+                feedback=BRAKE_COMPLETE;finished=true;
+            } else if(characters[core.f[0].character].technique == TECHNIQUE_SHADOW_BURST && !core.p[0].active) {
+                feedback=ORB_MISSED;finished=true;
             }
         }
         if(mode != DUMMY_EVADE || finished) return;

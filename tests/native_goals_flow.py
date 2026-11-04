@@ -25,7 +25,7 @@ MAIN, GOALS, MASTERY, ARCADE, FEEL, DEPTH = map(symbol, [
     'pkmn_arcade_debug', 'pkmn_feel_debug', 'pkmn_depth_debug'])
 CHARACTERS = json.loads((ROOT / 'config/balance.json').read_text())['characters']
 ACTIONS = ['KEEP SOME SPACE', 'JUMP FIRE', 'USE SUPER', 'BAIT THEN CLOSE',
-           'BLOCK FIRST A', 'AVOID MISSED A', 'JUMP THE PULSE', 'PUNISH LANDING', 'LEAVE SPACE', 'KEEP SOME SPACE', 'PUNISH LANDING', 'AVOID MISSED A', 'LEAVE SPACE']
+           'BLOCK FIRST A', 'AVOID MISSED A', 'JUMP THE PULSE', 'PUNISH LANDING', 'LEAVE SPACE', 'KEEP SOME SPACE', 'BLOCK OR JUMP', 'AVOID MISSED A', 'LEAVE SPACE']
 FONT = Image.open(ROOT / 'docs/pkfont.png').convert('RGB')
 SAVE = OUT / 'goals.sav'
 process = None

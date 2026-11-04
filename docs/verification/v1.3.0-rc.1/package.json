@@ -1,0 +1,20 @@
+{
+  "status": "passed",
+  "version": "1.3.0-rc.1",
+  "tag": "v1.3.0-rc.1",
+  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+  "rom_bytes": 3434140,
+  "title": "Pok\u00e9mon Battle Arena v1.3.0-rc.1 \u2014 Fighter Techniques Preview",
+  "assets": [
+    "PokemonBattleArena.gba",
+    "PokemonBattleArena-v1.3.0-rc.1.zip",
+    "SHA256SUMS.txt"
+  ],
+  "prerelease": true,
+  "asset_sha256": {
+    "PokemonBattleArena.gba": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+    "PokemonBattleArena-v1.3.0-rc.1.zip": "3b4618f80beb974dcd52326ce4a88afe20ee08775386293355a965583b9a6f99",
+    "SHA256SUMS.txt": "b701161788f952c81728b6cb1e87f39c199d47b020a2f724560c3672554eeb4c"
+  },
+  "marker": "<!-- pkmn-release:1.3.0-rc.1:19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b -->"
+}

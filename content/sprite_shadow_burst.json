@@ -1,0 +1,8 @@
+{
+  "id": "shadow_burst",
+  "type": "sprite",
+  "name": "shadow_burst",
+  "path": "graphics/shadow_burst.bmp",
+  "width": 32,
+  "height": 32
+}

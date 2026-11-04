@@ -1,4 +1,4 @@
-# Local Versus preview — v1.2.0-rc.1
+# Local Versus preview — v1.3.0-rc.1
 
 Two people choose Pokémon and fight in one running GBA game, on one screen.
 This preview uses keyboard controls through an mGBA Lua input adapter.
@@ -32,6 +32,7 @@ played with the emulator's ordinary GBA bindings when the adapter is absent.
 | Hold block | U | Q |
 | Super at full SP | I | E |
 | Pause / resume | Enter | T |
+| Select / options / Practice retry | O | — |
 
 On the chooser, Player 1 uses **U / I** to change location before either player
 readies. A **LOCK** label appears after one confirmation. Back unlocks that

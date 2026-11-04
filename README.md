@@ -8,13 +8,17 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download v1.1 ROM**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena.gba) · [**Download v1.1 ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena-v1.1.0.zip) · [v1.1 release notes](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Current development: **1.2.0-rc.1 — Local Versus Preview**. Two keyboard players choose their own Pokémon and fight in **one emulator instance and one game window**. All thirteen fighters, mirror matches, all five locations, first-to-two sets and quick rematches are available. The preview requires an **mGBA 0.11 development build** and the included Lua input adapter. [Setup and keyboard controls](docs/LOCAL_VERSUS.md) · [Validation](docs/LOCAL_VERSUS_TEST_REPORT.md). The stable v1.1 downloads above remain available.
+Current development: **1.3.0-rc.1 — Fighter Techniques Preview**. Jigglypuff can brake its descent once per jump, and Gastly can arm its traveling Shadow Orb into a delayed area burst. Both cost stamina, have readable cues and clear counters, and have new Practice lessons. [Player guide](docs/TECHNIQUES_PLAYER_GUIDE.md) · [Validation](docs/TECHNIQUES_TEST_REPORT.md).
 
-![One-window Local Versus, captured from the native GBA ROM](docs/media/local-versus-native.gif)
+[**Download v1.3 preview ZIP**](downloads/PokemonBattleArena-v1.3.0-rc.1.zip?raw=true)
+
+![Air Brake and Shadow Burst from the actual native ROM](docs/media/fighter-techniques-native.gif)
+
+**Local Versus** supports two keyboard players in one emulator and one game window, with all thirteen fighters, mirror matches, five locations and first-to-two sets. It requires mGBA 0.11 development and the included Lua adapter. [Setup](docs/LOCAL_VERSUS.md).
 
 ![Independent choices on the shared thirteen-Pokémon screen](docs/media/local-versus-selection-native.png)
 
-Load the ROM, then open **Tools → Scripting** and load `tools/local_versus.lua` (or `local_versus.lua` from the preview player ZIP). Player 1 uses **arrows, J/K, U/I, Enter**; Player 2 uses **WASD, F/G, Q/E, T**. Select **Local Versus**, choose each fighter and press **J / F** to ready. Player 1 changes location with U/I before either confirmation. Either player can pause; losing the adapter pauses the fight. Physical keyboard rollover, the Qt GUI and gamepads remain unverified preview checks.
+Load the ROM, then open **Tools → Scripting** and load `tools/local_versus.lua` (or `local_versus.lua` from the preview player ZIP). Player 1 uses **arrows, J/K, U/I, Enter** and **O for Select/options/retry**; Player 2 uses **WASD, F/G, Q/E, T**. Select **Local Versus**, choose each fighter and press **J / F** to ready. Player 1 changes location with U/I before either confirmation. Either player can pause; losing the adapter pauses the fight. Physical keyboard rollover, the Qt GUI and gamepads remain unverified preview checks.
 
 Stable **1.1.0 — Selection & Power** puts all thirteen Pokémon on one screen, with explicit Difficulty/Location rows and an accurate arena preview. Supers have eight-frame charge, energy-ribbon and impact effects; A attacks have a six-frame power-punch animation. [v1.1 validation](docs/V1_1_TEST_REPORT.md) · [Build and controls](docs/BUILDING.md).
 
@@ -22,7 +26,7 @@ Stable **1.1.0 — Selection & Power** puts all thirteen Pokémon on one screen,
 
 *Eight-frame energy supers and power punches — captured from the v1.1 GBA ROM.*
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Local Versus, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select Pokémon and options. With the adapter absent, solo modes use the emulator's ordinary GBA bindings. The preview title displays **V1.2 RC1** and **13 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Local Versus, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select Pokémon and options. With the adapter absent, solo modes use the emulator's ordinary GBA bindings. The preview title displays **V1.3 RC1** and **13 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
@@ -92,10 +96,10 @@ and the pilot retention gate remain unverified. See [goal/scouting validation](d
 | Eevee | Can follow a clean melee hit with A or B | Glowing stars |
 | Meowth | Extra melee damage when catching attack recovery | Claw waves and scratches |
 | Psyduck | Mind Push gives strong projectile knockback | Psychic rings and pulses |
-| Jigglypuff | Float Step lowers gravity and extends jumps | Musical notes and crescendos |
+| Jigglypuff | Air Brake changes landing timing once per jump | Musical float notes and crescendos |
 | Machop | Heavy Hands drains extra melee guard stamina | Fists and impact bursts |
 | Vulpix | Fox Step advances melee startup | Twin flames |
-| Gastly | Hover lowers gravity for longer airtime | Shadow orbs |
+| Gastly | B again arms a delayed, blockable orb burst | Outlined shadow warning and purple blast |
 | Riolu | Aura Punish adds damage against recovery | Aura diamonds |
 | Totodile | Jaw Pressure taxes guard stamina | Water fangs |
 
@@ -115,6 +119,8 @@ Normal shots retain their four-frame animation. Supers now use eight frames with
 | Left / Right in battle | Move |
 | Up / Down in battle | Jump / timed squeeze |
 | A / B in battle | Melee / fire |
+| Up again during Jigglypuff descent | Air Brake, 8 stamina, once per jump |
+| B again with Gastly live orb | Arm Shadow Burst, 8 extra stamina |
 | L held in battle | Block |
 | R in battle | Super at 100 SP and 25 stamina |
 | Start in battle | Pause |
@@ -144,6 +150,8 @@ statistics. Start still opens Pause. See [Practice validation](docs/PRACTICE_DRI
 
 ![Super evasion drill](docs/media/practice-evade-native.png)
 
+
+Jigglypuff and Gastly also have **Training → Technique** in Practice. Select retries quickly. With the adapter loaded, P1 O is Select. See the player guide for timing, costs and counters.
 
 ## Build and development
 
