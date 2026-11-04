@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "rom_sha256": "a6037fa9089f04d858444846ae9b3294fab27b28e0dc383e9c7094a0b81363f2",
+  "method": "Real native framebuffer captures from the one-core keyboard/Lua test; GIF nearest-neighbor scaled to 480x320.",
+  "files": [
+    {
+      "file": "docs/media/local-versus-fight-native.png",
+      "sha256": "40b15904aae8e1fee62f06467fd88ef579df7a00708f29319166788dbd9dd232"
+    },
+    {
+      "file": "docs/media/local-versus-menu-native.png",
+      "sha256": "360948a25419024acb280c6e823a1fed7ba878b940eeb6d0163e7e4460828d18"
+    },
+    {
+      "file": "docs/media/local-versus-native.gif",
+      "sha256": "45381c2fd877898398c61499663c00c10eba3cc5f8f58c2cf439addde17a1789"
+    },
+    {
+      "file": "docs/media/local-versus-p2-win-native.png",
+      "sha256": "57dc6bea90ce2b637f5211fa92fa1d1a95e1b1a13343d2bde6cce22f488ddfd2"
+    },
+    {
+      "file": "docs/media/local-versus-selection-native.png",
+      "sha256": "b49d21d9066f794725e328806bd73d9926852caf6213897d376cfecae5667c36"
+    }
+  ]
+}

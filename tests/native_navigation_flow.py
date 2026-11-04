@@ -104,7 +104,7 @@ def menu():
 
 def choose(mode):
     menu()
-    for _ in range(7):
+    for _ in range(8):
         if read(ARCADE)[17] == mode:
             break
         tap(128)

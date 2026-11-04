@@ -1,4 +1,22 @@
-# Implementation status — 3 November 2026
+# Implementation status — 4 November 2026
+
+**v1.2.0-rc.1 — Local Versus Preview** adds two keyboard players to one running
+GBA game. An mGBA 0.11 development Lua adapter sends independent button streams
+through a versioned 16-byte input mailbox. Both players choose from all thirteen
+Pokémon on one page, can play mirrors and share any of the five locations.
+Ready locks each choice; Player 1 controls location before either player readies.
+
+Matches use first-to-two scoring, neutral P1/P2 results, Next Round, Rematch Set
+and Change Pokémon. Either player can pause. Missing input packets pause the
+match, discard pending actions and require explicit resume after reconnect.
+Solo records/mastery remain excluded and save schema 4 is unchanged.
+
+The one-core native test runs the shipping adapter through upstream mGBA's real
+raw-key/Lua APIs. Physical keyboards, Qt focus/shortcuts and gamepads still need
+human testing. This is a preview, while **v1.1.0 remains the stable release**.
+[Local Versus setup](LOCAL_VERSUS.md) · [Validation](LOCAL_VERSUS_TEST_REPORT.md).
+
+## Previous stable release
 
 **v1.1.0 — Selection & Power** replaces the paged chooser with all thirteen
 Pokémon visible in a compact grid. Full selected names, Difficulty and Location

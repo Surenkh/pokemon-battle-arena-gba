@@ -97,6 +97,23 @@ class ReleaseTests(unittest.TestCase):
         self.write('downloads/PokemonBattleArena.gba', b'wrong')
         with self.assertRaises(ValueError): prepare(self.root, self.output)
 
+    def test_local_versus_bundle_contains_exact_native_tested_adapter(self):
+        adapter = b'-- native-tested input adapter\n'
+        self.write('tools/local_versus.lua', adapter)
+        self.write('docs/LOCAL_VERSUS.md', '# Local Versus\nKeyboard setup.\n')
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0',
+                rom_sha256=self.sha, rom_bytes=256, local_versus=True))
+        self.js('docs/verification/v0.5.0/native-versus.json', dict(status='passed',
+                rom_sha256=self.sha, adapter_sha256=digest(adapter), emulated_gba_instances=1))
+        meta = prepare(self.root, self.output)
+        with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
+            self.assertEqual(archive.read('local_versus.lua'), adapter)
+            self.assertIn('LOCAL_VERSUS.md', archive.namelist())
+            self.assertIn(b'TWO KEYBOARD PLAYERS', archive.read('README.txt'))
+        self.write('tools/local_versus.lua', b'-- changed after testing\n')
+        with self.assertRaises(ValueError):
+            prepare(self.root, self.output)
+
     def test_version_mismatch_cannot_package(self):
         self.js('package.json', dict(version='0.6.0'))
         with self.assertRaises(ValueError): prepare(self.root, self.output)

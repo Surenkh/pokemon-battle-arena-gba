@@ -8,19 +8,27 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download v1.1 ROM**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena.gba) · [**Download v1.1 ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena-v1.1.0.zip) · [v1.1 release notes](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Version **1.1.0 — Selection & Power**. All thirteen Pokémon now appear on one screen. Explicit **Difficulty** and **Location** rows, a full selected-name header and a matching arena preview make setup clearer. Supers have eight-frame charge, energy-ribbon and impact effects; A attacks have a six-frame power-punch animation. Combat rules and existing saves stay compatible. Open the ROM in a GBA emulator such as mGBA. [Validation report](docs/V1_1_TEST_REPORT.md) · [Build and controls](docs/BUILDING.md).
+Current development: **1.2.0-rc.1 — Local Versus Preview**. Two keyboard players choose their own Pokémon and fight in **one emulator instance and one game window**. All thirteen fighters, mirror matches, all five locations, first-to-two sets and quick rematches are available. The preview requires an **mGBA 0.11 development build** and the included Lua input adapter. [Setup and keyboard controls](docs/LOCAL_VERSUS.md) · [Validation](docs/LOCAL_VERSUS_TEST_REPORT.md). The stable v1.1 downloads above remain available.
+
+![One-window Local Versus, captured from the native GBA ROM](docs/media/local-versus-native.gif)
+
+![Independent choices on the shared thirteen-Pokémon screen](docs/media/local-versus-selection-native.png)
+
+Load the ROM, then open **Tools → Scripting** and load `tools/local_versus.lua` (or `local_versus.lua` from the preview player ZIP). Player 1 uses **arrows, J/K, U/I, Enter**; Player 2 uses **WASD, F/G, Q/E, T**. Select **Local Versus**, choose each fighter and press **J / F** to ready. Player 1 changes location with U/I before either confirmation. Either player can pause; losing the adapter pauses the fight. Physical keyboard rollover, the Qt GUI and gamepads remain unverified preview checks.
+
+Stable **1.1.0 — Selection & Power** puts all thirteen Pokémon on one screen, with explicit Difficulty/Location rows and an accurate arena preview. Supers have eight-frame charge, energy-ribbon and impact effects; A attacks have a six-frame power-punch animation. [v1.1 validation](docs/V1_1_TEST_REPORT.md) · [Build and controls](docs/BUILDING.md).
 
 ![Native v1.1 super shots and power punches](docs/media/v1-1-power-native.gif)
 
 *Eight-frame energy supers and power punches — captured from the v1.1 GBA ROM.*
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select a Pokémon and difficulty or practice options. Menu selection uses the D-pad and A/Start, so entering Arcade does not require a shoulder button. The title displays **v1.1** and **13 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Local Versus, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select Pokémon and options. With the adapter absent, solo modes use the emulator's ordinary GBA bindings. The preview title displays **V1.2 RC1** and **13 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
 Arcade samples five unique opponents from the other twelve fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 39 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
 
-![Native mode menu](docs/media/navigation-menu-native.png)
+![Native eight-mode menu](docs/media/local-versus-menu-native.png)
 
 ![All thirteen Pokémon on one native screen](docs/media/selection-one-page-native.png)
 
@@ -145,7 +153,7 @@ Gameplay updates use feature branches and pull requests. Validated versions on `
 
 ## Limits and feedback
 
-Physical GBA hardware and non-Linux rebuilding have not been tested. There are five arenas and no multiplayer or mid-run resume. Mastery, completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
+Physical GBA hardware and non-Linux rebuilding have not been tested. Local Versus uses an emulator-specific keyboard adapter; stable mGBA 0.10.x lacks the required raw input API. Network multiplayer, physical gamepad routing and mid-run resume are outside this preview. Local set scores stay in memory and do not award solo records or mastery. Mastery, completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
 
 ## Credits
 

@@ -1,10 +1,34 @@
 # Pokémon Battle Arena product roadmap
 
-**Updated 3 November 2026 · Stable release v0.12.0 · Current work v1.1.0**
+**Updated 4 November 2026 · Stable release v1.1.0 · Current work v1.2.0-rc.1**
 
 The response, navigation, Practice and goal/scouting implementations are merged.
-[v0.12.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v0.12.0)
-remains the latest stable release. The updated native gameplay GIF is also merged.
+[v1.1.0](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0)
+is the latest stable release. The updated native gameplay GIF is also merged.
+
+## Current iteration — one-window Local Versus
+
+The owner chose two people selecting Pokémon and fighting in one emulator and
+one game window. v1.2.0-rc.1 implements two keyboard layouts through mGBA 0.11
+development scripting. This is a dedicated input adapter, rather than a GBA
+link-cable mode. Both players select independently, ready/unready and play
+first-to-two sets, with mirror matches, P1/P2 markers and quick rematches.
+
+The preview gate is one-core native testing through the real upstream input/Lua
+APIs, all thirteen choices per player, all five arenas, actual P1/P2 wins,
+pause/reconnect, save isolation and the full single-player regression. The next
+gate is a two-person desktop pilot: focus, simultaneous key rollover, clear
+controls, ten sets and whether players choose Rematch. Record emulator version,
+OS and keyboard. Fix the observed problems before calling this stable.
+
+After that pilot, consider configurable key layouts and physical gamepads if
+the emulator can expose two independent devices reliably. Keep online play and
+new combat systems separate until local matches feel good. The existing
+Practice, mastery and human balance gates remain open.
+
+[Setup and scope](../LOCAL_VERSUS.md) · [Validation](../LOCAL_VERSUS_TEST_REPORT.md)
+
+## Earlier release work
 
 **v1.0.0-rc.1** starts the stable-release validation phase. Profiling traced the
 near-budget Arcade-suite frame to rebuilding the Records heading/instructions

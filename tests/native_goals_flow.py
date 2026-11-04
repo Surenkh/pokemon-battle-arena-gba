@@ -141,7 +141,7 @@ def choose(mode, fighter=0, level=0):
     if read()[1] == 0:
         tap(8)
     check(read()[1] == 15, 'Visible mode menu')
-    for _ in range(7):
+    for _ in range(8):
         if read(ARCADE)[17] == mode:
             break
         tap(128)

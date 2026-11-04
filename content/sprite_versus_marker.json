@@ -1,0 +1,8 @@
+{
+  "id": "versus_marker",
+  "type": "sprite",
+  "name": "versus_marker",
+  "path": "graphics/versus_marker.bmp",
+  "width": 8,
+  "height": 8
+}
