@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "rom_sha256": "bbac8d74a0f1408a6ca5531da1b043fbd9228d02f4895f1922d42c54168d9e42",
+  "method": "Actual framebuffer captures from native_starter_flow.py against this ROM; no generated illustration.",
+  "files": [
+    {
+      "path": "docs/media/starter-techniques-native.gif",
+      "sha256": "071f5f98d6bdf8fbb4761bd12eff73b41252e709cd87aeba35467b25fbe1fb9f"
+    },
+    {
+      "path": "docs/media/pikachu-volt-step-native.png",
+      "sha256": "cf4438e2bb25a7c728daf0059f0993454e475f39b51243790b138785d34772ff"
+    },
+    {
+      "path": "docs/media/squirtle-shell-roll-native.png",
+      "sha256": "bfd10ee86c077e87a8eb37afc15263c8678c0a6f00c13e39ee0012bc1038537a"
+    }
+  ]
+}

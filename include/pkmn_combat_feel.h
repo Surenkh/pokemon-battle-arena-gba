@@ -38,6 +38,8 @@ public:
   if(c.air_braking(who))return 9;
   if(c.can_burst(who))return 10;
   if(c.can_air_brake(who))return 11;
+  if(c.f[who].action==VOLT_STEP)return 12;
+  if(c.f[who].shell_roll&&c.f[who].action==SQUEEZE)return 13;
   if(c.f[who].sta<fire_stamina_cost*60)return 1;
   return c.f[who].sp==100?5:0;
  }

@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "checks": 1315,
+  "records_entries": 78,
+  "rapid_switches": 260,
+  "all_fighters": true,
+  "all_difficulties": true,
+  "maximum_counters": true,
+  "maximum_time": true,
+  "native_value_glyph_masks": true,
+  "mastery_round_trips": true,
+  "audio_on_off": true,
+  "sram_power_cycle": true,
+  "retained_records": true,
+  "frame_budget": 0.9,
+  "samples": [
+    {
+      "muted": false,
+      "records_peak_cpu_fraction": 0.431396484375,
+      "journey_peak_cpu_fraction": 0.74853515625
+    },
+    {
+      "muted": true,
+      "records_peak_cpu_fraction": 0.431396484375,
+      "journey_peak_cpu_fraction": 0.8837890625
+    }
+  ],
+  "records_peak_cpu_fraction": 0.431396484375,
+  "peak_cpu_fraction": 0.8837890625,
+  "missed_display_frames": 0,
+  "rom_sha256": "bbac8d74a0f1408a6ca5531da1b043fbd9228d02f4895f1922d42c54168d9e42",
+  "wall_seconds": 5.67,
+  "method": "mGBA 0.10.2 real GBA keys, per-frame read-only telemetry and exact framebuffer glyph masks; bounded schema-4 SRAM fixture prepared offline before boot, audio save and actual SRAM restart; no gameplay-memory writes",
+  "test_source": "tests/native_performance_flow.py",
+  "test_source_sha256": "73cc59162b98fd1908e737b237dcc767d0c55eaffd03b0315c6e5372f3378037",
+  "driver_source": "tests/mgba_driver.c",
+  "driver_source_sha256": "df1d134795dff636ca8ec6b31653681ac5ac7975780e0716c1ac224afd0f2935"
+}

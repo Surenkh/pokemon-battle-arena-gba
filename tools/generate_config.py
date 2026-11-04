@@ -4,11 +4,13 @@ import json
 r=Path(__file__).resolve().parents[1];j=json.loads((r/'config/balance.json').read_text())
 chars=j['characters'];assert len(chars)==13 and len({c['id'] for c in chars})==13
 count=len(chars)
-technique_ids={'none':0,'air_brake':1,'shadow_burst':2}
+technique_ids={'none':0,'air_brake':1,'shadow_burst':2,'volt_step':3,'shell_roll':4}
 techniques=j['techniques']
-assert set(techniques)=={'air_brake','shadow_burst'}
+assert set(techniques)=={'air_brake','shadow_burst','volt_step','shell_roll'}
 limits={'air_brake':{'stamina_cost':(4,16),'duration_ticks':(6,18),'max_fall_speed_q8':(64,256)},
-        'shadow_burst':{'stamina_cost':(4,16),'startup_ticks':(8,18),'active_ticks':(2,6),'damage':(1,12)}}
+        'shadow_burst':{'stamina_cost':(4,16),'startup_ticks':(8,18),'active_ticks':(2,6),'damage':(1,12)},
+        'volt_step':{'stamina_cost':(8,20),'double_tap_ticks':(6,12),'startup_ticks':(1,4),'active_ticks':(4,8),'recovery_ticks':(6,14),'speed_q8':(512,1280),'cooldown_ticks':(18,40)},
+        'shell_roll':{'stamina_cost':(4,12),'motion_ticks':(6,12),'speed_q8':(256,768)}}
 for name,bounds in limits.items():
  for field,(lo,hi) in bounds.items():
   value=techniques[name][field];assert type(value) is int and lo<=value<=hi,(name,field)
@@ -16,7 +18,7 @@ box=techniques['shadow_burst']['hitbox']
 assert len(box)==4 and all(type(v) is int for v in box)
 assert -15<=box[0]<0<box[2]<=15 and -12<=box[1]<0<box[3]<=12
 tech=['#pragma once','namespace pkmn {',
-      'enum Technique { TECHNIQUE_NONE, TECHNIQUE_AIR_BRAKE, TECHNIQUE_SHADOW_BURST };']
+      'enum Technique { TECHNIQUE_NONE, TECHNIQUE_AIR_BRAKE, TECHNIQUE_SHADOW_BURST, TECHNIQUE_VOLT_STEP, TECHNIQUE_SHELL_ROLL };']
 for name,values in techniques.items():
  for field,value in values.items():
   if isinstance(value,int):tech.append(f'inline constexpr int {name}_{field}={value};')

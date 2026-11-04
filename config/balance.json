@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "1.3.0-rc.1",
+  "ruleset_version": "1.5.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -181,8 +181,8 @@
       "style": {
         "role": "RUSH AND PRESSURE",
         "trait_name": "QUICK STEP",
-        "tip_1": "MELEE STEPS FORWARD",
-        "tip_2": "FAST APPROACH. COMMIT TO A.",
+        "tip_1": "DOUBLE TAP LEFT OR RIGHT",
+        "tip_2": "12 STA. NO INVULNERABILITY",
         "melee_reach_px": 21,
         "melee_lunge_q8": 128,
         "guard_impact_percent": 100,
@@ -193,7 +193,7 @@
         "melee_guard_percent": 100,
         "gravity_percent": 100,
         "jump_percent": 100,
-        "technique": "none"
+        "technique": "volt_step"
       }
     },
     {
@@ -271,8 +271,8 @@
       "style": {
         "role": "DEFENSE AND SPACE",
         "trait_name": "SHELL CONTROL",
-        "tip_1": "EFFICIENT BLOCK. WATER PUSH.",
-        "tip_2": "SUPERS STILL IGNORE BLOCK.",
+        "tip_1": "DOWN + LEFT OR RIGHT",
+        "tip_2": "20 STA. MELEE CAN HIT ROLL",
         "melee_reach_px": 21,
         "melee_lunge_q8": 0,
         "guard_impact_percent": 80,
@@ -283,7 +283,7 @@
         "melee_guard_percent": 100,
         "gravity_percent": 100,
         "jump_percent": 100,
-        "technique": "none"
+        "technique": "shell_roll"
       }
     },
     {
@@ -763,6 +763,20 @@
         14,
         10
       ]
+    },
+    "volt_step": {
+      "stamina_cost": 12,
+      "double_tap_ticks": 10,
+      "startup_ticks": 2,
+      "active_ticks": 6,
+      "recovery_ticks": 8,
+      "speed_q8": 1024,
+      "cooldown_ticks": 24
+    },
+    "shell_roll": {
+      "stamina_cost": 8,
+      "motion_ticks": 10,
+      "speed_q8": 512
     }
   }
 }

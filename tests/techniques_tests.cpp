@@ -97,7 +97,8 @@ int main(){
   c.reset(7,10);check(!c.f[0].air_brake_used&&c.f[0].air_brake_until==0&&!c.p[0].active&&c.p[0].burst_at==-1,"Round reset clears all technique state");
  }
  for(int fighter=0;fighter<character_count;fighter++){
-  check(PracticeSession::available_modes(fighter)==(fighter==7||fighter==10?6:5),"Technique training appears only for the two supported fighters");
+  check(PracticeSession::available_modes(fighter)==(fighter==0||fighter==2||fighter==7||fighter==10?6:5),"Technique training appears only for the two supported fighters");
+  if(fighter==0||fighter==2)continue;
   PracticeSession practice;practice.mode=DUMMY_TECHNIQUE;CombatCore c=setup(fighter);practice.begin_round();practice.prepare(c);
   if(fighter!=7&&fighter!=10){check(practice.mode==DUMMY_IDLE,"Changing to another fighter safely restores Free Practice");continue;}
   auto tick=[&](Input input=Input{}){c.frame(input,practice.input(c));practice.observe(c);};

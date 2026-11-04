@@ -135,6 +135,45 @@ class ReleaseTests(unittest.TestCase):
         self.js('package.json', dict(version='0.6.0'))
         with self.assertRaises(ValueError): prepare(self.root, self.output)
 
+    def starter_fixture(self):
+        adapter = b'-- tested adapter\n'
+        self.write('tools/local_versus.lua', adapter)
+        self.write('docs/LOCAL_VERSUS.md', '# Local Versus\n')
+        self.write('docs/TECHNIQUES_PLAYER_GUIDE.md', '# Four techniques\nVolt Step, Shell Roll, Air Brake, Shadow Burst.\n')
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0', rom_sha256=self.sha,
+                rom_bytes=256, local_versus=True, fighter_techniques=True, starter_techniques=True))
+        self.js('docs/verification/v0.5.0/native-versus.json', dict(status='passed', rom_sha256=self.sha,
+                adapter_sha256=digest(adapter), emulated_gba_instances=1))
+        self.js('docs/verification/v0.5.0/native-techniques.json', dict(status='passed', rom_sha256=self.sha,
+                signature_fighters=['jigglypuff', 'gastly'], drills_completed=True))
+        report = dict(status='passed', rom_sha256=self.sha, adapter_sha256=digest(adapter),
+                      signature_fighters=['pikachu', 'squirtle'], emulated_gba_instances=1,
+                      drills_completed=True, both_player_sides=True, first_frame_actions=True,
+                      pause_gesture_cleared=True, pause_freezes_mobility=True, fast_retry=True,
+                      save_byte_identical=True, missed_display_frames=0)
+        self.js('docs/verification/v0.5.0/native-starter.json', report)
+        return report
+
+    def test_starter_bundle_includes_both_moves_and_matching_native_evidence(self):
+        self.starter_fixture()
+        meta = prepare(self.root, self.output)
+        with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
+            for text in [b'Volt Step (12 stamina)', b'Shell Roll (20 total stamina)']:
+                self.assertIn(text, archive.read('README.txt'))
+            self.assertIn(b'Four techniques', archive.read('FIGHTER_TECHNIQUES.md'))
+
+    def test_starter_publication_rejects_partial_stale_or_modified_validation(self):
+        report = self.starter_fixture()
+        for change in [dict(status='failed'), dict(rom_sha256='0'*64), dict(adapter_sha256='0'*64),
+                       dict(signature_fighters=['pikachu']), dict(emulated_gba_instances=2),
+                       dict(drills_completed=False), dict(both_player_sides=False),
+                       dict(first_frame_actions=False), dict(pause_gesture_cleared=False),
+                       dict(pause_freezes_mobility=False), dict(fast_retry=False),
+                       dict(save_byte_identical=False), dict(missed_display_frames=1)]:
+            with self.subTest(change=change):
+                self.js('docs/verification/v0.5.0/native-starter.json', dict(report, **change))
+                with self.assertRaises(ValueError): prepare(self.root, self.output)
+
     def test_cup_bundle_requires_real_clears_and_save_recovery_for_this_rom(self):
         guide = b'# Rival Cup\nThree routes and optional style goals.\n'
         self.write('docs/RIVAL_CUP_PLAYER_GUIDE.md', guide)

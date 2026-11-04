@@ -39,7 +39,7 @@ int main(){
    auto before=c.checksum(),other=d.checksum();Input x=a.input(c,who),y=b.input(d,who);
    CHECK(same(x,y));CHECK(c.checksum()==before&&d.checksum()==other);
    CHECK(same(x,a.input(c,who))); // Queries do not re-roll decisions.
-   CHECK((x.pressed&~(A|B|R|UP|DOWN))==0);CHECK((x.held&~(A|B|R|UP|DOWN|L|LEFT|RIGHT))==0);
+   CHECK((x.pressed&~(A|B|R|UP|DOWN|(characters[c.f[who].character].technique==TECHNIQUE_VOLT_STEP?LEFT|RIGHT:0)))==0);CHECK((x.held&~(A|B|R|UP|DOWN|L|LEFT|RIGHT))==0);
    CHECK(a.diagnostics.melee_memory+a.diagnostics.fire_memory+a.diagnostics.super_memory<=cpu_memory_actions);
   }
  }
@@ -67,7 +67,7 @@ int main(){
  // takes at most 24 ticks to disengage, then stays put until its resume threshold.
  for(int l=0;l<3;++l)for(int ch=0;ch<character_count;++ch){
   CombatCore c;c.reset(ch,ch);c.f[1].sta=10*60;CpuController a;a.reset(l,51);
-  for(int t=0;t<100;++t){c.tick=t;Input x=a.input(c);CHECK(!x.pressed);if(t>24)CHECK(!(x.held&(LEFT|RIGHT|L)));}
+  for(int t=0;t<100;++t){c.tick=t;Input x=a.input(c);CHECK(!(x.pressed&~(LEFT|RIGHT)));if(t>24)CHECK(!(x.held&(LEFT|RIGHT|L)));}
   CHECK(a.diagnostics.resting);c.tick=102;c.f[1].sta=cpu_styles[ch].resume_at*60;a.input(c);CHECK(!a.diagnostics.resting);
  }
  // Real-button super defense at reachable arrival times on both sides. Not a

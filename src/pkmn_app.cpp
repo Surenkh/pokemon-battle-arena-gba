@@ -8,7 +8,7 @@
 #include "bn_regular_bg_items_cup_result.h"
 extern "C" { volatile int pkmn_cup_debug[32] = {}; }
 #include "bn_sprite_items_shadow_burst.h"
-extern "C" { volatile int pkmn_technique_debug[32] = {}; }
+extern "C" { volatile int pkmn_technique_debug[32] = {}; volatile int pkmn_starter_debug[32] = {}; }
 #include "pkmn_local_versus.h"
 #include "bn_regular_bg_items_versus_selector.h"
 #include "bn_regular_bg_items_versus_pause.h"
@@ -463,13 +463,16 @@ public:
     bool floating=screen==FIGHTING&&core.air_braking(i);
     if(floating)pkmn_technique_debug[30]|=1<<i;
     if(floating)sp.set_scale(bn::fixed(1.04),bn::fixed(.96));
+    const bool stepping=screen==FIGHTING&&v.action==VOLT_STEP,rolling=screen==FIGHTING&&core.rolling(i);
+    if(stepping){sp.set_scale(bn::fixed(1.08),bn::fixed(.92));pkmn_starter_debug[21]|=1<<i;}
+    if(rolling){sp.set_scale(bn::fixed(.8));sp.set_rotation_angle((age*36)%360);sp.set_y(bn::fixed(v.y)/256-12-80+camera_y);pkmn_starter_debug[21]|=4<<i;}
     shield[i]->set_visible(screen==FIGHTING&&(v.action==BLOCK||v.action==BLOCKSTUN));shield[i]->set_scale(feel.blocked[i]?bn::fixed(1.08):bn::fixed(1));shield[i]->set_position(bn::fixed(v.x)/256+v.face*11-120+camera_x,bn::fixed(v.y)/256-17-80+camera_y);shield[i]->set_horizontal_flip(v.face<0);
     bool vine=screen==FIGHTING&&v.character==3&&v.action==MELEE&&age>=characters[3].melee_start-2&&age<characters[3].melee_start+characters[3].melee_active;
-    int charge_kind=charge?1:floating?2:0;
+    int charge_kind=charge?1:floating?2:stepping?3:rolling?4:0;
     const auto& charge_item=*(charge?auras[v.character]:casts[v.character]);
-    if((charge||vine||floating)&&(!charging[i]||charge_asset[i]!=charge_kind)){charging[i].reset();charging[i]=charge_item.create_sprite(0,0);charging[i]->set_bg_priority(2);charging[i]->set_z_order(-1);charge_asset[i]=charge_kind;charge_tile[i]=-1;}
-    if(charging[i])charging[i]->set_visible(charge||vine||floating);
-    if(charge||vine||floating){int phase=charge?(age/3)%8:floating?(core.tick/3)%4:(age-characters[3].melee_start+2)%4;if(charge_tile[i]!=phase){charging[i]->set_tiles(charge_item.tiles_item(),phase);charge_tile[i]=phase;}charging[i]->set_position(bn::fixed(v.x)/256+(floating?0:v.face*(vine?24:10))-120+camera_x,bn::fixed(v.y)/256-(floating?3:19)-80+camera_y);charging[i]->set_horizontal_flip(v.face<0);charging[i]->set_scale(charge?bn::fixed(1.2)+bn::fixed(age)/100:bn::fixed(1));if(charge){pkmn_power_debug[20+i]=phase+1;pkmn_power_debug[5]|=1<<phase;pkmn_power_debug[12]|=1<<v.character;}}
+    if((charge||vine||floating||stepping||rolling)&&(!charging[i]||charge_asset[i]!=charge_kind)){charging[i].reset();charging[i]=charge_item.create_sprite(0,0);charging[i]->set_bg_priority(2);charging[i]->set_z_order(-1);charge_asset[i]=charge_kind;charge_tile[i]=-1;}
+    if(charging[i])charging[i]->set_visible(charge||vine||floating||stepping||rolling);
+    if(charge||vine||floating||stepping||rolling){int phase=charge?(age/3)%8:floating?(core.tick/3)%4:(stepping||rolling)?(age/2)%4:(age-characters[3].melee_start+2)%4;if(charge_tile[i]!=phase){charging[i]->set_tiles(charge_item.tiles_item(),phase);charge_tile[i]=phase;}charging[i]->set_position(bn::fixed(v.x)/256+(floating?0:stepping?-v.mobility_direction*12:v.face*(vine?24:10))-120+camera_x,bn::fixed(v.y)/256-(floating?3:rolling?5:19)-80+camera_y);charging[i]->set_horizontal_flip(v.face<0);charging[i]->set_scale(charge?bn::fixed(1.2)+bn::fixed(age)/100:bn::fixed(1));if(charge){pkmn_power_debug[20+i]=phase+1;pkmn_power_debug[5]|=1<<phase;pkmn_power_debug[12]|=1<<v.character;}}
 
     if(new_tick&&screen==FIGHTING){if(v.landed_at==core.tick-1||v.took_off_at==core.tick-1)particle(v.x/256,world_floor_y-4,DUST);else if(v.action==NONE&&core.grounded(v)&&v.vx&&core.tick%12==0)particle(v.x/256-v.face*8,world_floor_y-3,DUST);}
     int values[]={v.hp,v.sta,v.sp},maxes[]={characters[v.character].hp,characters[v.character].sta*60,100};for(int j=0;j<3;j++){auto&bar=*bars[i*3+j];bn::fixed width=bn::fixed(71)*values[j]/maxes[j];bar.set_visible(values[j]>0);if(values[j]>0){if(width<1)width=1;bar.set_scale(width/64,bn::fixed(.125));bar.set_position((i?163:25)+width/2-120,18+j*9-80);}}}
@@ -600,7 +603,7 @@ public:
     }
     if(screen==RESUME_COUNTDOWN)line(120,71,"READY",true,2);
     if(screen==FIGHTING||screen==ROUND_END){
-     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE"};
+     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL"};
      for(int i=0;i<2;i++){int status=feel.status(core,i);if(status)line(i?192:48,47,statuses[status],true);}
      if(charge)line(120,57,"SUPER! JUMP OR SQUEEZE",true);
     }
@@ -699,12 +702,13 @@ public:
  Screen screen=TITLE,help_return=TITLE,guide_return=SELECTOR,audio_return=TITLE,versus_resume=FIGHTING;
  int selected=0,cpu=1,difficulty=1,choice=0,count=0,frame=0,practice_row=0,practice_rounds=0,audio_row=0,selector_row=0;
  bool practice=false;uint32_t seed=0x504b4d4e;int peak=0,missed=0,versus_paused_count=0;
- uint32_t technique_frame=~0u;int brake_uses[2]{},orb_uses[2]{},burst_hits[2]{};
+ uint32_t technique_frame=~0u;int brake_uses[2]{},orb_uses[2]{},burst_hits[2]{},step_uses[2]{},roll_uses[2]{};
  auto save_progress=[&](){progress.music=sound_settings.music;progress.sound=sound_settings.sound;if(storage.save(progress))mastery_dirty=false;};
  auto avoid_mirror=[&](){if(trainer.opponent==selected)trainer.opponent=(selected+1)%character_count;};
  auto start_match=[&](bool keep_stats=false,bool quick_practice=false){
   feel.reset();audio.reset();round.reset();renderer.reset_scene();seed=seed*1664525u+1013904223u;
-  technique_frame=~0u;for(int i=0;i<2;++i)brake_uses[i]=orb_uses[i]=burst_hits[i]=0;
+  technique_frame=~0u;for(int i=0;i<2;++i)brake_uses[i]=orb_uses[i]=burst_hits[i]=step_uses[i]=roll_uses[i]=0;
+  pkmn_starter_debug[21]=0;
   if(arcade.active){selected=arcade.fighter;difficulty=arcade.difficulty;cpu=arcade.opponent();}
   if(cup_run.active){selected=cup_run.fighter;difficulty=cup_run.difficulty;cpu=cup_run.rival().fighter;cup_run.begin_round();}
   if(versus.active){selected=versus.fighters[0];cpu=versus.fighters[1];}
@@ -889,6 +893,7 @@ public:
   if(screen==PRACTICE_SETUP)trainer.validate_mode(selected);
   int current_menu=selected+choice*10+difficulty*100+practice_row*1000+int(trainer.mode)*10000+trainer.opponent*100000+audio_row*1000000+mode_row*10000000+selected_cup*100000000;
   if(previous_screen!=screen){
+   if(previous_screen==FIGHTING)for(auto&v:core.f){v.tap_direction=0;v.tap_tick=-100;}
    if(previous_screen==AUDIO_OPTIONS)cue=UI_BACK;else if(screen==PAUSED)cue=UI_PAUSE;else if(screen==RESUME_COUNTDOWN)cue=UI_RESUME;
    else if(screen==COUNTDOWN)cue=ROUND_COUNT;else if(screen==FIGHTING)cue=ROUND_FIGHT;
    else if(screen==CUP_RESULT)cue=cup_run.result==1?RESULT_WIN:cup_run.result==2?RESULT_LOSE:RESULT_DRAW;
@@ -938,9 +943,9 @@ public:
   pkmn_expansion_debug[6]=sizeof(SaveSlot);pkmn_expansion_debug[7]=save_offsets[0];pkmn_expansion_debug[8]=save_offsets[1];
   if(technique_frame!=core.event_frame){
    technique_frame=core.event_frame;
-   for(int n=0;n<core.event_count;++n){const auto&e=core.events[n];if(e.kind==EV_AIR_BRAKE)++brake_uses[e.owner];if(e.kind==EV_ORB_ARM)++orb_uses[e.owner];if(e.kind==EV_BURST_HIT)++burst_hits[e.owner];}
+   for(int n=0;n<core.event_count;++n){const auto&e=core.events[n];if(e.kind==EV_AIR_BRAKE)++brake_uses[e.owner];if(e.kind==EV_ORB_ARM)++orb_uses[e.owner];if(e.kind==EV_BURST_HIT)++burst_hits[e.owner];if(e.kind==EV_VOLT_STEP)++step_uses[e.owner];if(e.kind==EV_SHELL_ROLL)++roll_uses[e.owner];}
   }
-  pkmn_technique_debug[0]=0x54454333;
+  pkmn_technique_debug[0]=0x54454333;pkmn_starter_debug[0]=0x53545235;
   for(int i=0;i<2;++i){
    const auto&v=core.f[i];const auto&orb=core.p[i];
    pkmn_technique_debug[1+i]=characters[v.character].technique;
@@ -949,6 +954,7 @@ public:
    pkmn_technique_debug[11+i]=core.can_burst(i);pkmn_technique_debug[13+i]=orb.active;
    pkmn_technique_debug[15+i]=orb.burst_at;pkmn_technique_debug[17+i]=orb.x;
    pkmn_technique_debug[19+i]=orb.y;pkmn_technique_debug[21+i]=core.burst_phase(orb);
+   pkmn_starter_debug[1+i]=characters[v.character].technique;pkmn_starter_debug[3+i]=step_uses[i];pkmn_starter_debug[5+i]=roll_uses[i];pkmn_starter_debug[7+i]=v.step_ready;pkmn_starter_debug[9+i]=v.mobility_direction;pkmn_starter_debug[11+i]=v.shell_roll;pkmn_starter_debug[13+i]=core.rolling(i);pkmn_starter_debug[15+i]=v.tap_direction;pkmn_starter_debug[17+i]=v.tap_tick;pkmn_starter_debug[19+i]=v.action==VOLT_STEP?core.age(v):-1;
    pkmn_technique_debug[24+i]=brake_uses[i];pkmn_technique_debug[26+i]=orb_uses[i];pkmn_technique_debug[28+i]=burst_hits[i];
   }
   unsigned technique_mask=0;for(int n=0;n<core.event_count;++n)technique_mask|=1u<<core.events[n].kind;

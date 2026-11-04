@@ -1,0 +1,101 @@
+{
+  "status": "passed",
+  "checks": 128,
+  "mode_menu": true,
+  "menu_keys": 255,
+  "no_shoulder_required_in_menus": true,
+  "roster_count": 13,
+  "new_fighters": [
+    {
+      "character": "psyduck",
+      "audio_mask": 64,
+      "charge_mask": 64,
+      "release_mask": 64,
+      "captured_frames": 98
+    },
+    {
+      "character": "jigglypuff",
+      "audio_mask": 128,
+      "charge_mask": 128,
+      "release_mask": 128,
+      "captured_frames": 98
+    },
+    {
+      "character": "machop",
+      "audio_mask": 256,
+      "charge_mask": 256,
+      "release_mask": 256,
+      "captured_frames": 98
+    }
+  ],
+  "legacy_save_migration": true,
+  "corrupt_save_recovery": true,
+  "rounds": [
+    {
+      "outcome": 2,
+      "stage": 0,
+      "continues": 2,
+      "arena": 2
+    },
+    {
+      "outcome": 2,
+      "stage": 0,
+      "continues": 1,
+      "arena": 2
+    },
+    {
+      "outcome": 2,
+      "stage": 0,
+      "continues": 0,
+      "arena": 2
+    },
+    {
+      "outcome": 1,
+      "stage": 1,
+      "continues": 2,
+      "arena": 0
+    },
+    {
+      "outcome": 1,
+      "stage": 2,
+      "continues": 2,
+      "arena": 1
+    },
+    {
+      "outcome": 2,
+      "stage": 2,
+      "continues": 2,
+      "arena": 2
+    },
+    {
+      "outcome": 1,
+      "stage": 3,
+      "continues": 1,
+      "arena": 2
+    },
+    {
+      "outcome": 1,
+      "stage": 4,
+      "continues": 1,
+      "arena": 3
+    },
+    {
+      "outcome": 1,
+      "stage": 5,
+      "continues": 1,
+      "arena": 4
+    }
+  ],
+  "cleared_after_runs": 1,
+  "best_ticks": 5788,
+  "no_continue_clears": 0,
+  "peak_cpu_fraction": 0.8974609375,
+  "missed_display_frames": 0,
+  "rom_sha256": "bbac8d74a0f1408a6ca5531da1b043fbd9228d02f4895f1922d42c54168d9e42",
+  "wall_seconds": 31.35,
+  "method": "mGBA 0.10.2 real buttons and read-only telemetry; native frame/audio dispatch; synthetic schema-1 SRAM fixture, restarts and offline save corruption; no gameplay-memory writes",
+  "test_source": "tests/native_arcade_flow.py",
+  "test_source_sha256": "b24ad44e091b3e2f100e08f8422aeffe51c478da3e280f696eddc26ca970bbd8",
+  "driver_source": "tests/mgba_driver.c",
+  "driver_source_sha256": "df1d134795dff636ca8ec6b31653681ac5ac7975780e0716c1ac224afd0f2935"
+}
