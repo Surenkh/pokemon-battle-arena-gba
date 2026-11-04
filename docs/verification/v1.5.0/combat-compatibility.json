@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "baseline_commit": "c9a29fae16b323433ad4a9a4423f4878e9cb9cf5",
+  "excluded_fighters": [
+    "pikachu",
+    "squirtle"
+  ],
+  "unchanged_ordered_pairings": 121,
+  "unchanged_rounds": 7260,
+  "rounds_per_build": 10140,
+  "method": "Identical seeds and public CPU input policies; all win/loss/draw/tick summaries and final-state replay digests match for the other eleven fighters."
+}

@@ -319,3 +319,17 @@ Menu mode ID 8 is Rival Cup. Its board is screen 18 and result is screen 19;
 all earlier IDs retain their meaning. `config/cups.json` is the route source.
 A build with `rival_cup: true` requires its own ROM-bound `native-cup.json`
 evidence at packaging time. See [contract and pilot](RIVAL_CUP.md).
+
+## v1.5 starter techniques
+
+Run tests/native_starter_flow.py with the pinned mGBA 0.11 driver. Inputs use the
+shipping adapter; telemetry and framebuffer reads observe the result. The driver
+writes only its dedicated input mailbox, never live combat state. Captures and
+report live under tests/native_artifacts/starter/.
+
+The separate 32-word pkmn_starter_debug array uses word 0 magic 0x53545235;
+1–2 technique IDs; 3–4 dash counts; 5–6 roll counts; 7–8 dash cooldown deadlines;
+9–10 committed directions; 11–12 roll flags; 13–14 rolling-motion flags;
+15–16 primed tap directions; 17–18 first-tap ticks; 19–20 dash ages (-1 inactive);
+21 accumulated rendered cue bits (P1/P2 dash 1/2, roll 4/8). Other words are zero.
+Existing telemetry layouts/IDs remain unchanged.

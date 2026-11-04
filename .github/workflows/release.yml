@@ -2,7 +2,7 @@ name: Validate and publish game release
 
 on:
   push:
-    branches: [main]
+    branches: [main, release/v1.5.0]
     paths:
       - package.json
       - downloads/**
@@ -42,7 +42,7 @@ jobs:
           git diff --exit-code -- include/pkmn_character_defs.h include/pkmn_cpu_defs.h include/pkmn_technique_defs.h include/pkmn_selection_layout.h include/pkmn_cup_defs.h
       - name: Run host combat regressions
         run: |
-          for suite in combat movement feel depth cpu presentation arcade roster mastery practice goals expansion selection_power local_versus techniques cup; do
+          for suite in combat movement feel depth cpu presentation arcade roster mastery practice goals expansion selection_power local_versus techniques cup starter; do
             g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp "tests/${suite}_tests.cpp" -o "/tmp/pkmn-${suite}-tests"
             "/tmp/pkmn-${suite}-tests"
           done
@@ -50,7 +50,7 @@ jobs:
         run: python3 tools/package_release.py
 
   publish:
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release/v1.5.0') && github.event_name != 'pull_request'
     needs: validate
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -62,6 +62,16 @@ jobs:
           persist-credentials: false
       - name: Prepare the exact validated assets
         run: python3 tools/package_release.py
+      - name: Check release branch version
+        env:
+          RELEASE_REF: ${{ github.ref }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          version = json.loads(Path('dist/release/release.json').read_text())['version']
+          assert os.environ['RELEASE_REF'] in ('refs/heads/main', 'refs/heads/release/v' + version)
+          PY
       - name: Upload, verify and publish the release
         env:
           GH_TOKEN: ${{ github.token }}

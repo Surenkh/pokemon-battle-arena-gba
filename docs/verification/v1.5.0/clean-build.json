@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "rom_sha256": "bbac8d74a0f1408a6ca5531da1b043fbd9228d02f4895f1922d42c54168d9e42",
+  "rom_bytes": 3542840,
+  "rom_byte_identical": true,
+  "generated_inputs_match": true,
+  "source_files": 2437,
+  "generated_input_files": 868,
+  "regenerated_commands": [
+    [
+      "npm",
+      "ci",
+      "--no-audit",
+      "--no-fund"
+    ],
+    [
+      "npm",
+      "run",
+      "assets:prepare"
+    ],
+    [
+      "npm",
+      "run",
+      "assets"
+    ],
+    [
+      "npm",
+      "run",
+      "test:assets"
+    ],
+    [
+      "npm",
+      "run",
+      "audio"
+    ],
+    [
+      "npm",
+      "run",
+      "test:audio"
+    ],
+    [
+      "python3",
+      "tools/generate_config.py"
+    ]
+  ],
+  "wall_seconds": 89.66,
+  "method": "Separate current-source snapshot; fresh pinned dependencies; full animation, graphics, audio and configuration regeneration; clean native build with pinned devkitARM 16.1.0; byte-identical tested ROM."
+}

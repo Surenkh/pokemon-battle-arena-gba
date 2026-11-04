@@ -34,3 +34,13 @@ and read-only rerun behavior. A regression test verifies that candidate behavior
 For final v1.0, complete [the release checklist](V1_RELEASE_CHECKLIST.md), then
 prepare a separately versioned `1.0.0` build/evidence set. Do not relabel the RC
 tag or claim its uncompleted player/device gates have passed.
+
+## v1.5 release branch
+
+The owner requested the latest completed version on GitHub without merging its
+PR automatically. Push release/v1.5.0 after validation. The workflow validates
+and publishes only main or this dedicated branch, and checks that the branch
+version matches the package. The normal publisher verifies uploaded bytes
+before publishing the immutable v1.5.0 release with make_latest=true. Other
+feature branches and pull requests do not publish. Owner review/merge stays
+independent of the downloadable release.

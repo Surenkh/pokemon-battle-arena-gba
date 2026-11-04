@@ -1,0 +1,110 @@
+{
+  "status": "passed",
+  "rom_sha256": "bbac8d74a0f1408a6ca5531da1b043fbd9228d02f4895f1922d42c54168d9e42",
+  "native_suites": 20,
+  "native_checks": 25649,
+  "peak_cpu_fraction": 0.955322265625,
+  "missed_display_frames": 0,
+  "suites": [
+    {
+      "suite": "general",
+      "checks": 407,
+      "peak_cpu_fraction": 0.81982421875
+    },
+    {
+      "suite": "animation",
+      "checks": 2730,
+      "peak_cpu_fraction": 0
+    },
+    {
+      "suite": "effects",
+      "checks": 819,
+      "peak_cpu_fraction": 0
+    },
+    {
+      "suite": "feel",
+      "checks": 302,
+      "peak_cpu_fraction": 0.802734375
+    },
+    {
+      "suite": "depth",
+      "checks": 241,
+      "peak_cpu_fraction": 0.955322265625
+    },
+    {
+      "suite": "cpu",
+      "checks": 10168,
+      "peak_cpu_fraction": 0.802734375
+    },
+    {
+      "suite": "presentation",
+      "checks": 2637,
+      "peak_cpu_fraction": 0.812255859375
+    },
+    {
+      "suite": "arcade",
+      "checks": 128,
+      "peak_cpu_fraction": 0.8974609375
+    },
+    {
+      "suite": "mastery",
+      "checks": 176,
+      "peak_cpu_fraction": 0.90283203125
+    },
+    {
+      "suite": "response",
+      "checks": 1017,
+      "peak_cpu_fraction": 0.818359375
+    },
+    {
+      "suite": "navigation",
+      "checks": 355,
+      "peak_cpu_fraction": 0.7978515625
+    },
+    {
+      "suite": "practice",
+      "checks": 948,
+      "peak_cpu_fraction": 0.87744140625
+    },
+    {
+      "suite": "goals",
+      "checks": 1490,
+      "peak_cpu_fraction": 0.88525390625
+    },
+    {
+      "suite": "performance",
+      "checks": 1315,
+      "peak_cpu_fraction": 0.8837890625
+    },
+    {
+      "suite": "expansion",
+      "checks": 815,
+      "peak_cpu_fraction": 0.885009765625
+    },
+    {
+      "suite": "v11",
+      "checks": 972,
+      "peak_cpu_fraction": 0.8759765625
+    },
+    {
+      "suite": "versus",
+      "checks": 239,
+      "peak_cpu_fraction": 0.8359375
+    },
+    {
+      "suite": "techniques",
+      "checks": 145,
+      "peak_cpu_fraction": 0.807861328125
+    },
+    {
+      "suite": "cup",
+      "checks": 672,
+      "peak_cpu_fraction": 0.937744140625
+    },
+    {
+      "suite": "starter",
+      "checks": 73,
+      "peak_cpu_fraction": 0.807861328125
+    }
+  ]
+}

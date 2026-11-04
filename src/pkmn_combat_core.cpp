@@ -16,10 +16,12 @@ static bool sweep(Rect a,int dx,int dy,Rect b,int bx,int by,Fraction& time){
   if(less(ex,exit)){exit=ex;}
  }if(!less(enter,exit)||!less(enter,{1,1})||!less({0,1},exit))return false;time=enter;return true;
 }
-static int priority(int v){if(v==R)return 5;if(v==UP||v==REQUEST_AIR_BRAKE)return 4;if(v==DOWN)return 3;if(v==B||v==REQUEST_ORB_BURST)return 2;if(v==A)return 1;return 0;}
+static int priority(int v){if(v==R)return 5;if(v==UP||v==REQUEST_AIR_BRAKE)return 4;if(v==DOWN||v==REQUEST_SHELL_ROLL)return 3;if(v==B||v==REQUEST_ORB_BURST)return 2;if(v==A)return 1;return 0;}
 static int request_cost(int key) {
  if(key==REQUEST_AIR_BRAKE)return air_brake_stamina_cost;
  if(key==REQUEST_ORB_BURST)return shadow_burst_stamina_cost;
+ if(key==REQUEST_VOLT_STEP)return volt_step_stamina_cost;
+ if(key==REQUEST_SHELL_ROLL)return squeeze_stamina_cost+shell_roll_stamina_cost;
  return key==R?super_stamina_cost:key==UP?jump_stamina_cost:key==DOWN?squeeze_stamina_cost:key==B?fire_stamina_cost:melee_stamina_cost;
 }
 static const int* shot_shape(const Projectile& shot) {
@@ -39,6 +41,9 @@ bool CombatCore::can_air_brake(int who)const {
 }
 bool CombatCore::can_burst(int who)const {
  return !outcome&&technique_request(who,B)==REQUEST_ORB_BURST&&f[who].sta>=shadow_burst_stamina_cost*60;
+}
+bool CombatCore::can_volt_step(int who)const {
+ const auto&v=f[who];return !outcome&&characters[v.character].technique==TECHNIQUE_VOLT_STEP&&v.action==NONE&&grounded(v)&&v.vy>=0&&tick>=v.step_ready&&v.sta>=volt_step_stamina_cost*60;
 }
 int CombatCore::burst_phase(const Projectile& shot)const {
  if(!shot.active||shot.burst_at<0)return -1;
@@ -71,24 +76,45 @@ bool CombatCore::jump_buffer_eligible(const Fighter&v)const{
  int y=v.y,vy=v.vy;for(int n=0;n<input_buffer_ticks-1;n++){vy=minv(motion_max_fall_velocity_q8,vy+motion_gravity_q8*characters[v.character].gravity_percent/100);y+=vy;if(y>=world_floor_y*256)return true;}return false;
 }
 void CombatCore::reset(int player,int cpu,uint32_t match_seed){training=false;event_count=0;event_frame=0;tick=0;remaining=match_round_ticks;hitstop=outcome=feedback=0;next_id=1;seed=match_seed?match_seed:1;for(auto&v:p)v=Projectile{};for(int i=0;i<2;i++){f[i]=Fighter{};auto&v=f[i];v.character=i?cpu:player;v.x=(i?world_cpu_spawn_x:world_player_spawn_x)*256;v.hp=characters[v.character].hp;v.sta=characters[v.character].sta*resources_stamina_subunits_per_point;v.face=i?-1:1;}}
-void CombatCore::buffer(int who,Input input){auto&v=f[who];const int keys[5]={R,UP,DOWN,B,A};for(int k:keys)if(input.pressed&k){int request=technique_request(who,k),cost=request_cost(request);
+void CombatCore::buffer(int who,Input input){auto&v=f[who];const int keys[5]={R,UP,DOWN,B,A};for(int k:keys)if(input.pressed&k){int request=technique_request(who,k);
+ const int direction=((input.held&RIGHT)?1:0)-((input.held&LEFT)?1:0);
+ if(k==DOWN&&direction&&characters[v.character].technique==TECHNIQUE_SHELL_ROLL&&grounded(v)&&tick>=v.squeeze_ready)request=REQUEST_SHELL_ROLL;
+ int cost=request_cost(request);
+ if(request==REQUEST_SHELL_ROLL&&(v.action!=NONE&&v.action!=BLOCK))continue;
  if(request==k&&((k==B&&(p[who].active||p[who].reserved))||(k==R&&(p[who+2].active||p[who+2].reserved||v.action==BLOCK))||(k==R&&(v.sp<100||!grounded(v)))||(k==DOWN&&(!grounded(v)||tick<v.squeeze_ready))||(k==UP&&!jump_buffer_eligible(v))))continue;
  if(v.sta<cost*60){emit(EV_TIRED,who,who);continue;}
- if(!v.pending||tick>=v.pending_until||priority(request)>=priority(v.pending)){v.pending=request;v.pending_until=tick+input_buffer_ticks;}break;}}
+ if(!v.pending||tick>=v.pending_until||priority(request)>=priority(v.pending)){v.pending=request;v.pending_until=tick+input_buffer_ticks;if(request==REQUEST_SHELL_ROLL)v.mobility_direction=direction;}break;}
+ // Only real direction edges can form the gesture; actions keep their ordinary
+ // priority. A held direction or a press during a commitment cannot prime it.
+ if(characters[v.character].technique!=TECHNIQUE_VOLT_STEP)return;
+ const int direction=((input.pressed&RIGHT)?1:0)-((input.pressed&LEFT)?1:0);
+ if(v.action!=NONE||!grounded(v)||v.vy<0||(input.held&(RIGHT|LEFT))==(RIGHT|LEFT)){v.tap_direction=0;v.tap_tick=-100;return;}
+ if(!direction)return;
+ if(input.pressed&(A|B|R|UP|DOWN)){v.tap_direction=0;v.tap_tick=-100;return;}
+ const bool twice=v.tap_direction==direction&&tick>v.tap_tick&&tick-v.tap_tick<=volt_step_double_tap_ticks;
+ v.tap_direction=direction;v.tap_tick=tick;
+ if(twice&&tick>=v.step_ready){
+  v.tap_direction=0;v.tap_tick=-100;
+  if(v.sta<volt_step_stamina_cost*60){emit(EV_TIRED,who,who);return;}
+  if(!v.pending||tick>=v.pending_until){v.pending=REQUEST_VOLT_STEP;v.pending_until=tick+input_buffer_ticks;v.mobility_direction=direction;}
+ }
+}
 void CombatCore::frame(Input player,Input cpu){if(outcome){begin_events();return;}if(hitstop){begin_events();buffer(0,player);buffer(1,cpu);--hitstop;feedback=0;return;}step(player,cpu);}
-void CombatCore::cancel(int who){auto&v=f[who];v.air_brake_until=0;if(v.action==SQUEEZE)v.squeeze_ready=tick+squeeze_cooldown_after_end_ticks;for(auto&b:p)if(b.owner==who&&b.reserved)b.reserved=false;}
+void CombatCore::cancel(int who){auto&v=f[who];v.air_brake_until=0;v.shell_roll=false;v.tap_direction=0;v.tap_tick=-100;if(v.action==SQUEEZE)v.squeeze_ready=tick+squeeze_cooldown_after_end_ticks;for(auto&b:p)if(b.owner==who&&b.reserved)b.reserved=false;}
 void CombatCore::enter(int who,Action a,int duration,int cost,bool followup){auto&v=f[who];v.action=a;v.began=tick;v.ends=tick+duration;v.sta-=cost*60;v.last_spend=tick;v.attack_id=next_id++;v.melee_contact=false;v.spawned=false;v.confirmed_at=-100;v.chain_depth=followup?1:0;}
 void CombatCore::action(int who,Input input){auto&v=f[who];const auto&d=characters[v.character];bool ground=grounded(v);
- if(v.action!=NONE&&v.action!=BLOCK&&tick>=v.ends){if(v.action==SQUEEZE)v.squeeze_ready=tick+squeeze_cooldown_after_end_ticks;v.action=NONE;}
+ if(v.action!=NONE&&v.action!=BLOCK&&tick>=v.ends){if(v.action==SQUEEZE)v.squeeze_ready=tick+squeeze_cooldown_after_end_ticks;v.shell_roll=false;v.action=NONE;}
  if(v.action==BLOCK&&!(input.held&L))v.action=NONE;
  if(v.action==NONE||v.action==BLOCK){int delta=f[1-who].x-v.x;if(delta)v.face=delta>0?1:-1;}
  buffer(who,input);if(tick>=v.pending_until)v.pending=0;
  int request=v.pending;bool neutral=v.action==NONE,defensive=neutral||v.action==BLOCK;
  bool followup=can_followup(who,request);
- bool can=request==REQUEST_AIR_BRAKE?can_air_brake(who):request==REQUEST_ORB_BURST?can_burst(who):request==R?(neutral&&ground&&v.sp==100&&!p[who+2].active&&!p[who+2].reserved):request==UP?(defensive&&ground):request==DOWN?(defensive&&ground&&tick>=v.squeeze_ready):request==B?((neutral||followup)&&!p[who].active&&!p[who].reserved):request==A?(neutral||followup):false;
+ bool can=request==REQUEST_VOLT_STEP?can_volt_step(who):request==REQUEST_SHELL_ROLL?(defensive&&ground&&tick>=v.squeeze_ready):request==REQUEST_AIR_BRAKE?can_air_brake(who):request==REQUEST_ORB_BURST?can_burst(who):request==R?(neutral&&ground&&v.sp==100&&!p[who+2].active&&!p[who+2].reserved):request==UP?(defensive&&ground):request==DOWN?(defensive&&ground&&tick>=v.squeeze_ready):request==B?((neutral||followup)&&!p[who].active&&!p[who].reserved):request==A?(neutral||followup):false;
  if(can){int cost=request_cost(request);
  if(v.sta>=cost*60){v.pending=0;
- if(request==REQUEST_AIR_BRAKE){v.sta-=cost*60;v.last_spend=tick;v.air_brake_used=true;v.air_brake_until=tick+air_brake_duration_ticks;emit(EV_AIR_BRAKE,who,who);}
+ if(request==REQUEST_VOLT_STEP){enter(who,VOLT_STEP,volt_step_startup_ticks+volt_step_active_ticks+volt_step_recovery_ticks,cost);v.step_ready=v.ends+volt_step_cooldown_ticks;emit(EV_VOLT_STEP,who,who);}
+ else if(request==REQUEST_SHELL_ROLL){enter(who,SQUEEZE,squeeze_startup_ticks+squeeze_active_ticks+squeeze_recovery_ticks,cost);v.shell_roll=true;emit(EV_SHELL_ROLL,who,who);}
+ else if(request==REQUEST_AIR_BRAKE){v.sta-=cost*60;v.last_spend=tick;v.air_brake_used=true;v.air_brake_until=tick+air_brake_duration_ticks;emit(EV_AIR_BRAKE,who,who);}
  else if(request==REQUEST_ORB_BURST){auto&orb=p[who];v.sta-=cost*60;v.last_spend=tick;orb.burst_at=tick;orb.vx=0;orb.px=orb.x;orb.py=orb.y;orb.damage=shadow_burst_damage;emit(EV_ORB_ARM,who,who,false,0,orb.followup,orb.id);}
  else if(request==UP){v.action=NONE;v.vy=motion_jump_velocity_q8*d.jump_percent/100;v.took_off_at=tick;v.sta-=cost*60;v.last_spend=tick;feedback|=JUMPED;emit(EV_JUMP,who,who);if(v.landed_at==tick-1&&!(input.pressed&UP))emit(EV_LANDING_JUMP,who,who);}
  else if(request==DOWN)enter(who,SQUEEZE,squeeze_startup_ticks+squeeze_active_ticks+squeeze_recovery_ticks,cost);
@@ -100,7 +126,9 @@ void CombatCore::action(int who,Input input){auto&v=f[who];const auto&d=characte
  if(v.action==NONE&&ground&&v.vy>=0&&(input.held&L)&&v.sta>=resources_block_enter_min_stamina*60)v.action=BLOCK;
  if(v.action==BLOCK){v.sta=maxv(0,v.sta-resources_block_drain_subunits_per_tick);v.last_spend=tick;if(!v.sta){v.action=GUARD_BREAK;v.began=tick;v.ends=tick+reactions_guard_break_ticks;feedback|=BROKEN;emit(EV_BREAK,who,who);}}
  int dir=((input.held&RIGHT)?1:0)-((input.held&LEFT)?1:0);
- if(v.action==NONE){
+ if(v.action==VOLT_STEP)v.vx=age(v)>=volt_step_startup_ticks&&age(v)<volt_step_startup_ticks+volt_step_active_ticks?v.mobility_direction*volt_step_speed_q8:0;
+ else if(v.shell_roll&&v.action==SQUEEZE)v.vx=rolling(who)?v.mobility_direction*shell_roll_speed_q8:0;
+ else if(v.action==NONE){
  bool on_floor=ground&&v.vy>=0;
  int target=dir*(on_floor?d.speed:d.speed*motion_air_speed_numerator/motion_air_speed_denominator);
  int acceleration=on_floor?(dir?(dir*v.vx<0?motion_ground_turn_acceleration_q8:motion_ground_acceleration_q8):motion_ground_braking_q8):(dir?motion_air_acceleration_q8:motion_air_drag_q8);
@@ -145,7 +173,7 @@ void CombatCore::collide(const Fighter previous[2]){Contact contacts[16];int cou
 }
 void CombatCore::resources(){for(auto&v:f)if(v.action==NONE&&tick-v.last_spend>=resources_stamina_regen_delay_ticks)v.sta=minv(characters[v.character].sta*60,v.sta+characters[v.character].regen);}
 void CombatCore::step(Input player,Input cpu){begin_events();if(outcome)return;feedback=0;Fighter previous[2]={f[0],f[1]};action(0,player);action(1,cpu);physics();spawn();collide(previous);resources();if(!training)--remaining;if(!f[0].hp||!f[1].hp)outcome=!f[0].hp&&!f[1].hp?3:!f[1].hp?1:2;else if(!training&&remaining<=0){int a=f[0].hp*characters[f[1].character].hp,b=f[1].hp*characters[f[0].character].hp;outcome=a>b?1:a<b?2:3;}if(outcome){for(auto&b:p)b=Projectile{};hitstop=0;for(auto&v:f)v.pending=0;}++tick;}
-uint32_t CombatCore::checksum()const{uint32_t h=2166136261u;auto mix=[&](uint32_t n){h=(h^n)*16777619u;};mix(seed);mix(training);mix(tick);mix(remaining);mix(hitstop);mix(outcome);mix(next_id);for(auto&v:f){mix(v.character);mix(v.x);mix(v.y);mix(v.vx);mix(v.vy);mix(v.hp);mix(v.sta);mix(v.sp);mix(v.kb);mix(v.face);mix(v.action);mix(v.began);mix(v.ends);mix(v.invuln_until);mix(v.squeeze_ready);mix(v.last_spend);mix(v.pending);mix(v.pending_until);mix(v.attack_id);mix(v.melee_contact);mix(v.spawned);mix(v.stride_q8);mix(v.landed_at);mix(v.took_off_at);mix(v.confirmed_at);mix(v.chain_depth);if(v.air_brake_used||v.air_brake_until){mix(0x54454331);mix(v.air_brake_used);mix(v.air_brake_until);}}for(auto&b:p){mix(b.active);mix(b.reserved);mix(b.super);mix(b.followup);mix(b.owner);mix(b.id);mix(b.x);mix(b.y);mix(b.px);mix(b.py);mix(b.vx);mix(b.born);mix(b.damage);if(b.burst_at>=0){mix(0x54454332);mix(b.burst_at);}}return h;}
+uint32_t CombatCore::checksum()const{uint32_t h=2166136261u;auto mix=[&](uint32_t n){h=(h^n)*16777619u;};mix(seed);mix(training);mix(tick);mix(remaining);mix(hitstop);mix(outcome);mix(next_id);for(auto&v:f){mix(v.character);mix(v.x);mix(v.y);mix(v.vx);mix(v.vy);mix(v.hp);mix(v.sta);mix(v.sp);mix(v.kb);mix(v.face);mix(v.action);mix(v.began);mix(v.ends);mix(v.invuln_until);mix(v.squeeze_ready);mix(v.last_spend);mix(v.pending);mix(v.pending_until);mix(v.attack_id);mix(v.melee_contact);mix(v.spawned);mix(v.stride_q8);mix(v.landed_at);mix(v.took_off_at);mix(v.confirmed_at);mix(v.chain_depth);if(v.tap_direction||v.step_ready||v.shell_roll||v.action==VOLT_STEP||v.pending==REQUEST_VOLT_STEP||v.pending==REQUEST_SHELL_ROLL){mix(0x54454335);mix(v.tap_direction);mix(v.tap_tick);mix(v.step_ready);mix(v.mobility_direction);mix(v.shell_roll);}if(v.air_brake_used||v.air_brake_until){mix(0x54454331);mix(v.air_brake_used);mix(v.air_brake_until);}}for(auto&b:p){mix(b.active);mix(b.reserved);mix(b.super);mix(b.followup);mix(b.owner);mix(b.id);mix(b.x);mix(b.y);mix(b.px);mix(b.py);mix(b.vx);mix(b.born);mix(b.damage);if(b.burst_at>=0){mix(0x54454332);mix(b.burst_at);}}return h;}
 // CPU decisions only produce the same button requests available to a player.
 uint32_t CpuController::random(){rng^=rng<<13;rng^=rng>>17;rng^=rng<<5;return rng;}
 void CpuController::reset(int level,uint32_t value){
@@ -185,8 +213,8 @@ Input CpuController::input(const CombatCore&core,int who){
  diagnostics.observed_tick=observed;diagnostics.melee_memory=diagnostics.fire_memory=diagnostics.super_memory=0;
  for(auto m:memory){diagnostics.melee_memory+=m==MELEE;diagnostics.fire_memory+=m==FIRE;diagnostics.super_memory+=m==SUPER;}
  auto finish=[&](int next,int intent)->Input{
-  diagnostics.intent=intent;held=uint16_t(next)&uint16_t(LEFT|RIGHT|L);
-  cached={uint16_t(next),uint16_t(next&int(A|B|R|UP|DOWN))};return cached;
+  diagnostics.intent=intent;const int edges=next&~held;held=uint16_t(next)&uint16_t(LEFT|RIGHT|L);
+  cached={uint16_t(next),uint16_t((next&int(A|B|R|UP|DOWN))|(def.technique==TECHNIQUE_VOLT_STEP?(edges&int(LEFT|RIGHT)):0))};return cached;
  };
  if(!resting&&me.sta<style.recover_below*60){resting=true;rest_began=core.tick;}
  else if(resting&&me.sta>=style.resume_at*60)resting=false;
@@ -253,7 +281,7 @@ Input CpuController::input(const CombatCore&core,int who){
  if(neutral&&ground&&respond[response_slot]&&eta>=0){
   if(super_threat){
    if(eta<=18&&eta>=5&&choice==0&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
-   if(eta<=20&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN,DEFEND);}
+   if(eta<=20&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN|(def.technique==TECHNIQUE_SHELL_ROLL&&me.sta>=(squeeze_stamina_cost+shell_roll_stamina_cost)*60?away:0),DEFEND);}
    if(eta<=18&&eta>=5&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
   }else if(eta<=18){
    const int amount=melee_threat?ed.melee_damage:ed.fire_damage;
@@ -261,7 +289,7 @@ Input CpuController::input(const CombatCore&core,int who){
    const int impact=(points*(melee_threat?ed.melee_guard_percent:ed.fire_guard_percent)*def.guard_percent+9999)/10000;
    if((choice==2||eta<5||burst_threat)&&me.sta>=(impact+4)*60){++diagnostics.defenses;return finish(L,DEFEND);}
    if(!melee_threat&&eta>=5&&choice==0&&me.sta>=jump_stamina_cost*60){++diagnostics.defenses;return finish(UP,DEFEND);}
-   if(!melee_threat&&!burst_threat&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN,DEFEND);}
+   if(!melee_threat&&!burst_threat&&eta>=squeeze_startup_ticks&&core.tick>=me.squeeze_ready&&me.sta>=squeeze_stamina_cost*60){++diagnostics.defenses;return finish(DOWN|(def.technique==TECHNIQUE_SHELL_ROLL&&me.sta>=(squeeze_stamina_cost+shell_roll_stamina_cost)*60?away:0),DEFEND);}
   }
  }
  // Commit to a visible location; no tracking, hidden-state reads or recovery cancel.
@@ -305,6 +333,10 @@ Input CpuController::input(const CombatCore&core,int who){
  if(enemy.action==BLOCK||enemy.action==BLOCKSTUN)fire_chance+=me.character==1?15:-12;
  if(!own_shot&&core.tick>=next_shot&&dist>reach+12&&dist<150&&target_low&&!low_enemy&&enemy.action!=SUPER&&me.sta>=(fire_stamina_cost+style.recover_below/2)*60&&roll(fire_chance)){
   next_shot=core.tick+def.fire_total+18+int(random()%19);return finish(B,PRESSURE);
+ }
+ if(def.technique==TECHNIQUE_VOLT_STEP&&neutral&&ground&&dist>diagnostics.target+24&&core.can_volt_step(who)&&plan==0&&core.tick%48<profile.think_ticks*3){
+  if((held&toward)&&me.tap_direction)return finish(0,APPROACH);
+  return finish(toward,APPROACH);
  }
  if(dist>diagnostics.target+5)return finish(toward,APPROACH);
  // Long-reach Bulbasaur holds its range. Other fighters can step out briefly;

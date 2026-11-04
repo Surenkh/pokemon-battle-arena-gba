@@ -117,7 +117,7 @@ A on Fighter Info: Open guide. B: Return to its row
 A/Start on grid or value rows: Play. Start also plays from Info
 Select in practice: Retry with restored resources/positions and cleared statistics
 A fresh action works on emulator frame 8 after reset; Practice KOs restart in 14.
-Training options: Free, Block, Attack, Follow-up, Evade Super; Technique for Jigglypuff/Gastly.
+Training options: Free, Block, Attack, Follow-up, Evade Super; Technique for Pikachu/Squirtle/Jigglypuff/Gastly.
 Follow-up: Land A, then tap B when FOLLOW B appears.
 Evade Super: Let the rival charge, then jump or time Down to avoid its super.
 Drills show feedback from actual combat events and never award mastery.
@@ -205,6 +205,27 @@ Read RIVAL_CUP.md for goals, controls, achievements and save behavior.
 '''
         bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
         bundle_files.append(('RIVAL_CUP.md', guide))
+    if build.get('starter_techniques'):
+        check(build.get('fighter_techniques') and build.get('local_versus'),
+              'Starter release needs the technique guide and native-tested Versus adapter')
+        report = json_file(evidence / 'native-starter.json')
+        verify_report(report, sha)
+        check(report.get('status') == 'passed' and report.get('rom_sha256') == sha
+              and report.get('adapter_sha256') == digest((root / 'tools/local_versus.lua').read_bytes())
+              and report.get('signature_fighters') == ['pikachu', 'squirtle']
+              and report.get('drills_completed') and report.get('both_player_sides')
+              and report.get('first_frame_actions') and report.get('pause_gesture_cleared')
+              and report.get('pause_freezes_mobility') and report.get('fast_retry')
+              and report.get('save_byte_identical') and report.get('emulated_gba_instances') == 1,
+              'Starter techniques require this ROM/adapter, both lessons/sides, pause/retry and save-isolation evidence')
+        introduction = b'''STARTER TECHNIQUES
+Pikachu: double tap Left/Right for Volt Step (12 stamina).
+Squirtle: Down plus Left/Right starts Shell Roll (20 total stamina).
+Both add movement without invulnerability. Their Practice Technique lessons are available.
+Read FIGHTER_TECHNIQUES.md for timings, recovery, counters and all four signature moves.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
     output.mkdir(parents=True, exist_ok=True)
     (output / 'PokemonBattleArena.gba').write_bytes(rom)
     archive = output / ('PokemonBattleArena-v' + version + '.zip')

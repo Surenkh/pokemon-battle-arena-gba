@@ -171,7 +171,7 @@ sixteen ROM-bound native reports. Its GIF uses actual emulator frames.
 
 ## v1.4 Rival Cup
 
-The current preview is `1.4.0-rc.1`; combat and CPU retain the
+The v1.4 preview is `1.4.0-rc.1`; combat and CPU retain the
 `1.3.0-rc.1` ruleset. `tools/generate_config.py` also regenerates
 `include/pkmn_cup_defs.h` from `config/cups.json`; `npm run assets` paints the
 board, selector and countdown card. No external art download is required.
@@ -187,3 +187,12 @@ host/asset evidence together. The packager requires `native-cup.json` when
 and independent save recovery. The ZIP adds `RIVAL_CUP.md`; the prior adapter
 and technique/Versus guides stay included. Native frame timing does not prove
 physical keyboard latency or human Cup pacing. Keep the player-pilot gate.
+
+## v1.5 Starter Mobility
+
+Run the `starter` host suite and `python3 tests/native_starter_flow.py` alongside
+the prior sixteen host and nineteen native suites. The new runner uses the
+pinned actual upstream mGBA/Lua driver, completes both lessons, tests both
+Versus sides, first-frame acceptance/costs, pause/gesture clearing, quick retry
+and byte-identical solo saves. Package v1.5 with its own native-starter.json
+and fresh clean-build evidence. The input adapter and save schemas are unchanged.

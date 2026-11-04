@@ -4,11 +4,11 @@
 #include "pkmn_cpu_defs.h"
 namespace pkmn {
 enum Buttons { A=1,B=2,SELECT=4,START=8,RIGHT=16,LEFT=32,UP=64,DOWN=128,R=256,L=512 };
-enum Action { NONE,BLOCK,MELEE,FIRE,SQUEEZE,SUPER,HITSTUN,BLOCKSTUN,GUARD_BREAK };
+enum Action { NONE,BLOCK,MELEE,FIRE,SQUEEZE,SUPER,HITSTUN,BLOCKSTUN,GUARD_BREAK,VOLT_STEP };
 enum Feedback { HIT=1,BLOCKED=2,SHOT=4,SUPER_FIRED=8,JUMPED=16,SWUNG=32,CHARGED=64,BROKEN=128 };
 struct Input { uint16_t held=0,pressed=0; };
 // Contextual requests, never additional physical controller buttons.
-enum TechniqueRequest { REQUEST_AIR_BRAKE=1024, REQUEST_ORB_BURST=2048 };
+enum TechniqueRequest { REQUEST_AIR_BRAKE=1024, REQUEST_ORB_BURST=2048, REQUEST_VOLT_STEP=4096, REQUEST_SHELL_ROLL=8192 };
 struct Fighter {
  int character=0,x=0,y=120*256,vx=0,vy=0,kb=0,hp=0,sta=0,sp=0,face=1;
  Action action=NONE;int began=0,ends=0,invuln_until=0,squeeze_ready=0,last_spend=-30;
@@ -17,10 +17,11 @@ struct Fighter {
  int stride_q8=0,landed_at=-100,took_off_at=-100;
  int confirmed_at=-100,chain_depth=0;
  int air_brake_until=0;bool air_brake_used=false;
+ int tap_direction=0,tap_tick=-100,step_ready=0,mobility_direction=0;bool shell_roll=false;
 };
 struct Projectile { bool active=false,reserved=false,super=false,followup=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0;int burst_at=-1; };
 // Read-only presentation events; never consulted by combat resolution or AI.
-enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EV_AIR_BRAKE,EV_ORB_ARM,EV_ORB_POP,EV_BURST_HIT,EVENT_COUNT };
+enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EV_AIR_BRAKE,EV_ORB_ARM,EV_ORB_POP,EV_BURST_HIT,EV_VOLT_STEP,EV_SHELL_ROLL,EVENT_COUNT };
 struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack;int damage;bool followup; };
 class CombatCore {
 public:
@@ -39,6 +40,8 @@ public:
  bool recovering(int who)const;
  bool can_air_brake(int who)const;
  bool can_burst(int who)const;
+ bool can_volt_step(int who)const;
+ bool rolling(int who)const { const auto& v=f[who];return v.shell_roll&&low(v)&&age(v)<squeeze_startup_ticks+shell_roll_motion_ticks; }
  bool air_braking(int who)const { return f[who].air_brake_used && tick<f[who].air_brake_until && !grounded(f[who]); }
  int burst_phase(const Projectile& shot)const;
  uint32_t checksum() const;

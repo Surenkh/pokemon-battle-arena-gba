@@ -10,7 +10,9 @@ enum DrillFeedback {
     EVADE_COMPLETE, EVADE_HIT, EVADE_INTERRUPTED, EVADE_MISSED,
     DRILL_NO_STAMINA, DRILL_BLOCKED, FOLLOWUP_USE_B,
     BRAKE_PROMPT, BRAKE_ACTIVE, BRAKE_COMPLETE, ORB_PROMPT, ORB_WARNING,
-    ORB_COMPLETE, ORB_MISSED, ORB_NORMAL_HIT, TECHNIQUE_INTERRUPTED
+    ORB_COMPLETE, ORB_MISSED, ORB_NORMAL_HIT, TECHNIQUE_INTERRUPTED,
+    STEP_PROMPT, STEP_ACTIVE, STEP_COMPLETE, STEP_BLOCKED,
+    ROLL_PROMPT, ROLL_ACTIVE, ROLL_COMPLETE
 };
 inline constexpr int practice_retry_frames = 6;
 inline constexpr const char* practice_mode_names[] = {"FREE", "BLOCK", "ATTACK", "FOLLOW-UP", "EVADE SUPER", "TECHNIQUE"};
@@ -21,7 +23,9 @@ inline constexpr const char* practice_feedback_text[] = {
     "NEED STAMINA", "BLOCKED - TRY AGAIN", "USE B FOR THE FOLLOW-UP",
     "JUMP. UP WHILE FALLING", "AIR BRAKE! LAND SAFELY", "AIR BRAKE LANDED!",
     "B ORB. B NEAR RIVAL", "ORB ARMED. WATCH BURST", "SHADOW BURST HIT!",
-    "TOO FAR. SELECT RETRY", "NORMAL HIT. B EARLIER", "HIT - SELECT TO RETRY"
+    "TOO FAR. SELECT RETRY", "NORMAL HIT. B EARLIER", "HIT - SELECT TO RETRY",
+    "DOUBLE TAP LEFT/RIGHT", "VOLT STEP! FINISH MOVE", "VOLT STEP COMPLETE!", "WALL. SELECT TO RETRY",
+    "DOWN + LEFT/RIGHT", "ROLL UNDER THE SUPER", "SHELL ROLL EVADED!"
 };
 struct PracticeStats {
     int last_damage = 0, chain = 0, best_chain = 0, hits = 0, followups = 0, punishes = 0;
@@ -34,6 +38,7 @@ class PracticeSession {
     uint32_t followup_shot_id = 0;
     SuperEvasion evasion;
     bool finished = false, followup_shot_seen = false, technique_started = false;
+    int technique_x = 0;
     static int bounded(int value) { return value > 9999 ? 9999 : value; }
 
 public:
@@ -47,7 +52,7 @@ public:
     static int available_modes(int fighter) { return has_technique(fighter) ? DUMMY_MODE_COUNT : DUMMY_TECHNIQUE; }
     void validate_mode(int fighter) { if(mode == DUMMY_TECHNIQUE && !has_technique(fighter))mode=DUMMY_IDLE; }
     bool drill() const { return mode == DUMMY_FOLLOWUP || mode == DUMMY_EVADE || mode == DUMMY_TECHNIQUE; }
-    bool completed() const { return feedback == FOLLOWUP_COMPLETE || feedback == EVADE_COMPLETE || feedback == BRAKE_COMPLETE || feedback == ORB_COMPLETE; }
+    bool completed() const { return feedback == FOLLOWUP_COMPLETE || feedback == EVADE_COMPLETE || feedback == BRAKE_COMPLETE || feedback == ORB_COMPLETE || feedback == STEP_COMPLETE || feedback == ROLL_COMPLETE; }
     const char* message() const { return practice_feedback_text[feedback]; }
 
     void begin_round(bool keep_stats = false) {
@@ -57,6 +62,7 @@ public:
         followup_shot_id = 0;
         followup_shot_seen = false;
         technique_started = false;
+        technique_x = 0;
         feedback = mode == DUMMY_EVADE ? EVADE_PROMPT : FOLLOWUP_PROMPT;
         if(!keep_stats) stats = PracticeStats{};
     }
@@ -65,7 +71,10 @@ public:
         if(!core.training) return;
         validate_mode(core.f[0].character);
         core.f[0].sp = core.f[1].sp = 100;
-        if(mode == DUMMY_TECHNIQUE)feedback=characters[core.f[0].character].technique==TECHNIQUE_AIR_BRAKE?BRAKE_PROMPT:ORB_PROMPT;
+        if(mode == DUMMY_TECHNIQUE){
+            const int technique=characters[core.f[0].character].technique;
+            feedback=technique==TECHNIQUE_AIR_BRAKE?BRAKE_PROMPT:technique==TECHNIQUE_VOLT_STEP?STEP_PROMPT:technique==TECHNIQUE_SHELL_ROLL?ROLL_PROMPT:ORB_PROMPT;
+        }
         if(mode == DUMMY_FOLLOWUP) {
             core.f[0].x = 96 * 256;
             core.f[1].x = 116 * 256;
@@ -75,7 +84,7 @@ public:
     Input input(const CombatCore& core) const {
         if(core.hitstop || core.outcome) return {};
         const auto& rival = core.f[1];
-        if(mode == DUMMY_EVADE) {
+        if(mode == DUMMY_EVADE || (mode == DUMMY_TECHNIQUE && characters[core.f[0].character].technique == TECHNIQUE_SHELL_ROLL)) {
             if(!super_started && !finished && core.tick >= 45 && rival.action == NONE &&
                core.grounded(rival) && rival.sp == 100 && rival.sta >= super_stamina_cost * 60)
                 return {R, R};
@@ -123,7 +132,13 @@ public:
                     if(event.kind == EV_AIR_BRAKE) { technique_started=true;feedback=BRAKE_ACTIVE; }
                     if(event.kind == EV_ORB_ARM) { technique_started=true;feedback=ORB_WARNING; }
                     if(event.kind == EV_BURST_HIT) { feedback=ORB_COMPLETE;finished=true; }
-                    if(event.kind == EV_HIT && !technique_started)feedback=ORB_NORMAL_HIT;
+                    if(event.kind == EV_VOLT_STEP) { technique_started=true;technique_x=core.f[0].x;feedback=STEP_ACTIVE; }
+                    if(event.kind == EV_SHELL_ROLL) { technique_started=true;feedback=ROLL_ACTIVE; }
+                    if(event.kind == EV_HIT && !technique_started && characters[core.f[0].character].technique == TECHNIQUE_SHADOW_BURST)feedback=ORB_NORMAL_HIT;
+                }
+                if(characters[core.f[0].character].technique == TECHNIQUE_SHELL_ROLL && event.owner == 1){
+                    if(event.kind == EV_CHARGE)super_started=true;
+                    if(event.kind == EV_RELEASE)super_released=true;
                 }
             }
             if(event.owner == 0 && event.kind == EV_TIRED) feedback = DRILL_NO_STAMINA;
@@ -166,7 +181,15 @@ public:
                 feedback=BRAKE_COMPLETE;finished=true;
             } else if(characters[core.f[0].character].technique == TECHNIQUE_SHADOW_BURST && !core.p[0].active) {
                 feedback=ORB_MISSED;finished=true;
+            } else if(characters[core.f[0].character].technique == TECHNIQUE_VOLT_STEP && core.f[0].action == NONE) {
+                const int delta=core.f[0].x-technique_x;
+                feedback=(delta<0?-delta:delta)>=16*256?STEP_COMPLETE:STEP_BLOCKED;finished=true;
             }
+        }
+        if(mode == DUMMY_TECHNIQUE && characters[core.f[0].character].technique == TECHNIQUE_SHELL_ROLL && !finished){
+            const bool evaded=evasion.observe(core);
+            if(evaded && technique_started){feedback=ROLL_COMPLETE;finished=true;}
+            else if(super_released && !core.p[3].active){feedback=EVADE_MISSED;finished=true;}
         }
         if(mode != DUMMY_EVADE || finished) return;
         if(evasion.observe(core)) {
