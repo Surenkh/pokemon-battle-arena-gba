@@ -1,173 +1,58 @@
 # Pokémon Battle Arena
 
-**Pick your Pokémon. Read your rival. Earn your super.**
+A fan-made Game Boy Advance fighter by **Surenkh**. Pick your Pokémon, read your rival and earn your super.
 
-![Promotional cover](docs/media/cover.jpg)
+**13 Pokémon** · **5 arenas** · **Solo & two-player battles**
 
-A native Game Boy Advance fan-made fighter by **Surenkh**.
+[**Download v1.5.0 — Player ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.5.0/PokemonBattleArena-v1.5.0.zip) · [v1.5.0 ROM](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.5.0/PokemonBattleArena.gba) · [Latest release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest)
 
-[**Download v1.5 ROM**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.5.0/PokemonBattleArena.gba) · [**Download v1.5 ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.5.0/PokemonBattleArena-v1.5.0.zip) · [v1.5 release notes](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.5.0) · [Latest release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
+![Pokémon Battle Arena cover](docs/media/cover.jpg)
 
-**v1.5.0 — Starter Mobility** adds Pikachu's **Volt Step** (double tap Left/Right) and Squirtle's **Shell Roll** (Down plus Left/Right), with costs, readable cues, counters and Practice lessons. Both work for either player in Local Versus. [Technique guide](docs/TECHNIQUES_PLAYER_GUIDE.md) · [Validation](docs/STARTER_TECHNIQUES_TEST_REPORT.md).
+## Start playing
 
-![Volt Step and Shell Roll in the actual v1.5 native ROM](docs/media/starter-techniques-native.gif)
+1. Download and extract the **Player ZIP**.
+2. Open `PokemonBattleArena.gba` in a Game Boy Advance emulator such as [mGBA](https://mgba.io/downloads.html).
+3. Press **A** or **Start**, choose **Quick Battle**, and pick your Pokémon.
 
-Rival Cup retains three short routes, nine named rivals, fixed arenas, scouting cards, optional style goals and saved achievements. All thirteen Pokémon and three difficulties remain available. [Cup guide](docs/RIVAL_CUP_PLAYER_GUIDE.md).
+Keep your emulator's save file when updating: it holds records, mastery and audio settings.
 
-![The three animated rivals of Tempo Cup in the actual native ROM](docs/media/rival-cup-board-native.png)
+## Choose your battle
 
-The game also includes Jigglypuff's Air Brake, Gastly's Shadow Burst and their Practice lessons. [Technique guide](docs/TECHNIQUES_PLAYER_GUIDE.md).
-![Air Brake and Shadow Burst from the actual native ROM](docs/media/fighter-techniques-native.gif)
+| Mode | What to play |
+| --- | --- |
+| **Quick Battle** | Pick a Pokémon and arena for a single fight. |
+| **Arcade** | Fight five different rivals with two continues. |
+| **Rival Cup** | Choose a themed, three-rival route and earn saved achievements. |
+| **Practice** | Train follow-ups, evade supers and learn special techniques. |
+| **Local Versus** | Two keyboard players choose their Pokémon and play first-to-two sets in one game window. |
 
-**Local Versus** supports two keyboard players in one emulator and one game window, with all thirteen fighters, mirror matches, five locations and first-to-two sets. It requires mGBA 0.11 development and the included Lua adapter. [Setup](docs/LOCAL_VERSUS.md).
+<p align="center">
+  <img src="docs/media/local-versus-fight-native.png" alt="Pikachu and Charmander face off in a Local Versus battle" width="480">
+</p>
 
-![Independent choices on the shared thirteen-Pokémon screen](docs/media/local-versus-selection-native.png)
+**Local Versus setup:** Use an mGBA 0.11 development build with Lua raw keyboard input, then load the `local_versus.lua` adapter included in the ZIP. [Two-player setup and keyboard controls](docs/LOCAL_VERSUS.md).
 
-Load the ROM, then open **Tools → Scripting** and load `tools/local_versus.lua` (or `local_versus.lua` from the preview player ZIP). Player 1 uses **arrows, J/K, U/I, Enter** and **O for Select/options/retry**; Player 2 uses **WASD, F/G, Q/E, T**. Select **Local Versus**, choose each fighter and press **J / F** to ready. Player 1 changes location with U/I before either confirmation. Either player can pause; losing the adapter pauses the fight. Physical keyboard rollover, the Qt GUI and gamepads remain unverified preview checks.
+## Fighters
 
-The retained **Selection & Power** update puts all thirteen Pokémon on one screen, with explicit Difficulty/Location rows and an accurate arena preview. Supers have eight-frame charge, energy-ribbon and impact effects; A attacks have a six-frame power-punch animation. [v1.1 validation](docs/V1_1_TEST_REPORT.md) · [Build and controls](docs/BUILDING.md).
+Choose **Pikachu, Charmander, Squirtle, Bulbasaur, Eevee, Meowth, Psyduck, Jigglypuff, Machop, Vulpix, Gastly, Riolu** or **Totodile**. Each has distinct traits and elemental attacks.
 
-![Native v1.1 super shots and power punches](docs/media/v1-1-power-native.gif)
+Pikachu, Squirtle, Jigglypuff and Gastly also have special techniques and Practice lessons. [Meet the fighters](docs/FIGHTER_ROSTER.md) · [Technique guide](docs/TECHNIQUES_PLAYER_GUIDE.md)
 
-*Eight-frame energy supers and power punches — captured from the v1.1 GBA ROM.*
-
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Rival Cup, Practice, Local Versus, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select Pokémon and options. With the adapter absent, solo modes use the emulator's ordinary GBA bindings. The title displays **V1.5.0** and **13 fighters**.
-
-**Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
-
-Arcade samples five unique opponents from the other twelve fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 39 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
-
-![Native nine-mode menu](docs/media/rival-cup-menu-native.png)
-
-![All thirteen Pokémon on one native screen](docs/media/selection-one-page-native.png)
-
-The title and menus now play an original looping tune, with new navigation, countdown, pause, result and recall cues. Press **L** on the title or pause screen for independent **Music** and **Sound FX** controls. Both default to On with a moderate mix; choices save when you leave Audio Settings.
-
-Normal fights end with a Poké Ball recalling the defeated Pokémon through an animated beam. The winner stays visible, and the ball closes before results. Tap A/Start after closing to continue sooner; practice keeps its quick reset.
-
-CPU rivals now use fighter-specific spacing and attack preferences, varied tactical plans and stamina reserves. Easy leaves more openings; Normal mixes plans; Hard reacts and follows up more reliably. The AI reacts to delayed visible actions and remembers only a short history of repeated attacks.
-
-Thirteen fighter traits change movement, guard pressure, reach and counterattacks. A clean melee hit can lead into one projectile follow-up; Eevee can also follow with melee at close range. Follow-ups spend normal stamina and remain blockable. B on the title opens practice, with idle, blocking and attacking opponents, damage feedback and quick arena reset.
-
-Normal shots now show an immediate windup for Pikachu, Squirtle, Meowth, Psyduck and Machop. The firing cue appears by the second emulator frame after a sampled tap. See [response measurements](docs/RESPONSIVE_FIRING_TEST_REPORT.md).
-
-## Five arenas and fighter mastery
-
-Choose **Woodland, Volcanic, Shoreline, Frostpeak or Ancient Ruins** in Quick Battle or Practice. Press
-**Select** from any fighter card to open settings directly. Up/Down chooses a
-row and Left/Right changes its value. A check marks the chosen Pokémon while a
-gold outline marks the focused row. **B** returns to the same card.
-
-**Fighter Info** is a visible settings action. A opens the guide and B restores
-its row. A/Start plays from the grid or a value row; Start also plays from Info.
-All thirteen fighters stay visible. Select opens Difficulty and Location directly for the highlighted Pokémon; the preview follows the actual chosen arena. Quick Battle, Arcade and Practice share these controls. See [navigation validation](docs/NAVIGATION_TEST_REPORT.md).
-
-Arcade rotates through all five arenas; retries preserve the current
-stage. The arenas share the same floor, hitboxes and combat rules.
-
-**Fighter Mastery** is a visible main-menu button. Each Pokémon has three cosmetic
-medals: **10 damaging follow-up hits**, **5 successful super evasions**, and a
-**no-continue Arcade clear** at any difficulty. Practice does not count. Roster
-badges show earned medals, and Mastery/Records link with A. Progress saves at round
-end, Rematch or leaving a fight. Schema-1/2/3 saves migrate to separate schema-4 slots;
-existing no-continue records already count toward their medal.
-
-Quick Battle and Arcade results now show one relevant mastery change from the
-fight, such as **FOLLOW-UP HITS 9>10/10**. A newly earned medal takes priority.
-If no counter advanced, the line names the next unfinished goal; a full set
-shows **ALL 3 MASTERY MEDALS!**. In Arcade, the upcoming or retry rival has one
-short trait/counter cue, for example **HEAVY HANDS: LEAVE SPACE**. A/Start still
-continues directly. These additions are a playable prototype; player motivation
-and the pilot retention gate remain unverified. See [goal/scouting validation](docs/MATCH_GOALS_TEST_REPORT.md).
-
-![Native post-match progress](docs/media/match-goal-medal-native.png)
-
-![Native Arcade scouting](docs/media/rival-scout-native.png)
-
-![Native Frostpeak](docs/media/frostpeak-native.png)
-
-![Native Ancient Ruins](docs/media/ancient-ruins-native.png)
-
-![Native fighter mastery](docs/media/fighter-mastery-native.png)
-
-## Thirteen fighters, thirteen playstyles
-
-| Fighter | Signature behavior | Attack visuals |
-| --- | --- | --- |
-| Pikachu | Quick Step advances grounded melee startup | Crackling lightning |
-| Charmander | Ember Pressure drains more guard stamina | Flames and embers |
-| Squirtle | Efficient guard impacts and stronger water pushback | Water pulses and splashes |
-| Bulbasaur | Longer melee reach with a vine cue | Spinning leaves and vines |
-| Eevee | Can follow a clean melee hit with A or B | Glowing stars |
-| Meowth | Extra melee damage when catching attack recovery | Claw waves and scratches |
-| Psyduck | Mind Push gives strong projectile knockback | Psychic rings and pulses |
-| Jigglypuff | Air Brake changes landing timing once per jump | Musical float notes and crescendos |
-| Machop | Heavy Hands drains extra melee guard stamina | Fists and impact bursts |
-| Vulpix | Fox Step advances melee startup | Twin flames |
-| Gastly | B again arms a delayed, blockable orb burst | Outlined shadow warning and purple blast |
-| Riolu | Aura Punish adds damage against recovery | Aura diamonds |
-| Totodile | Jaw Pressure taxes guard stamina | Water fangs |
-
-Normal shots retain their four-frame animation. Supers now use eight frames with energy ribbons, orbiting charge effects and expanding impact bursts. Melee uses a six-frame power-punch overlay synchronized to its real startup and active frames. Muzzle flashes, hit effects, and blocked-hit effects match the attacker. Movement animations, momentum, stamina, CPU opponents, and charged supers remain part of the game. Supers bypass block and can be evaded with a jump or timed squeeze.
-
-[Watch the native music and recall preview](docs/media/sound-and-recall-native.mp4)
-
-## Controls
+## Battle controls
 
 | GBA control | Action |
 | --- | --- |
-| D-pad in menus | Select a mode button, Pokémon or option |
-| A / Start in menus | Confirm / play |
-| B in menus | Back to the originating row, fighter grid or mode |
-| Select in any fighter setup | Jump between the fighter grid and settings |
-| A on Fighter Info | Open the guide |
-| Left / Right in battle | Move |
-| Up / Down in battle | Jump / timed squeeze |
-| A / B in battle | Melee / fire |
-| Up again during Jigglypuff descent | Air Brake, 8 stamina, once per jump |
-| B again with Gastly live orb | Arm Shadow Burst, 8 extra stamina |
-| L held in battle | Block |
-| R in battle | Super at 100 SP and 25 stamina |
-| Start in battle | Pause |
-| Select in practice battle | Reset Free Practice or retry the drill |
+| Left / Right | Move |
+| Up / Down | Jump / timed squeeze dodge |
+| A / B | Melee / fire |
+| Hold L | Block ordinary attacks |
+| R | Super at 100 SP and 25 stamina |
+| Start | Pause |
 
-The button labels describe GBA controls. Keyboard letters depend on the emulator's mappings; use its mapped D-pad and A/Start or its on-screen controls. All primary mode/menu functions are reachable without L/R shortcuts.
+Clean hits build SP. Supers bypass blocks, so jump or time a squeeze to evade them. Emulator keyboard bindings can be configured in your emulator.
 
-Emulator key bindings depend on your setup. Clean hits earn super power; blocks and misses do not. For a follow-up, tap B when FOLLOW B appears after a clean A hit. Eevee may use A when FOLLOW A/B appears; stay close enough for the second melee hit. One follow-up is allowed per attack sequence, and the defender can block it.
+## More information
 
-Practice uses the same combat rules, starts with full SP and freezes the timeout.
-Its **Training** row offers **Free, Block, Attack, Follow-up and Evade Super**.
-Free retains the idle rival and damage/chain feedback. Block and Attack keep their
-normal dummy behaviors. Choose a rival and arena with the existing settings.
+[Local Versus setup](docs/LOCAL_VERSUS.md) · [Rival Cup guide](docs/RIVAL_CUP_PLAYER_GUIDE.md) · [Build from source](docs/BUILDING.md) · [Roadmap](docs/development/ROADMAP.md)
 
-**Follow-up** starts in melee range and coaches a clean A hit into a damaging B
-follow-up. **Evade Super** lets the rival charge one real super, then asks for a
-nearby jump or timed squeeze. Short messages report a landed follow-up, an evade,
-a real hit or an interrupted charge. Both lessons work with all thirteen fighters.
-Practice progress stays separate from mastery.
-
-**Select** retries with restored resources and positions. A fresh action works on
-emulator frame **8** after a manual reset. A Practice KO holds for six frames and
-restarts automatically, accepting a fresh action on frame **14** while keeping
-statistics. Start still opens Pause. See [Practice validation](docs/PRACTICE_DRILLS_TEST_REPORT.md).
-
-![Follow-up drill](docs/media/practice-followup-native.png)
-
-![Super evasion drill](docs/media/practice-evade-native.png)
-
-
-Jigglypuff and Gastly also have **Training → Technique** in Practice. Select retries quickly. With the adapter loaded, P1 O is Select. See the player guide for timing, costs and counters.
-
-## Build and development
-
-The editable GBA Studio project, C++ runtime, engine sources/notices, required source assets, tools, and tests are included. See [BUILDING.md](docs/BUILDING.md), [arenas and mastery](docs/ARENAS_AND_MASTERY.md), [modes and persistence](docs/ARCADE_AND_RECORDS.md), [nine-fighter details](docs/NINE_FIGHTERS.md), [v0.8 validation](docs/ARCADE_TEST_REPORT.md), [new audio/recall evidence](docs/AUDIO_AND_RECALL_TEST_REPORT.md), [audio and animation decisions](docs/AUDIO_AND_RECALL.md), [CPU architecture](docs/CPU_TACTICS.md), [fighter mechanics](docs/FIGHTER_DEPTH.md), [roadmap](docs/development/ROADMAP.md), and [Git workflow](CONTRIBUTING.md).
-
-Gameplay updates use feature branches and pull requests. Validated versions on `main` are published through the [release workflow](.github/workflows/release.yml). Keep changes in feature branches and update the ROM and checksum together after validation. Compiler binaries are not bundled. Historical browser-preview exports and unused optional artwork from the original pack are omitted; native build inputs and their provenance are retained.
-
-## Limits and feedback
-
-Physical GBA hardware and non-Linux rebuilding have not been tested. Local Versus uses an emulator-specific keyboard adapter; stable mGBA 0.10.x lacks the required raw input API. Network multiplayer, physical gamepad routing and mid-run resume are outside this preview. Local set scores stay in memory and do not award solo records or mastery. Mastery, completed Arcade records and audio settings use SRAM; retain your emulator’s save file. For bugs, include version, emulator/device, fighters, reproduction steps, and expected versus actual behavior.
-
-## Credits
-
-Unofficial fan project, not affiliated with or endorsed by Nintendo, Game Freak, or The Pokémon Company. Pokémon belongs to its respective owners. Preserve the artwork credits in assets/source/ and the engine and third-party license notices in engine/.
+Unofficial fan project; not affiliated with or endorsed by Nintendo, Game Freak or The Pokémon Company. Pokémon belongs to its respective owners. See the [artwork credits](assets/source/CREDITS.md) and [engine notices](engine/NOTICES.md).
