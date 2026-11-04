@@ -184,6 +184,27 @@ Read FIGHTER_TECHNIQUES.md for timing, costs and counters.
 '''
         bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
         bundle_files.append(('FIGHTER_TECHNIQUES.md', guide))
+    if build.get('rival_cup'):
+        report = json_file(evidence / 'native-cup.json')
+        check(report.get('status') == 'passed' and report.get('rom_sha256') == sha,
+              'Rival Cup needs passed evidence for this ROM')
+        verify_report(report, sha)
+        check(report.get('authored_cups') == 3 and report.get('named_rivals') == 9
+              and sorted(entry.get('cup', -1) for entry in report.get('clears', [])) == [0, 1, 2]
+              and report.get('earned_style_clear')
+              and report.get('journal_power_cycle') and report.get('journal_corruption_fallback')
+              and report.get('interrupted_write_fallback') and report.get('base_save_preserved'),
+              'Rival Cup needs three real clears, style and independent save recovery evidence')
+        guide = (root / 'docs/RIVAL_CUP_PLAYER_GUIDE.md').read_bytes()
+        introduction = b'''RIVAL CUP PREVIEW
+Three short routes, nine named rivals, fixed locations and optional style goals.
+Choose Rival Cup, then Cup, difficulty and Pokemon. A continues to the next rival.
+One continue per run. Draws retry free. Cup records save separately from Arcade.
+Read RIVAL_CUP.md for goals, controls, achievements and save behavior.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
+        bundle_files.append(('RIVAL_CUP.md', guide))
     output.mkdir(parents=True, exist_ok=True)
     (output / 'PokemonBattleArena.gba').write_bytes(rom)
     archive = output / ('PokemonBattleArena-v' + version + '.zip')

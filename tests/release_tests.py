@@ -135,6 +135,26 @@ class ReleaseTests(unittest.TestCase):
         self.js('package.json', dict(version='0.6.0'))
         with self.assertRaises(ValueError): prepare(self.root, self.output)
 
+    def test_cup_bundle_requires_real_clears_and_save_recovery_for_this_rom(self):
+        guide = b'# Rival Cup\nThree routes and optional style goals.\n'
+        self.write('docs/RIVAL_CUP_PLAYER_GUIDE.md', guide)
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0',
+                rom_sha256=self.sha, rom_bytes=256, rival_cup=True))
+        report = dict(status='passed', rom_sha256=self.sha, authored_cups=3, named_rivals=9,
+                      clears=[dict(cup=i) for i in range(3)], earned_style_clear=True,
+                      journal_power_cycle=True, journal_corruption_fallback=True,
+                      interrupted_write_fallback=True, base_save_preserved=True, missed_display_frames=0)
+        self.js('docs/verification/v0.5.0/native-cup.json', report)
+        meta = prepare(self.root, self.output)
+        with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
+            self.assertEqual(archive.read('RIVAL_CUP.md'), guide)
+            self.assertIn(b'RIVAL CUP PREVIEW', archive.read('README.txt'))
+        for change in [dict(clears=[]), dict(earned_style_clear=False), dict(journal_power_cycle=False),
+                       dict(journal_corruption_fallback=False), dict(interrupted_write_fallback=False),
+                       dict(base_save_preserved=False), dict(rom_sha256='0' * 64), dict(missed_display_frames=1)]:
+            self.js('docs/verification/v0.5.0/native-cup.json', dict(report, **change))
+            with self.assertRaises(ValueError): prepare(self.root, self.output)
+
     def test_failed_stale_or_missed_native_evidence_is_rejected(self):
         name = 'docs/verification/v0.5.0/native-general.json'
         for report in [dict(status='failed', rom_sha256=self.sha), dict(status='passed', rom_sha256='0'*64),

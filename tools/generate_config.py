@@ -90,3 +90,23 @@ for key,value in ui.items():
 lines+=['inline int selection_row_y(bool training,int row){return training?selection_practice_rows[row]:selection_quick_rows[row];}','}']
 (r/'include/pkmn_selection_layout.h').write_text('\n'.join(lines)+'\n')
 print('Generated single-screen selection layout.')
+
+# Authored Cup routes are shared by the native game and the asset painter.
+cups=json.loads((r/'config/cups.json').read_text())
+assert len(cups)==3
+ids=[c['id'] for c in chars]
+lines=['#pragma once','namespace pkmn {',
+       'inline constexpr int cup_count=3,cup_rivals=3;',
+       'struct CupRival { const char* name; int fighter,arena; const char* cue; };',
+       'struct CupDefinition { const char* name; const char* goal; int target; CupRival rivals[cup_rivals]; };',
+       'inline constexpr CupDefinition cups[cup_count] = {']
+for cup in cups:
+ assert len(cup['rivals'])==3 and 1<=cup['target']<=9 and len(cup['goal'])<=25
+ lines.append('{'+json.dumps(cup['name'])+','+json.dumps(cup['goal'])+','+str(cup['target'])+',{')
+ for rival in cup['rivals']:
+  assert rival['fighter'] in ids and 0<=rival['arena']<5 and len(rival['cue'])<=32 and len(rival['name'])<=8
+  lines.append('{'+json.dumps(rival['name'])+','+str(ids.index(rival['fighter']))+','+str(rival['arena'])+','+json.dumps(rival['cue'])+'},')
+ lines.append('}},')
+lines+=['};','}']
+(r/'include/pkmn_cup_defs.h').write_text('\n'.join(lines)+'\n')
+print('Generated three authored Rival Cups.')

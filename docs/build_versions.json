@@ -4,14 +4,14 @@
   "compiler": "arm-none-eabi-g++ (devkitARM) 16.1.0",
   "host": "Linux x86_64",
   "studio_deb_sha256": "5df46494f63d4cf9697ff27c78d35b661026d17ff4e92ea7942548635288a371",
-  "rom_sha256": "19cbbce67727b2709d1da5977bbea966a653f0d721fe88e7d0afd23d7d6d726b",
+  "rom_sha256": "1349e629e795a929f1f9185e5c85276b2b29faa3323aa398ae06939eaf32ec28",
   "build_engine": "project-scoped vendored GBA Studio CLI and Butano",
-  "game_release": "1.3.0-rc.1",
+  "game_release": "1.4.0-rc.1",
   "ruleset": "1.3.0-rc.1",
   "animation_source_revision": "18c8a218537b984839803b95d588382624a8301a",
   "compiler_package_note": "GBA Studio 0.5.0 bundled linux.tar.gz; compiler binaries verified as x86-64.",
   "baseline_rebuild_sha256": "d13c7fd6642aaa6a0fe582b9ee8b479f0ce3aae10e503ec70f7d78ec82843845",
-  "rom_bytes": 3434140,
+  "rom_bytes": 3539528,
   "audio_assets": 69,
   "combat_voice_limit": 2,
   "combat_audio_assets": 55,
@@ -49,5 +49,14 @@
     "jigglypuff",
     "gastly"
   ],
-  "technique_effect_frames": 8
+  "technique_effect_frames": 8,
+  "rival_cup": true,
+  "cup_count": 3,
+  "cup_rivals": 3,
+  "cup_save_schema": 1,
+  "cup_save_copy_bytes": 160,
+  "cup_save_offsets": [
+    4096,
+    5120
+  ]
 }

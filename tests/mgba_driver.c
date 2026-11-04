@@ -19,12 +19,13 @@ else if(op[0]=='s'){scanf("%x",&address);printf("state");for(int i=0;i<32;i++)pr
 else if(op[0]=='v'){scanf("%x",&address);printf("feel");for(int i=0;i<16;i++)printf(" %u",c->busRead32(c,address+i*4));printf("\n");}
 else if(op[0]=='o'){scanf("%511s",file);finish_audio();capture_audio=fopen(file,"wb");if(!capture_audio)return 5;for(int i=0;i<44;i++)fputc(0,capture_audio);audio_samples=0;printf("audio open\n");}
 else if(op[0]=='c'){finish_audio();printf("audio closed samples=%u rate=%u\n",audio_samples,audio_rate);}
-else if(op[0]=='a'||op[0]=='b'){scanf("%u %x",&frames,&address);unsigned feel_address=0;if(op[0]=='b')scanf("%x",&feel_address);unsigned n,super_count=0,maxsp=0,defense=0,prevact=0,peak=0,effect_frames=0,effect_themes=0,peak_particles=0;unsigned events=0,themes=0,charging=0,released=0,voices=0,shake=0;int threat_age=-1;for(n=0;n<frames;n++){
- unsigned state=c->busRead32(c,address+4);if(state==6||state==12||state==13)break;
+else if(op[0]=='a'||op[0]=='b'||op[0]=='g'){scanf("%u %x",&frames,&address);unsigned feel_address=0;if(op[0]=='b'||op[0]=='g')scanf("%x",&feel_address);unsigned n,super_count=0,maxsp=0,defense=0,prevact=0,peak=0,effect_frames=0,effect_themes=0,peak_particles=0;unsigned events=0,themes=0,charging=0,released=0,voices=0,shake=0;int threat_age=-1;for(n=0;n<frames;n++){
+ unsigned state=c->busRead32(c,address+4);if(state==6||state==12||state==13||state==19)break;
  keys=0;if(state==3){int action=c->busRead32(c,address+16*4),enemy=c->busRead32(c,address+17*4),sp=c->busRead32(c,address+10*4),sta=c->busRead32(c,address+8*4),x=c->busRead32(c,address+12*4),ex=c->busRead32(c,address+13*4),y=c->busRead32(c,address+14*4),dist=abs(ex-x)/256;
  if((unsigned)sp>maxsp)maxsp=sp;if(action==5&&prevact!=5)super_count++;prevact=action;
  if(enemy==5){if(threat_age<0)threat_age=0;else threat_age++;}else if(threat_age>=0&&threat_age<100)threat_age++;else threat_age=-1;
- if(n%6==0){if(sp==100&&(sta<1500||(feel_address&&dist<80&&((ex>x&&x>34*256)||(ex<x&&x<206*256))))){keys=ex>x?32:16;}
+ if(op[0]=='g'&&action==2){keys=n%2?0:2;}
+ else if(n%6==0){if(sp==100&&(sta<1500||(feel_address&&dist<80&&((ex>x&&x>34*256)||(ex<x&&x<206*256))))){keys=ex>x?32:16;}
  else if(threat_age>=0&&30+dist/5-threat_age<=14&&30+dist/5-threat_age>=8&&action<=1&&sta>=1080){keys=128;defense++;}
  else if(sp==100&&sta>=1500&&y>=120*256)keys=256;
  else if(dist<27&&sta>=480)keys=1;

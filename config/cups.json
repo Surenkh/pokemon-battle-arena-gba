@@ -1,0 +1,26 @@
+[
+  {
+    "name": "TEMPO CUP", "goal": "3 FOLLOW-UP HITS", "target": 3,
+    "rivals": [
+      {"name": "NIA", "fighter": "pikachu", "arena": 0, "cue": "BLOCK THEN ANSWER A"},
+      {"name": "MILO", "fighter": "eevee", "arena": 2, "cue": "BLOCK THE FOLLOW-UP"},
+      {"name": "REX", "fighter": "meowth", "arena": 1, "cue": "RECOVER OUT OF REACH"}
+    ]
+  },
+  {
+    "name": "GUARD CUP", "goal": "5 SUCCESSFUL BLOCKS", "target": 5,
+    "rivals": [
+      {"name": "FERN", "fighter": "bulbasaur", "arena": 0, "cue": "BAIT THE VINE THEN CLOSE"},
+      {"name": "MARIN", "fighter": "squirtle", "arena": 2, "cue": "SUPER BEATS SHELL GUARD"},
+      {"name": "BRICK", "fighter": "machop", "arena": 4, "cue": "STEP BACK FROM HEAVY A"}
+    ]
+  },
+  {
+    "name": "MIRAGE CUP", "goal": "2 SUPER HITS", "target": 2,
+    "rivals": [
+      {"name": "LYRA", "fighter": "jigglypuff", "arena": 3, "cue": "WAIT OUT THE AIR BRAKE"},
+      {"name": "SHADE", "fighter": "gastly", "arena": 4, "cue": "BLOCK OR JUMP THE BURST"},
+      {"name": "REN", "fighter": "riolu", "arena": 0, "cue": "BAIT A THEN PUNISH"}
+    ]
+  }
+]

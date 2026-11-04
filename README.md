@@ -8,10 +8,13 @@ A native Game Boy Advance fan-made fighter by **Surenkh**.
 
 [**Download v1.1 ROM**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena.gba) · [**Download v1.1 ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.1.0/PokemonBattleArena-v1.1.0.zip) · [v1.1 release notes](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.1.0) · [Latest stable release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Release history](https://github.com/Surenkh/pokemon-battle-arena-gba/releases)
 
-Current development: **1.3.0-rc.1 — Fighter Techniques Preview**. Jigglypuff can brake its descent once per jump, and Gastly can arm its traveling Shadow Orb into a delayed area burst. Both cost stamina, have readable cues and clear counters, and have new Practice lessons. [Player guide](docs/TECHNIQUES_PLAYER_GUIDE.md) · [Validation](docs/TECHNIQUES_TEST_REPORT.md).
+Current development: **1.4.0-rc.1 — Rival Cup Preview**. Three short routes feature nine named rivals, fixed arenas, scouting cards and optional style goals. Earn clear, style and perfect achievements and chase a faster time. All thirteen Pokémon and three difficulties are available. [Player guide](docs/RIVAL_CUP_PLAYER_GUIDE.md) · [Validation](docs/RIVAL_CUP_TEST_REPORT.md).
 
-[**Download v1.3 preview ZIP**](downloads/PokemonBattleArena-v1.3.0-rc.1.zip?raw=true)
+[**Download v1.4 preview ZIP**](downloads/PokemonBattleArena-v1.4.0-rc.1.zip?raw=true)
 
+![The three animated rivals of Tempo Cup in the actual native ROM](docs/media/rival-cup-board-native.png)
+
+The preview also includes Jigglypuff's Air Brake, Gastly's Shadow Burst and their Practice lessons. [Technique guide](docs/TECHNIQUES_PLAYER_GUIDE.md).
 ![Air Brake and Shadow Burst from the actual native ROM](docs/media/fighter-techniques-native.gif)
 
 **Local Versus** supports two keyboard players in one emulator and one game window, with all thirteen fighters, mirror matches, five locations and first-to-two sets. It requires mGBA 0.11 development and the included Lua adapter. [Setup](docs/LOCAL_VERSUS.md).
@@ -26,13 +29,13 @@ Stable **1.1.0 — Selection & Power** puts all thirteen Pokémon on one screen,
 
 *Eight-frame energy supers and power punches — captured from the v1.1 GBA ROM.*
 
-Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Practice, Local Versus, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select Pokémon and options. With the adapter absent, solo modes use the emulator's ordinary GBA bindings. The preview title displays **V1.3 RC1** and **13 fighters**.
+Press **A/Start on the title** to open the visible mode menu: **Quick Battle, Arcade, Rival Cup, Practice, Local Versus, Records, Audio Settings, Controls and Fighter Mastery**. Choose a mode first, then select Pokémon and options. With the adapter absent, solo modes use the emulator's ordinary GBA bindings. The preview title displays **V1.4 RC1** and **13 fighters**.
 
 **Psyduck, Jigglypuff and Machop** join the original six fighters, each with configured stats, a distinct trait, 13 runtime animation states, themed projectile/super/impact effects, combat sounds and a CPU style. Psyduck pushes rivals away with psychic attacks; Jigglypuff has lighter gravity and longer jumps; Machop drains extra guard stamina with melee. See [full fighter data](docs/NINE_FIGHTERS.md).
 
 Arcade samples five unique opponents from the other twelve fighters at the selected difficulty. It grants two continues and restores resources between fights. Clears, no-continue clears and fastest total battle times save separately for all 39 fighter/difficulty pairs. Saves from the earlier six-fighter v0.8 build migrate automatically.
 
-![Native eight-mode menu](docs/media/local-versus-menu-native.png)
+![Native nine-mode menu](docs/media/rival-cup-menu-native.png)
 
 ![All thirteen Pokémon on one native screen](docs/media/selection-one-page-native.png)
 

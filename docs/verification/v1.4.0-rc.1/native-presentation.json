@@ -1,0 +1,91 @@
+{
+  "status": "passed",
+  "checks": 2637,
+  "mix": {
+    "title_music": {
+      "peak": 3809,
+      "rms": 1293.48,
+      "rms_dbfs": -28.07,
+      "clipped_fraction": 0.0,
+      "frames": 1448368
+    },
+    "muted_menu": {
+      "peak": 0,
+      "rms": 0.0,
+      "rms_dbfs": -90.31,
+      "clipped_fraction": 0.0,
+      "frames": 49376
+    },
+    "muted_battle": {
+      "peak": 0,
+      "rms": 0.0,
+      "rms_dbfs": -90.31,
+      "clipped_fraction": 0.0,
+      "frames": 65836
+    },
+    "menu_cues": {
+      "peak": 1861,
+      "rms": 404.85,
+      "rms_dbfs": -38.16,
+      "clipped_fraction": 0.0,
+      "frames": 39504
+    },
+    "defeat_recall": {
+      "peak": 2102,
+      "rms": 571.33,
+      "rms_dbfs": -35.17,
+      "clipped_fraction": 0.0,
+      "frames": 118504
+    },
+    "victory_recall": {
+      "peak": 4191,
+      "rms": 623.36,
+      "rms_dbfs": -34.41,
+      "clipped_fraction": 0.0,
+      "frames": 118504
+    },
+    "skip_recall": {
+      "peak": 4036,
+      "rms": 627.53,
+      "rms_dbfs": -34.36,
+      "clipped_fraction": 0.0,
+      "frames": 63640
+    }
+  },
+  "music_positions": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "recall_rounds": [
+    {
+      "outcome": 2,
+      "loser": 0,
+      "phase_mask": 127,
+      "skipped": false
+    },
+    {
+      "outcome": 1,
+      "loser": 1,
+      "phase_mask": 127,
+      "skipped": false
+    },
+    {
+      "outcome": 2,
+      "loser": 0,
+      "phase_mask": 63,
+      "skipped": true
+    }
+  ],
+  "cue_mask": 8191,
+  "peak_cpu_fraction": 0.810791015625,
+  "missed_display_frames": 0,
+  "wall_seconds": 5.03,
+  "rom_sha256": "1349e629e795a929f1f9185e5c85276b2b29faa3323aa398ae06939eaf32ec28",
+  "method": "mGBA 0.10.2; physical inputs, read-only telemetry, native framebuffer/audio capture; no game-memory writes",
+  "test_source": "tests/native_presentation_flow.py",
+  "test_source_sha256": "3fe0cbef7418ce089badd458f81d5894f8d1a9efee6540fde2805be38a7000e5",
+  "driver_source": "tests/mgba_driver.c",
+  "driver_source_sha256": "df1d134795dff636ca8ec6b31653681ac5ac7975780e0716c1ac224afd0f2935"
+}

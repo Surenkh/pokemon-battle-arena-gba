@@ -167,3 +167,23 @@ suites. The new runner verifies all card labels, selected names and location
 values against real framebuffer glyphs, actual battles at each location, and
 all effect phases/damage for every fighter. Release packaging requires all
 sixteen ROM-bound native reports. Its GIF uses actual emulator frames.
+
+
+## v1.4 Rival Cup
+
+The current preview is `1.4.0-rc.1`; combat and CPU retain the
+`1.3.0-rc.1` ruleset. `tools/generate_config.py` also regenerates
+`include/pkmn_cup_defs.h` from `config/cups.json`; `npm run assets` paints the
+board, selector and countdown card. No external art download is required.
+
+Add the `cup` host suite and `python3 tests/native_cup_flow.py` to the existing
+regression (sixteen host and nineteen native suites). Recompile the ordinary
+mGBA driver after its new result-screen stop/button-policy support. The Versus
+and technique suites continue using the pinned actual upstream 0.11 driver.
+
+Update ROM/hash, build metadata, nineteen native reports, clean-build and
+host/asset evidence together. The packager requires `native-cup.json` when
+`rival_cup` is enabled, including all three actual clears, a saved style clear
+and independent save recovery. The ZIP adds `RIVAL_CUP.md`; the prior adapter
+and technique/Versus guides stay included. Native frame timing does not prove
+physical keyboard latency or human Cup pacing. Keep the player-pilot gate.
