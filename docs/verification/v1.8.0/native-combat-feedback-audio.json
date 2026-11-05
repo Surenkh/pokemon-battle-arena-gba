@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "checks": 16,
+  "rom_sha256": "e05b9f30fbd300bd446d6f9c5db0b04423725e55c028917d45fd5e27fa7a2069",
+  "normal": {
+    "positions": [
+      0,
+      1
+    ],
+    "rms": 701.94,
+    "peak": 1958
+  },
+  "finale": {
+    "positions": [
+      2,
+      3
+    ],
+    "rms": 822.06,
+    "peak": 1983
+  },
+  "independent_music_and_sound": true,
+  "peak_cpu_fraction": 0.8544921875,
+  "missed_display_frames": 0,
+  "method": "mGBA 0.10.2, real GBA controls, read-only telemetry and native stereo recording."
+}

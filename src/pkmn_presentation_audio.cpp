@@ -7,20 +7,28 @@ namespace pkmn {
 static const bn::sound_item* const cues[]={
  &bn::sound_items::ui_move,&bn::sound_items::ui_confirm,&bn::sound_items::ui_back,&bn::sound_items::ui_pause,&bn::sound_items::ui_resume,
  &bn::sound_items::round_count,&bn::sound_items::round_fight,&bn::sound_items::round_ko,&bn::sound_items::ball_open,&bn::sound_items::ball_absorb,&bn::sound_items::ball_seal,
- &bn::sound_items::result_win,&bn::sound_items::result_lose,&bn::sound_items::result_draw};
+ &bn::sound_items::result_win,&bn::sound_items::result_lose,&bn::sound_items::result_draw,
+ &bn::sound_items::super_finish,&bn::sound_items::punish_finish};
 int PresentationAudio::active_voices()const{return voice&&voice->active()?1:0;}
 bool PresentationAudio::music_playing()const{return bn::music::playing();}
 int PresentationAudio::music_position()const{return bn::music::playing()?bn::music::position():-1;}
-void PresentationAudio::update(bool menu_music,const AudioSettings&settings){
+void PresentationAudio::update(bool menu_music,bool battle_music,bool danger,const AudioSettings&settings){
  ++clock;
  if(!settings.sound){if(voice&&voice->active())voice->stop();voice.reset();}
- if(!settings.music){if(bn::music::playing())bn::music::stop();music_level=0;return;}
- if(menu_music&&!bn::music::playing()){bn::music_items::title_theme.play(0,true);music_level=0;}
+ if(!settings.music){if(bn::music::playing())bn::music::stop();music_level=0;track=0;battle_finale=false;return;}
+ int desired=menu_music?1:battle_music?2:0;
+ if(desired&&(!bn::music::playing()||track!=desired)){
+  if(desired==1)bn::music_items::title_theme.play(0,true);
+  else bn::music_items::battle_theme.play(0,true);
+  music_level=0;track=desired;battle_finale=false;
+ }
  if(!bn::music::playing())return;
- const int target=menu_music?(active_voices()?64:84):0;
+ if(desired==2&&danger!=battle_finale){bn::music::set_position(danger?2:0);battle_finale=danger;}
+ const int target=desired==1?(active_voices()?64:84):desired==2?(active_voices()?48:battle_finale?70:62):0;
  if(music_level<target){music_level+=3;if(music_level>target)music_level=target;}
  else if(music_level>target){music_level-=6;if(music_level<target)music_level=target;}
- if(!music_level&&!menu_music)bn::music::stop();else bn::music::set_volume(bn::fixed(music_level)/256);
+ if(!music_level&&!desired){bn::music::stop();track=0;battle_finale=false;}
+ else bn::music::set_volume(bn::fixed(music_level)/256);
 }
 void PresentationAudio::cue(AudioCue which,const AudioSettings&settings){
  if(!settings.sound||which<0||which>=AUDIO_CUE_COUNT)return;

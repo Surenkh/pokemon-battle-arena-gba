@@ -1,0 +1,7 @@
+{
+  "id": "punish_finish",
+  "type": "sound",
+  "name": "punish_finish",
+  "path": "audio/punish_finish.wav",
+  "format": "wav"
+}

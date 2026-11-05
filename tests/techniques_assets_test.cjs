@@ -16,5 +16,10 @@ const assert=require('assert'),fs=require('fs'),sharp=require('sharp');
   phases.push(data.toString('base64'));
  }
  assert.equal(new Set(phases).size,8,'All eight warning/blast phases are distinct');
+ const wind=JSON.parse(fs.readFileSync('content/sprite_dodge_wind.json'));
+ assert.equal(wind.width,32);assert.equal(wind.height,32);
+ const windData=[];
+ for(let frame=0;frame<4;frame++)windData.push((await sharp('docs/dodge_wind.png').extract({left:0,top:frame*32,width:32,height:32}).ensureAlpha().raw().toBuffer()).toString('base64'));
+ assert.equal(new Set(windData).size,4,'Dodge wind has four distinct animation frames');
  console.log('PASS technique art: eight distinct native phases, outlined warning, filled blast and bounded footprint.');
 })();

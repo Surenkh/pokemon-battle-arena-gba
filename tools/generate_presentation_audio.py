@@ -44,6 +44,9 @@ cues={
  'result_win':sequence([[62,66],[66,69],[69,73],[74,78,81]],.22,.42,'bright'),
  'result_lose':sequence([[62,66],[59,62],[57,61],[50,57]],.22,.34),
  'result_draw':sequence([[62,69],[64,71],[62,69]],.20,.32),
+ 'projectile_clash':sweep(1250,360,.11,.34)+chord([79,86],.07,.27,'bright'),
+ 'super_finish':sequence([[62,69],[69,74],[74,81]],.10,.39,'bright'),
+ 'punish_finish':sequence([[57,64],[69,76]],.11,.37,'bright'),
 }
 report=[save(name,values) for name,values in cues.items()]
 
@@ -85,5 +88,35 @@ for p in range(4):
 mod+=b''.join(samples)
 file=ROOT/'audio/title_theme.mod';file.write_bytes(mod)
 (ROOT/'content/music_title_theme.json').write_text(json.dumps(dict(id='title_theme',type='music',name='title_theme',path='audio/title_theme.mod',format='mod'),indent=2)+'\n')
-(ROOT/'docs/presentation_audio_assets.json').write_text(json.dumps(dict(generator='tools/generate_presentation_audio.py',provenance='Original composition, wavetables and deterministic PCM synthesis; no external recordings',music=dict(name='Leaflight Circuit',file='audio/title_theme.mod',patterns=4,active_channels=3,tempo_bpm=112,nominal_loop_seconds=4*64*6*2.5/112,sha256=hashlib.sha256(mod).hexdigest()),effects=report),indent=2)+'\n')
-print('Generated original 34.29-second title module and',len(report),'presentation cues.')
+
+# Two matching pairs of patterns share a tempo and instruments. The first pair
+# loops during ordinary combat; the second adds notes as a fighter nears defeat.
+battle_melodies=[
+ [62,69,65,72,69,65,67,70,62,69,65,74,72,69,67,65],
+ [58,65,62,69,65,62,64,67,58,65,62,70,69,67,65,62],
+ [62,65,69,72,74,72,69,65,67,70,74,77,74,70,67,65],
+ [58,62,65,69,72,69,65,62,64,67,70,74,72,70,67,64],
+]
+battle_roots=[38,34,38,34]
+battle=bytearray(b'Arena Momentum'.ljust(20,b'\0'))
+for i in range(31):
+ data=samples[i] if i<3 else b''
+ name=[b'Bright lead',b'Pulse bass',b'High pulse'][i] if i<3 else b''
+ battle+=name.ljust(22,b'\0')+struct.pack('>HBBHH',len(data)//2,0,[36,25,14][i] if i<3 else 0,0,len(data)//2 if data else 1)
+battle+=bytes([4,0])+bytes([0,1,2,3])+bytes(124)+b'M.K.'
+for pattern in range(4):
+ rows=[[cell() for _ in range(4)] for _ in range(64)]
+ for i,note in enumerate(battle_melodies[pattern]):
+  row=i*4
+  rows[row][0]=cell(note,1)
+  if pattern>=2:rows[row+2][0]=cell(note+12 if i%4==3 else note+3,1)
+  else:rows[row+3][0]=cell(battle_roots[pattern]+(7 if i%2 else 0),2)
+ rows[0][0]=cell(battle_melodies[pattern][0],1,15,6)
+ rows[0][3]=cell(effect=15,param=144)
+ rows[63][3]=cell(effect=11,param=0 if pattern==1 else 2) if pattern in (1,3) else cell()
+ battle+=b''.join(c for row in rows for c in row)
+battle+=b''.join(samples)
+file=ROOT/'audio/battle_theme.mod';file.write_bytes(battle)
+(ROOT/'content/music_battle_theme.json').write_text(json.dumps(dict(id='battle_theme',type='music',name='battle_theme',path='audio/battle_theme.mod',format='mod'),indent=2)+'\n')
+(ROOT/'docs/presentation_audio_assets.json').write_text(json.dumps(dict(generator='tools/generate_presentation_audio.py',provenance='Original compositions, wavetables and deterministic PCM synthesis; no external recordings',music=dict(name='Leaflight Circuit',file='audio/title_theme.mod',patterns=4,active_channels=3,tempo_bpm=112,nominal_loop_seconds=4*64*6*2.5/112,sha256=hashlib.sha256(mod).hexdigest()),battle_music=dict(name='Arena Momentum',file='audio/battle_theme.mod',patterns=4,active_channels=1,tempo_bpm=144,normal_patterns=[0,1],finale_patterns=[2,3],sha256=hashlib.sha256(battle).hexdigest()),effects=report),indent=2)+'\n')
+print('Generated original title and battle modules and',len(report),'presentation cues.')

@@ -259,6 +259,28 @@ With the Lua adapter, P1 holds U and taps I. P2 holds Q and taps E.
 
 '''
         bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
+    if build.get('combat_feedback'):
+        visual = json_file(evidence / 'native-combat-feedback.json')
+        music = json_file(evidence / 'native-combat-feedback-audio.json')
+        for report in (visual, music):
+            verify_report(report, sha)
+            check(report.get('status') == 'passed' and report.get('rom_sha256') == sha
+                  and report.get('missed_display_frames') == 0,
+                  'Combat feedback needs passed native evidence for this ROM')
+        check(all(visual.get(key) for key in ('both_projectile_colors', 'both_dodge_sides', 'danger_music',
+                                               'super_finish', 'punish_finish', 'recall_complete', 'save_byte_identical'))
+              and len(set(visual.get('roster_dodges', []))) == build.get('roster_count')
+              and music.get('normal', {}).get('positions') == [0, 1]
+              and music.get('finale', {}).get('positions') == [2, 3]
+              and music.get('independent_music_and_sound'),
+              'Combat feedback needs both finishes, roster dodges and both recorded music sections')
+        introduction = b'''COMBAT FEEDBACK
+Down performs a compact animated dodge. Time it to avoid high shots and supers.
+Opposing normal shots burst together. The battle theme builds at low health.
+Super and recovery-punish KOs have distinct finish cues.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
     output.mkdir(parents=True, exist_ok=True)
     (output / 'PokemonBattleArena.gba').write_bytes(rom)
     archive = output / ('PokemonBattleArena-v' + version + '.zip')

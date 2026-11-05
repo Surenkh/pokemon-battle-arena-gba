@@ -30,6 +30,21 @@ for pattern in range(4):
    check(instrument<=3);check(period==0 or 56<=period<=1712)
    if period:used.add(channel)
  check(used=={0,1,2})
+battle=(r/'audio/battle_theme.mod').read_bytes()
+check(hashlib.sha256(battle).hexdigest()==j['battle_music']['sha256'])
+check(battle[1080:1084]==b'M.K.' and battle[950]==4)
+check(len(battle)==1084+4*1024+3*64)
+check(json.loads((r/'content/music_battle_theme.json').read_text())['path']=='audio/battle_theme.mod')
+for pattern in range(4):
+ used=set()
+ for row in range(64):
+  for channel in range(4):
+   a,b,c,d=battle[1084+pattern*1024+row*16+channel*4:1088+pattern*1024+row*16+channel*4]
+   if ((a&15)<<8)|b:used.add(channel)
+ check(used=={0})
+for pattern,destination in ((1,0),(3,2)):
+ a,b,c,d=battle[1084+pattern*1024+63*16+3*4:1088+pattern*1024+63*16+3*4]
+ check(c&15==11 and d==destination)
 for name,width,height,frames in [('recall_ball',32,32,4),('recall_beam',32,64,1),('recall_glint',64,64,4)]:
  raw=(r/'graphics'/(name+'.bmp')).read_bytes();check(raw[:2]==b'BM' and struct.unpack_from('<H',raw,28)[0]==4)
  check(struct.unpack_from('<ii',raw,18)==(width,height*frames))

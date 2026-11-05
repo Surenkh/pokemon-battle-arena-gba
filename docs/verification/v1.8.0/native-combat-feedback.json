@@ -1,0 +1,31 @@
+{
+  "status": "passed",
+  "checks": 61,
+  "rom_sha256": "e05b9f30fbd300bd446d6f9c5db0b04423725e55c028917d45fd5e27fa7a2069",
+  "adapter_sha256": "42dd5a33b92f2f3331ef267ff1c1abe6b970a287faf92c92ce787f6d0650569c",
+  "both_projectile_colors": true,
+  "both_dodge_sides": true,
+  "roster_dodges": [
+    "pikachu",
+    "charmander",
+    "squirtle",
+    "bulbasaur",
+    "eevee",
+    "meowth",
+    "psyduck",
+    "jigglypuff",
+    "machop",
+    "vulpix",
+    "gastly",
+    "riolu",
+    "totodile"
+  ],
+  "danger_music": true,
+  "super_finish": true,
+  "punish_finish": true,
+  "recall_complete": true,
+  "save_byte_identical": true,
+  "peak_cpu_fraction": 0.812744140625,
+  "missed_display_frames": 0,
+  "method": "One upstream mGBA 0.11 core with real Lua input, native framebuffer and read-only telemetry."
+}

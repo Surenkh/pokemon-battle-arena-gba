@@ -1,0 +1,7 @@
+{
+  "id": "battle_theme",
+  "type": "music",
+  "name": "battle_theme",
+  "path": "audio/battle_theme.mod",
+  "format": "mod"
+}

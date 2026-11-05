@@ -1,0 +1,7 @@
+{
+  "id": "projectile_clash",
+  "type": "sound",
+  "name": "projectile_clash",
+  "path": "audio/projectile_clash.wav",
+  "format": "wav"
+}

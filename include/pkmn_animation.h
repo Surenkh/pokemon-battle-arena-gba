@@ -18,7 +18,14 @@ inline Pose fighter_pose(const CombatCore&core,int who){const auto&v=core.f[who]
  }
  if(v.action==SUPER){if(age<super_startup_ticks)return loop_pose(v.character,CLIP_CHARGE,age);return attack_pose(v.character,CLIP_SHOOT,age-super_startup_ticks+1,1,3,super_recovery_ticks+4);}
  if(v.action==BLOCK||v.action==BLOCKSTUN)return loop_pose(v.character,CLIP_GUARD,core.tick);
- if(v.action==SQUEEZE){if(age>=squeeze_startup_ticks&&age<squeeze_startup_ticks+squeeze_active_ticks)return loop_pose(v.character,CLIP_SQUEEZE,age-squeeze_startup_ticks);return loop_pose(v.character,CLIP_LAND,age,false);}
+ if(v.action==SQUEEZE){
+  if(age>=squeeze_startup_ticks&&age<squeeze_startup_ticks+squeeze_active_ticks){
+   const auto& clip=animations[v.character][CLIP_SQUEEZE];
+   int frame=(age-squeeze_startup_ticks)*clip.count/squeeze_active_ticks;
+   return{CLIP_SQUEEZE,clip.first+clamp_frame(frame,clip.count)};
+  }
+  return loop_pose(v.character,CLIP_LAND,age,false);
+ }
  if(!core.grounded(v)){const auto&a=animations[v.character][CLIP_HOP];int frame=v.vy<-256?2:v.vy<=256?4:7;return{CLIP_HOP,a.first+clamp_frame(frame,a.count)};}
  if(core.tick-v.landed_at<=motion_landing_pose_ticks)return loop_pose(v.character,CLIP_LAND,core.tick-v.landed_at,false);
  if(v.vx){const auto&a=animations[v.character][CLIP_WALK];return{CLIP_WALK,a.first+v.stride_q8*a.count/motion_walk_stride_q8};}

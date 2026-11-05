@@ -21,7 +21,7 @@ struct Fighter {
 };
 struct Projectile { bool active=false,reserved=false,super=false,followup=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0;int burst_at=-1; };
 // Read-only presentation events; never consulted by combat resolution or AI.
-enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EV_AIR_BRAKE,EV_ORB_ARM,EV_ORB_POP,EV_BURST_HIT,EV_VOLT_STEP,EV_SHELL_ROLL,EV_BREAKAWAY,EVENT_COUNT };
+enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EV_AIR_BRAKE,EV_ORB_ARM,EV_ORB_POP,EV_BURST_HIT,EV_VOLT_STEP,EV_SHELL_ROLL,EV_BREAKAWAY,EV_CLASH,EV_SUPER_FINISH,EV_PUNISH_FINISH,EVENT_COUNT };
 struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack;int damage;bool followup; };
 class CombatCore {
 public:
