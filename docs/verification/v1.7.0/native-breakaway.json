@@ -1,0 +1,27 @@
+{
+  "status": "passed",
+  "checks": 56,
+  "rom_sha256": "b7a8f0bb2b2bdf360787a44444c231fcd32fa20a846fa9c519406526aa53afd2",
+  "adapter_sha256": "42dd5a33b92f2f3331ef267ff1c1abe6b970a287faf92c92ce787f6d0650569c",
+  "mgba_revision": "a67176cd3e6bf60a5016d7adc94357142dd12617",
+  "drill_completed": true,
+  "both_player_sides": true,
+  "power_spent": 60,
+  "versus_cases": [
+    {
+      "player": 1,
+      "sp_before": 66,
+      "sp_after": 6
+    },
+    {
+      "player": 2,
+      "sp_before": 84,
+      "sp_after": 24
+    }
+  ],
+  "pause_discards_escape": true,
+  "zero_state_writes": true,
+  "save_byte_identical": true,
+  "peak_cpu_fraction": 0.810546875,
+  "missed_display_frames": 0
+}
