@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "source_ref": "v1.6.0",
+  "rom_sha256": "a17833c2b87876ca7b312998de938f1cfff2b8f7498c40257c59189e8eb35bd0",
+  "method": "One Mirage Cup clear captured from mGBA 0.10.2 with GBA button inputs. Edited highlights use 2x nearest-neighbor scaling.",
+  "missed_display_frames": 0,
+  "scenes": [
+    {
+      "name": "challenger selection",
+      "start_ms": 0
+    },
+    {
+      "name": "captain scouting cue",
+      "start_ms": 1933
+    },
+    {
+      "name": "jump over Aura Pulse",
+      "start_ms": 3467
+    },
+    {
+      "name": "Solar Pulse super",
+      "start_ms": 4400
+    },
+    {
+      "name": "KO and recall",
+      "start_ms": 5733
+    },
+    {
+      "name": "Moon Crest reward",
+      "start_ms": 7467
+    }
+  ],
+  "files": [
+    {
+      "path": "docs/media/rival-cup-native.gif",
+      "bytes": 541417,
+      "width": 480,
+      "height": 320,
+      "frames": 137,
+      "distinct_frames": 78,
+      "duration_ms": 9140,
+      "loop": "infinite",
+      "sha256": "af84700f8b149f6fd800b1ae2eb4804fefe4b368393bc949413a66a7d7428bff"
+    }
+  ]
+}
