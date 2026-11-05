@@ -3,7 +3,7 @@
 #include "pkmn_super_evasion.h"
 
 namespace pkmn {
-enum DummyMode { DUMMY_IDLE, DUMMY_BLOCK, DUMMY_ATTACK, DUMMY_FOLLOWUP, DUMMY_EVADE, DUMMY_TECHNIQUE, DUMMY_MODE_COUNT };
+enum DummyMode { DUMMY_IDLE, DUMMY_BLOCK, DUMMY_ATTACK, DUMMY_FOLLOWUP, DUMMY_EVADE, DUMMY_TECHNIQUE, DUMMY_BREAKAWAY, DUMMY_MODE_COUNT };
 enum DrillFeedback {
     FOLLOWUP_PROMPT, FOLLOWUP_WAIT, FOLLOWUP_NEEDS_MELEE, FOLLOWUP_STARTED,
     FOLLOWUP_COMPLETE, EVADE_PROMPT, SUPER_WARNING, SUPER_FLYING,
@@ -12,10 +12,11 @@ enum DrillFeedback {
     BRAKE_PROMPT, BRAKE_ACTIVE, BRAKE_COMPLETE, ORB_PROMPT, ORB_WARNING,
     ORB_COMPLETE, ORB_MISSED, ORB_NORMAL_HIT, TECHNIQUE_INTERRUPTED,
     STEP_PROMPT, STEP_ACTIVE, STEP_COMPLETE, STEP_BLOCKED,
-    ROLL_PROMPT, ROLL_ACTIVE, ROLL_COMPLETE
+    ROLL_PROMPT, ROLL_ACTIVE, ROLL_COMPLETE,
+    BREAKAWAY_PROMPT, BREAKAWAY_NOW, BREAKAWAY_COMPLETE, BREAKAWAY_MISSED
 };
 inline constexpr int practice_retry_frames = 6;
-inline constexpr const char* practice_mode_names[] = {"FREE", "BLOCK", "ATTACK", "FOLLOW-UP", "EVADE SUPER", "TECHNIQUE"};
+inline constexpr const char* practice_mode_names[] = {"FREE", "BLOCK", "ATTACK", "FOLLOW-UP", "EVADE SUPER", "TECHNIQUE", "BREAKAWAY"};
 inline constexpr const char* practice_feedback_text[] = {
     "LAND A THEN FOLLOW B", "WAIT FOR FOLLOW B", "START WITH MELEE A", "FOLLOW-UP STARTED",
     "FOLLOW-UP LANDED!", "EVADE THE RIVAL SUPER", "WATCH THE SUPER CHARGE", "JUMP OR TIME DOWN",
@@ -25,7 +26,8 @@ inline constexpr const char* practice_feedback_text[] = {
     "B ORB. B NEAR RIVAL", "ORB ARMED. WATCH BURST", "SHADOW BURST HIT!",
     "TOO FAR. SELECT RETRY", "NORMAL HIT. B EARLIER", "HIT - SELECT TO RETRY",
     "DOUBLE TAP LEFT/RIGHT", "VOLT STEP! FINISH MOVE", "VOLT STEP COMPLETE!", "WALL. SELECT TO RETRY",
-    "DOWN + LEFT/RIGHT", "ROLL UNDER THE SUPER", "SHELL ROLL EVADED!"
+    "DOWN + LEFT/RIGHT", "ROLL UNDER THE SUPER", "SHELL ROLL EVADED!",
+    "LET THE RIVAL HIT", "HOLD L. TAP R NOW", "BREAKAWAY! 60 SP USED", "MISSED. SELECT RETRY"
 };
 struct PracticeStats {
     int last_damage = 0, chain = 0, best_chain = 0, hits = 0, followups = 0, punishes = 0;
@@ -49,10 +51,15 @@ public:
     bool super_started = false, super_released = false;
 
     static bool has_technique(int fighter) { return characters[fighter].technique != TECHNIQUE_NONE; }
-    static int available_modes(int fighter) { return has_technique(fighter) ? DUMMY_MODE_COUNT : DUMMY_TECHNIQUE; }
+    static int available_modes(int fighter) { return has_technique(fighter) ? DUMMY_MODE_COUNT : DUMMY_MODE_COUNT - 1; }
+    void cycle_mode(int fighter, int direction) {
+        do {
+            mode = DummyMode((int(mode) + DUMMY_MODE_COUNT + direction) % DUMMY_MODE_COUNT);
+        } while(mode == DUMMY_TECHNIQUE && available_modes(fighter) < DUMMY_MODE_COUNT);
+    }
     void validate_mode(int fighter) { if(mode == DUMMY_TECHNIQUE && !has_technique(fighter))mode=DUMMY_IDLE; }
-    bool drill() const { return mode == DUMMY_FOLLOWUP || mode == DUMMY_EVADE || mode == DUMMY_TECHNIQUE; }
-    bool completed() const { return feedback == FOLLOWUP_COMPLETE || feedback == EVADE_COMPLETE || feedback == BRAKE_COMPLETE || feedback == ORB_COMPLETE || feedback == STEP_COMPLETE || feedback == ROLL_COMPLETE; }
+    bool drill() const { return mode == DUMMY_FOLLOWUP || mode == DUMMY_EVADE || mode == DUMMY_TECHNIQUE || mode == DUMMY_BREAKAWAY; }
+    bool completed() const { return feedback == FOLLOWUP_COMPLETE || feedback == EVADE_COMPLETE || feedback == BRAKE_COMPLETE || feedback == ORB_COMPLETE || feedback == STEP_COMPLETE || feedback == ROLL_COMPLETE || feedback == BREAKAWAY_COMPLETE; }
     const char* message() const { return practice_feedback_text[feedback]; }
 
     void begin_round(bool keep_stats = false) {
@@ -63,7 +70,7 @@ public:
         followup_shot_seen = false;
         technique_started = false;
         technique_x = 0;
-        feedback = mode == DUMMY_EVADE ? EVADE_PROMPT : FOLLOWUP_PROMPT;
+        feedback = mode == DUMMY_BREAKAWAY ? BREAKAWAY_PROMPT : mode == DUMMY_EVADE ? EVADE_PROMPT : FOLLOWUP_PROMPT;
         if(!keep_stats) stats = PracticeStats{};
     }
 
@@ -75,7 +82,7 @@ public:
             const int technique=characters[core.f[0].character].technique;
             feedback=technique==TECHNIQUE_AIR_BRAKE?BRAKE_PROMPT:technique==TECHNIQUE_VOLT_STEP?STEP_PROMPT:technique==TECHNIQUE_SHELL_ROLL?ROLL_PROMPT:ORB_PROMPT;
         }
-        if(mode == DUMMY_FOLLOWUP) {
+        if(mode == DUMMY_FOLLOWUP || mode == DUMMY_BREAKAWAY) {
             core.f[0].x = 96 * 256;
             core.f[1].x = 116 * 256;
         }
@@ -94,6 +101,11 @@ public:
         if(mode == DUMMY_BLOCK) return {L, 0};
         int delta = core.f[0].x - rival.x;
         int distance = (delta < 0 ? -delta : delta) / 256;
+        if(mode == DUMMY_BREAKAWAY) {
+            if(finished || feedback != BREAKAWAY_PROMPT || core.tick < 45 || rival.action != NONE) return {};
+            if(distance < characters[rival.character].melee_reach + 3) return {A, A};
+            return {uint16_t(delta > 0 ? RIGHT : LEFT), 0};
+        }
         if(core.tick % practice_dummy_think_ticks == 0) {
             if(core.can_followup(1, A) && distance < characters[rival.character].melee_reach + 6) return {A, A};
             if(core.can_followup(1, B) && distance < 140) return {B, B};
@@ -126,6 +138,15 @@ public:
                 }
             }
             if(!drill() || finished) continue;
+            if(mode == DUMMY_BREAKAWAY) {
+                if(event.owner == 0 && event.kind == EV_BREAKAWAY) {
+                    feedback = BREAKAWAY_COMPLETE;
+                    finished = true;
+                } else if(event.target == 0 && event.kind == EV_HIT && !event.super) {
+                    feedback = BREAKAWAY_NOW;
+                }
+                continue;
+            }
             if(mode == DUMMY_TECHNIQUE) {
                 if(event.target == 0 && event.kind == EV_HIT) { feedback=TECHNIQUE_INTERRUPTED;finished=true; }
                 if(event.owner == 0) {
@@ -190,6 +211,10 @@ public:
             const bool evaded=evasion.observe(core);
             if(evaded && technique_started){feedback=ROLL_COMPLETE;finished=true;}
             else if(super_released && !core.p[3].active){feedback=EVADE_MISSED;finished=true;}
+        }
+        if(mode == DUMMY_BREAKAWAY && feedback == BREAKAWAY_NOW && !core.can_breakaway(0)) {
+            feedback = BREAKAWAY_MISSED;
+            finished = true;
         }
         if(mode != DUMMY_EVADE || finished) return;
         if(evasion.observe(core)) {

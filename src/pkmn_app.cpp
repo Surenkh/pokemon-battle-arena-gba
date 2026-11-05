@@ -521,6 +521,7 @@ public:
    if(presented_events!=core.event_frame&&(screen==FIGHTING||screen==ROUND_END)){
     presented_events=core.event_frame;for(int n=0;n<core.event_count;n++){const auto&e=core.events[n];int ch=core.f[e.owner].character;
      if(e.kind==EV_HIT||e.kind==EV_BLOCK||e.kind==EV_BREAK){const bool orb_burst=e.kind==EV_HIT&&!e.super&&core.p[e.owner].burst_at>=0&&core.p[e.owner].id==e.attack;particle(e.x/256,e.y/256,e.kind==EV_BLOCK?GUARD:e.super||orb_burst?SUPER_IMPACT:IMPACT,ch,core.f[e.owner].face<0);}
+     if(e.kind==EV_BREAKAWAY)particle(e.x/256,e.y/256,GUARD,ch,core.f[e.owner].face<0);
      if(e.kind==EV_SHOT||e.kind==EV_RELEASE){particle(e.x/256,e.y/256,CAST,ch,core.f[e.owner].face<0);}
     }
    }
@@ -654,7 +655,7 @@ public:
     }
     if(screen==RESUME_COUNTDOWN)line(120,71,"READY",true,2);
     if(screen==FIGHTING||screen==ROUND_END){
-     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL"};
+     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL","L+R ESCAPE","BREAKAWAY"};
      for(int i=0;i<2;i++){int status=feel.status(core,i);if(status)line(i?192:48,47,statuses[status],true);}
      if(charge)line(120,57,"SUPER! JUMP OR SQUEEZE",true);
     }
@@ -910,7 +911,7 @@ public:
     else if((keys.pressed&DOWN)&&practice_row<4)++practice_row;
     else if(practice_row<4&&(keys.pressed&(LEFT|RIGHT))){
      int direction=keys.pressed&RIGHT?1:-1;
-     if(practice_row==1){const int modes=PracticeSession::available_modes(selected);trainer.mode=DummyMode((int(trainer.mode)+modes+direction)%modes);}
+     if(practice_row==1)trainer.cycle_mode(selected,direction);
      else if(practice_row==3)chosen_arena=(chosen_arena+arena_count+direction)%arena_count;
      else{trainer.opponent=(trainer.opponent+character_count+direction)%character_count;if(trainer.opponent==selected)trainer.opponent=(trainer.opponent+character_count+direction)%character_count;}
     }

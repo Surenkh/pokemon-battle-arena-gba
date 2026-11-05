@@ -18,6 +18,7 @@ public:
    for(int n=0;n<c.event_count;n++){
     const auto&e=c.events[n];seen_events|=1u<<e.kind;int size=0,duration=0;
     if(e.kind==EV_HIT){size=e.super?3:1;duration=e.super?12:5;flash[e.target]=e.super?8:4;}
+    if(e.kind==EV_BREAKAWAY)flash[e.owner]=7;
     if(e.kind==EV_BLOCK)blocked[e.target]=12;
     if(e.kind==EV_BREAK){broken[e.target]=30;++guard_breaks;size=2;duration=10;}
     if(e.kind==EV_TIRED){tired[e.target]=18;++rejected_actions;}
@@ -32,6 +33,8 @@ public:
  // One compact HUD line per fighter, with critical states taking precedence.
  int status(const CombatCore& c,int who)const{
   if(broken[who]||c.f[who].action==GUARD_BREAK)return 4;
+  if(c.f[who].action==BREAKAWAY)return 15;
+  if(c.f[who].action==HITSTUN&&c.can_breakaway(who))return 14;
   if(tired[who])return 3;if(blocked[who])return 2;
   if(punish[who])return 6;
   if(c.can_followup(who,A))return 8;if(c.can_followup(who,B))return 7;

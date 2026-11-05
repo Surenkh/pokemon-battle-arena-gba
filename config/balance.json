@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "1.5.0",
+  "ruleset_version": "1.7.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -737,6 +737,13 @@
       }
     }
   ],
+  "breakaway": {
+    "power_cost": 60,
+    "travel_ticks": 8,
+    "recovery_ticks": 12,
+    "speed_q8": 768,
+    "lift_q8": -704
+  },
   "followup": {
     "recovery_cut_ticks": 6,
     "escape_ticks": 2
