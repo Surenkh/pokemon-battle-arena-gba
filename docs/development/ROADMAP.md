@@ -1,8 +1,15 @@
 # Pokémon Battle Arena product roadmap
 
-**Updated 5 November 2026 · Current release v1.5.0**
+## v1.6 — Rival Cup
 
-## Current iteration — Starter Mobility
+Each of the three Cups offers a choice of three challengers. Win two distinct
+matchups to face a Captain with a named tactic and counter cue. A clear unlocks
+a crest for that Cup and difficulty. [Player guide](../RIVAL_CUP_PLAYER_GUIDE.md)
+
+Human Cup playtesting can measure whether players choose different opponents,
+understand the Captain cues, and start a second run.
+
+## v1.5 — Starter Mobility, merged
 
 v1.5.0 expands signature techniques to Pikachu and Squirtle. Volt Step adds a
 committed, stamina-costing dash; Shell Roll adds directional movement to the
@@ -14,8 +21,7 @@ routes remain included.
 [Player guide](../TECHNIQUES_PLAYER_GUIDE.md) · [Design](../STARTER_TECHNIQUES.md)
 · [Validation](../STARTER_TECHNIQUES_TEST_REPORT.md).
 
-The release branch publishes the verified v1.5 build as GitHub Latest while its
-PR remains available for owner review. Older releases retain their tags/assets.
+PR #22 merged the starter techniques. [v1.5.0 release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/tag/v1.5.0)
 
 Next: play the four techniques in human matches and run the Cup/two-person
 Versus pilots. Use observed friction and voluntary rematches to choose the next
@@ -30,8 +36,7 @@ scouting cards and optional style goals. Each run has one continue; clear,
 style, perfect and best-time records persist independently of Arcade. All
 thirteen fighters and three difficulties are supported. PR #21 is merged.
 
-[Design and pilot](../RIVAL_CUP.md) · [Guide](../RIVAL_CUP_PLAYER_GUIDE.md)
-· [Validation](../RIVAL_CUP_TEST_REPORT.md).
+[v1.4 validation](../RIVAL_CUP_TEST_REPORT.md).
 
 ## v1.3 — more distinctive fighter techniques, preview
 

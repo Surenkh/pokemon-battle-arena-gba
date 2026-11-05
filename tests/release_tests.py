@@ -194,6 +194,28 @@ class ReleaseTests(unittest.TestCase):
             self.js('docs/verification/v0.5.0/native-cup.json', dict(report, **change))
             with self.assertRaises(ValueError): prepare(self.root, self.output)
 
+    def test_cup_brackets_require_choices_captain_tactics_and_persistent_crests(self):
+        self.write('docs/RIVAL_CUP_PLAYER_GUIDE.md', '# Rival Cup\nChoose two challengers.\n')
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0',
+                rom_sha256=self.sha, rom_bytes=256, rival_cup=True, rival_cup_brackets=True))
+        report = dict(status='passed', rom_sha256=self.sha, authored_cups=3, named_rivals=12,
+                      clears=[dict(cup=i) for i in range(3)], earned_style_clear=True, journal_power_cycle=True,
+                      journal_corruption_fallback=True, interrupted_write_fallback=True, base_save_preserved=True,
+                      branching_choices=True, defeated_challenger_skipped=True, retry_rival_locked=True,
+                      captain_tactics=[dict(cup=i, tactic=tactic) for i, tactic in enumerate(('RUSH', 'GUARD', 'ZONE'))],
+                      earned_crests_power_cycle=True, missed_display_frames=0)
+        path = 'docs/verification/v0.5.0/native-cup.json'
+        self.js(path, report)
+        meta = prepare(self.root, self.output)
+        with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
+            self.assertIn(b'Pick two challengers', archive.read('README.txt'))
+        for change in [dict(named_rivals=9), dict(branching_choices=False), dict(defeated_challenger_skipped=False),
+                       dict(retry_rival_locked=False), dict(captain_tactics=report['captain_tactics'][:2]),
+                       dict(earned_crests_power_cycle=False)]:
+            with self.subTest(change=change):
+                self.js(path, dict(report, **change))
+                with self.assertRaises(ValueError): prepare(self.root, self.output)
+
     def test_failed_stale_or_missed_native_evidence_is_rejected(self):
         name = 'docs/verification/v0.5.0/native-general.json'
         for report in [dict(status='failed', rom_sha256=self.sha), dict(status='passed', rom_sha256='0'*64),

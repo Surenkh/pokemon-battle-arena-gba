@@ -1,0 +1,56 @@
+{
+  "status": "passed",
+  "checks": 176,
+  "arenas": [
+    {
+      "arena": 0,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    },
+    {
+      "arena": 1,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    },
+    {
+      "arena": 2,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    },
+    {
+      "arena": 3,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    },
+    {
+      "arena": 4,
+      "quick": true,
+      "pause": true,
+      "practice": true
+    }
+  ],
+  "mastery_menu": true,
+  "regular_followup_hits": 10,
+  "regular_super_evades": 1,
+  "completed_medal": true,
+  "practice_excluded": true,
+  "schema2_migration": true,
+  "mixed_schema_corruption_recovery": true,
+  "mastery_power_cycle": true,
+  "save_schema": 4,
+  "save_copy_bytes": 596,
+  "menu_keys": 255,
+  "no_shoulder_required_in_menus": true,
+  "regular_matches_completed": 2,
+  "peak_cpu_fraction": 0.904541015625,
+  "missed_display_frames": 0,
+  "rom_sha256": "a17833c2b87876ca7b312998de938f1cfff2b8f7498c40257c59189e8eb35bd0",
+  "wall_seconds": 19.86,
+  "method": "mGBA 0.10.2 real button inputs and read-only telemetry; native captures and SRAM power cycles; frozen legacy fixture for migration, new mastery earned from zero in regular matches; no gameplay-memory writes",
+  "test_source": "tests/native_mastery_flow.py",
+  "test_source_sha256": "b618a8ef8d719b5ff381fd043b4d59fb9c0847268906118468c4b7e6b3eed1cf"
+}

@@ -176,8 +176,9 @@ void CombatCore::step(Input player,Input cpu){begin_events();if(outcome)return;f
 uint32_t CombatCore::checksum()const{uint32_t h=2166136261u;auto mix=[&](uint32_t n){h=(h^n)*16777619u;};mix(seed);mix(training);mix(tick);mix(remaining);mix(hitstop);mix(outcome);mix(next_id);for(auto&v:f){mix(v.character);mix(v.x);mix(v.y);mix(v.vx);mix(v.vy);mix(v.hp);mix(v.sta);mix(v.sp);mix(v.kb);mix(v.face);mix(v.action);mix(v.began);mix(v.ends);mix(v.invuln_until);mix(v.squeeze_ready);mix(v.last_spend);mix(v.pending);mix(v.pending_until);mix(v.attack_id);mix(v.melee_contact);mix(v.spawned);mix(v.stride_q8);mix(v.landed_at);mix(v.took_off_at);mix(v.confirmed_at);mix(v.chain_depth);if(v.tap_direction||v.step_ready||v.shell_roll||v.action==VOLT_STEP||v.pending==REQUEST_VOLT_STEP||v.pending==REQUEST_SHELL_ROLL){mix(0x54454335);mix(v.tap_direction);mix(v.tap_tick);mix(v.step_ready);mix(v.mobility_direction);mix(v.shell_roll);}if(v.air_brake_used||v.air_brake_until){mix(0x54454331);mix(v.air_brake_used);mix(v.air_brake_until);}}for(auto&b:p){mix(b.active);mix(b.reserved);mix(b.super);mix(b.followup);mix(b.owner);mix(b.id);mix(b.x);mix(b.y);mix(b.px);mix(b.py);mix(b.vx);mix(b.born);mix(b.damage);if(b.burst_at>=0){mix(0x54454332);mix(b.burst_at);}}return h;}
 // CPU decisions only produce the same button requests available to a player.
 uint32_t CpuController::random(){rng^=rng<<13;rng^=rng>>17;rng^=rng<<5;return rng;}
-void CpuController::reset(int level,uint32_t value){
+void CpuController::reset(int level,uint32_t value,CaptainTactic captain){
  difficulty=clamp(level,0,2);rng=value?value:1;stored=-1;held=0;cached={};
+ tactic=captain;
  seen_attack=combo_attack=0;resting=combo_allowed=false;
  for(int i=0;i<3;++i){threat[i]=0;respond[i]=false;dodge[i]=0;}
  next_plan=plan=jitter=hesitate_until=next_shot=rest_began=memory_at=0;last_seen=-1000;
@@ -192,6 +193,7 @@ Input CpuController::input(const CombatCore&core,int who){
  if(me.hp!=last_hp||me.sp!=last_power){last_progress=core.tick;last_hp=me.hp;last_power=me.sp;}
  const auto&profile=cpu_difficulties[difficulty];const auto&style=cpu_styles[me.character];
  const auto&def=characters[me.character];
+ const bool rush=tactic==CaptainTactic::RUSH,guard=tactic==CaptainTactic::GUARD,zone=tactic==CaptainTactic::ZONE;
  auto&fresh=history[core.tick%cpu_history_ticks];const auto&visible=core.f[1-who];
  fresh.enemy={visible.character,visible.x,visible.y,visible.vx,visible.vy,visible.face,visible.action,visible.began,visible.attack_id};
  for(int i=0;i<4;++i){const auto&b=core.p[i];fresh.shots[i]={b.active,b.super,b.owner,b.x,b.y,b.vx,b.id,b.burst_at};}
@@ -222,7 +224,7 @@ Input CpuController::input(const CombatCore&core,int who){
  // Own hit confirms can be queued outside the perception cadence. They use the
  // unchanged public combat API, full costs, startup, and one-follow-up limit.
  if(core.can_followup(who,B,input_buffer_ticks-1)||core.can_followup(who,A,input_buffer_ticks-1)){
-  if(combo_attack!=me.attack_id){combo_attack=me.attack_id;combo_allowed=roll(profile.followup_percent);}
+  if(combo_attack!=me.attack_id){combo_attack=me.attack_id;combo_allowed=roll(profile.followup_percent+(rush?18:0));}
   if(combo_allowed){
    int button=0;
    if(def.melee_followup&&dist<def.melee_reach+5&&target_low&&core.can_followup(who,A,input_buffer_ticks-1))button=A;
@@ -235,8 +237,9 @@ Input CpuController::input(const CombatCore&core,int who){
  if(core.tick>=next_plan){plan=int(random()%3);jitter=int(random()%11)-5;next_plan=core.tick+profile.plan_ticks;}
  const bool closing=core.tick-last_progress>240||(!core.training&&core.remaining<600);
  diagnostics.closing=closing;
- diagnostics.plan=plan;diagnostics.target=closing?24:clamp(style.distance_px+(plan==0?-8:plan==2?8:0)+jitter,18,94);
  const int reach=def.melee_reach+6,enemy_reach=ed.melee_reach+7;
+ const int preferred_distance=rush?reach-7:zone?76:style.distance_px;
+ diagnostics.plan=plan;diagnostics.target=closing?24:clamp(preferred_distance+(plan==0?-8:plan==2?8:0)+jitter,18,94);
  const int recovery_start=enemy.action==MELEE?ed.melee_start+ed.melee_active:enemy.action==FIRE?ed.fire_start+1:enemy.action==SUPER?super_startup_ticks+super_active_ticks:999;
  const int total=enemy.action==MELEE?ed.melee_total:enemy.action==FIRE?ed.fire_total:super_startup_ticks+super_active_ticks+super_recovery_ticks;
  const int left=total-enemy_age;
@@ -244,7 +247,7 @@ Input CpuController::input(const CombatCore&core,int who){
  const bool startup=enemy.action==SUPER&&enemy_age>=0&&enemy_age+def.melee_start<super_startup_ticks;
  // A visible whiff/recovery or interruptible super charge, not the opponent's
  // private end tick, pending input, hit flags, invulnerability or stamina.
- if(neutral&&ground&&target_low&&dist<reach&&me.sta>=melee_stamina_cost*60&&(recovery||startup)&&roll(profile.punish_percent+style.punish_bonus)){
+ if(neutral&&ground&&target_low&&dist<reach&&me.sta>=melee_stamina_cost*60&&(recovery||startup)&&roll(profile.punish_percent+style.punish_bonus+(guard?24:0))){
   ++diagnostics.punishes;return finish(A,PUNISH);
  }
  int eta=999;uint32_t threat_id=0;bool super_threat=false,melee_threat=false,burst_threat=false;
@@ -271,11 +274,11 @@ Input CpuController::input(const CombatCore&core,int who){
  if(threat_id&&threat_id!=threat[response_slot]){
   threat[response_slot]=threat_id;++diagnostics.response_choices;
   const int habit=diagnostics.fire_memory>=4?profile.adapt_percent:0;
-  respond[response_slot]=roll(super_threat?profile.super_evade_percent:profile.defense_percent+style.guard_bonus+habit);
+  respond[response_slot]=roll(super_threat?profile.super_evade_percent:profile.defense_percent+style.guard_bonus+habit+(guard?22:0));
   // Squirtle favors its efficient guard. Repeated projectiles encourage a
   // dodge on higher levels; one choice per visible attack, never per frame.
   dodge[response_slot]=int(random()%2);
-  if(!super_threat&&(melee_threat||me.character==2||!roll(20+habit)))dodge[response_slot]=2;
+  if(!super_threat&&(guard||melee_threat||me.character==2||!roll(20+habit)))dodge[response_slot]=2;
  }
  const int choice=dodge[response_slot];
  if(neutral&&ground&&respond[response_slot]&&eta>=0){
@@ -327,12 +330,16 @@ Input CpuController::input(const CombatCore&core,int who){
   if(me.action==BLOCK)return finish(0,SUPER_ATTACK); // Release block before R, like a player.
   return finish(R,SUPER_ATTACK);
  }
- if(target_low&&dist<reach&&me.sta>=melee_stamina_cost*60&&roll(style.melee_percent+(plan==0?10:0)))return finish(A,PRESSURE);
- if(closing&&dist>=reach)return finish(toward,APPROACH);
- int fire_chance=style.fire_percent+(plan==2?10:plan==0?-12:0);
+ // Captain stances use ordinary inputs after the usual perception and threat checks.
+ if(guard&&!closing&&!super_threat&&dist<enemy_reach+12&&core.tick%72<18&&me.sta>=45*60)return finish(L,DEFEND);
+ const bool retreat_room=delta>=0?me.x>(world_min_fighter_x+6)*256:me.x<(world_max_fighter_x-6)*256;
+ if(zone&&!closing&&retreat_room&&dist<diagnostics.target-14&&me.sta>=28*60)return finish(away,SPACE);
+ if(target_low&&dist<reach&&me.sta>=melee_stamina_cost*60&&roll(style.melee_percent+(plan==0?10:0)+(rush?17:0)))return finish(A,PRESSURE);
+ if((closing||rush)&&dist>=reach)return finish(toward,APPROACH);
+ int fire_chance=style.fire_percent+(plan==2?10:plan==0?-12:0)+(zone?30:0);
  if(enemy.action==BLOCK||enemy.action==BLOCKSTUN)fire_chance+=me.character==1?15:-12;
  if(!own_shot&&core.tick>=next_shot&&dist>reach+12&&dist<150&&target_low&&!low_enemy&&enemy.action!=SUPER&&me.sta>=(fire_stamina_cost+style.recover_below/2)*60&&roll(fire_chance)){
-  next_shot=core.tick+def.fire_total+18+int(random()%19);return finish(B,PRESSURE);
+  next_shot=core.tick+def.fire_total+(zone?8:18)+int(random()%19);return finish(B,PRESSURE);
  }
  if(def.technique==TECHNIQUE_VOLT_STEP&&neutral&&ground&&dist>diagnostics.target+24&&core.can_volt_step(who)&&plan==0&&core.tick%48<profile.think_ticks*3){
   if((held&toward)&&me.tap_direction)return finish(0,APPROACH);
@@ -341,8 +348,7 @@ Input CpuController::input(const CombatCore&core,int who){
  if(dist>diagnostics.target+5)return finish(toward,APPROACH);
  // Long-reach Bulbasaur holds its range. Other fighters can step out briefly;
  // a corner removes retreat, so closing in remains a reliable counter.
- const bool retreat_room=delta>=0?me.x>(world_min_fighter_x+6)*256:me.x<(world_max_fighter_x-6)*256;
- if(!closing&&dist<diagnostics.target-5&&(plan==2||me.character==2)&&me.sta>=28*60&&retreat_room)return finish(away,SPACE);
+ if(!rush&&!closing&&dist<diagnostics.target-5&&(plan==2||me.character==2)&&me.sta>=28*60&&retreat_room)return finish(away,SPACE);
  if(dist>=reach&&core.tick%36<18)return finish(toward,APPROACH);
  return finish(0,SPACE);
 }

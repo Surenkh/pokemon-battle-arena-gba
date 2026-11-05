@@ -196,3 +196,15 @@ pinned actual upstream mGBA/Lua driver, completes both lessons, tests both
 Versus sides, first-frame acceptance/costs, pause/gesture clearing, quick retry
 and byte-identical solo saves. Package v1.5 with its own native-starter.json
 and fresh clean-build evidence. The input adapter and save schemas are unchanged.
+
+## v1.6 Rival Cup
+
+`config/cups.json` defines each Cup's three challengers and Captain. Regenerate
+the native definitions with `python3 tools/generate_config.py` and the board,
+picker and crest art with `npm run assets`. The build metadata records
+`rival_cup_brackets` and the v1.5.0 combat ruleset.
+
+Run the same seventeen host and twenty native suites. The Cup runner verifies
+both challenger choices, the three Captain tactics, native screen text and
+crests after power-off. Package the exact validated ROM with fresh evidence
+in `docs/verification/v1.6.0`.

@@ -1,26 +1,32 @@
 [
   {
-    "name": "TEMPO CUP", "goal": "3 FOLLOW-UP HITS", "target": 3,
-    "rivals": [
+    "name": "TEMPO CUP", "goal": "3 FOLLOW-UP HITS", "target": 3, "crest": "BOLT CREST",
+    "challengers": [
       {"name": "NIA", "fighter": "pikachu", "arena": 0, "cue": "BLOCK THEN ANSWER A"},
       {"name": "MILO", "fighter": "eevee", "arena": 2, "cue": "BLOCK THE FOLLOW-UP"},
-      {"name": "REX", "fighter": "meowth", "arena": 1, "cue": "RECOVER OUT OF REACH"}
-    ]
+      {"name": "CINDER", "fighter": "charmander", "arena": 1, "cue": "JUMP THE FIRE THEN CLOSE"}
+    ],
+    "captain": {"name": "REX", "fighter": "meowth", "arena": 1, "cue": "BLOCK THE RUSH THEN HIT",
+                "tactic": "RUSH", "label": "CLOSE-RANGE RUSH"}
   },
   {
-    "name": "GUARD CUP", "goal": "5 SUCCESSFUL BLOCKS", "target": 5,
-    "rivals": [
+    "name": "GUARD CUP", "goal": "5 SUCCESSFUL BLOCKS", "target": 5, "crest": "SHIELD CREST",
+    "challengers": [
       {"name": "FERN", "fighter": "bulbasaur", "arena": 0, "cue": "BAIT THE VINE THEN CLOSE"},
       {"name": "MARIN", "fighter": "squirtle", "arena": 2, "cue": "SUPER BEATS SHELL GUARD"},
-      {"name": "BRICK", "fighter": "machop", "arena": 4, "cue": "STEP BACK FROM HEAVY A"}
-    ]
+      {"name": "ROOK", "fighter": "totodile", "arena": 3, "cue": "STEP OUT OF BITE RANGE"}
+    ],
+    "captain": {"name": "BRICK", "fighter": "machop", "arena": 4, "cue": "SUPER THROUGH HIS GUARD",
+                "tactic": "GUARD", "label": "GUARD AND COUNTER"}
   },
   {
-    "name": "MIRAGE CUP", "goal": "2 SUPER HITS", "target": 2,
-    "rivals": [
+    "name": "MIRAGE CUP", "goal": "2 SUPER HITS", "target": 2, "crest": "MOON CREST",
+    "challengers": [
       {"name": "LYRA", "fighter": "jigglypuff", "arena": 3, "cue": "WAIT OUT THE AIR BRAKE"},
       {"name": "SHADE", "fighter": "gastly", "arena": 4, "cue": "BLOCK OR JUMP THE BURST"},
-      {"name": "REN", "fighter": "riolu", "arena": 0, "cue": "BAIT A THEN PUNISH"}
-    ]
+      {"name": "WISP", "fighter": "vulpix", "arena": 1, "cue": "JUMP IN PAST FIRE SPIN"}
+    ],
+    "captain": {"name": "REN", "fighter": "riolu", "arena": 0, "cue": "JUMP THE SHOTS TO CLOSE",
+                "tactic": "ZONE", "label": "RANGED PRESSURE"}
   }
 ]
