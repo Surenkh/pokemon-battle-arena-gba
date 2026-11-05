@@ -27,7 +27,7 @@ Keep your emulator's save file when updating: it holds records, mastery and audi
 | **Local Versus** | Two keyboard players choose their Pokémon and play first-to-two sets in one game window. |
 
 <p align="center">
-  <img src="docs/media/local-versus-fight-native.png" alt="Pikachu and Charmander face off in a Local Versus battle" width="480">
+  <img src="docs/media/rival-cup-native.gif" alt="Mirage Cup gameplay. Choose Wisp, face Captain Ren, and earn the Moon Crest." width="480" height="320">
 </p>
 
 **Local Versus setup:** Use an mGBA 0.11 development build with Lua raw keyboard input, then load the `local_versus.lua` adapter included in the ZIP. [Two-player setup and keyboard controls](docs/LOCAL_VERSUS.md).
