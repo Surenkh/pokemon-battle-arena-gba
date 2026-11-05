@@ -41,7 +41,9 @@ for c in chars:
  strings=[s[k] for k in ['role','trait_name','tip_1','tip_2']]
  out.append('{'+json.dumps(c['name'].upper())+','+','.join(map(str,v))+','+','.join(json.dumps(s) for s in strings)+'},')
 out+=['};']
-for group in ['world','resources','motion','reactions','input','match','followup','practice']:
+assert j['reactions']['normal_hitstun_ticks'] < j['reactions']['super_hitstun_ticks']
+assert 50 < j['breakaway']['power_cost'] < j['resources']['super_power_max']
+for group in ['world','resources','motion','reactions','input','match','followup','practice','breakaway']:
  for name,value in j[group].items():
   if isinstance(value,(int,bool)):out.append(f'inline constexpr int {group}_{name} = {int(value)};')
 for action,v in j['actions'].items():
