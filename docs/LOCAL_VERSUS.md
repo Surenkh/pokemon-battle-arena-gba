@@ -31,6 +31,7 @@ played with the emulator's ordinary GBA bindings when the adapter is absent.
 | Fire / unready / Back | K | G |
 | Hold block | U | Q |
 | Super at full SP | I | E |
+| Breakaway at 60 SP during ordinary hitstun | Hold U + tap I | Hold Q + tap E |
 | Pause / resume | Enter | T |
 | Select / options / Practice retry | O | — |
 

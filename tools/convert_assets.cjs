@@ -3,7 +3,18 @@ const fs=require('fs'),path=require('path'),sharp=require('sharp');
 const {createCanvas,loadImage}=require('@napi-rs/canvas');
 const root=path.resolve(__dirname,'..'), source=path.resolve(process.env.PKMN_ASSETS||path.join(root,'assets/source'));
 const ui=require(path.join(source,'screens/ui_renderer.js'));
-const names=JSON.parse(fs.readFileSync(path.join(root,'config/balance.json'))).characters.map(c=>c.id);
+const balance=JSON.parse(fs.readFileSync(path.join(root,'config/balance.json')));
+const names=balance.characters.map(c=>c.id);
+function drawBreakawayThreshold(ctx){
+ const offset=Math.floor(71*balance.breakaway.power_cost/balance.resources.super_power_max);
+ ctx.fillStyle='#d1e2eb';
+ for(const left of [25,163]){
+  const x=left+offset;
+  ctx.fillRect(x-1,31,3,1);
+  ctx.fillRect(x,32,1,2);
+  ctx.fillRect(x,38,1,2);
+ }
+}
 function canvas(w=240,h=160){let c=createCanvas(w,h);c.getContext('2d').imageSmoothingEnabled=false;return c;}
 function palette(images,n){let map=new Map();for(const im of images){let d=im.getContext('2d').getImageData(0,0,im.width,im.height).data;for(let i=0;i<d.length;i+=4)if(d[i+3]>127){let k=(d[i]>>3)<<10|(d[i+1]>>3)<<5|(d[i+2]>>3);map.set(k,(map.get(k)||0)+1);}}
  let boxes=[[...map].map(([k,w])=>({c:[(k>>10)*8,((k>>5)&31)*8,(k&31)*8],w}))];
@@ -14,7 +25,7 @@ function save(name,c,type,w,h,pal){let bpp=type==='background'?8:4;pal=pal||pale
 async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await loadImage(path.join(source,file)),0,0);return c;}
 (async()=>{
  for(const n of names){let im=await loadImage(path.join(source,'animations','packed_'+n+'.png'));let c=canvas(64,im.height);c.getContext('2d').drawImage(im,0,0);save('pk_'+n,c,'sprite',64,64);}
- let arena=await bg('screens/layers/fighting_background.png'),a=arena.getContext('2d');ui.box(a,2,2,98,39);ui.box(a,140,2,98,39);ui.box(a,103,3,34,27);ui.text(a,'HP',5,15);ui.text(a,'STA',5,24);ui.text(a,'SP',5,33);ui.text(a,'HP',143,15);ui.text(a,'STA',143,24);ui.text(a,'SP',143,33);for(const x of[25,163])for(const y of[15,24,33]){a.fillStyle='#07101e';a.fillRect(x,y,71,6);}a.fillStyle='#101d32';a.fillRect(0,144,240,16);ui.text(a,'A HIT  B FIRE  L BLOCK  R SUPER',120,146,'#d1e2eb',1,'center');ui.text(a,'UP JUMP  DOWN SQUEEZE  START PAUSE',120,153,'#8ca9ba',1,'center');let arenaPalette=palette([arena],255);a.drawImage(arena,239,42,1,102,240,42,3,102);a.drawImage(arena,0,42,1,102,253,42,3,102);save('arena',arena,'background',0,0,arenaPalette);
+ let arena=await bg('screens/layers/fighting_background.png'),a=arena.getContext('2d');ui.box(a,2,2,98,39);ui.box(a,140,2,98,39);ui.box(a,103,3,34,27);ui.text(a,'HP',5,15);ui.text(a,'STA',5,24);ui.text(a,'SP',5,33);ui.text(a,'HP',143,15);ui.text(a,'STA',143,24);ui.text(a,'SP',143,33);for(const x of[25,163])for(const y of[15,24,33]){a.fillStyle='#07101e';a.fillRect(x,y,71,6);}drawBreakawayThreshold(a);a.fillStyle='#101d32';a.fillRect(0,144,240,16);ui.text(a,'A HIT  B FIRE  L BLOCK  R SUPER',120,146,'#d1e2eb',1,'center');ui.text(a,'UP JUMP  DOWN SQUEEZE  START PAUSE',120,153,'#8ca9ba',1,'center');let arenaPalette=palette([arena],255);a.drawImage(arena,239,42,1,102,240,42,3,102);a.drawImage(arena,0,42,1,102,253,42,3,102);save('arena',arena,'background',0,0,arenaPalette);
  let practiceArena=canvas(256,256),pa=practiceArena.getContext('2d');pa.drawImage(arena,0,0);ui.box(pa,25,123,190,20);save('practice_arena',practiceArena,'background');
  for(const kind of ['volcanic','shoreline','frostpeak','ruins']){
   const scene=require('./arena_art.cjs').paintArena(canvas,kind),ctx=scene.getContext('2d');
@@ -22,6 +33,7 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
   ui.box(ctx,2,2,98,39);ui.box(ctx,140,2,98,39);ui.box(ctx,103,3,34,27);
   for(const x of [5,143]){ui.text(ctx,'HP',x,15);ui.text(ctx,'STA',x,24);ui.text(ctx,'SP',x,33);}
   for(const x of [25,163])for(const y of [15,24,33]){ctx.fillStyle='#07101e';ctx.fillRect(x,y,71,6);}
+  drawBreakawayThreshold(ctx);
   ctx.drawImage(arena,0,144,240,16,0,144,240,16);
   ctx.drawImage(scene,239,42,1,102,240,42,3,102);ctx.drawImage(scene,0,42,1,102,253,42,3,102);
   save('arena_'+kind,scene,'background');
@@ -50,7 +62,7 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
  for(const kind of['victory','defeat']){let c=await bg('screens/layers/'+kind+'_background.png'),ctx=c.getContext('2d');ui.text(ctx,kind==='victory'?'VICTORY!':'DEFEAT',120,12,kind==='victory'?'#ffda6b':'#93b8e0',3,'center');ui.box(ctx,8,117,224,16,'#122639','#365573');ui.button(ctx,'REMATCH',8,136,104,18);ui.button(ctx,'CHANGE',128,136,104,18);save(kind,c,'background');}
  {let c=await bg('screens/layers/defeat_background.png'),ctx=c.getContext('2d');ui.text(ctx,'DRAW',120,12,'#ffda6b',3,'center');ui.box(ctx,8,117,224,16,'#122639','#365573');ui.button(ctx,'REMATCH',8,136,104,18);ui.button(ctx,'CHANGE',128,136,104,18);save('draw',c,'background');}
  for(const unavailable of [false,true]){let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.text(ctx,'PAUSED',120,12,'#ffda6b',3,'center');['RESUME',unavailable?'REMATCH UNAVAILABLE':'REMATCH','CHANGE POKEMON','CONTROLS','AUDIO'].forEach((v,i)=>ui.text(ctx,v,120,49+i*18,unavailable&&i===1?'#607485':'#edf8f0',1,'center'));ui.text(ctx,'A OPEN  B/START RESUME',120,150,'#9db8c6',1,'center');save(unavailable?'pause_no_retry':'pause',c,'background');}
- let help=await bg('screens/layers/selector_background.png'),h=help.getContext('2d');ui.text(h,'HOW TO PLAY',120,10,'#ffda6b',2,'center');['D-PAD LEFT/RIGHT : MOVE','UP : JUMP   DOWN : SQUEEZE','A : MELEE   B : FIRE','L : HOLD BLOCK','R : SUPER WHEN SP IS FULL','HITS CHARGE SUPER POWER','CLEAN A THEN B : FOLLOW-UP','SUPER IGNORES BLOCK','JUMP OR SQUEEZE TO EVADE','START : PAUSE','A / B / START : BACK'].forEach((v,i)=>ui.text(h,v,120,34+i*11,i===7?'#ffda6b':'#edf8f0',1,'center'));save('help',help,'background');
+ let help=await bg('screens/layers/selector_background.png'),h=help.getContext('2d');ui.text(h,'HOW TO PLAY',120,10,'#ffda6b',2,'center');['D-PAD LEFT/RIGHT : MOVE','UP : JUMP   DOWN : SQUEEZE','A : MELEE   B : FIRE','L : HOLD BLOCK','R : SUPER WHEN SP IS FULL','HITS CHARGE SUPER POWER','CLEAN A THEN B : FOLLOW-UP','SUPER IGNORES BLOCK','JUMP OR SQUEEZE TO EVADE','HITSTUN : L+R ESCAPE 60 SP','START : PAUSE','A / B / START : BACK'].forEach((v,i)=>ui.text(h,v,120,33+i*10,i===9?'#7afff0':i===7?'#ffda6b':'#edf8f0',1,'center'));save('help',help,'background');
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,12,9,216,140,'#122639','#6085a1');ui.text(ctx,'AUDIO',120,20,'#ffda6b',2,'center');ui.text(ctx,'MUSIC',40,62,'#edf8f0');ui.text(ctx,'SOUND FX',40,86,'#edf8f0');ui.text(ctx,'MUSIC IN MENUS. SOUNDS EVERYWHERE.',120,113,'#9db8c6',1,'center');ui.text(ctx,'UP/DOWN CHOOSE  A TOGGLE',120,130,'#edf8f0',1,'center');ui.text(ctx,'B BACK',120,141,'#9db8c6',1,'center');save('audio_options',c,'background');}
  let focus=canvas(64,96),f=focus.getContext('2d');f.fillStyle='#ffda6b';
  for(let tile=0;tile<3;tile++){const y=tile*32;f.fillRect(0,y,64,2);f.fillRect(0,y+30,64,2);if(tile!==2)f.fillRect(0,y,1,32);if(tile!==1)f.fillRect(63,y,1,32);}save('focus',focus,'sprite',64,32);

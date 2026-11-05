@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "checks": 355,
+  "rom_sha256": "b7a8f0bb2b2bdf360787a44444c231fcd32fa20a846fa9c519406526aa53afd2",
+  "configured_product_tasks": 2,
+  "roster_guide_round_trips": 27,
+  "menu_keys": 223,
+  "held_confirmation_safe": true,
+  "result_focus_unique": true,
+  "exhausted_continue_paths": true,
+  "peak_cpu_fraction": 0.798095703125,
+  "missed_display_frames": 0,
+  "method": "mGBA 0.10.2, real buttons, read-only telemetry and framebuffer captures; no gameplay-memory writes"
+}

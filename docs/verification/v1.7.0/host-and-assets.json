@@ -1,0 +1,107 @@
+{
+  "status": "passed",
+  "host_suites": [
+    {
+      "suite": "combat",
+      "status": "passed",
+      "output": "PASS 30858573 assertions; 3380 seeded matches; all 81 ordered matchups."
+    },
+    {
+      "suite": "movement",
+      "status": "passed",
+      "output": "PASS 40957 movement and animation checks."
+    },
+    {
+      "suite": "feel",
+      "status": "passed",
+      "output": "PASS 135811 combat-feedback, pause, resource and input-buffer checks."
+    },
+    {
+      "suite": "depth",
+      "status": "passed",
+      "output": "PASS 47253 fighter-depth, follow-up and practice checks."
+    },
+    {
+      "suite": "cpu",
+      "status": "passed",
+      "output": "PASS 2843994 CPU assertions; 312 deterministic rounds; public perception, reaction delays, bounded memory, recovery, difficulty and replay. CPU bytes=4924"
+    },
+    {
+      "suite": "presentation",
+      "status": "passed",
+      "output": "PASS 1374311 round-presentation checks; all fighters, outcomes, stage edges, practice, skip and checksum isolation."
+    },
+    {
+      "suite": "arcade",
+      "status": "passed",
+      "output": "PASS Arcade/save: 3900 roster runs; 18595200 bit-corruption cases; 1192 interrupted writes; schema-1 migration, nine-fighter records, retries and sequence wraparound."
+    },
+    {
+      "suite": "roster",
+      "status": "passed",
+      "output": "PASS nine-fighter traits/animation checks; float airtime 47 versus 33 ticks, Psy Push knockback and Heavy Hands guard pressure."
+    },
+    {
+      "suite": "mastery",
+      "status": "passed",
+      "output": "PASS mastery: all thirteen fighters, real damaging follow-ups, jump/squeeze evasion, training exclusion, caps, schema-2/3 migration and 100 arena rotations; combat checksums unchanged."
+    },
+    {
+      "suite": "practice",
+      "status": "passed",
+      "output": "PASS 52976 practice checks; all nine fighters, real B follow-ups, jump/squeeze evasion, rejection, interruption, training exclusion and retry timing."
+    },
+    {
+      "suite": "goals",
+      "status": "passed",
+      "output": "PASS 539595 post-match goal checks; all counter/medal states, real follow-ups, per-match baselines, Practice exclusion, unchanged saves/combat, and 1300 read-only Arcade scouting runs."
+    },
+    {
+      "suite": "expansion",
+      "status": "passed",
+      "output": "PASS 24453 expansion checks: thirteen fighters, five arenas, real guard/punish traits, frozen schema-3 migration, all interrupted writes and single-bit corruptions."
+    },
+    {
+      "suite": "selection_power",
+      "status": "passed",
+      "output": "PASS 1881 selection/power checks: one page, valid navigation, readable labels, bounded geometry, complete punch phases and eight-frame supers."
+    },
+    {
+      "suite": "local_versus",
+      "status": "passed",
+      "output": "Local Versus: 241 checks passed"
+    },
+    {
+      "suite": "techniques",
+      "status": "passed",
+      "output": "PASS 312 technique checks: two sides, exact costs/timing, counterplay, interruptions, hitstop, resets and real drill completion."
+    },
+    {
+      "suite": "cup",
+      "status": "passed",
+      "output": "Cup: 30259 checks passed (702 ordered runs, real event goals, journal corruption/recovery)"
+    },
+    {
+      "suite": "starter",
+      "status": "passed",
+      "output": "PASS 383 starter checks: both sides/directions, held/expired/rejected gestures, exact costs/movement/recovery, walls, hits, resets and real lessons."
+    },
+    {
+      "suite": "breakaway",
+      "status": "passed",
+      "output": "PASS 302 Breakaway checks across all fighters and both sides"
+    }
+  ],
+  "asset_tests": {
+    "status": "passed",
+    "output": "> pokemon-battle-arena-gba@1.7.0 test:assets\n> node tests/assets_test.cjs && node tests/effects_assets_test.cjs && node tests/techniques_assets_test.cjs\n\n{\n  \"status\": \"passed\",\n  \"validated_frames\": 925,\n  \"characters\": [\n    {\n      \"name\": \"pikachu\",\n      \"frames\": 68,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"charmander\",\n      \"frames\": 66,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"squirtle\",\n      \"frames\": 75,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"bulbasaur\",\n      \"frames\": 65,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"eevee\",\n      \"frames\": 67,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"meowth\",\n      \"frames\": 67,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"psyduck\",\n      \"frames\": 66,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"jigglypuff\",\n      \"frames\": 72,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"machop\",\n      \"frames\": 65,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"vulpix\",\n      \"frames\": 72,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Shoot\"\n    },\n    {\n      \"name\": \"gastly\",\n      \"frames\": 96,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"riolu\",\n      \"frames\": 74,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    },\n    {\n      \"name\": \"totodile\",\n      \"frames\": 72,\n      \"unique_walk_poses\": 3,\n      \"fire_windup\": \"Charge\"\n    }\n  ]\n}\n{\"status\":\"passed\",\"effects\":104,\"frames\":598,\"distinct_normal_silhouettes\":13}\nPASS technique art: eight distinct native phases, outlined warning, filled blast and bounded footprint."
+  },
+  "audio_tests": {
+    "status": "passed",
+    "output": "> pokemon-battle-arena-gba@1.7.0 test:audio\n> python3 tests/combat_audio_assets_test.py && python3 tests/presentation_assets_test.py\n\nPASS 55 original PCM effects: non-silent, bounded, ramped, importable; thirteen distinct themes per bank.\nPASS 2225 presentation asset checks; 14 PCM cues, original 3-voice MOD, ball/beam/glint sprite imports."
+  },
+  "publication_tests": {
+    "status": "passed",
+    "output": "test_bundle_is_deterministic_and_contains_playable_rom (release_tests.ReleaseTests.test_bundle_is_deterministic_and_contains_playable_rom) ... ok\ntest_changed_prepared_asset_is_rejected_before_any_write (release_tests.ReleaseTests.test_changed_prepared_asset_is_rejected_before_any_write) ... ok\ntest_corrupted_or_mismatched_build_cannot_package (release_tests.ReleaseTests.test_corrupted_or_mismatched_build_cannot_package) ... ok\ntest_cup_brackets_require_choices_captain_tactics_and_persistent_crests (release_tests.ReleaseTests.test_cup_brackets_require_choices_captain_tactics_and_persistent_crests) ... ok\ntest_cup_bundle_requires_real_clears_and_save_recovery_for_this_rom (release_tests.ReleaseTests.test_cup_bundle_requires_real_clears_and_save_recovery_for_this_rom) ... ok\ntest_existing_tag_and_unrelated_draft_are_not_overwritten (release_tests.ReleaseTests.test_existing_tag_and_unrelated_draft_are_not_overwritten) ... ok\ntest_failed_stale_or_missed_native_evidence_is_rejected (release_tests.ReleaseTests.test_failed_stale_or_missed_native_evidence_is_rejected) ... ok\ntest_interrupted_upload_stays_draft_and_can_resume (release_tests.ReleaseTests.test_interrupted_upload_stays_draft_and_can_resume) ... ok\ntest_local_versus_bundle_contains_exact_native_tested_adapter (release_tests.ReleaseTests.test_local_versus_bundle_contains_exact_native_tested_adapter) ... ok\ntest_published_wrong_rom_is_never_replaced (release_tests.ReleaseTests.test_published_wrong_rom_is_never_replaced) ... ok\ntest_release_candidate_is_a_prerelease_and_never_replaces_latest_stable (release_tests.ReleaseTests.test_release_candidate_is_a_prerelease_and_never_replaces_latest_stable) ... ok\ntest_starter_bundle_includes_both_moves_and_matching_native_evidence (release_tests.ReleaseTests.test_starter_bundle_includes_both_moves_and_matching_native_evidence) ... ok\ntest_starter_publication_rejects_partial_stale_or_modified_validation (release_tests.ReleaseTests.test_starter_publication_rejects_partial_stale_or_modified_validation) ... ok\ntest_technique_bundle_requires_both_native_tested_fighters_and_drills (release_tests.ReleaseTests.test_technique_bundle_requires_both_native_tested_fighters_and_drills) ... ok\ntest_uploads_are_verified_before_publication_and_rerun_is_read_only (release_tests.ReleaseTests.test_uploads_are_verified_before_publication_and_rerun_is_read_only) ... ok\ntest_version_mismatch_cannot_package (release_tests.ReleaseTests.test_version_mismatch_cannot_package) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.114s\n\nOK"
+  }
+}

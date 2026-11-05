@@ -89,10 +89,10 @@ def setup(character, mode, arena=0):
             break
         tap(16)
     tap(4)
-    for _ in range(5):
-        if read(DEPTH)[3] == mode:
-            break
+    first_mode = read(DEPTH)[3]
+    while read(DEPTH)[3] != mode:
         tap(16)
+        check(read(DEPTH)[3] != first_mode, 'Training menu reaches the requested option before wrapping')
     tap(128)
     for _ in range(len(characters)):
         if read(DEPTH)[4] == (character + 1) % len(characters):

@@ -241,6 +241,24 @@ Read FIGHTER_TECHNIQUES.md for timings, recovery, counters and all four signatur
 
 '''
         bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
+    if build.get('breakaway'):
+        report = json_file(evidence / 'native-breakaway.json')
+        verify_report(report, sha)
+        check(report.get('status') == 'passed' and report.get('rom_sha256') == sha
+              and report.get('adapter_sha256') == digest((root / 'tools/local_versus.lua').read_bytes())
+              and report.get('drill_completed') and report.get('both_player_sides')
+              and report.get('power_spent') == balance['breakaway']['power_cost']
+              and report.get('zero_state_writes') and report.get('save_byte_identical')
+              and report.get('missed_display_frames') == 0,
+              'Breakaway needs native practice, Versus, cost and save-isolation evidence')
+        introduction = b'''BREAKAWAY
+During ordinary hitstun, hold L and tap R to spend 60 SP on a short backhop.
+The SP gauge marks 60. L+R ESCAPE appears when you can use it.
+Learn the timing in Practice > Breakaway. Select retries the lesson.
+With the Lua adapter, P1 holds U and taps I. P2 holds Q and taps E.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
     output.mkdir(parents=True, exist_ok=True)
     (output / 'PokemonBattleArena.gba').write_bytes(rom)
     archive = output / ('PokemonBattleArena-v' + version + '.zip')
