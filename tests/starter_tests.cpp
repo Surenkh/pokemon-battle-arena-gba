@@ -61,7 +61,7 @@ int main(){
  }
  for(int fighter:{0,2}){
   CombatCore c;c.reset(fighter,1);c.training=true;PracticeSession p;p.mode=DUMMY_TECHNIQUE;p.begin_round();p.prepare(c);
-  check(PracticeSession::available_modes(fighter)==6,"Both starter lessons are selectable");
+  check(PracticeSession::available_modes(fighter)==DUMMY_MODE_COUNT,"Both starter lessons are selectable");
   auto step=[&](Input in=Input{}){c.frame(in,p.input(c));p.observe(c);};
   if(fighter==0){step({RIGHT,RIGHT});step();step({RIGHT,RIGHT});for(int n=0;n<20;++n)step();check(p.completed()&&p.feedback==STEP_COMPLETE,"An actual completed dash teaches Pikachu's lesson");}
   else {for(int n=0;n<85;++n)step();step({uint16_t(DOWN|RIGHT),DOWN});for(int n=0;n<45&&!p.completed();++n)step();check(p.completed()&&p.feedback==ROLL_COMPLETE&&c.f[0].hp==characters[2].hp,"An actual rolling super evasion completes Squirtle's lesson");}

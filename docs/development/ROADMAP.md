@@ -1,5 +1,12 @@
 # Pokémon Battle Arena product roadmap
 
+## v1.7 — Breakaway
+
+Spend 60 SP to backhop after an ordinary hit or save 100 SP for a super.
+The meter marks the cost, the HUD shows the escape window, and Practice
+teaches the timing. Local Versus playtests will tell us whether players use
+both options and whether attackers can bait and chase the escape.
+
 ## v1.6 — Rival Cup
 
 Each of the three Cups offers a choice of three challengers. Win two distinct
