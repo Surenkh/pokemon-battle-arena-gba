@@ -47,9 +47,10 @@ Pikachu, Squirtle, Jigglypuff and Gastly also have special techniques and Practi
 | A / B | Melee / fire |
 | Hold L | Block ordinary attacks |
 | R | Super at 100 SP and 25 stamina |
+| Hold L + tap R | Breakaway during ordinary hitstun at 60 SP |
 | Start | Pause |
 
-Clean hits build SP. Supers bypass blocks, so jump or time a squeeze to evade them. Emulator keyboard bindings can be configured in your emulator.
+Clean hits build SP. Try **Practice → Breakaway** to learn when to spend it on an escape. Supers bypass blocks, so jump or time a squeeze to evade them. Emulator keyboard bindings can be configured in your emulator.
 
 ## More information
 

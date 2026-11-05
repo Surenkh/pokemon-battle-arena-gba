@@ -172,6 +172,7 @@ extern "C" { volatile int pkmn_technique_debug[32] = {}; volatile int pkmn_start
 #include "bn_sprite_items_impact.h"
 #include "bn_sprite_items_ground_shadow.h"
 #include "bn_sprite_items_spark.h"
+#include "bn_sprite_items_breakaway_meter.h"
 #include "bn_sprite_items_pkfont.h"
 #include "bn_regular_bg_items_title.h"
 #include "bn_regular_bg_items_ensemble.h"
@@ -241,6 +242,8 @@ class Renderer {
  bn::array<bn::fixed,160> shake_x{},shake_y{};int last_camera_x=99,last_camera_y=99,hbe_setup_frame=0,last_canopy_step=-1;
  bn::optional<bn::sprite_ptr> fighters[2],shield[2],bullet[4],bars[6],focus,focus_right,marker,sparks[5];
  bn::optional<bn::sprite_ptr> cup_panels[2],cup_crest;
+ bn::optional<bn::sprite_ptr> breakaway_markers[2];
+ int meter_tiles[2]={-1,-1};
  bn::optional<bn::sprite_ptr> selected_card,arena_preview,punches[2];int preview_tile=-1,punch_tile[2]={-1,-1},charge_asset[2]={-1,-1};
  bn::optional<bn::sprite_ptr> versus_cursors[2],versus_cards[2],player_marks[2];
  int versus_selected[2]={-1,-1};
@@ -271,7 +274,10 @@ class Renderer {
  bn::sprite_text_generator cup_card_text{bn::sprite_font(bn::sprite_items::pkfont,{},{},-2)};
  void line(int x,int y,bn::string_view value,bool center=false,int scale=1,bn::ivector<bn::sprite_ptr>* output=nullptr){auto& target=output?*output:static_cast<bn::ivector<bn::sprite_ptr>&>(labels);int first=target.size();if(center)text.set_center_alignment();else text.set_left_alignment();text.generate(x-120,y-80,value,target);for(int i=first;i<target.size();i++)target[i].set_bg_priority(0);if(scale>1){if(scale>2)scale=2;for(int i=first;i<target.size();i++){auto&sp=target[i];sp.set_position(x-120+(sp.x()-(x-120))*scale,y-80);sp.set_scale(scale);}}}
  void right_line(int x,int y,bn::string_view value){int first=labels.size();text.set_right_alignment();text.generate(x-120,y-80,value,labels);for(int i=first;i<labels.size();++i)labels[i].set_bg_priority(0);}
- void clear(){cup_crest.reset();for(auto& panel:cup_panels)panel.reset();for(int who=0;who<2;++who){versus_cursors[who].reset();versus_cards[who].reset();player_marks[who].reset();versus_selected[who]=-1;}for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();result_labels.clear();result_detail_phase=result_detail_bits=0;active_draw_frames=scene_frames=0;roster_selected=-1;roster_frames=0;selected_card.reset();arena_preview.reset();preview_tile=-1;for(auto& v:punches)v.reset();punch_tile[0]=punch_tile[1]=-1;charge_asset[0]=charge_asset[1]=-1;last_practice_damage=last_practice_chain=last_practice_best=last_practice_feedback=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
+ void clear(){
+  for(auto& meter:breakaway_markers)meter.reset();
+  meter_tiles[0]=meter_tiles[1]=-1;
+  cup_crest.reset();for(auto& panel:cup_panels)panel.reset();for(int who=0;who<2;++who){versus_cursors[who].reset();versus_cards[who].reset();player_marks[who].reset();versus_selected[who]=-1;}for(auto&v:fighters)if(v){auto palette=v->palette();palette.set_fade(bn::color(31,31,31),0);}recall_ball.reset();recall_beam.reset();recall_glint.reset();recall_tile=glint_tile=-1;labels.clear();hud_names.clear();practice_labels.clear();result_labels.clear();result_detail_phase=result_detail_bits=0;active_draw_frames=scene_frames=0;roster_selected=-1;roster_frames=0;selected_card.reset();arena_preview.reset();preview_tile=-1;for(auto& v:punches)v.reset();punch_tile[0]=punch_tile[1]=-1;charge_asset[0]=charge_asset[1]=-1;last_practice_damage=last_practice_chain=last_practice_best=last_practice_feedback=-1;horizontal_shake.reset();vertical_shake.reset();bg.reset();ensemble.reset();last_camera_x=last_camera_y=99;hbe_setup_frame=0;last_canopy_step=-1;for(auto&v:charging)v.reset();charge_tile[0]=charge_tile[1]=-1;flash_state[0]=flash_state[1]=-1;presented_events=core.event_frame;focus.reset();focus_right.reset();marker.reset();for(auto&v:fighters)v.reset();for(auto&v:shield)v.reset();for(auto&v:bullet)v.reset();for(auto&v:bars)v.reset();for(auto&v:sparks)v.reset();for(auto&v:shadows)v.reset();for(auto&v:portraits)v.reset();for(auto&v:badges)v.reset();for(auto&v:particles)v.sprite.reset();for(auto&v:tile)v=-1;for(auto&v:portrait_tile)v=-1;for(auto&v:bullet_tile)v=-1;for(auto&v:bullet_key)v=-1;last_fx_tick=-1;ko_age=0;key=-1;pkmn_debug[29]=pkmn_debug[30]=pkmn_debug[31]=0;}
  void focus_at(int x,int y,int width,int height){
   // A wide affine sprite clips at twice its source width. Join two halves.
   if(width>128){
@@ -517,10 +523,26 @@ public:
     if(charge||vine||floating||stepping||rolling){int phase=charge?(age/3)%8:floating?(core.tick/3)%4:(stepping||rolling)?(age/2)%4:(age-characters[3].melee_start+2)%4;if(charge_tile[i]!=phase){charging[i]->set_tiles(charge_item.tiles_item(),phase);charge_tile[i]=phase;}charging[i]->set_position(bn::fixed(v.x)/256+(floating?0:stepping?-v.mobility_direction*12:v.face*(vine?24:10))-120+camera_x,bn::fixed(v.y)/256-(floating?3:rolling?5:19)-80+camera_y);charging[i]->set_horizontal_flip(v.face<0);charging[i]->set_scale(charge?bn::fixed(1.2)+bn::fixed(age)/100:bn::fixed(1));if(charge){pkmn_power_debug[20+i]=phase+1;pkmn_power_debug[5]|=1<<phase;pkmn_power_debug[12]|=1<<v.character;}}
 
     if(new_tick&&screen==FIGHTING){if(v.landed_at==core.tick-1||v.took_off_at==core.tick-1)particle(v.x/256,world_floor_y-4,DUST);else if(v.action==NONE&&core.grounded(v)&&v.vx&&core.tick%12==0)particle(v.x/256-v.face*8,world_floor_y-3,DUST);}
+    // Stagger the meter markers after the actor and countdown allocations.
+    if(hbe_setup_frame>=8+i){
+     const int tile_index=v.sp>=breakaway_power_cost?1:0;
+     const auto& item=bn::sprite_items::breakaway_meter;
+     if(!breakaway_markers[i]){
+      constexpr int threshold_x=71*breakaway_power_cost/resources_super_power_max;
+      breakaway_markers[i]=item.create_sprite((i?163:25)+threshold_x-120,36-80,tile_index);
+      breakaway_markers[i]->set_bg_priority(0);
+      breakaway_markers[i]->set_z_order(-3);
+      meter_tiles[i]=tile_index;
+     }else if(meter_tiles[i]!=tile_index){
+      breakaway_markers[i]->set_tiles(item.tiles_item(),tile_index);
+      meter_tiles[i]=tile_index;
+     }
+    }
     int values[]={v.hp,v.sta,v.sp},maxes[]={characters[v.character].hp,characters[v.character].sta*60,100};for(int j=0;j<3;j++){auto&bar=*bars[i*3+j];bn::fixed width=bn::fixed(71)*values[j]/maxes[j];bar.set_visible(values[j]>0);if(values[j]>0){if(width<1)width=1;bar.set_scale(width/64,bn::fixed(.125));bar.set_position((i?163:25)+width/2-120,18+j*9-80);}}}
    if(presented_events!=core.event_frame&&(screen==FIGHTING||screen==ROUND_END)){
     presented_events=core.event_frame;for(int n=0;n<core.event_count;n++){const auto&e=core.events[n];int ch=core.f[e.owner].character;
      if(e.kind==EV_HIT||e.kind==EV_BLOCK||e.kind==EV_BREAK){const bool orb_burst=e.kind==EV_HIT&&!e.super&&core.p[e.owner].burst_at>=0&&core.p[e.owner].id==e.attack;particle(e.x/256,e.y/256,e.kind==EV_BLOCK?GUARD:e.super||orb_burst?SUPER_IMPACT:IMPACT,ch,core.f[e.owner].face<0);}
+     if(e.kind==EV_BREAKAWAY)particle(e.x/256,e.y/256,GUARD,ch,core.f[e.owner].face<0);
      if(e.kind==EV_SHOT||e.kind==EV_RELEASE){particle(e.x/256,e.y/256,CAST,ch,core.f[e.owner].face<0);}
     }
    }
@@ -654,7 +676,7 @@ public:
     }
     if(screen==RESUME_COUNTDOWN)line(120,71,"READY",true,2);
     if(screen==FIGHTING||screen==ROUND_END){
-     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL"};
+     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL","L+R ESCAPE","BREAKAWAY"};
      for(int i=0;i<2;i++){int status=feel.status(core,i);if(status)line(i?192:48,47,statuses[status],true);}
      if(charge)line(120,57,"SUPER! JUMP OR SQUEEZE",true);
     }
@@ -910,7 +932,7 @@ public:
     else if((keys.pressed&DOWN)&&practice_row<4)++practice_row;
     else if(practice_row<4&&(keys.pressed&(LEFT|RIGHT))){
      int direction=keys.pressed&RIGHT?1:-1;
-     if(practice_row==1){const int modes=PracticeSession::available_modes(selected);trainer.mode=DummyMode((int(trainer.mode)+modes+direction)%modes);}
+     if(practice_row==1)trainer.cycle_mode(selected,direction);
      else if(practice_row==3)chosen_arena=(chosen_arena+arena_count+direction)%arena_count;
      else{trainer.opponent=(trainer.opponent+character_count+direction)%character_count;if(trainer.opponent==selected)trainer.opponent=(trainer.opponent+character_count+direction)%character_count;}
     }

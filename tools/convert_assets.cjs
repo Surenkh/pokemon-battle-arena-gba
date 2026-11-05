@@ -50,13 +50,23 @@ async function bg(file){let c=canvas(256,256);c.getContext('2d').drawImage(await
  for(const kind of['victory','defeat']){let c=await bg('screens/layers/'+kind+'_background.png'),ctx=c.getContext('2d');ui.text(ctx,kind==='victory'?'VICTORY!':'DEFEAT',120,12,kind==='victory'?'#ffda6b':'#93b8e0',3,'center');ui.box(ctx,8,117,224,16,'#122639','#365573');ui.button(ctx,'REMATCH',8,136,104,18);ui.button(ctx,'CHANGE',128,136,104,18);save(kind,c,'background');}
  {let c=await bg('screens/layers/defeat_background.png'),ctx=c.getContext('2d');ui.text(ctx,'DRAW',120,12,'#ffda6b',3,'center');ui.box(ctx,8,117,224,16,'#122639','#365573');ui.button(ctx,'REMATCH',8,136,104,18);ui.button(ctx,'CHANGE',128,136,104,18);save('draw',c,'background');}
  for(const unavailable of [false,true]){let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.text(ctx,'PAUSED',120,12,'#ffda6b',3,'center');['RESUME',unavailable?'REMATCH UNAVAILABLE':'REMATCH','CHANGE POKEMON','CONTROLS','AUDIO'].forEach((v,i)=>ui.text(ctx,v,120,49+i*18,unavailable&&i===1?'#607485':'#edf8f0',1,'center'));ui.text(ctx,'A OPEN  B/START RESUME',120,150,'#9db8c6',1,'center');save(unavailable?'pause_no_retry':'pause',c,'background');}
- let help=await bg('screens/layers/selector_background.png'),h=help.getContext('2d');ui.text(h,'HOW TO PLAY',120,10,'#ffda6b',2,'center');['D-PAD LEFT/RIGHT : MOVE','UP : JUMP   DOWN : SQUEEZE','A : MELEE   B : FIRE','L : HOLD BLOCK','R : SUPER WHEN SP IS FULL','HITS CHARGE SUPER POWER','CLEAN A THEN B : FOLLOW-UP','SUPER IGNORES BLOCK','JUMP OR SQUEEZE TO EVADE','START : PAUSE','A / B / START : BACK'].forEach((v,i)=>ui.text(h,v,120,34+i*11,i===7?'#ffda6b':'#edf8f0',1,'center'));save('help',help,'background');
+ let help=await bg('screens/layers/selector_background.png'),h=help.getContext('2d');ui.text(h,'HOW TO PLAY',120,10,'#ffda6b',2,'center');['D-PAD LEFT/RIGHT : MOVE','UP : JUMP   DOWN : SQUEEZE','A : MELEE   B : FIRE','L : HOLD BLOCK','R : SUPER WHEN SP IS FULL','HITS CHARGE SUPER POWER','CLEAN A THEN B : FOLLOW-UP','SUPER IGNORES BLOCK','JUMP OR SQUEEZE TO EVADE','HITSTUN : L+R ESCAPE 60 SP','START : PAUSE','A / B / START : BACK'].forEach((v,i)=>ui.text(h,v,120,33+i*10,i===9?'#7afff0':i===7?'#ffda6b':'#edf8f0',1,'center'));save('help',help,'background');
  {let c=await bg('screens/layers/selector_background.png'),ctx=c.getContext('2d');ui.box(ctx,12,9,216,140,'#122639','#6085a1');ui.text(ctx,'AUDIO',120,20,'#ffda6b',2,'center');ui.text(ctx,'MUSIC',40,62,'#edf8f0');ui.text(ctx,'SOUND FX',40,86,'#edf8f0');ui.text(ctx,'MUSIC IN MENUS. SOUNDS EVERYWHERE.',120,113,'#9db8c6',1,'center');ui.text(ctx,'UP/DOWN CHOOSE  A TOGGLE',120,130,'#edf8f0',1,'center');ui.text(ctx,'B BACK',120,141,'#9db8c6',1,'center');save('audio_options',c,'background');}
  let focus=canvas(64,96),f=focus.getContext('2d');f.fillStyle='#ffda6b';
  for(let tile=0;tile<3;tile++){const y=tile*32;f.fillRect(0,y,64,2);f.fillRect(0,y+30,64,2);if(tile!==2)f.fillRect(0,y,1,32);if(tile!==1)f.fillRect(63,y,1,32);}save('focus',focus,'sprite',64,32);
  let markers=canvas(8,16),mc=markers.getContext('2d');
  for(const [tile,shape,color]of [[0,['000001','000011','100110','111100','011000'],'#93dbcd'],[1,['1000','1100','1110','1111','1110','1100','1000'],'#ffda6b']]){mc.fillStyle=color;shape.forEach((row,y)=>{for(let x=0;x<row.length;x++)if(row[x]==='1')mc.fillRect(x+1,tile*8+y,1,1);});}save('nav_markers',markers,'sprite',8,8);
  let bars=canvas(64,96),bc=bars.getContext('2d');['#9ee287','#6cc5ef','#ffd35c'].forEach((color,i)=>{bc.fillStyle=color;bc.fillRect(0,i*32,64,32);});save('bars',bars,'sprite',64,32);
+ const meter=canvas(8,16),meterContext=meter.getContext('2d');
+ for(let frame=0;frame<2;frame++){
+  const y=frame*8;
+  meterContext.fillStyle='#091b2c';
+  meterContext.fillRect(3,y+1,3,6);
+  meterContext.fillStyle=frame?'#7afff0':'#9db8c6';
+  meterContext.fillRect(4,y,1,8);
+  meterContext.fillRect(3,y,3,1);
+ }
+ save('breakaway_meter',meter,'sprite',8,8);
  let shield=canvas(32,32),sh=shield.getContext('2d');sh.strokeStyle='#8ae2ff';sh.lineWidth=2;sh.beginPath();sh.arc(16,16,14,-Math.PI*.6,Math.PI*.6);sh.stroke();save('shield',shield,'sprite');
  require('./elemental_fx.cjs').buildElementalEffects({canvas,save});
  require('./technique_art.cjs').buildTechniqueArt({canvas,save});
