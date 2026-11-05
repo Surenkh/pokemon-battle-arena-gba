@@ -6,12 +6,19 @@ class RoundPresentation {
  static int clamp(int n,int a,int b){return n<a?a:n>b?b:n;}
 public:
  enum Phase { IMPACT,ARRIVE,OPEN,ABSORB,CLOSE,FALL,SEAL,DONE };
+ enum Finish { NORMAL_FINISH,SUPER_FINISH,PUNISH_FINISH };
  static constexpr int recall_frames=156,quick_frames=60;
- int age=0,loser=-1,target_x=120,from_x=120;bool recall=false,training=false;
- void reset(){age=0;loser=-1;target_x=from_x=120;recall=training=false;}
+ int age=0,loser=-1,target_x=120,from_x=120;bool recall=false,training=false;Finish finish=NORMAL_FINISH;
+ void reset(){age=0;loser=-1;target_x=from_x=120;recall=training=false;finish=NORMAL_FINISH;}
  void begin(const CombatCore&c,bool practice){
   reset();training=practice;loser=c.outcome==1?1:c.outcome==2?0:-1;recall=!practice&&loser>=0;
   if(loser>=0){target_x=clamp(c.f[loser].x/256,32,208);int winner=1-loser;from_x=clamp(target_x+(c.f[winner].x<c.f[loser].x?-40:40),16,224);}
+  if(recall&&c.f[loser].hp==0)for(int i=0;i<c.event_count;++i){
+   const auto& event=c.events[i];
+   if(event.target!=loser)continue;
+   if(event.kind==EV_SUPER_FINISH)finish=SUPER_FINISH;
+   else if(event.kind==EV_PUNISH_FINISH)finish=PUNISH_FINISH;
+  }
  }
  int duration()const{return training?6:recall?recall_frames:quick_frames;}
  void advance(){if(age<duration())++age;}

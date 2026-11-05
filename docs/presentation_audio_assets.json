@@ -1,6 +1,6 @@
 {
   "generator": "tools/generate_presentation_audio.py",
-  "provenance": "Original composition, wavetables and deterministic PCM synthesis; no external recordings",
+  "provenance": "Original compositions, wavetables and deterministic PCM synthesis; no external recordings",
   "music": {
     "name": "Leaflight Circuit",
     "file": "audio/title_theme.mod",
@@ -9,6 +9,22 @@
     "tempo_bpm": 112,
     "nominal_loop_seconds": 34.285714285714285,
     "sha256": "88cba786155261217b34ecd1d511d109957060bdae4e915350d364d7002d52c6"
+  },
+  "battle_music": {
+    "name": "Arena Momentum",
+    "file": "audio/battle_theme.mod",
+    "patterns": 4,
+    "active_channels": 1,
+    "tempo_bpm": 144,
+    "normal_patterns": [
+      0,
+      1
+    ],
+    "finale_patterns": [
+      2,
+      3
+    ],
+    "sha256": "f4f9cd32b175f0695005fb75207282c4fa79cad873b722f66e9170b8046cd5a1"
   },
   "effects": [
     {
@@ -108,6 +124,27 @@
       "rate": 16384,
       "peak": 9536,
       "sha256": "32b0f06986ccefef6972722f2df176866eefdafc168c0e7d5e7913e77fee8448"
+    },
+    {
+      "name": "projectile_clash",
+      "samples": 2949,
+      "rate": 16384,
+      "peak": 11437,
+      "sha256": "8aba022d03bbc15896cdd3d53a9d792b5e8c2c10754a6881b143a78bb66fe38b"
+    },
+    {
+      "name": "super_finish",
+      "samples": 4914,
+      "rate": 16384,
+      "peak": 12711,
+      "sha256": "be69cfa42513d3506280ccfe0b722471df32dd41e801f6e715730a7c1adba847"
+    },
+    {
+      "name": "punish_finish",
+      "samples": 3604,
+      "rate": 16384,
+      "peak": 11730,
+      "sha256": "ad71eccc3638b0306a2a38390a44759f70b2a86103c0512f8ff31f5cca416f0b"
     }
   ]
 }

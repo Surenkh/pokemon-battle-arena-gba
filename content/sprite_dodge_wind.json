@@ -1,0 +1,8 @@
+{
+  "id": "dodge_wind",
+  "type": "sprite",
+  "name": "dodge_wind",
+  "path": "graphics/dodge_wind.bmp",
+  "width": 32,
+  "height": 32
+}

@@ -135,6 +135,28 @@ class ReleaseTests(unittest.TestCase):
         self.js('package.json', dict(version='0.6.0'))
         with self.assertRaises(ValueError): prepare(self.root, self.output)
 
+    def test_combat_feedback_requires_current_native_visual_and_music_evidence(self):
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0', rom_sha256=self.sha,
+                rom_bytes=256, combat_feedback=True, roster_count=2))
+        visual = dict(status='passed', rom_sha256=self.sha, missed_display_frames=0,
+                      both_projectile_colors=True, both_dodge_sides=True, roster_dodges=['one', 'two'],
+                      danger_music=True, super_finish=True, punish_finish=True, recall_complete=True,
+                      save_byte_identical=True)
+        music = dict(status='passed', rom_sha256=self.sha, missed_display_frames=0,
+                     normal=dict(positions=[0, 1]), finale=dict(positions=[2, 3]),
+                     independent_music_and_sound=True)
+        visual_path = 'docs/verification/v0.5.0/native-combat-feedback.json'
+        music_path = 'docs/verification/v0.5.0/native-combat-feedback-audio.json'
+        self.js(visual_path, visual)
+        self.js(music_path, music)
+        prepare(self.root, self.output)
+        for change in (dict(punish_finish=False), dict(roster_dodges=['one']), dict(rom_sha256='wrong')):
+            self.js(visual_path, dict(visual, **change))
+            with self.assertRaises(ValueError): prepare(self.root, self.output)
+        self.js(visual_path, visual)
+        self.js(music_path, dict(music, finale=dict(positions=[0, 1])))
+        with self.assertRaises(ValueError): prepare(self.root, self.output)
+
     def starter_fixture(self):
         adapter = b'-- tested adapter\n'
         self.write('tools/local_versus.lua', adapter)

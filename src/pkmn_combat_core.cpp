@@ -190,15 +190,26 @@ void CombatCore::collide(const Fighter previous[2]){Contact contacts[16];int cou
  for(int j=i+1;j<4;j++)if(p[j].active&&p[j].owner!=b.owner&&!(p[j].super&&b.super)){auto&c=p[j];bool clash;if(b.born==tick||c.born==tick){clash=overlaps(box(b.x,b.y,shape),box(c.x,c.y,shot_shape(c)));time={1,1};}else clash=sweep(start,b.x-b.px,0,box(c.px,c.py,shot_shape(c)),c.x-c.px,0,time);if(clash)add({time,0,i,j,b.id<c.id?b.id:c.id});}}
  for(int i=1;i<count;i++){Contact c=contacts[i];int j=i;while(j>0){auto&b=contacts[j-1];bool before=less(c.time,b.time)||(!less(b.time,c.time)&&!less(c.time,b.time)&&(c.kind==0&&b.kind!=0?true:c.kind!=0&&b.kind==0?false:c.id<b.id));if(!before)break;contacts[j]=b;--j;}contacts[j]=c;}
  bool guard[2]={f[0].action==BLOCK||f[0].action==BLOCKSTUN,f[1].action==BLOCK||f[1].action==BLOCKSTUN};bool invuln[2]={tick<f[0].invuln_until,tick<f[1].invuln_until};int damage[2]={},stun[2]={},reaction[2]={},kb[2]={},lift[2]={};
- for(int k=0;k<count;k++){auto c=contacts[k];if(c.kind==0){auto&a=p[c.source];auto&b=p[c.target];if(!a.active||!b.active)continue;if(!a.super)a.active=false;if(!b.super)b.active=false;continue;}
- int attacker,amount,dir;bool sup=false,followup=false,burst=false;if(c.kind==1){auto&b=p[c.source];if(!b.active)continue;b.active=false;attacker=b.owner;amount=b.damage;burst=b.burst_at>=0;dir=burst?(f[c.target].x>=b.x?1:-1):b.vx>0?1:-1;sup=b.super;followup=b.followup;}else{attacker=c.source;f[attacker].melee_contact=true;amount=characters[f[attacker].character].melee_damage;dir=f[attacker].face;followup=f[attacker].chain_depth>0;}
+ for(int k=0;k<count;k++){auto c=contacts[k];if(c.kind==0){auto&a=p[c.source];auto&b=p[c.target];if(!a.active||!b.active)continue;
+  if(!a.super&&!b.super){
+   emit(EV_CLASH,a.owner,b.owner,false,0,false,a.id);
+   auto&event=events[event_count-1];
+   event.x=(a.px+b.px)/2+int(int64_t((a.x-a.px)+(b.x-b.px))*c.time.n/(2*c.time.d));
+   event.y=(a.y+b.y)/2;
+  }
+  if(!a.super)a.active=false;if(!b.super)b.active=false;continue;}
+ int attacker,amount,dir;bool sup=false,followup=false,burst=false,punish=false;if(c.kind==1){auto&b=p[c.source];if(!b.active)continue;b.active=false;attacker=b.owner;amount=b.damage;burst=b.burst_at>=0;dir=burst?(f[c.target].x>=b.x?1:-1):b.vx>0?1:-1;sup=b.super;followup=b.followup;}else{attacker=c.source;f[attacker].melee_contact=true;amount=characters[f[attacker].character].melee_damage;dir=f[attacker].face;followup=f[attacker].chain_depth>0;}
  int target=c.target;auto&v=f[target];if(invuln[target])continue;
  if(!sup&&guard[target]&&grounded(v)&&(burst||v.face==-dir)){int points=(amount*resources_guard_cost_numerator+resources_guard_cost_denominator-1)/resources_guard_cost_denominator;int pressure=c.kind==1?characters[f[attacker].character].fire_guard_percent:characters[f[attacker].character].melee_guard_percent;int impact=(points*pressure*characters[v.character].guard_percent+9999)/10000*60;
  if(v.sta>=impact){v.sta-=impact;v.last_spend=tick;feedback|=BLOCKED;emit(EV_BLOCK,attacker,target);hitstop=maxv(hitstop,reactions_block_hitstop_display_ticks);if(!v.sta){guard[target]=false;reaction[target]=GUARD_BREAK;stun[target]=reactions_guard_break_ticks;feedback|=BROKEN;emit(EV_BREAK,attacker,target);}else if(stun[target]<reactions_blockstun_ticks){stun[target]=reactions_blockstun_ticks;reaction[target]=BLOCKSTUN;}continue;}
  v.sta=0;v.last_spend=tick;reaction[target]=GUARD_BREAK;stun[target]=reactions_guard_break_ticks;feedback|=BROKEN;emit(EV_BREAK,attacker,target);}
- if(c.kind==2){if(recovering(target)){amount+=characters[f[attacker].character].punish_bonus;emit(EV_PUNISH,attacker,target,false,amount,followup,c.id);}if(!f[attacker].chain_depth)f[attacker].confirmed_at=tick;}
+ if(c.kind==2){if(recovering(target)){punish=true;amount+=characters[f[attacker].character].punish_bonus;emit(EV_PUNISH,attacker,target,false,amount,followup,c.id);}if(!f[attacker].chain_depth)f[attacker].confirmed_at=tick;}
  guard[target]=false;damage[target]+=amount;int duration=sup?reactions_super_hitstun_ticks:reactions_normal_hitstun_ticks;if(duration>stun[target]){stun[target]=duration;reaction[target]=HITSTUN;}int magnitude=sup?motion_super_knockback_q8:c.kind==1?characters[f[attacker].character].fire_knockback:motion_normal_knockback_q8;if(magnitude>absv(kb[target]))kb[target]=dir*magnitude;lift[target]=minv(lift[target],sup?motion_super_hit_lift_q8:motion_normal_hit_lift_q8);
  hitstop=maxv(hitstop,sup?reactions_super_hitstop_display_ticks:reactions_normal_hitstop_display_ticks);feedback|=HIT;emit(EV_HIT,attacker,target,sup,amount,followup,c.id);
+ if(damage[target]-amount<v.hp&&damage[target]>=v.hp){
+  if(sup)emit(EV_SUPER_FINISH,attacker,target,true,amount,followup,c.id);
+  else if(punish)emit(EV_PUNISH_FINISH,attacker,target,false,amount,followup,c.id);
+ }
  if(burst)emit(EV_BURST_HIT,attacker,target,false,amount,followup,c.id);
  if(!sup){int old=f[attacker].sp;f[attacker].sp=minv(100,old+(c.kind==2?resources_melee_clean_hit_power:resources_fire_clean_hit_power));if(old<100&&f[attacker].sp==100){feedback|=CHARGED;emit(EV_READY,attacker,attacker);}}}
  for(int i=0;i<2;i++){auto&v=f[i];v.hp=maxv(0,v.hp-damage[i]);if(stun[i]){cancel(i);v.action=Action(reaction[i]);v.began=tick+1;v.ends=tick+1+stun[i];v.vx=0;}if(damage[i]){v.invuln_until=tick+1+reactions_post_hit_invulnerability_ticks;v.kb=kb[i];v.vy=minv(v.vy,lift[i]);}}

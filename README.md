@@ -50,7 +50,7 @@ Pikachu, Squirtle, Jigglypuff and Gastly also have special techniques and Practi
 | Hold L + tap R | Breakaway during ordinary hitstun at 60 SP |
 | Start | Pause |
 
-Clean hits build SP. Try **Practice → Breakaway** to learn when to spend it on an escape. Supers bypass blocks, so jump or time a squeeze to evade them. Emulator keyboard bindings can be configured in your emulator.
+Clean hits build SP. Try **Practice → Breakaway** to learn when to spend it on an escape. Supers bypass blocks, so jump or time a squeeze to evade them. Down now has an animated dodge with a wind trail. Projectile clashes, battle music and finish cues add feedback during a fight. Emulator keyboard bindings can be configured in your emulator.
 
 ## More information
 

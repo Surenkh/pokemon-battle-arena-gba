@@ -1,5 +1,13 @@
 # Pokémon Battle Arena product roadmap
 
+## v1.8 — Combat Motion
+
+Animated Down dodges replace the stretched artwork across all thirteen fighters.
+Normal projectile clashes show both elemental colors, an original battle theme
+builds at low health, and super and recovery-punish KOs have distinct cues.
+Local Versus and solo share the presentation. Human playtesting should check
+the dodge silhouette, clash readability and audio balance.
+
 ## v1.7 — Breakaway
 
 Spend 60 SP to backhop after an ordinary hit or save 100 SP for a super.

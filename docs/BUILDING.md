@@ -208,3 +208,12 @@ Run the same seventeen host and twenty native suites. The Cup runner verifies
 both challenger choices, the three Captain tactics, native screen text and
 crests after power-off. Package the exact validated ROM with fresh evidence
 in `docs/verification/v1.6.0`.
+
+## v1.8 Combat Motion
+
+Run `combat_feedback_tests.cpp`, `tests/native_combat_feedback_flow.py` and
+`tests/native_combat_feedback_audio_flow.py` in addition to the v1.7 suites.
+The first native runner uses the upstream mGBA 0.11 Lua adapter and real inputs
+for both players, all thirteen dodge poses, projectile clashes and both finish
+types. The second records the normal and low-health music sections from mGBA
+0.10.2 with effects muted. The packager requires both ROM-bound reports.

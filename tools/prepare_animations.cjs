@@ -18,9 +18,17 @@ function bounds(data,w,h){let l=w,t=h,r=0,b=0;for(let y=0;y<h;y++)for(let x=0;x<
     const rgba=await sharp(file).extract(region).ensureAlpha().raw().toBuffer(),bb=bounds(rgba,a.width,a.height);
     const offsets=await sharp(path.join(dir,name,a.source+'-Offsets.png')).extract(region).ensureAlpha().raw().toBuffer();let centerX=a.width/2;
     for(let i=0;i<offsets.length;i+=4)if(offsets[i+3]===255&&offsets[i+1]===255){centerX=(i/4)%a.width;break;}
-    const scale=Math.min(2,60/bb.width,54/bb.height),w=Math.max(1,Math.round(bb.width*scale)),h=clip==='Squeeze'?10:Math.max(1,Math.round(bb.height*scale));const left=Math.max(2,Math.min(62-w,32-Math.round((centerX-bb.left)*scale)));
-    const tile=await sharp(rgba,{raw:{width:a.width,height:a.height,channels:4}}).extract(bb).resize(w,h,{kernel:'nearest'}).png().toBuffer();
-    frames.push(await sharp({create:{width:64,height:64,channels:4,background:clear}}).composite([{input:tile,left,top:58-h}]).png().toBuffer());
+    // Keep the dodge compact while preserving each original pose's proportions.
+    const scale=Math.min(2,60/bb.width,(clip==='Squeeze'?12:54)/bb.height);
+    const w=Math.max(1,Math.round(bb.width*scale)),h=Math.max(1,Math.round(bb.height*scale));
+    const left=Math.max(2,Math.min(62-w,32-Math.round((centerX-bb.left)*scale)));
+    let tile=await sharp(rgba,{raw:{width:a.width,height:a.height,channels:4}}).extract(bb).resize(w,h,{kernel:'nearest'}).png().toBuffer();
+    let tileLeft=left,tileHeight=h;
+    if(clip==='Squeeze'){
+     const pixels=await sharp(tile).ensureAlpha().raw().toBuffer(),trim=bounds(pixels,w,h);
+     tile=await sharp(tile).extract(trim).png().toBuffer();tileLeft+=trim.left;tileHeight=trim.height;
+    }
+    frames.push(await sharp({create:{width:64,height:64,channels:4,background:clear}}).composite([{input:tile,left:tileLeft,top:58-tileHeight}]).png().toBuffer());
    }
    const hit=Math.min(a.hit,a.durations.length-1),back=Math.min(Math.max(a.return,hit+1),a.durations.length);defs.push(`{${first},${a.durations.length},${hit},${back},{${a.durations.join(',')}}}`);info.clips[clip]={first,count:a.durations.length,hit,back,durations:a.durations,source:a.source,direction:row};
   }

@@ -25,5 +25,20 @@ function buildTechniqueArt({canvas,save}) {
   }
  }
  save('shadow_burst',image,'sprite',32,32);
+
+ const wind=canvas(32,32*4),w=wind.getContext('2d');
+ for(let frame=0;frame<4;frame++){
+  for(let step=0;step<48;step++){
+   if((step+frame*4)%24>=15)continue;
+   const angle=step*Math.PI/24;
+   const x=16+Math.round(Math.cos(angle)*14),y=16+Math.round(Math.sin(angle)*8);
+   w.fillStyle=step%3?'#a8e8ed':'#f0fff5';
+   w.fillRect(x,frame*32+y,2,2);
+  }
+  w.fillStyle='#70bdd4';
+  w.fillRect(2+(frame%2),frame*32+24,4,1);
+  w.fillRect(26-(frame%2),frame*32+8,4,1);
+ }
+ save('dodge_wind',wind,'sprite',32,32);
 }
 module.exports={buildTechniqueArt};
