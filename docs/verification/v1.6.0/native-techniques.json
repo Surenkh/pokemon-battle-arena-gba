@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "checks": 145,
+  "rom_sha256": "a17833c2b87876ca7b312998de938f1cfff2b8f7498c40257c59189e8eb35bd0",
+  "adapter_sha256": "42dd5a33b92f2f3331ef267ff1c1abe6b970a287faf92c92ce787f6d0650569c",
+  "mgba_revision": "a67176cd3e6bf60a5016d7adc94357142dd12617",
+  "emulated_gba_instances": 1,
+  "raw_host_key_events": true,
+  "combat_state_writes": false,
+  "signature_fighters": [
+    "jigglypuff",
+    "gastly"
+  ],
+  "counter_cases": [
+    {
+      "caster": 0,
+      "defense": "none",
+      "damage": 10
+    },
+    {
+      "caster": 0,
+      "defense": "block",
+      "damage": 0
+    },
+    {
+      "caster": 0,
+      "defense": "jump",
+      "damage": 0
+    },
+    {
+      "caster": 0,
+      "defense": "leave",
+      "damage": 0
+    },
+    {
+      "caster": 0,
+      "defense": "shoot",
+      "damage": 0
+    },
+    {
+      "caster": 1,
+      "defense": "none",
+      "damage": 10
+    },
+    {
+      "caster": 1,
+      "defense": "block",
+      "damage": 0
+    },
+    {
+      "caster": 1,
+      "defense": "jump",
+      "damage": 0
+    },
+    {
+      "caster": 1,
+      "defense": "leave",
+      "damage": 0
+    },
+    {
+      "caster": 1,
+      "defense": "shoot",
+      "damage": 0
+    }
+  ],
+  "first_frame_actions": true,
+  "drills_completed": true,
+  "pause_reconnect": true,
+  "save_byte_identical": true,
+  "warning_frame_mask": 15,
+  "all_burst_frame_mask": 255,
+  "exact_framebuffer_phase_mask": 255,
+  "peak_cpu_fraction": 0.809814453125,
+  "missed_display_frames": 0,
+  "wall_seconds": 4.42,
+  "method": "One actual upstream mGBA 0.11 core, raw keyboard events, shipping Lua input adapter, read-only native telemetry and actual framebuffer captures. Physical keyboard/Qt GUI and human balance remain unverified.",
+  "test_source": "tests/native_techniques_flow.py",
+  "test_source_sha256": "25b92f145d4c308c75358bf7380d228e9939393edbd6243ff709343e9c72c4b6"
+}

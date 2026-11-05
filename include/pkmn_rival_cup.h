@@ -6,11 +6,12 @@
 
 namespace pkmn {
 
-// A run owns only progression. Rivals use the ordinary CombatCore and CPU.
+// The run owns the bracket; the Captain is unlocked by two distinct wins.
 struct RivalCupRun {
     bool active = false, finished = false, awarded = false, new_best = false;
     int cup = 0, fighter = 0, difficulty = 1, stage = 0, last_stage = 0;
     int continues = 1, used = 0, result = 0, style = 0;
+    int rival_slot = -1, defeated = 0;
     uint32_t ticks = 0, seen_frame = ~0u;
 
     void begin(int route, int who, int level) {
@@ -18,12 +19,24 @@ struct RivalCupRun {
         active = true; cup = route; fighter = who; difficulty = level;
     }
     const CupDefinition& definition() const { return cups[cup]; }
-    const CupRival& rival() const { return definition().rivals[stage < cup_rivals ? stage : cup_rivals - 1]; }
+    bool captain_round() const { return rival_slot == cup_challengers; }
+    const CupRival* rival() const {
+        if (!active || rival_slot < 0) return nullptr;
+        return captain_round() ? &definition().captain : &definition().challengers[rival_slot];
+    }
+    bool can_choose(int slot) const {
+        return active && rival_slot < 0 && slot >= 0 && slot < cup_challengers && !(defeated & (1 << slot));
+    }
+    bool choose_challenger(int slot) {
+        if (!can_choose(slot)) return false;
+        rival_slot = slot;
+        return true;
+    }
     bool styled() const { return style >= definition().target; }
     // Reset the event cursor every round; CombatCore starts its cursor again.
     void begin_round() { seen_frame = ~0u; result = 0; }
     void observe(const CombatCore& core) {
-        if (!active || finished || result || seen_frame == core.event_frame) return;
+        if (!rival() || finished || result || seen_frame == core.event_frame) return;
         seen_frame = core.event_frame;
         if (ticks != 0xffffffffu) ++ticks;
         for (int n = 0; n < core.event_count && !styled(); ++n) {
@@ -35,12 +48,20 @@ struct RivalCupRun {
         }
     }
     void finish_round(int outcome) {
-        if (!active || finished || result || outcome < 1 || outcome > 3) return;
+        if (!rival() || finished || result || outcome < 1 || outcome > 3) return;
         result = outcome; last_stage = stage;
-        if (outcome == 1 && ++stage == cup_rivals) finished = true;
+        if (outcome != 1) return;
+        ++stage;
+        if (captain_round()) {
+            finished = true;
+        } else {
+            defeated |= 1 << rival_slot;
+            rival_slot = stage == cup_fights - 1 ? cup_challengers : -1;
+        }
     }
     bool retry(int outcome) {
-        if (!active || finished || (outcome != 2 && outcome != 3)) return false;
+        if (!rival() || finished || (outcome != 2 && outcome != 3)) return false;
+        if (outcome != (result ? result : 2)) return false; // Pause rematches cost a continue.
         if (outcome == 2) {
             if (!continues) return false;
             --continues; ++used;

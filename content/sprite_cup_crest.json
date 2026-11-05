@@ -1,0 +1,8 @@
+{
+  "id": "cup_crest",
+  "type": "sprite",
+  "name": "cup_crest",
+  "path": "graphics/cup_crest.bmp",
+  "width": 16,
+  "height": 16
+}

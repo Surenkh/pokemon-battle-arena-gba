@@ -1,0 +1,49 @@
+{
+  "status": "passed",
+  "checks": 73,
+  "rom_sha256": "a17833c2b87876ca7b312998de938f1cfff2b8f7498c40257c59189e8eb35bd0",
+  "adapter_sha256": "42dd5a33b92f2f3331ef267ff1c1abe6b970a287faf92c92ce787f6d0650569c",
+  "mgba_revision": "a67176cd3e6bf60a5016d7adc94357142dd12617",
+  "emulated_gba_instances": 1,
+  "raw_host_key_events": true,
+  "combat_state_writes": false,
+  "signature_fighters": [
+    "pikachu",
+    "squirtle"
+  ],
+  "drills_completed": true,
+  "first_frame_actions": true,
+  "both_player_sides": true,
+  "pause_gesture_cleared": true,
+  "pause_freezes_mobility": true,
+  "fast_retry": true,
+  "save_byte_identical": true,
+  "versus_cases": [
+    {
+      "player": 0,
+      "fighter": 0,
+      "cost": 12
+    },
+    {
+      "player": 0,
+      "fighter": 2,
+      "cost": 20
+    },
+    {
+      "player": 1,
+      "fighter": 0,
+      "cost": 12
+    },
+    {
+      "player": 1,
+      "fighter": 2,
+      "cost": 20
+    }
+  ],
+  "peak_cpu_fraction": 0.809814453125,
+  "missed_display_frames": 0,
+  "wall_seconds": 4.12,
+  "method": "One actual pinned upstream mGBA 0.11 core, raw-key events and shipping Lua adapter; actual lessons, super evasion, both player sides, framebuffer captures and unchanged SRAM. No live combat-state writes; physical keyboard and human balance remain unverified.",
+  "test_source": "tests/native_starter_flow.py",
+  "test_source_sha256": "67bf588d9bcb6af752a6eb9a6253c4ab409a785c60abe7e10b7b244e3842b892"
+}

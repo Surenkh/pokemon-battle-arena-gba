@@ -25,11 +25,11 @@ async function buildSelection({root,source,names,canvas,save,bg,ui}){
    save(name, scene, 'background');
    continue;
   }
-  const rows=training?layout.practice_rows:layout.quick_rows,labels=training?['TRAINING','RIVAL','LOCATION','FIGHTER INFO']:['DIFFICULTY',name==='cup_selector'?'CUP ROUTE':'LOCATION','FIGHTER INFO'];
+  const rows=training?layout.practice_rows:layout.quick_rows,labels=training?['TRAINING','RIVAL','LOCATION','FIGHTER INFO']:['DIFFICULTY',name==='cup_selector'?'RIVALS':'LOCATION','FIGHTER INFO'];
   labels.forEach((label,i)=>{const y=rows[i+1];ctx.fillStyle=i%2?'#112336':'#15283b';ctx.fillRect(8,y-6,224,12);ui.text(ctx,label,24,y-3,'#d9e9e9');if(i<labels.length-1&&!(['arcade_selector','cup_selector'].includes(name)&&i===1)){ui.text(ctx,'<',108,y-3,'#93dbcd');ui.text(ctx,'>',226,y-3,'#93dbcd');}else if(i===labels.length-1)ui.text(ctx,'>',226,y-3,'#93dbcd');});
   ctx.fillStyle='#365573';ctx.fillRect(8,150,224,1);
   if(name==='arcade_selector'){tiny(ctx,'ALL FIVE ARENAS',188,81,'#9db8c6');tiny(ctx,'ROTATE',188,91,'#ffda6b');}
-  if(name==='cup_selector'){tiny(ctx,'THREE SET RIVALS',188,81,'#9db8c6');tiny(ctx,'FIXED ROUTE',188,91,'#ffda6b');}
+  if(name==='cup_selector'){tiny(ctx,'PICK TWO RIVALS',188,81,'#9db8c6');tiny(ctx,'THEN THE CAPTAIN',188,91,'#ffda6b');}
   save(name,scene,'background');
  }
  const plate=canvas(64,32*names.length),ctx=plate.getContext('2d');for(let who=0;who<names.length;++who)card(ctx,who,10,who*32+3,false);save('selected_card',plate,'sprite',64,32);

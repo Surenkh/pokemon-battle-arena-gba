@@ -53,6 +53,7 @@ private:
  void action(int who,Input input);void physics();void spawn();void collide(const Fighter previous[2]);void resources();
  void enter(int who,Action a,int duration,int cost,bool followup=false);void cancel(int who);
 };
+enum class CaptainTactic { NONE, RUSH, GUARD, ZONE };
 class CpuController {
  // This type cannot hold buffered inputs, invulnerability, resource values,
  // projectile reservations or any other hidden opponent state.
@@ -67,6 +68,7 @@ class CpuController {
  // independently so changing which is nearest never re-rolls an old threat.
  uint32_t threat[3]{};bool respond[3]{};int dodge[3]{};
  bool resting=false,combo_allowed=false;int memory_at=0,last_seen=-1000;
+ CaptainTactic tactic=CaptainTactic::NONE;
  Action memory[cpu_memory_actions]{};
  uint32_t random();
  bool roll(int percent){return int(random()%100)<(percent>95?95:percent);}
@@ -75,7 +77,7 @@ public:
  struct Diagnostics { int intent=APPROACH,target=0,observed_tick=0,melee_memory=0,fire_memory=0,super_memory=0,decisions=0,defenses=0,punishes=0,followups=0,hesitations=0,plan=0,response_choices=0;bool resting=false,closing=false; };
  Diagnostics diagnostics{};
  int difficulty=1;
- void reset(int level,uint32_t seed);
+ void reset(int level,uint32_t seed,CaptainTactic captain=CaptainTactic::NONE);
  Input input(const CombatCore& core,int who=1);
 };
 }

@@ -4,13 +4,13 @@ A fan-made Game Boy Advance fighter by **Surenkh**. Pick your Pokémon, read you
 
 **13 Pokémon** · **5 arenas** · **Solo & two-player battles**
 
-[**Download v1.5.0 — Player ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.5.0/PokemonBattleArena-v1.5.0.zip) · [v1.5.0 ROM](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/download/v1.5.0/PokemonBattleArena.gba) · [Latest release](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest)
+[**Latest release and Player ZIP**](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest) · [Download ROM](https://github.com/Surenkh/pokemon-battle-arena-gba/releases/latest/download/PokemonBattleArena.gba)
 
 ![Pokémon Battle Arena cover](docs/media/cover.jpg)
 
 ## Start playing
 
-1. Download and extract the **Player ZIP**.
+1. Download the **Player ZIP** from the release assets and extract it.
 2. Open `PokemonBattleArena.gba` in a Game Boy Advance emulator such as [mGBA](https://mgba.io/downloads.html).
 3. Press **A** or **Start**, choose **Quick Battle**, and pick your Pokémon.
 
@@ -22,7 +22,7 @@ Keep your emulator's save file when updating: it holds records, mastery and audi
 | --- | --- |
 | **Quick Battle** | Pick a Pokémon and arena for a single fight. |
 | **Arcade** | Fight five different rivals with two continues. |
-| **Rival Cup** | Choose a themed, three-rival route and earn saved achievements. |
+| **Rival Cup** | Choose two challengers, beat a Captain and earn a saved crest. |
 | **Practice** | Train follow-ups, evade supers and learn special techniques. |
 | **Local Versus** | Two keyboard players choose their Pokémon and play first-to-two sets in one game window. |
 

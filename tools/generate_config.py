@@ -93,22 +93,30 @@ lines+=['inline int selection_row_y(bool training,int row){return training?selec
 (r/'include/pkmn_selection_layout.h').write_text('\n'.join(lines)+'\n')
 print('Generated single-screen selection layout.')
 
-# Authored Cup routes are shared by the native game and the asset painter.
+# Authored Cup challengers and Captains are shared by the game and asset painter.
 cups=json.loads((r/'config/cups.json').read_text())
 assert len(cups)==3
 ids=[c['id'] for c in chars]
-lines=['#pragma once','namespace pkmn {',
-       'inline constexpr int cup_count=3,cup_rivals=3;',
+lines=['#pragma once','#include "pkmn_combat_core.h"','namespace pkmn {',
+       'inline constexpr int cup_count=3,cup_challengers=3,cup_fights=3;',
        'struct CupRival { const char* name; int fighter,arena; const char* cue; };',
-       'struct CupDefinition { const char* name; const char* goal; int target; CupRival rivals[cup_rivals]; };',
+       'struct CupDefinition {',
+       ' const char* name; const char* goal; int target; const char* crest;',
+       ' CupRival challengers[cup_challengers]; CupRival captain; CaptainTactic tactic;',
+       '};',
        'inline constexpr CupDefinition cups[cup_count] = {']
+def cup_rival(rival):
+ assert rival['fighter'] in ids and 0<=rival['arena']<5 and len(rival['cue'])<=28 and len(rival['name'])<=8
+ return '{'+','.join([json.dumps(rival['name']),str(ids.index(rival['fighter'])),str(rival['arena']),json.dumps(rival['cue'])])+'}'
+
+assert {cup['captain']['tactic'] for cup in cups}=={'RUSH','GUARD','ZONE'}
 for cup in cups:
- assert len(cup['rivals'])==3 and 1<=cup['target']<=9 and len(cup['goal'])<=25
- lines.append('{'+json.dumps(cup['name'])+','+json.dumps(cup['goal'])+','+str(cup['target'])+',{')
- for rival in cup['rivals']:
-  assert rival['fighter'] in ids and 0<=rival['arena']<5 and len(rival['cue'])<=32 and len(rival['name'])<=8
-  lines.append('{'+json.dumps(rival['name'])+','+str(ids.index(rival['fighter']))+','+str(rival['arena'])+','+json.dumps(rival['cue'])+'},')
- lines.append('}},')
+ challengers,captain=cup['challengers'],cup['captain']
+ assert len(challengers)==3 and len({rival['fighter'] for rival in [*challengers,captain]})==4
+ assert 1<=cup['target']<=9 and len(cup['goal'])<=25 and len(cup['crest'])<=14
+ lines.append('{'+json.dumps(cup['name'])+','+json.dumps(cup['goal'])+','+str(cup['target'])+','+json.dumps(cup['crest'])+',{')
+ lines.extend(' '+cup_rival(rival)+',' for rival in challengers)
+ lines.append('},'+cup_rival(captain)+',CaptainTactic::'+captain['tactic']+'},')
 lines+=['};','}']
 (r/'include/pkmn_cup_defs.h').write_text('\n'.join(lines)+'\n')
 print('Generated three authored Rival Cups.')

@@ -1,55 +1,47 @@
-# Rival Cup — v1.4.0-rc.1
+# Rival Cup in v1.6.0
 
-Choose **Rival Cup** in the mode menu for a short, authored three-rival run.
-The three Cups are available immediately. Every Cup supports all thirteen
-Pokémon and Easy, Normal or Hard. Rivals use the normal CPU and combat stats.
+Pick a Cup, scout the matchups, and beat two challengers to reach the Captain.
+Each run has three fights. All thirteen Pokémon and all three difficulties are
+available from the start.
 
-| Cup | Rivals in order | Fixed route | Optional style achievement |
-| --- | --- | --- | --- |
-| Tempo | Nia / Pikachu, Milo / Eevee, Rex / Meowth | Woodland, Shoreline, Volcanic | Land 3 damaging follow-up hits |
-| Guard | Fern / Bulbasaur, Marin / Squirtle, Brick / Machop | Woodland, Shoreline, Ancient Ruins | Successfully block 5 ordinary attacks |
-| Mirage | Lyra / Jigglypuff, Shade / Gastly, Ren / Riolu | Frostpeak, Ancient Ruins, Woodland | Land 2 damaging super hits |
+| Cup | Choose two challengers | Captain and counter | Optional style goal | Crest |
+| --- | --- | --- | --- | --- |
+| Tempo | Nia / Pikachu, Milo / Eevee, Cinder / Charmander | **Rex / Meowth** rushes into melee. Block the rush, then strike. | Land 3 damaging follow-up hits | Bolt |
+| Guard | Fern / Bulbasaur, Marin / Squirtle, Rook / Totodile | **Brick / Machop** guards and punishes openings. Charge a super to hit through his guard. | Successfully block 5 ordinary attacks | Shield |
+| Mirage | Lyra / Jigglypuff, Shade / Gastly, Wisp / Vulpix | **Ren / Riolu** backs away and fires Aura Pulse. Jump the shots to close in. | Land 2 damaging super hits | Moon |
 
-On the Cup board, **Left/Right** chooses a Cup and **Up/Down** changes the
-difficulty. **A/Start** opens the fighter grid; **B** returns to the mode menu.
-Choose a Pokémon and press **A/Start** to play. Select opens its options. The
-Cup route is fixed and the options cursor skips it. B from the grid returns
-to the Cup board. The scouting card during countdown names the rival and
-gives one counter cue.
+## Play a run
 
-Win all three fights to earn a clear. A on results starts the next rival
-directly. A loss can use the run's **one continue**; a draw retries for free.
-Both keep the current rival and location. Fighters recover full resources
-between fights. Pause > Rematch also costs a continue; at zero it is dimmed
-and skipped. Change Pokémon or B on results ends the run without a clear.
+1. Open **Rival Cup** from the mode menu. On the board, use **Left/Right** for
+   the Cup and **Up/Down** for difficulty. Press **A/Start** to choose your Pokémon.
+2. After confirming your Pokémon, use **Left/Right** to scout each challenger.
+   The highlighted card shows the arena and a counter. **A/Start** starts the fight.
+   **B** returns to your fighter choice.
+3. Win and press **A/Start** to pick a different challenger. After the second
+   win, confirm to face the Captain. The countdown repeats the counter cue.
+4. Defeat the Captain to earn that Cup's crest on the selected difficulty.
+   **A/Start** on the champion screen starts a fresh run with the same Pokémon.
+   **B** returns to the Cup board.
 
-A **style** achievement requires both the Cup clear and its optional goal.
-Only resolved hits and successful blocks count; misses and input attempts
-do not. A full block counts once even if it empties stamina; a guard-break
-event alone adds no point. Goal progress carries across the run's fights and
-retries. A **perfect** clear uses no paid continue; draws do not disqualify it.
-You can earn a clear, style and perfect together. After a clear, A rematches
-the Cup with the same fighter/difficulty; B returns to the board.
+A loss can use the run's **one continue**. A draw retries for free. Both keep
+the same rival and arena. Pause → Rematch also spends the continue. Fighters
+start each round with full health and stamina. Changing Pokémon, pressing **B**
+on results, or pressing **B** at the second challenger picker ends the run.
 
-The board shows CLEAR, STYLE, PERF (perfect clears) and BEST separately for
-each Cup and difficulty. Best time includes active fight display frames,
-including failed/drawn attempts. Menus, pauses, countdowns and recall are
-excluded. Displayed seconds round up. Very large imported times use hours.
-Records are shared across Pokémon, so try another fighter without starting
-a separate record page.
+## Crests and records
 
-Cup achievements save on a completed Cup, in an independent journal. Keep
-your emulator's existing SRAM/save file when upgrading. Earlier Arcade
-records, mastery and audio preferences remain compatible. Solo Cup hits and
-super evasions can earn normal fighter mastery; Cup clears do not count as
-Arcade clears or its no-continue medal. Practice and Local Versus cannot
-earn Cup achievements. There is no mid-run resume after power-off.
+The Cup board displays your crest and clear, style, perfect and best-time
+records for the selected difficulty. A **style** clear requires the optional
+goal and a Cup win. Resolved damaging hits and successful blocks count, and
+progress carries across retries. A **perfect** clear uses zero paid continues.
+A run can earn both.
 
-If the board/result says **SAVE FAILED: MEMORY ONLY**, the achievement exists
-for the current session; leave the emulator running and check its save
-permissions. A later completed Cup retries the write. Never delete your
-existing save to fix a write failure.
+Best time includes active battle frames across every attempt. The game excludes
+menus, pauses, countdown and recall. Records apply across Pokémon. Cup saves
+are separate from Arcade. Keep your emulator's SRAM file to carry forward
+earlier records, mastery and settings. Earlier Cup clears already qualify for
+their matching crests. Each session starts a new run after power-off.
 
-This is a release candidate. Native emulation verifies the routes and save
-behavior; human pacing, cue usefulness and style-goal difficulty still need
-playtesting. Combat and technique timings remain the v1.3.0-rc.1 ruleset.
+If the game shows **SAVE FAILED: MEMORY ONLY**, the record is available in the
+current session. Check your emulator's save permissions while the session is
+open. A later Cup clear retries the write.
