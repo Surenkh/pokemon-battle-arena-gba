@@ -1,0 +1,145 @@
+name: Build and verify v1.7.0 Breakaway
+
+on:
+  push:
+    branches: [validate/v1.7.0-breakaway]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    if: github.repository == 'Surenkh/pokemon-battle-arena-gba'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 28
+    permissions:
+      contents: write
+    env:
+      SOURCE_COMMIT: 7b7302fc8fc9cf73237b7feb04a95defee05ca78
+      MAKEFLAGS: -j4
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Regenerate inputs and run host checks
+        run: |
+          test "$(git rev-parse HEAD^)" = "$SOURCE_COMMIT"
+          npm ci --no-audit --no-fund
+          npm run assets:prepare
+          npm run assets
+          npm run audio
+          python3 tools/generate_config.py
+          git diff --exit-code -- include/pkmn_character_defs.h include/pkmn_cpu_defs.h include/pkmn_technique_defs.h include/pkmn_selection_layout.h include/pkmn_cup_defs.h
+          python3 tools/_v17_validation.py host
+      - name: Build with the pinned GBA Studio compiler
+        run: |
+          curl -fsSL --retry 3 --retry-all-errors --max-time 120 \
+            'https://github.com/dackmin/gba-studio/releases/download/v0.5.0/gba-studio-0.5.0-linux-x64.deb' \
+            -o "$RUNNER_TEMP/gba-studio.deb"
+          printf '%s  %s\n' 5df46494f63d4cf9697ff27c78d35b661026d17ff4e92ea7942548635288a371 \
+            "$RUNNER_TEMP/gba-studio.deb" | sha256sum -c -
+          dpkg-deb -x "$RUNNER_TEMP/gba-studio.deb" "$RUNNER_TEMP/gba-studio"
+          archive=$(find "$RUNNER_TEMP/gba-studio" -path '*/resources/public/vendors/devkitPro/linux.tar.gz' -print -quit)
+          test -f "$archive"
+          python3 tools/build.py --studio-resources "${archive%/public/vendors/devkitPro/linux.tar.gz}" --clean
+          .toolchain/linux/devkitARM/bin/arm-none-eabi-g++ --version
+      - name: Prepare both mGBA harnesses
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libmgba-dev
+          dpkg-query -W -f='${Version}' libmgba-dev | grep '^0\.10\.2'
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          source = Path('tests/mgba_driver.c').read_text()
+          source = source.replace('int threat_age=-1;for(n=0;n<frames;n++){',
+              'int threat_age=-1;unsigned profile_missed=c->busRead32(c,address+22*4);for(n=0;n<frames;n++){')
+          source = source.replace('if(usage>peak)peak=usage;',
+              'if(usage>peak)peak=usage;unsigned missed_now=c->busRead32(c,address+22*4);'
+              'if(missed_now>profile_missed)fprintf(stderr,"FRAME_BUDGET offset=%u prevscreen=%u screen=%u tick=%u display=%u q12=%u keys=%u actions=%u,%u hp=%u,%u\\n",'
+              'n,state,c->busRead32(c,address+4),c->busRead32(c,address+5*4),c->busRead32(c,address+23*4),usage,keys,'
+              'c->busRead32(c,address+16*4),c->busRead32(c,address+17*4),c->busRead32(c,address+6*4),c->busRead32(c,address+7*4));'
+              'profile_missed=missed_now;')
+          (Path(os.environ['RUNNER_TEMP']) / 'mgba_profile.c').write_text(source)
+          PY
+          cc -O2 "$RUNNER_TEMP/mgba_profile.c" -o tests/mgba_driver -lmgba
+          python3 -m venv "$RUNNER_TEMP/v17-python"
+          "$RUNNER_TEMP/v17-python/bin/pip" install 'Pillow==11.3.0'
+          printf '%s\n' "$RUNNER_TEMP/v17-python/bin" >> "$GITHUB_PATH"
+          mkdir -p .tooling/mgba-dev-src
+          git -C .tooling/mgba-dev-src init -q
+          git -C .tooling/mgba-dev-src fetch -q --depth 1 https://github.com/mgba-emu/mgba.git a67176cd3e6bf60a5016d7adc94357142dd12617
+          git -C .tooling/mgba-dev-src checkout -q --detach FETCH_HEAD
+          git clone -q --branch v5.4.8 --depth 1 https://github.com/lua/lua.git .tooling/lua-5.4.8
+          test "$(git -C .tooling/lua-5.4.8 rev-parse HEAD)" = 6e22fedb74cf0c9b6656e9fce8b7331db847c605
+          mkdir -p .tooling/lua-5.4.8/objects
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          root = Path('.tooling/lua-5.4.8').resolve()
+          objects = []
+          for source in sorted(root.glob('*.c')):
+              if source.name in {'lua.c', 'luac.c', 'onelua.c', 'ltests.c'}:
+                  continue
+              target = root / 'objects' / (source.stem + '.o')
+              subprocess.run(['cc', '-O2', '-fPIC', '-DLUA_USE_LINUX', '-I' + str(root),
+                              '-c', str(source), '-o', str(target)], check=True)
+              objects.append(str(target))
+          subprocess.run(['ar', 'rcs', str(root / 'liblua.a'), *objects], check=True)
+          PY
+          cmake -S .tooling/mgba-dev-src -B .tooling/mgba-dev-build \
+            -DCMAKE_BUILD_TYPE=Release -DLIBMGBA_ONLY=OFF \
+            -DBUILD_QT=OFF -DBUILD_SDL=OFF -DBUILD_GL=OFF -DBUILD_GLES2=OFF -DBUILD_GLES3=OFF \
+            -DBUILD_SHARED=OFF -DBUILD_STATIC=ON -DBUILD_LTO=OFF \
+            -DM_CORE_GBA=ON -DM_CORE_GB=OFF -DENABLE_SCRIPTING=ON -DENABLE_DEBUGGERS=OFF \
+            -DUSE_LUA=5.4 -DLUA_INCLUDE_DIR="$PWD/.tooling/lua-5.4.8" \
+            -DLUA_LIBRARY="$PWD/.tooling/lua-5.4.8/liblua.a" \
+            -DUSE_PNG=OFF -DUSE_ZLIB=OFF -DUSE_FFMPEG=OFF -DUSE_EDITLINE=OFF \
+            -DUSE_LIBZIP=OFF -DUSE_MINIZIP=OFF -DUSE_ELF=OFF -DUSE_SQLITE3=OFF \
+            -DUSE_JSON_C=OFF -DUSE_FREETYPE=OFF -DUSE_DISCORD_RPC=OFF -DUSE_LZMA=OFF
+          cmake --build .tooling/mgba-dev-build -j4
+          python3 tools/build_versus_test_driver.py --mgba-source .tooling/mgba-dev-src --mgba-build .tooling/mgba-dev-build
+      - name: Exercise the ROM in both emulators
+        run: python3 tools/_v17_validation.py native
+      - name: Rebuild from an independent source snapshot
+        run: |
+          mkdir "$RUNNER_TEMP/v17-rebuild"
+          git archive "$SOURCE_COMMIT" | tar -x -C "$RUNNER_TEMP/v17-rebuild"
+          toolchain="$PWD/.toolchain/linux"
+          cd "$RUNNER_TEMP/v17-rebuild"
+          npm ci --no-audit --no-fund
+          npm run assets:prepare
+          npm run assets
+          npm run audio
+          python3 tools/build.py --devkitpro "$toolchain" --clean
+      - name: Package and stage the verified game
+        run: |
+          python3 tools/_v17_validation.py assemble
+          target="$RUNNER_TEMP/v17-result"
+          git worktree add --detach "$target" "$SOURCE_COMMIT"
+          for folder in graphics content docs audio; do
+            rsync -a "$folder/" "$target/$folder/"
+          done
+          cp downloads/PokemonBattleArena.gba downloads/SHA256SUMS.txt downloads/PokemonBattleArena-v1.7.0.zip "$target/downloads/"
+          git -C "$target" add graphics content docs audio downloads
+          git -C "$target" diff --cached --check
+          git -C "$target" -c user.name='github-actions[bot]' \
+            -c user.email='41898282+github-actions[bot]@users.noreply.github.com' \
+            commit -m 'Build and verify the v1.7.0 Breakaway ROM'
+      - name: Push the verified feature branch and check the public ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd "$RUNNER_TEMP/v17-result"
+          git -c credential.helper= \
+            -c 'credential.helper=!f() { printf "username=x-access-token\npassword=%s\n" "$GH_TOKEN"; }; f' \
+            push origin HEAD:refs/heads/feat/v1.7.0-breakaway
+          sha=$(git rev-parse HEAD)
+          url="https://raw.githubusercontent.com/Surenkh/pokemon-battle-arena-gba/$sha/downloads/PokemonBattleArena-v1.7.0.zip"
+          curl -fsSL --retry 5 --retry-all-errors --max-time 25 "$url" -o "$RUNNER_TEMP/v17-public.zip"
+          cmp downloads/PokemonBattleArena-v1.7.0.zip "$RUNNER_TEMP/v17-public.zip"
+          printf 'Verified [Player ZIP](%s)\n\nCommit %s\n' "$url" "$sha" >> "$GITHUB_STEP_SUMMARY"
