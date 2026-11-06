@@ -113,7 +113,9 @@ try:
   v=state();d=info();distance=abs(v[13]-v[12])//256
   recovery=v[17]==2 and v[5]-d[28]>=9 and d[26]>v[5]+5
   available=v[16] in (0,1) or (v[16]==7 and d[25]<=v[5]+2)
-  frames(1,1 if recovery and available and distance<28 else 512)
+  # Guard push creates space; step back into reach before punishing.
+  key=1 if recovery and available and distance<26 else 16 if recovery and available and distance>=26 else 512
+  frames(1,key)
   if info()[15]:break
  check(info()[15]>=1 and info()[5]==11,'Meowth recovery punish deals 11 melee damage');frames(4);capture('meowth_punish');change()
 

@@ -1,4 +1,4 @@
-# Local Versus preview — v1.3.0-rc.1
+# Local Versus — two-player setup
 
 Two people choose Pokémon and fight in one running GBA game, on one screen.
 This preview uses keyboard controls through an mGBA Lua input adapter.
@@ -30,6 +30,7 @@ played with the emulator's ordinary GBA bindings when the adapter is absent.
 | Melee / Ready / confirm | J | F |
 | Fire / unready / Back | K | G |
 | Hold block | U | Q |
+| Backstep | Hold U + tap away arrow | Hold Q + tap A/D away |
 | Super at full SP | I | E |
 | Breakaway at 60 SP during ordinary hitstun | Hold U + tap I | Hold Q + tap E |
 | Pause / resume | Enter | T |
@@ -45,6 +46,11 @@ The adapter supplies Player 1's controls throughout the menus and solo modes
 while loaded. Player 2 controls belong to Local Versus. Results accept either
 player's confirmation. Next Round keeps the score, Rematch Set resets it, and
 Change Pokémon returns to the shared chooser.
+
+During a fight, tap the direction away from the other Pokémon while holding
+block to spend 6 stamina on a short backstep. You can queue it near the end of
+blockstun; the move has recovery and no invulnerability. Breakaway remains
+available during normal hitstun at 60 SP.
 
 ## Pause, reconnect and keyboard focus
 

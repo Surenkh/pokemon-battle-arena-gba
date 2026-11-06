@@ -1,6 +1,6 @@
 """Native elemental-effect regression: physical inputs, read-only telemetry."""
 from pathlib import Path
-import os, subprocess, re, json, time
+import os, subprocess, re, json, time, hashlib
 
 root = Path(__file__).resolve().parents[1]
 out = root / 'tests/native_artifacts/effects'
@@ -88,6 +88,6 @@ with (out / 'errors.log').open('w') as errors:
             process.stdin.flush()
             process.wait(timeout=10)
 
-result = dict(status='passed', checks=checks, characters=report, wall_seconds=round(time.time()-started, 2), method='mGBA 0.10.2; physical button inputs; read-only telemetry; no game-memory writes')
+result = dict(status='passed', checks=checks, characters=report, rom_sha256=hashlib.sha256((root/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(), wall_seconds=round(time.time()-started, 2), method='mGBA 0.10.2; physical button inputs; read-only telemetry; no game-memory writes')
 (out / 'report.json').write_text(json.dumps(result, indent=2) + '\n')
 print(json.dumps(result, indent=2))

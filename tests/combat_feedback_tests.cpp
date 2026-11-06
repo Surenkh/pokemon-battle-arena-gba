@@ -30,7 +30,8 @@ int main(){
     for(int i=0;i<core.event_count;++i)if(core.events[i].kind==EV_CLASH)clash=&core.events[i];
     check(clash&&clash->owner!=clash->target,"Clash identifies both projectile owners");
     check(clash->x>core.f[0].x&&clash->x<core.f[1].x&&clash->y==102*256,"Clash appears where the projectiles meet");
-    check(!core.p[0].active&&!core.p[1].active,"Both normal projectiles still cancel");
+    check(core.p[0].active&&core.p[1].active,"Both normal projectiles continue after the clash");
+    check(core.p[0].damage==(characters[character].fire_damage+1)/2&&core.p[1].damage==(characters[character].fire_damage+1)/2,"Both projectiles retain half damage, rounded up");
     check(core.f[0].hp==hp0&&core.f[1].hp==hp1&&core.f[0].sp==0&&core.f[1].sp==0,"A clash deals no damage or super power");
     clashed=true;
    }

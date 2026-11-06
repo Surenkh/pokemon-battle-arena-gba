@@ -1,0 +1,26 @@
+{
+  "label":"baseline",
+  "rounds":10140,
+  "seeds_per_ordered_matchup_and_level":20,
+  "difficulty_levels":3,
+  "timeouts":0,
+  "median_active_ticks":855,
+  "mean_active_ticks":954.50,
+  "replay_digest":2472070826,
+  "characters":[
+    {"character":"PIKACHU","appearances":1560,"wins":843,"losses":693,"draws":24,"win_percent":54.04,"low_stamina_tick_percent":12.49,"neutral_wait_percent":8.63,"damage_dealt":142727,"damage_taken":129328,"melee_started":11600,"shots_released":6968,"clean_hits":14876,"blocked_hits":109,"super_starts":709,"super_releases":532},
+    {"character":"CHARMANDER","appearances":1560,"wins":772,"losses":772,"draws":16,"win_percent":49.49,"low_stamina_tick_percent":11.22,"neutral_wait_percent":6.72,"damage_dealt":142879,"damage_taken":134692,"melee_started":5851,"shots_released":13636,"clean_hits":10963,"blocked_hits":1186,"super_starts":1034,"super_releases":706},
+    {"character":"SQUIRTLE","appearances":1560,"wins":533,"losses":1023,"draws":4,"win_percent":34.17,"low_stamina_tick_percent":11.32,"neutral_wait_percent":7.26,"damage_dealt":131697,"damage_taken":162755,"melee_started":4598,"shots_released":19142,"clean_hits":12384,"blocked_hits":2628,"super_starts":1385,"super_releases":837},
+    {"character":"BULBASAUR","appearances":1560,"wins":890,"losses":659,"draws":11,"win_percent":57.05,"low_stamina_tick_percent":15.86,"neutral_wait_percent":12.54,"damage_dealt":148548,"damage_taken":157212,"melee_started":12972,"shots_released":8641,"clean_hits":14223,"blocked_hits":662,"super_starts":1190,"super_releases":783},
+    {"character":"EEVEE","appearances":1560,"wins":987,"losses":560,"draws":13,"win_percent":63.27,"low_stamina_tick_percent":12.37,"neutral_wait_percent":8.46,"damage_dealt":148899,"damage_taken":128442,"melee_started":14011,"shots_released":9166,"clean_hits":17774,"blocked_hits":179,"super_starts":993,"super_releases":784},
+    {"character":"MEOWTH","appearances":1560,"wins":839,"losses":709,"draws":12,"win_percent":53.78,"low_stamina_tick_percent":12.87,"neutral_wait_percent":8.57,"damage_dealt":141667,"damage_taken":120073,"melee_started":10486,"shots_released":8089,"clean_hits":14784,"blocked_hits":194,"super_starts":1073,"super_releases":763},
+    {"character":"PSYDUCK","appearances":1560,"wins":785,"losses":771,"draws":4,"win_percent":50.32,"low_stamina_tick_percent":12.62,"neutral_wait_percent":8.49,"damage_dealt":143085,"damage_taken":139918,"melee_started":5691,"shots_released":17391,"clean_hits":11932,"blocked_hits":2217,"super_starts":1318,"super_releases":878},
+    {"character":"JIGGLYPUFF","appearances":1560,"wins":439,"losses":1119,"draws":2,"win_percent":28.14,"low_stamina_tick_percent":10.81,"neutral_wait_percent":7.46,"damage_dealt":132248,"damage_taken":182668,"melee_started":6773,"shots_released":15725,"clean_hits":13758,"blocked_hits":1124,"super_starts":1437,"super_releases":934},
+    {"character":"MACHOP","appearances":1560,"wins":645,"losses":899,"draws":16,"win_percent":41.35,"low_stamina_tick_percent":12.78,"neutral_wait_percent":9.09,"damage_dealt":136380,"damage_taken":161532,"melee_started":13311,"shots_released":7310,"clean_hits":13097,"blocked_hits":372,"super_starts":840,"super_releases":605},
+    {"character":"VULPIX","appearances":1560,"wins":952,"losses":595,"draws":13,"win_percent":61.03,"low_stamina_tick_percent":8.59,"neutral_wait_percent":5.04,"damage_dealt":149043,"damage_taken":119219,"melee_started":5700,"shots_released":13783,"clean_hits":13168,"blocked_hits":749,"super_starts":1323,"super_releases":866},
+    {"character":"GASTLY","appearances":1560,"wins":567,"losses":983,"draws":10,"win_percent":36.35,"low_stamina_tick_percent":9.55,"neutral_wait_percent":6.61,"damage_dealt":134628,"damage_taken":125982,"melee_started":5865,"shots_released":13554,"clean_hits":12024,"blocked_hits":673,"super_starts":1227,"super_releases":780},
+    {"character":"RIOLU","appearances":1560,"wins":996,"losses":550,"draws":14,"win_percent":63.85,"low_stamina_tick_percent":7.03,"neutral_wait_percent":4.60,"damage_dealt":149954,"damage_taken":127267,"melee_started":8877,"shots_released":11080,"clean_hits":14856,"blocked_hits":308,"super_starts":1384,"super_releases":990},
+    {"character":"TOTODILE","appearances":1560,"wins":816,"losses":731,"draws":13,"win_percent":52.31,"low_stamina_tick_percent":8.37,"neutral_wait_percent":6.62,"damage_dealt":143010,"damage_taken":155677,"melee_started":11551,"shots_released":9128,"clean_hits":13804,"blocked_hits":539,"super_starts":1161,"super_releases":761}
+  ],
+  "method":"10140 CPU-vs-CPU rounds across all ordered matchups and all difficulties. Mirrored roster order and fixed seeds; CPU policies may favor particular styles. Human balance remains unverified."
+}

@@ -42,7 +42,7 @@ jobs:
           git diff --exit-code -- include/pkmn_character_defs.h include/pkmn_cpu_defs.h include/pkmn_technique_defs.h include/pkmn_selection_layout.h include/pkmn_cup_defs.h
       - name: Run host combat regressions
         run: |
-          for suite in combat movement feel depth cpu presentation arcade roster mastery practice goals expansion selection_power local_versus techniques cup starter breakaway combat_feedback; do
+          for suite in combat movement feel depth cpu presentation arcade roster mastery practice goals expansion selection_power local_versus techniques cup starter breakaway combat_feedback combat_dynamics; do
             g++ -std=c++17 -O2 -Iinclude src/pkmn_combat_core.cpp "tests/${suite}_tests.cpp" -o "/tmp/pkmn-${suite}-tests"
             "/tmp/pkmn-${suite}-tests"
           done

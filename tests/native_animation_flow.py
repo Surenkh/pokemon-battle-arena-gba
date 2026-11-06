@@ -1,6 +1,6 @@
 """Exercise the compiled ROM through button input and read-only telemetry."""
 from pathlib import Path
-import subprocess,os,re,json
+import subprocess,os,re,json,hashlib
 r=Path(__file__).resolve().parents[1];out=r/'tests/native_artifacts/animation';out.mkdir(parents=True,exist_ok=True)
 symbols=subprocess.check_output(['readelf','-sW',str(r/'.gbastudio/PokemonBattleArena.elf')],text=True)
 address=int(re.search(r'\b([0-9a-f]{8})\s+128\s+OBJECT\s+GLOBAL[^\n]+pkmn_debug',symbols).group(1),16)
@@ -47,4 +47,4 @@ for ch,name in enumerate(m['characters']):
  press(128);press(128);press(1);check(state()[1]==1,'Selector returns')
  report.append({'character':name,'native_walk_frames':sorted(walk),'native_jump_frames':sorted(hop),'observed_clip_ids':sorted(clips),'peak_cpu_q12':after[21],'missed_frames':after[22]})
 p.stdin.write('q\n');p.stdin.flush();p.wait(timeout=10)
-result={'status':'passed','checks':checks,'characters':report,'method':'Native ROM, physical button input and read-only telemetry; no game memory writes.'};(out/'report.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
+result={'status':'passed','checks':checks,'characters':report,'rom_sha256':hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest(),'method':'Native ROM, physical button input and read-only telemetry; no game memory writes.'};(out/'report.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))

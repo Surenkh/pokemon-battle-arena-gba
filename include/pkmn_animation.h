@@ -10,6 +10,7 @@ inline Pose loop_pose(int ch,Clip clip,int t,bool loop=true){const auto&a=animat
 inline Pose attack_pose(int ch,Clip clip,int age,int startup,int active,int total){const auto&a=animations[ch][clip];int frame=0;if(age<startup)frame=a.hit?age*a.hit/startup:0;else if(age<startup+active)frame=a.hit+(age-startup)*(a.back-a.hit)/active;else{int recovery=total-startup-active;frame=a.back+(age-startup-active)*(a.count-a.back)/(recovery?recovery:1);}return{clip,a.first+clamp_frame(frame,a.count)};}
 inline Pose fighter_pose(const CombatCore&core,int who){const auto&v=core.f[who];const auto&d=characters[v.character];int age=core.age(v)-1;if(age<0)age=0;
  if(v.action==HITSTUN||v.action==GUARD_BREAK)return loop_pose(v.character,CLIP_HURT,age,false);
+ if(v.action==BACKSTEP)return loop_pose(v.character,CLIP_WALK,age,false);
  if(v.action==VOLT_STEP)return loop_pose(v.character,age<volt_step_startup_ticks?CLIP_CHARGE:age<volt_step_startup_ticks+volt_step_active_ticks?CLIP_WALK:CLIP_LAND,age,false);
  if(v.action==MELEE)return attack_pose(v.character,CLIP_ATTACK,age,d.melee_start,d.melee_active,d.melee_total);
  if(v.action==FIRE){

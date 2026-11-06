@@ -157,6 +157,32 @@ class ReleaseTests(unittest.TestCase):
         self.js(music_path, dict(music, finale=dict(positions=[0, 1])))
         with self.assertRaises(ValueError): prepare(self.root, self.output)
 
+    def test_combat_dynamics_requires_native_tested_two_player_mechanics(self):
+        adapter = b'-- tested adapter\n'
+        self.write('tools/local_versus.lua', adapter)
+        self.js('docs/build_versions.json', dict(game_release='0.5.0', ruleset='0.5.0',
+                rom_sha256=self.sha, rom_bytes=256, combat_dynamics=True))
+        report = dict(status='passed', rom_sha256=self.sha, adapter_sha256=digest(adapter),
+                      emulated_gba_instances=1, both_shots_survive_clash=True, weakened_shots_hit=True,
+                      jump_and_dodge_costs=True, shell_roll_cost=True, both_player_backsteps=True,
+                      guard_push=True, zero_state_writes=True, save_byte_identical=True, missed_display_frames=0)
+        path = 'docs/verification/v0.5.0/native-combat-dynamics.json'
+        self.js(path, report)
+        meta = prepare(self.root, self.output)
+        with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
+            guide = archive.read('README.txt')
+            self.assertIn(b'Jump costs 10 stamina', guide)
+            self.assertIn(b'Hold L and tap away', guide)
+        for change in [dict(rom_sha256='0'*64), dict(adapter_sha256='0'*64),
+                       dict(emulated_gba_instances=2), dict(both_shots_survive_clash=False),
+                       dict(weakened_shots_hit=False), dict(jump_and_dodge_costs=False),
+                       dict(shell_roll_cost=False), dict(both_player_backsteps=False),
+                       dict(guard_push=False), dict(zero_state_writes=False),
+                       dict(save_byte_identical=False), dict(missed_display_frames=1)]:
+            with self.subTest(change=change):
+                self.js(path, dict(report, **change))
+                with self.assertRaises(ValueError): prepare(self.root, self.output)
+
     def starter_fixture(self):
         adapter = b'-- tested adapter\n'
         self.write('tools/local_versus.lua', adapter)
@@ -180,7 +206,7 @@ class ReleaseTests(unittest.TestCase):
         self.starter_fixture()
         meta = prepare(self.root, self.output)
         with zipfile.ZipFile(self.output / meta['assets'][1]) as archive:
-            for text in [b'Volt Step (12 stamina)', b'Shell Roll (20 total stamina)']:
+            for text in [b'Volt Step (12 stamina)', b'Shell Roll (14 total stamina)']:
                 self.assertIn(text, archive.read('README.txt'))
             self.assertIn(b'Four techniques', archive.read('FIGHTER_TECHNIQUES.md'))
 

@@ -7,7 +7,7 @@ inline constexpr int character_count = 13;
 inline constexpr CharacterDef characters[13] = {
 {"PIKACHU",95,105,26,384,8,12,32,4,3,18,8,26,896,21,128,100,100,512,0,100,100,100,0,3,"RUSH AND PRESSURE","QUICK STEP","DOUBLE TAP LEFT OR RIGHT","12 STA. NO INVULNERABILITY"},
 {"CHARMANDER",100,90,24,307,10,14,36,6,3,23,10,32,768,21,0,100,125,512,0,100,100,100,0,0,"HEAVY FIRE","EMBER PRESSURE","FIRE DRAINS EXTRA GUARD","SLOW RECOVERY. KEEP SPACE."},
-{"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704,21,0,80,100,768,0,100,100,100,0,4,"DEFENSE AND SPACE","SHELL CONTROL","DOWN + LEFT OR RIGHT","20 STA. MELEE CAN HIT ROLL"},
+{"SQUIRTLE",115,110,22,269,7,11,30,6,3,22,10,30,704,21,0,80,100,768,0,100,100,100,0,4,"DEFENSE AND SPACE","SHELL CONTROL","DOWN + LEFT OR RIGHT","14 STA. MELEE CAN HIT ROLL"},
 {"BULBASAUR",120,100,20,243,9,12,34,7,3,25,11,32,832,32,0,100,100,512,0,100,100,100,0,0,"REACH AND CONTROL","VINE REACH","LONG MELEE REACH","SLOW START. HOLD DISTANCE."},
 {"EEVEE",100,115,28,358,7,10,31,4,3,17,8,26,832,21,0,100,100,512,0,100,100,100,1,0,"FLEXIBLE FOLLOW-UPS","ADAPTABLE","CLEAN A CAN FOLLOW WITH A/B","A TO A NEEDS CLOSE RANGE."},
 {"MEOWTH",90,100,25,397,8,11,33,3,3,16,8,27,768,21,0,100,100,512,3,100,100,100,0,0,"CLOSE COUNTERATTACK","PUNISH","EXTRA MELEE DAMAGE IN RECOVERY","CATCH A MISSED ENEMY ATTACK."},
@@ -78,11 +78,20 @@ inline constexpr int breakaway_travel_ticks = 8;
 inline constexpr int breakaway_recovery_ticks = 12;
 inline constexpr int breakaway_speed_q8 = 768;
 inline constexpr int breakaway_lift_q8 = -704;
-inline constexpr int jump_stamina_cost = 18;
+inline constexpr int backstep_stamina_cost = 6;
+inline constexpr int backstep_startup_ticks = 2;
+inline constexpr int backstep_travel_ticks = 6;
+inline constexpr int backstep_recovery_ticks = 8;
+inline constexpr int backstep_speed_q8 = 640;
+inline constexpr int backstep_cooldown_ticks = 18;
+inline constexpr int combat_dynamics_clash_damage_percent = 50;
+inline constexpr int combat_dynamics_blocked_melee_pushback_px = 6;
+inline constexpr int combat_dynamics_unsuccessful_melee_recovery_ticks = 4;
+inline constexpr int jump_stamina_cost = 10;
 inline constexpr int melee_stamina_cost = 8;
 inline constexpr int fire_stamina_cost = 20;
 inline constexpr int fire_lifetime_ticks = 60;
-inline constexpr int squeeze_stamina_cost = 12;
+inline constexpr int squeeze_stamina_cost = 6;
 inline constexpr int squeeze_startup_ticks = 3;
 inline constexpr int squeeze_active_ticks = 24;
 inline constexpr int squeeze_recovery_ticks = 9;

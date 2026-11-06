@@ -1,0 +1,387 @@
+{
+  "status": "passed",
+  "checks": 1230,
+  "authored_cups": 3,
+  "named_rivals": 12,
+  "launches": [
+    {
+      "cup": 0,
+      "fighter": 0,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 0,
+      "fighter": 1,
+      "level": 1,
+      "challenger": 1,
+      "arena": 2
+    },
+    {
+      "cup": 0,
+      "fighter": 2,
+      "level": 2,
+      "challenger": 2,
+      "arena": 1
+    },
+    {
+      "cup": 0,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 0,
+      "fighter": 4,
+      "level": 1,
+      "challenger": 1,
+      "arena": 2
+    },
+    {
+      "cup": 0,
+      "fighter": 5,
+      "level": 2,
+      "challenger": 2,
+      "arena": 1
+    },
+    {
+      "cup": 0,
+      "fighter": 6,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 0,
+      "fighter": 7,
+      "level": 1,
+      "challenger": 1,
+      "arena": 2
+    },
+    {
+      "cup": 0,
+      "fighter": 8,
+      "level": 2,
+      "challenger": 2,
+      "arena": 1
+    },
+    {
+      "cup": 0,
+      "fighter": 9,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 0,
+      "fighter": 10,
+      "level": 1,
+      "challenger": 1,
+      "arena": 2
+    },
+    {
+      "cup": 0,
+      "fighter": 11,
+      "level": 2,
+      "challenger": 2,
+      "arena": 1
+    },
+    {
+      "cup": 0,
+      "fighter": 12,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 1,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 1,
+      "fighter": 3,
+      "level": 1,
+      "challenger": 1,
+      "arena": 2
+    },
+    {
+      "cup": 1,
+      "fighter": 3,
+      "level": 2,
+      "challenger": 2,
+      "arena": 3
+    },
+    {
+      "cup": 2,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 0,
+      "arena": 3
+    },
+    {
+      "cup": 2,
+      "fighter": 3,
+      "level": 1,
+      "challenger": 1,
+      "arena": 4
+    },
+    {
+      "cup": 2,
+      "fighter": 3,
+      "level": 2,
+      "challenger": 2,
+      "arena": 1
+    },
+    {
+      "cup": 0,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 2,
+      "arena": 1
+    },
+    {
+      "cup": 0,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 1,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 0,
+      "arena": 0
+    },
+    {
+      "cup": 1,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 1,
+      "arena": 2
+    },
+    {
+      "cup": 2,
+      "fighter": 3,
+      "level": 0,
+      "challenger": 0,
+      "arena": 3
+    }
+  ],
+  "rounds": [
+    {
+      "cup": 0,
+      "outcome": 2,
+      "wins": 0,
+      "continues": 1,
+      "style": 0,
+      "ticks": 464
+    },
+    {
+      "cup": 0,
+      "outcome": 2,
+      "wins": 0,
+      "continues": 0,
+      "style": 0,
+      "ticks": 951
+    },
+    {
+      "cup": 0,
+      "outcome": 1,
+      "wins": 1,
+      "continues": 1,
+      "style": 0,
+      "ticks": 780
+    },
+    {
+      "cup": 0,
+      "outcome": 1,
+      "wins": 2,
+      "continues": 1,
+      "style": 1,
+      "ticks": 1740
+    },
+    {
+      "cup": 0,
+      "outcome": 1,
+      "wins": 3,
+      "continues": 1,
+      "style": 3,
+      "ticks": 2251
+    },
+    {
+      "cup": 1,
+      "outcome": 2,
+      "wins": 0,
+      "continues": 1,
+      "style": 5,
+      "ticks": 1054
+    },
+    {
+      "cup": 1,
+      "outcome": 1,
+      "wins": 1,
+      "continues": 0,
+      "style": 5,
+      "ticks": 2212
+    },
+    {
+      "cup": 1,
+      "outcome": 1,
+      "wins": 2,
+      "continues": 0,
+      "style": 5,
+      "ticks": 3070
+    },
+    {
+      "cup": 1,
+      "outcome": 2,
+      "wins": 2,
+      "continues": 0,
+      "style": 5,
+      "ticks": 4024
+    },
+    {
+      "cup": 1,
+      "outcome": 1,
+      "wins": 1,
+      "continues": 1,
+      "style": 5,
+      "ticks": 1654
+    },
+    {
+      "cup": 1,
+      "outcome": 1,
+      "wins": 2,
+      "continues": 1,
+      "style": 5,
+      "ticks": 2446
+    },
+    {
+      "cup": 1,
+      "outcome": 1,
+      "wins": 3,
+      "continues": 1,
+      "style": 5,
+      "ticks": 3274
+    },
+    {
+      "cup": 2,
+      "outcome": 1,
+      "wins": 1,
+      "continues": 1,
+      "style": 0,
+      "ticks": 1146
+    },
+    {
+      "cup": 2,
+      "outcome": 2,
+      "wins": 1,
+      "continues": 1,
+      "style": 1,
+      "ticks": 1851
+    },
+    {
+      "cup": 2,
+      "outcome": 1,
+      "wins": 2,
+      "continues": 0,
+      "style": 1,
+      "ticks": 2817
+    },
+    {
+      "cup": 2,
+      "outcome": 1,
+      "wins": 3,
+      "continues": 0,
+      "style": 2,
+      "ticks": 4031
+    }
+  ],
+  "clears": [
+    {
+      "cup": 0,
+      "attempts": 1,
+      "style": 1,
+      "perfect": 1,
+      "ticks": 2251,
+      "challengers": [
+        0,
+        2
+      ],
+      "captain": "REX"
+    },
+    {
+      "cup": 1,
+      "attempts": 2,
+      "style": 1,
+      "perfect": 1,
+      "ticks": 3274,
+      "challengers": [
+        1,
+        0
+      ],
+      "captain": "BRICK"
+    },
+    {
+      "cup": 2,
+      "attempts": 1,
+      "style": 1,
+      "perfect": 0,
+      "ticks": 4031,
+      "challengers": [
+        0,
+        2
+      ],
+      "captain": "REN"
+    }
+  ],
+  "earned_style_clear": true,
+  "branching_choices": true,
+  "defeated_challenger_skipped": true,
+  "retry_rival_locked": true,
+  "captain_tactics": [
+    {
+      "cup": 0,
+      "tactic": "RUSH",
+      "action": 2,
+      "target_px": 18,
+      "distance_px": 16
+    },
+    {
+      "cup": 1,
+      "tactic": "GUARD",
+      "action": 1,
+      "target_px": 19,
+      "distance_px": 29
+    },
+    {
+      "cup": 2,
+      "tactic": "ZONE",
+      "action": 3,
+      "target_px": 79,
+      "distance_px": 112
+    }
+  ],
+  "earned_crests_power_cycle": true,
+  "journal_power_cycle": true,
+  "journal_corruption_fallback": true,
+  "interrupted_write_fallback": true,
+  "base_save_preserved": true,
+  "practice_excluded": true,
+  "save_copy_bytes": 160,
+  "save_offsets": [
+    4096,
+    5120
+  ],
+  "peak_cpu_fraction": 0.941650390625,
+  "missed_display_frames": 0,
+  "rom_sha256": "e465d9ebc153e8649c993948e7f78d5afe6c7926d513b4777270182648ff47c4",
+  "wall_seconds": 19.39,
+  "method": "mGBA 0.10.2; real GBA button masks, read-only telemetry and native glyph matching; legacy fixture and offline SRAM corruption; no gameplay-memory writes"
+}

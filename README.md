@@ -46,11 +46,12 @@ Pikachu, Squirtle, Jigglypuff and Gastly also have special techniques and Practi
 | Up / Down | Jump / timed squeeze dodge |
 | A / B | Melee / fire |
 | Hold L | Block ordinary attacks |
+| Hold L + tap away | Backstep for 6 stamina |
 | R | Super at 100 SP and 25 stamina |
 | Hold L + tap R | Breakaway during ordinary hitstun at 60 SP |
 | Start | Pause |
 
-Clean hits build SP. Try **Practice → Breakaway** to learn when to spend it on an escape. Supers bypass blocks, so jump or time a squeeze to evade them. Down now has an animated dodge with a wind trail. Projectile clashes, battle music and finish cues add feedback during a fight. Emulator keyboard bindings can be configured in your emulator.
+Clean hits build SP. Try **Practice → Breakaway** to learn when to spend it on an escape. Supers bypass blocks, so jump or time a squeeze to evade them. Normal projectiles continue at half damage after a clash. Emulator keyboard bindings can be configured in your emulator.
 
 ## More information
 

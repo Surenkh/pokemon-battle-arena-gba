@@ -34,6 +34,7 @@ public:
  int status(const CombatCore& c,int who)const{
   if(broken[who]||c.f[who].action==GUARD_BREAK)return 4;
   if(c.f[who].action==BREAKAWAY)return 15;
+  if(c.f[who].action==BACKSTEP)return 16;
   if(c.f[who].action==HITSTUN&&c.can_breakaway(who))return 14;
   if(tired[who])return 3;if(blocked[who])return 2;
   if(punish[who])return 6;
