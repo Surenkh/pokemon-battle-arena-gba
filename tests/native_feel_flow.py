@@ -1,6 +1,6 @@
 """Native feedback/audio checks using real button inputs and read-only telemetry."""
 from pathlib import Path
-import array, json, math, os, re, subprocess, time, wave
+import array, json, math, os, re, subprocess, time, wave, hashlib
 from PIL import Image
 
 r=Path(__file__).resolve().parents[1]
@@ -145,6 +145,7 @@ try:
     check(tired,'Insufficient stamina produces feedback')
     check(state()[22]==0,'No missed frames through final guard/exhaustion checks')
     result=dict(status='passed',checks=checks,difficulty='Easy (audio opportunity coverage); all levels covered by native_cpu_flow',characters=reports,events=all_events,audio_theme_mask=all_audio,charge_theme_mask=all_charge,release_theme_mask=all_release,hud_fixed=True,charge_pause=True,guard_break=True,exhaustion=True,peak_cpu_fraction=state()[21]/4096,missed_display_frames=state()[22],wall_seconds=round(time.time()-started,2),method='mGBA 0.10.2, physical inputs, read-only telemetry and actual native audio capture; no gameplay-memory writes')
+    result['rom_sha256']=hashlib.sha256((r/'out/PokemonBattleArena.gba').read_bytes()).hexdigest()
     (out/'report.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items() if k!='characters'},indent=2))
 finally:

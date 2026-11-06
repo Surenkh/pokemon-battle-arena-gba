@@ -4,24 +4,24 @@
 #include "pkmn_cpu_defs.h"
 namespace pkmn {
 enum Buttons { A=1,B=2,SELECT=4,START=8,RIGHT=16,LEFT=32,UP=64,DOWN=128,R=256,L=512 };
-enum Action { NONE,BLOCK,MELEE,FIRE,SQUEEZE,SUPER,HITSTUN,BLOCKSTUN,GUARD_BREAK,VOLT_STEP,BREAKAWAY };
+enum Action { NONE,BLOCK,MELEE,FIRE,SQUEEZE,SUPER,HITSTUN,BLOCKSTUN,GUARD_BREAK,VOLT_STEP,BREAKAWAY,BACKSTEP };
 enum Feedback { HIT=1,BLOCKED=2,SHOT=4,SUPER_FIRED=8,JUMPED=16,SWUNG=32,CHARGED=64,BROKEN=128 };
 struct Input { uint16_t held=0,pressed=0; };
 // Contextual requests, never additional physical controller buttons.
-enum TechniqueRequest { REQUEST_AIR_BRAKE=1024, REQUEST_ORB_BURST=2048, REQUEST_VOLT_STEP=4096, REQUEST_SHELL_ROLL=8192, REQUEST_BREAKAWAY=16384 };
+enum TechniqueRequest { REQUEST_AIR_BRAKE=1024, REQUEST_ORB_BURST=2048, REQUEST_VOLT_STEP=4096, REQUEST_SHELL_ROLL=8192, REQUEST_BREAKAWAY=16384, REQUEST_BACKSTEP=32768 };
 struct Fighter {
  int character=0,x=0,y=120*256,vx=0,vy=0,kb=0,hp=0,sta=0,sp=0,face=1;
  Action action=NONE;int began=0,ends=0,invuln_until=0,squeeze_ready=0,last_spend=-30;
- uint32_t attack_id=0;bool melee_contact=false,spawned=false;
+ uint32_t attack_id=0;bool melee_contact=false,spawned=false,melee_landed=false,melee_penalized=false;
  int pending=0,pending_until=0;
  int stride_q8=0,landed_at=-100,took_off_at=-100;
  int confirmed_at=-100,chain_depth=0;
  int air_brake_until=0;bool air_brake_used=false;
- int tap_direction=0,tap_tick=-100,step_ready=0,mobility_direction=0;bool shell_roll=false;
+ int tap_direction=0,tap_tick=-100,step_ready=0,mobility_direction=0,backstep_ready=0;bool shell_roll=false;
 };
-struct Projectile { bool active=false,reserved=false,super=false,followup=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0;int burst_at=-1; };
+struct Projectile { bool active=false,reserved=false,super=false,followup=false,has_clashed=false;int owner=0,x=0,y=0,px=0,py=0,vx=0,born=0,damage=0;uint32_t id=0,last_clash_id=0;int burst_at=-1; };
 // Read-only presentation events; never consulted by combat resolution or AI.
-enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EV_AIR_BRAKE,EV_ORB_ARM,EV_ORB_POP,EV_BURST_HIT,EV_VOLT_STEP,EV_SHELL_ROLL,EV_BREAKAWAY,EV_CLASH,EV_SUPER_FINISH,EV_PUNISH_FINISH,EVENT_COUNT };
+enum EventKind { EV_MELEE,EV_SHOT,EV_CHARGE,EV_RELEASE,EV_HIT,EV_BLOCK,EV_BREAK,EV_TIRED,EV_READY,EV_JUMP,EV_LANDING_JUMP,EV_FOLLOWUP,EV_PUNISH,EV_AIR_BRAKE,EV_ORB_ARM,EV_ORB_POP,EV_BURST_HIT,EV_VOLT_STEP,EV_SHELL_ROLL,EV_BREAKAWAY,EV_CLASH,EV_SUPER_FINISH,EV_PUNISH_FINISH,EV_BACKSTEP,EVENT_COUNT };
 struct CombatEvent { EventKind kind;int owner,target,x,y;bool super;uint32_t attack;int damage;bool followup; };
 class CombatCore {
 public:
@@ -75,7 +75,7 @@ class CpuController {
  bool roll(int percent){return int(random()%100)<(percent>95?95:percent);}
 public:
  enum Intent { APPROACH,SPACE,PRESSURE,RECOVER,DEFEND,PUNISH,FOLLOW,SUPER_ATTACK,HESITATE };
- struct Diagnostics { int intent=APPROACH,target=0,observed_tick=0,melee_memory=0,fire_memory=0,super_memory=0,decisions=0,defenses=0,punishes=0,followups=0,hesitations=0,plan=0,response_choices=0;bool resting=false,closing=false; };
+ struct Diagnostics { int intent=APPROACH,target=0,observed_tick=0,melee_memory=0,fire_memory=0,super_memory=0,decisions=0,defenses=0,punishes=0,followups=0,hesitations=0,plan=0,response_choices=0,backsteps=0;bool resting=false,closing=false; };
  Diagnostics diagnostics{};
  int difficulty=1;
  void reset(int level,uint32_t seed,CaptainTactic captain=CaptainTactic::NONE);

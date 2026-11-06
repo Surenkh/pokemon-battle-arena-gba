@@ -72,6 +72,7 @@ Down: Timed squeeze dodge
 A: Melee
 B: Fire
 L held: Block ordinary attacks
+Hold L and tap away: Backstep for 6 stamina
 R: Super at 100 SP and 25 stamina
 Start: Pause
 Start/A on title: Visible mode menu
@@ -235,7 +236,7 @@ Read RIVAL_CUP.md for goals, controls, achievements and save behavior.
               'Starter techniques require this ROM/adapter, both lessons/sides, pause/retry and save-isolation evidence')
         introduction = b'''STARTER TECHNIQUES
 Pikachu: double tap Left/Right for Volt Step (12 stamina).
-Squirtle: Down plus Left/Right starts Shell Roll (20 total stamina).
+Squirtle: Down plus Left/Right starts Shell Roll (14 total stamina).
 Both add movement without invulnerability. Their Practice Technique lessons are available.
 Read FIGHTER_TECHNIQUES.md for timings, recovery, counters and all four signature moves.
 
@@ -276,8 +277,29 @@ With the Lua adapter, P1 holds U and taps I. P2 holds Q and taps E.
               'Combat feedback needs both finishes, roster dodges and both recorded music sections')
         introduction = b'''COMBAT FEEDBACK
 Down performs a compact animated dodge. Time it to avoid high shots and supers.
-Opposing normal shots burst together. The battle theme builds at low health.
+Opposing normal shots burst together and continue at half damage.
+The battle theme builds at low health.
 Super and recovery-punish KOs have distinct finish cues.
+
+'''
+        bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])
+    if build.get('combat_dynamics'):
+        report = json_file(evidence / 'native-combat-dynamics.json')
+        verify_report(report, sha)
+        check(report.get('status') == 'passed' and report.get('rom_sha256') == sha
+              and report.get('adapter_sha256') == digest((root / 'tools/local_versus.lua').read_bytes())
+              and report.get('emulated_gba_instances') == 1
+              and all(report.get(key) for key in ('both_shots_survive_clash', 'weakened_shots_hit',
+                      'jump_and_dodge_costs', 'shell_roll_cost', 'both_player_backsteps', 'guard_push',
+                      'zero_state_writes', 'save_byte_identical'))
+              and report.get('missed_display_frames') == 0,
+              'Combat dynamics needs current native two-player, cost, collision and save evidence')
+        introduction = b'''COMBAT DYNAMICS
+Normal shots survive a clash, each with half its current damage (rounded up).
+Jump costs 10 stamina; stationary Down dodge costs 6.
+Squirtle's directional Shell Roll costs 14 stamina total.
+Hold L and tap away to backstep for 6 stamina; it has recovery and no invulnerability.
+Blocking melee pushes the fighters apart; missed or blocked melee takes longer to recover.
 
 '''
         bundle_files[2] = ('README.txt', introduction + bundle_files[2][1])

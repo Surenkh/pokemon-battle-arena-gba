@@ -43,7 +43,11 @@ for c in chars:
 out+=['};']
 assert j['reactions']['normal_hitstun_ticks'] < j['reactions']['super_hitstun_ticks']
 assert 50 < j['breakaway']['power_cost'] < j['resources']['super_power_max']
-for group in ['world','resources','motion','reactions','input','match','followup','practice','breakaway']:
+assert 1<=j['combat_dynamics']['clash_damage_percent']<=100
+assert 1<=j['combat_dynamics']['blocked_melee_pushback_px']<=12
+assert 1<=j['combat_dynamics']['unsuccessful_melee_recovery_ticks']<=8
+assert 1<=j['backstep']['stamina_cost']<=20 and 1<=j['backstep']['speed_q8']<=1024
+for group in ['world','resources','motion','reactions','input','match','followup','practice','breakaway','backstep','combat_dynamics']:
  for name,value in j[group].items():
   if isinstance(value,(int,bool)):out.append(f'inline constexpr int {group}_{name} = {int(value)};')
 for action,v in j['actions'].items():

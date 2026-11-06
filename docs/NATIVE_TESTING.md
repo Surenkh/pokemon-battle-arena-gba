@@ -75,7 +75,8 @@ A separate 32-word `pkmn_cpu_debug` array preserves all prior layouts:
 | 7–11 | Think decisions, defense requests, punish requests, follow-up requests, deliberate hesitations |
 | 12–13 | Plan (0 pressure, 1 balanced, 2 space); resting flag |
 | 14–16 | Reaction delay, think interval, stale/late-round closing flag |
-| 17–31 | Reserved zeros |
+| 17 | Backstep requests selected by the CPU |
+| 18–31 | Reserved zeros |
 
 Request counters record policy choices rather than guaranteed resolved actions. Combat events remain the source for actual hits, blocks and follow-up entries. ROM-bound reports are in verification/v0.6.0/.
 
@@ -336,3 +337,14 @@ The separate 32-word pkmn_starter_debug array uses word 0 magic 0x53545235;
 15–16 primed tap directions; 17–18 first-tap ticks; 19–20 dash ages (-1 inactive);
 21 accumulated rendered cue bits (P1/P2 dash 1/2, roll 4/8). Other words are zero.
 Existing telemetry layouts/IDs remain unchanged.
+
+## v1.9 Combat Dynamics
+
+Run `python3 tests/native_combat_dynamics_flow.py` with the upstream mGBA 0.11
+Local Versus driver. It sends ordinary button inputs through the shipped Lua
+adapter to both players in one core, checks both weakened shots hit after a
+clash, exact jump/dodge/roll costs, backsteps and blocked melee spacing, and
+checks that the saved data stays byte-identical. It reads telemetry and captures
+the native framebuffer without writing combat state. Host tests separately cover
+all ordered matchups, walls, input buffering, interruptibility, collisions with
+supers and Shadow Orb, and CPU decisions.

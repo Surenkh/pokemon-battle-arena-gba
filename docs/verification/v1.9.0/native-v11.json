@@ -1,0 +1,164 @@
+{
+  "status": "passed",
+  "checks": 972,
+  "roster_pages": 1,
+  "visible_fighters": 13,
+  "max_animated_portraits": 1,
+  "full_card_glyph_masks": true,
+  "selected_header_glyph_masks": true,
+  "correct_location_glyph_masks": true,
+  "configured_battles": [
+    {
+      "fighter": 9,
+      "arena": 0,
+      "training": false
+    },
+    {
+      "fighter": 10,
+      "arena": 1,
+      "training": false
+    },
+    {
+      "fighter": 11,
+      "arena": 2,
+      "training": false
+    },
+    {
+      "fighter": 12,
+      "arena": 3,
+      "training": false
+    },
+    {
+      "fighter": 0,
+      "arena": 4,
+      "training": false
+    },
+    {
+      "fighter": 9,
+      "arena": 0,
+      "training": true
+    },
+    {
+      "fighter": 10,
+      "arena": 1,
+      "training": true
+    },
+    {
+      "fighter": 11,
+      "arena": 2,
+      "training": true
+    },
+    {
+      "fighter": 12,
+      "arena": 3,
+      "training": true
+    },
+    {
+      "fighter": 0,
+      "arena": 4,
+      "training": true
+    }
+  ],
+  "held_setting_no_repeat": true,
+  "arcade_location_rotation": true,
+  "characters": [
+    {
+      "fighter": "pikachu",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "charmander",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "squirtle",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "bulbasaur",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "eevee",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "meowth",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "psyduck",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "jigglypuff",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "machop",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "vulpix",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "gastly",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "riolu",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    },
+    {
+      "fighter": "totodile",
+      "aura_frame_mask": 255,
+      "super_frame_mask": 255,
+      "impact_frame_mask": 255,
+      "punch_frame_mask": 63
+    }
+  ],
+  "punch_damage_unchanged": true,
+  "super_damage_unchanged": true,
+  "peak_cpu_fraction": 0.853515625,
+  "missed_display_frames": 0,
+  "rom_sha256": "e465d9ebc153e8649c993948e7f78d5afe6c7926d513b4777270182648ff47c4",
+  "wall_seconds": 8.48,
+  "method": "mGBA 0.10.2 physical GBA keys, exact native glyph masks, real HP changes and read-only per-owner frame telemetry; no game-memory writes"
+}

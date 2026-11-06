@@ -25,11 +25,11 @@ with melee or a projectile, or punish the recovery. A hit interrupts movement.
 ## Squirtle — Shell Roll
 
 Press **Down while holding Left or Right** to add a roll to the usual squeeze.
-It costs **20 stamina total**: the original twelve plus eight for movement.
+It costs **14 stamina total**: six for the dodge plus eight for movement.
 After the existing three-tick startup, Squirtle moves two pixels per tick for
 the first **10 active ticks**, up to twenty pixels. Direction commits at entry.
 The original **24 low ticks, 9 recovery ticks and 24-tick cooldown** are retained.
-**Down alone** still gives the original stationary twelve-stamina dodge.
+**Down alone** gives a stationary six-stamina dodge.
 
 The spinning body, water cue and SHELL ROLL label identify the move. There is no
 invulnerability. A properly timed low roll can pass beneath a super; melee can

@@ -1,5 +1,5 @@
 from pathlib import Path
-import subprocess,os,re,json,time
+import subprocess,os,re,json,time,hashlib
 PROJ=Path(__file__).resolve().parents[1];ROOT=PROJ;WORK=PROJ/'tests/native_artifacts';WORK.mkdir(parents=True,exist_ok=True)
 elf=PROJ/'.gbastudio/PokemonBattleArena.elf'
 symbols=subprocess.check_output(['readelf','-sW',str(elf)],text=True)
@@ -52,4 +52,5 @@ frames(5000);v=state();check(v[1]==6 and v[20]==2,'Idle player naturally loses')
 cmd('q') if False else None
 p.stdin.write('q\n');p.stdin.flush();p.wait(timeout=10)
 report={'status':'passed','checks':checks,'emulator':'mGBA 0.10.2 libmgba software renderer','native_roster':roster,'native_rounds':matches,'battle_frames':total_auto_frames,'nominal_battle_minutes':round(total_auto_frames/3600,2),'observed_super_activations':sum(x['supers'] for x in matches),'peak_cpu_fraction':max(x['peak_q12'] for x in matches)/4096,'missed_display_frames':max(x['missed_frames'] for x in matches),'wall_seconds':round(time.time()-t,2),'method':'Native ROM, physical button inputs and read-only telemetry; no gameplay memory writes.'}
+report['rom_sha256']=hashlib.sha256((PROJ/'out/PokemonBattleArena.gba').read_bytes()).hexdigest()
 (WORK/'native_test_report.json').write_text(json.dumps(report,indent=2));(WORK/'native_commands.log').write_text('\n'.join(log));print(json.dumps({k:v for k,v in report.items() if k not in ['native_rounds','native_roster']},indent=2))

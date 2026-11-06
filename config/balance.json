@@ -1,5 +1,5 @@
 {
-  "ruleset_version": "1.7.0",
+  "ruleset_version": "1.9.0",
   "nominal_tick_hz": 60,
   "match": {
     "round_ticks": 3600,
@@ -101,7 +101,7 @@
   },
   "actions": {
     "jump": {
-      "stamina_cost": 18
+      "stamina_cost": 10
     },
     "melee": {
       "stamina_cost": 8
@@ -111,7 +111,7 @@
       "lifetime_ticks": 60
     },
     "squeeze": {
-      "stamina_cost": 12,
+      "stamina_cost": 6,
       "startup_ticks": 3,
       "active_ticks": 24,
       "recovery_ticks": 9,
@@ -272,7 +272,7 @@
         "role": "DEFENSE AND SPACE",
         "trait_name": "SHELL CONTROL",
         "tip_1": "DOWN + LEFT OR RIGHT",
-        "tip_2": "20 STA. MELEE CAN HIT ROLL",
+        "tip_2": "14 STA. MELEE CAN HIT ROLL",
         "melee_reach_px": 21,
         "melee_lunge_q8": 0,
         "guard_impact_percent": 80,
@@ -743,6 +743,19 @@
     "recovery_ticks": 12,
     "speed_q8": 768,
     "lift_q8": -704
+  },
+  "backstep": {
+    "stamina_cost": 6,
+    "startup_ticks": 2,
+    "travel_ticks": 6,
+    "recovery_ticks": 8,
+    "speed_q8": 640,
+    "cooldown_ticks": 18
+  },
+  "combat_dynamics": {
+    "clash_damage_percent": 50,
+    "blocked_melee_pushback_px": 6,
+    "unsuccessful_melee_recovery_ticks": 4
   },
   "followup": {
     "recovery_cut_ticks": 6,

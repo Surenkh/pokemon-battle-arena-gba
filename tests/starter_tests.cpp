@@ -38,13 +38,13 @@ int main(){
   c=setup(0,who);c.f[who].x=(sign>0?208:32)*256;c.f[1-who].x=(sign>0?32:208)*256;gesture(c,who,direction);for(int n=0;n<20;++n)frame(c,who);check(c.f[who].x==(sign>0?208:32)*256,"Walls clamp dash movement without crossing or teleportation");
   c=setup(0,who);gesture(c,who,direction);auto&shot=c.p[1-who];shot.active=true;shot.owner=1-who;shot.x=c.f[who].x;shot.y=c.f[who].y-18*256;shot.px=shot.x;shot.py=shot.y;shot.damage=8;shot.born=c.tick;shot.vx=sign*512;shot.id=999;frame(c,who);check(c.f[who].action==HITSTUN&&c.f[who].hp==characters[0].hp-8,"Ordinary projectiles hit and interrupt Volt Step");
   c=setup(2,who);const int roll_sta=c.f[who].sta;frame(c,who,{uint16_t(DOWN|direction),DOWN});check(c.f[who].action==SQUEEZE&&c.f[who].shell_roll&&events(c,EV_SHELL_ROLL)==1,"Down plus direction starts one owned Shell Roll");
-  check(c.f[who].sta==roll_sta-20*60&&c.f[who].invuln_until==0,"Roll costs twelve plus eight stamina and grants no invulnerability");
+  check(c.f[who].sta==roll_sta-14*60&&c.f[who].invuln_until==0,"Roll costs six plus eight stamina and grants no invulnerability");
   const int roll_start=c.f[who].x,roll_end=c.f[who].ends;int low_ticks=0,roll_ticks=0;
   while(c.tick<roll_end){const int old=c.f[who].x;frame(c,who,{uint16_t(A|B|UP|DOWN|R|direction),uint16_t(A|B|UP|DOWN|R)});low_ticks+=c.low(c.f[who]);roll_ticks+=c.f[who].x!=old;check(c.f[who].ends==roll_end,"Roll retains original dodge recovery despite repeated requests");}
   check(c.f[who].x-roll_start==sign*20*256&&roll_ticks==10,"Roll moves only ten low ticks for twenty pixels");
   check(low_ticks==24,"Roll preserves all twenty-four active squeeze ticks");frame(c,who);check(!c.f[who].shell_roll&&c.f[who].squeeze_ready==c.tick-1+24,"Original squeeze cooldown starts at the original end");
-  c=setup(2,who);frame(c,who,{DOWN,DOWN});check(!c.f[who].shell_roll&&c.f[who].sta==roll_sta-12*60,"Down alone keeps the original twelve-stamina stationary dodge");
-  c=setup(2,who);c.f[who].sta=20*60-1;frame(c,who,{uint16_t(DOWN|direction),DOWN});check(c.f[who].action==NONE&&c.f[who].sta==20*60-1,"An unaffordable directional roll does not silently spend for a different dodge");
+  c=setup(2,who);frame(c,who,{DOWN,DOWN});check(!c.f[who].shell_roll&&c.f[who].sta==roll_sta-6*60,"Down alone uses the six-stamina stationary dodge");
+  c=setup(2,who);c.f[who].sta=14*60-1;frame(c,who,{uint16_t(DOWN|direction),DOWN});check(c.f[who].action==NONE&&c.f[who].sta==14*60-1,"An unaffordable directional roll does not silently spend for a different dodge");
   c=setup(2,who);frame(c,who,{uint16_t(DOWN|direction),DOWN});for(int n=0;n<3;++n)frame(c,who);
   auto&enemy=c.f[1-who];enemy.x=c.f[who].x+sign*16*256;enemy.action=MELEE;enemy.began=c.tick-characters[enemy.character].melee_start;enemy.ends=c.tick+20;enemy.face=-sign;enemy.attack_id=55;
   frame(c,who);check(c.f[who].hp<characters[2].hp&&c.f[who].action==HITSTUN&&!c.f[who].shell_roll,"Melee hits the low roll and immediately interrupts its movement");
@@ -53,7 +53,7 @@ int main(){
   check(c.tick==frozen&&c.f[who].sta==unspent&&c.f[who].pending==REQUEST_SHELL_ROLL,"Hitstop queues Shell Roll without moving or spending");
   CombatCore opposite=c;opposite.f[who].mobility_direction=-c.f[who].mobility_direction;
   check(c.checksum()!=opposite.checksum(),"Queued roll direction belongs to the deterministic state checksum");
-  frame(c,who);frame(c,who);check(c.f[who].shell_roll&&c.f[who].sta==unspent-20*60,"Queued roll consumes its latched direction and cost once after hitstop");
+  frame(c,who);frame(c,who);check(c.f[who].shell_roll&&c.f[who].sta==unspent-14*60,"Queued roll consumes its latched direction and cost once after hitstop");
   c=setup(0,who);frame(c,who,{uint16_t(direction),uint16_t(direction)});frame(c,who);c.hitstop=2;frame(c,who,{uint16_t(direction),uint16_t(direction)});
   check(c.f[who].pending==REQUEST_VOLT_STEP&&c.f[who].action==NONE,"Hitstop queues the second direction tap without starting a dash");
   opposite=c;opposite.f[who].mobility_direction=-c.f[who].mobility_direction;check(c.checksum()!=opposite.checksum(),"Queued dash direction belongs to the deterministic checksum");

@@ -526,6 +526,7 @@ public:
     presented_events=core.event_frame;for(int n=0;n<core.event_count;n++){const auto&e=core.events[n];int ch=core.f[e.owner].character;
      if(e.kind==EV_HIT||e.kind==EV_BLOCK||e.kind==EV_BREAK){const bool orb_burst=e.kind==EV_HIT&&!e.super&&core.p[e.owner].burst_at>=0&&core.p[e.owner].id==e.attack;particle(e.x/256,e.y/256,e.kind==EV_BLOCK?GUARD:e.super||orb_burst?SUPER_IMPACT:IMPACT,ch,core.f[e.owner].face<0);}
      if(e.kind==EV_BREAKAWAY)particle(e.x/256,e.y/256,GUARD,ch,core.f[e.owner].face<0);
+     if(e.kind==EV_BACKSTEP)particle(e.x/256,world_floor_y-4,DUST);
      if(e.kind==EV_CLASH){
       int direction=core.f[e.owner].x<core.f[e.target].x?-1:1;
       particle(e.x/256+direction*5,e.y/256,CLASH_IMPACT,ch,direction>0);
@@ -667,7 +668,7 @@ public:
     if(screen==RESUME_COUNTDOWN)line(120,71,"READY",true,2);
     if(show_finish)line(120,71,round.finish==RoundPresentation::SUPER_FINISH?"SUPER FINISH":"PUNISH FINISH",true,2);
     if(screen==FIGHTING||screen==ROUND_END){
-     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL","L+R ESCAPE","BREAKAWAY"};
+     static const char* statuses[]={"","LOW STA","BLOCK","NO STA","GUARD BREAK","R READY","PUNISH","FOLLOW B","FOLLOW A/B","AIR BRAKE","B BURST","UP BRAKE","VOLT STEP","SHELL ROLL","L+R ESCAPE","BREAKAWAY","BACKSTEP"};
      for(int i=0;i<2;i++){int status=feel.status(core,i);if(status)line(i?192:48,47,statuses[status],true);}
      if(charge)line(120,57,"SUPER! JUMP OR SQUEEZE",true);
     }
@@ -1071,7 +1072,7 @@ public:
   pkmn_cpu_debug[7]=tactics.decisions;pkmn_cpu_debug[8]=tactics.defenses;pkmn_cpu_debug[9]=tactics.punishes;pkmn_cpu_debug[10]=tactics.followups;
   pkmn_cpu_debug[11]=tactics.hesitations;pkmn_cpu_debug[12]=tactics.plan;pkmn_cpu_debug[13]=tactics.resting;
   pkmn_cpu_debug[14]=cpu_difficulties[difficulty].reaction_ticks;pkmn_cpu_debug[15]=cpu_difficulties[difficulty].think_ticks;
-  pkmn_cpu_debug[16]=tactics.closing;
+  pkmn_cpu_debug[16]=tactics.closing;pkmn_cpu_debug[17]=tactics.backsteps;
   pkmn_feel_debug[0]=0x4645454c;pkmn_feel_debug[1]=feel.seen_events;pkmn_feel_debug[2]=feel.dx;pkmn_feel_debug[3]=feel.dy;pkmn_feel_debug[4]=audio.active_voices();pkmn_feel_debug[5]=audio.character_mask;pkmn_feel_debug[6]=audio.charge_mask;pkmn_feel_debug[7]=audio.release_mask;pkmn_feel_debug[8]=feel.guard_breaks;pkmn_feel_debug[9]=feel.rejected_actions;pkmn_feel_debug[10]=feel.landing_jumps;pkmn_feel_debug[11]=feel.shake_frames;pkmn_feel_debug[12]=audio.active_charges();pkmn_feel_debug[13]=bn::core::last_cpu_usage().data();pkmn_feel_debug[14]=feel.status(core,0);pkmn_feel_debug[15]=feel.status(core,1);
   pkmn_practice_debug[0]=0x50524143;pkmn_practice_debug[1]=trainer.feedback;pkmn_practice_debug[2]=trainer.completed();pkmn_practice_debug[3]=trainer.super_started;pkmn_practice_debug[4]=trainer.super_released;pkmn_practice_debug[5]=practice&&screen==RESUME_COUNTDOWN?count:0;pkmn_practice_debug[6]=core.p[3].active;pkmn_practice_debug[7]=core.p[3].x;pkmn_practice_debug[8]=core.p[3].id;pkmn_practice_debug[9]=practice&&trainer.drill();
   int training_projectiles=0;if(practice)for(int i=0;i<4;++i)if(core.p[i].active||core.p[i].reserved)training_projectiles|=1<<i;

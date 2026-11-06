@@ -1,0 +1,8 @@
+{
+  "status": "passed",
+  "rom_sha256": "e465d9ebc153e8649c993948e7f78d5afe6c7926d513b4777270182648ff47c4",
+  "rom_bytes": 3586236,
+  "rom_byte_identical": true,
+  "generated_inputs_match": true,
+  "method": "Independent clean source snapshot, regenerated graphics, audio and combat configuration with devkitARM 16.1.0."
+}

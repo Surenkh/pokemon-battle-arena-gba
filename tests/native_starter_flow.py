@@ -71,7 +71,7 @@ try:
  controls(0,128);frames(45);check(not read(PRACTICE)[2],'A stationary dodge does not complete the rolling lesson');retry()
  while read()[5]<85:frames(1)
  stamina=read()[8];life=read()[6];start=read()[12];controls(0,128|16)
- check(read()[16]==4 and read(STARTER)[5]==1,'Down plus direction activates Shell Roll on F1');check(read()[8]==stamina-20*60,'Roll spends twelve plus eight stamina')
+ check(read()[16]==4 and read(STARTER)[5]==1,'Down plus direction activates Shell Roll on F1');check(read()[8]==stamina-14*60,'Roll spends six plus eight stamina')
  for _ in range(40):
   frames(1);capture(record=True)
   if read(STARTER)[13]:capture('squirtle-shell-roll')
@@ -82,7 +82,7 @@ try:
   for character in [0,2]:
    start_versus(character if who==0 else 1,character if who==1 else 1);direction=16 if who==0 else 32;stamina=read()[8+who];position=read()[12+who]
    if character==0:gesture(who,direction);check(read()[16+who]==9 and read(STARTER)[3+who]==1,'Both Versus players can activate Volt Step independently');cost=12
-   else:controls(who,128|direction);check(read(STARTER)[5+who]==1,'Both Versus players can activate Shell Roll independently');cost=20
+   else:controls(who,128|direction);check(read(STARTER)[5+who]==1,'Both Versus players can activate Shell Roll independently');cost=14
    check(read()[8+who]==stamina-cost*60,'Each side pays the same real stamina cost')
    frames(3);check(read(STARTER)[21]&(1<<who if character==0 else 4<<who),'Both sides receive their actual visual cue')
    capture('versus-'+str(character)+'-'+str(who));frames(40);check(read()[12+who]!=position,'Each side moves with ordinary gameplay physics');cases.append(dict(player=who,fighter=character,cost=cost));shared_chooser()

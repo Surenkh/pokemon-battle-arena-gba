@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "checks": 25,
+  "rom_sha256": "e465d9ebc153e8649c993948e7f78d5afe6c7926d513b4777270182648ff47c4",
+  "adapter_sha256": "42dd5a33b92f2f3331ef267ff1c1abe6b970a287faf92c92ce787f6d0650569c",
+  "mgba_revision": "a67176cd3e6bf60a5016d7adc94357142dd12617",
+  "emulated_gba_instances": 1,
+  "both_shots_survive_clash": true,
+  "weakened_shots_hit": true,
+  "jump_and_dodge_costs": true,
+  "shell_roll_cost": true,
+  "both_player_backsteps": true,
+  "guard_push": true,
+  "zero_state_writes": true,
+  "save_byte_identical": true,
+  "peak_cpu_fraction": 0.817626953125,
+  "missed_display_frames": 0,
+  "method": "One upstream mGBA 0.11 core; real Lua input, native framebuffer, read-only telemetry."
+}

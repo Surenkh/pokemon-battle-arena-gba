@@ -217,3 +217,11 @@ The first native runner uses the upstream mGBA 0.11 Lua adapter and real inputs
 for both players, all thirteen dodge poses, projectile clashes and both finish
 types. The second records the normal and low-health music sections from mGBA
 0.10.2 with effects muted. The packager requires both ROM-bound reports.
+
+## v1.9 Combat Dynamics
+
+Run `combat_dynamics_tests.cpp` and `tests/native_combat_dynamics_flow.py` in
+addition to the earlier suites. The native flow uses the shipping Local Versus
+adapter and real inputs to exercise weakened projectile clashes, reduced
+movement costs, backsteps from both seats, guard push and unchanged save data.
+The packager requires its report to match the ROM and adapter.

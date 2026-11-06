@@ -1,5 +1,18 @@
 # Pokémon Battle Arena product roadmap
 
+## v1.9 — Combat Dynamics
+
+Normal projectiles continue after clashing at half damage. Jump and Down dodge
+use less stamina, and holding L then tapping away gives both players a short,
+interruptible backstep. Blocked melee pushes fighters apart, while missed or
+blocked melee has longer recovery. These changes create room to defend and
+counter at close range; CPU fighters can use the same backstep controls.
+
+The next validation is human play: check whether projectile clashes are clear,
+players find and can punish backsteps, and pressure and stamina feel fair across
+the roster. CPU simulations identify candidates for investigation, not proof of
+human balance. Optional party presets and Relay remain future ideas.
+
 ## v1.8 — Combat Motion
 
 Animated Down dodges replace the stretched artwork across all thirteen fighters.
